@@ -5,7 +5,7 @@ This repository (when finished) will contain the disassembled code to 17 Famicom
 The disassembled code provided in this repository is intended for educational and research purposes only. It is not intended for commercial use, distribution, or modification. The copyright for these games is currently owned by Bandai Namco Entertainment Inc., and they withhold the right to take any part of this repo down should they feel the need.
 
 ## Purpose
-This project is dedicated to preserving the legacy of classic Namco titles and providing a resource for enthusiasts, historians, and researchers interested in the history of video game development. It's also a labor of love, being done to recognize the legacy these games continue to hold decades after their publication. By allowing this code to be viewable, we intend to uphold the craftsmanship and ingenuity that went into creating these iconic (and some lesser iconic) titles.
+This project is dedicated to preserving the legacy of classic Namco titles and providing a resource for enthusiasts, historians, and researchers interested in the history of video game development. It's also a labor of love, being done to recognize the legacy these games continue to hold decades after their publication. By allowing this code to be viewable, we intend to uphold the craftsmanship and ingenuity that went into creating these iconic titles.
 
 ## License and Usage
 This repository does not come with any explicit licenses or permissions for usage beyond the scope of fair use or fair dealing under copyright law. The disassembled code is provided "as is" without any warranty or guarantee of fitness for any purpose.
