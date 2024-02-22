@@ -1,0 +1,3 @@
+iNES Mapper = 206 [32KB PRG, 32KB CHR, Namcot 109]
+Mirroring = Horizontal
+Released on Jul 18, 1986

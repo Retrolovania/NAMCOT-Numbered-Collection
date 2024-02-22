@@ -1,0 +1,3 @@
+iNES Mapper = 0 [16KB PRG, 8KB CHR]
+Mirroring = Horizontal
+Released on Nov 27, 1985
