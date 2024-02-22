@@ -8,7 +8,7 @@ The disassembled code provided in this repository is intended for educational an
 This project is dedicated to preserving the legacy of classic Namco titles and providing a resource for enthusiasts, historians, and researchers interested in the history of video game development. It's also a labor of love, being done to recognize the legacy these games continue to hold decades after their publication. By allowing this code to be viewable, we intend to uphold the craftsmanship and ingenuity that went into creating these iconic (and some lesser iconic) titles.
 
 ## License and Usage
-This repository does not come with any explicit licenses or permissions for usage beyond the scope of fair use or fair dealing under copyright law. The disassembled code is provided "as is" without any warranty or guarantee of fitness for any purpose. Users are solely responsible for determining the legal implications and appropriateness of using the code for their purposes.
+This repository does not come with any explicit licenses or permissions for usage beyond the scope of fair use or fair dealing under copyright law. The disassembled code is provided "as is" without any warranty or guarantee of fitness for any purpose.
 
 ## Acknoweldgements
 - NESDev community, for being a helpful resource in terms of both providing guidance and generally being an amazing resource for all things NES/Famicom-related.
