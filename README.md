@@ -1,5 +1,5 @@
 ![NAMCOT Numbered Collection](https://github.com/Retrolovania/NAMCOT-Numbered-Collection/blob/main/logo.png)
-This repository (when finished) will contain the disassembled code to 17 Famicom games (excluding *Galaxian*) primarily developed and published by Namco for the Nintendo Family Computer (Famicom). Officially they were given no sort of compilation name, but because of the numbering scheme assigned to the cartridge labels and box art, they're retroactively being defined here as the NAMCOT Numbered Collection. 
+This repository (when finished) will contain the disassembled code to 17 Famicom games (excluding *Galaxian*) primarily developed and/or published by Namco for the Nintendo Family Computer (Famicom). Officially they were given no sort of compilation name, but because of the numbering scheme assigned to the cartridge labels and box art, they're retroactively being defined here as the NAMCOT Numbered Collection. 
 
 ## Disclaimer
 The disassembled code provided in this repository is intended for educational and research purposes only. It is not intended for commercial use, distribution, or modification.
@@ -12,7 +12,8 @@ This repository does not come with any explicit licenses or permissions for usag
 
 ## Acknoweldgements
 - NESDev community, for being a helpful resource in terms of both providing guidance and generally being an amazing resource for all things NES/Famicom-related.
-- Bandai-Namco, for having made these games and so much more (and, if you're reading this, having been cool with us hosting this!).
+- kikari_chi, for designing the logo for this project.
+- Bandai-Namco, for having made/published these games and so much more (and, if you're reading this, having been cool with us hosting this!).
 
 
 
