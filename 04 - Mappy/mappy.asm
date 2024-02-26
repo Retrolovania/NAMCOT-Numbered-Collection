@@ -46,30 +46,32 @@ __c000:     .hex 43 4f 50 59   ; $c000: 43 4f 50 59   Data
 ;-------------------------------------------------------------------------------
 ; reset vector
 ;-------------------------------------------------------------------------------
-reset:      SEI                ; $c031: 78        
-            CLD                ; $c032: d8        
-            LDX #$5f           ; $c033: a2 5f     
-            TXS                ; $c035: 9a        
-            LDA #$00           ; $c036: a9 00     Load the value $00 into Accumulator.
-            STA PPUCTRL          ; $c038: 8d 00 20    Store Accumulator in PPUCTRL (clears it)
-            STA PPUMASK          ; $c03b: 8d 01 20    Store Accumulator in PPUMASK (clears it)
-__c03e:     LDA PPUSTATUS          ; $c03e: ad 02 20  
-            BPL __c03e         ; $c041: 10 fb     
-            LDA #$07           ; $c043: a9 07     
-            STA $01            ; $c045: 85 01     
-            LDA #$00           ; $c047: a9 00     
-            STA $00            ; $c049: 85 00     
-            TAY                ; $c04b: a8        
-__c04c:     STA ($00),y        ; $c04c: 91 00     
-            INY                ; $c04e: c8        
-            BNE __c04c         ; $c04f: d0 fb     
-            DEC $01            ; $c051: c6 01     
-            BNE __c04c         ; $c053: d0 f7     
-            JSR __c25c         ; $c055: 20 5c c2  
-            LDA #$5a           ; $c058: a9 5a     
-            STA $3e            ; $c05a: 85 3e     
-            LDA #$a5           ; $c05c: a9 a5     
-            STA $3f            ; $c05e: 85 3f     
+reset:      SEI                ; $c031: 78    Disable interrupts.
+            CLD                ; $c032: d8    Turns off decimal mode.        
+            LDX #$5F           ; $c033: a2 5f     Load value $5F into X register. (Immediate)
+            TXS                ; $c035: 9a        Transfer X to stack pointer. (Mappy doesn't need all of zeropage.)
+            LDA #$00           ; $c036: a9 00     Load value $00 into Accumulator. (Immediate)
+            STA PPUCTRL        ; $c038: 8d 00 20    Store Accumulator in PPUCTRL (clears it)
+            STA PPUMASK        ; $c03b: 8d 01 20    Store Accumulator in PPUMASK (clears it)
+Wait_VBlank:     
+            LDA PPUSTATUS      ; $c03e: ad 02 20    Load value in PPUSTATUS to Accumulator.
+            BPL Wait_VBlank         ; $c041: 10 fb    If PPUSTATUS value is greater than or equal to zero (most significant bit of A isn't set), then loop. If not, then continue. 
+            LDA #$07           ; $c043: a9 07    Load value $07 into Accumulator. (Immediate)      
+            STA $01            ; $c045: 85 01    Store Accumulator value at address $01 (this is zeropage).
+            LDA #$00           ; $c047: a9 00    Load value $00 into Accumulator. (Immediate)     
+            STA $00            ; $c049: 85 00    Store Accumulator value at address $00 (this is zeropage).    
+            TAY                ; $c04b: a8    Transfer Accumulator value to Y register. (essentially clears Y)
+Mem_Clear:  
+            STA ($00),Y        ; $c04c: 91 00    Store Accumulator value at address ($00 + Y value)
+            INY                ; $c04e: c8    Increment Y by one.        
+            BNE Mem_Clear      ; $c04f: d0 fb    Is the Zero Flag (Z) clear? If so, keep going. If not, loop.
+            DEC $01            ; $c051: c6 01    Decrement value at address $01 by one.
+            BNE Mem_Clear      ; $c053: d0 f7    Is the Zero Flag (Z) clear? If so, keep going. If not, loop.     
+            JSR __c25c         ; $c055: 20 5c c2    Jump to function __c25c
+            LDA #$5A           ; $c058: a9 5a    Load value $5A into Accumulator.     
+            STA $3E            ; $c05a: 85 3e    Store Accumulator value at address 3E 
+            LDA #$A5           ; $c05c: a9 a5     
+            STA $3F            ; $c05e: 85 3f     
             LDY #$00           ; $c060: a0 00     
             JSR __c128         ; $c062: 20 28 c1  
             JSR __f4b5         ; $c065: 20 b5 f4  
@@ -88,11 +90,11 @@ __c06d:     LDA $20            ; $c06d: a5 20
             STA $10            ; $c085: 85 10     
             LDA $29            ; $c087: a5 29     
             ASL $10            ; $c089: 06 10     
-            rol                ; $c08b: 2a        
+            ROL                ; $c08b: 2a        
             ASL $10            ; $c08c: 06 10     
-            rol                ; $c08e: 2a        
+            ROL                ; $c08e: 2a        
             ASL $10            ; $c08f: 06 10     
-            rol                ; $c091: 2a        
+            ROL                ; $c091: 2a        
             STA PPUSCROLL      ; $c092: 8d 05 20  
             LDA #$00           ; $c095: a9 00     
             STA PPUSCROLL      ; $c097: 8d 05 20  
@@ -281,18 +283,18 @@ __c1c9:     LDX #$01           ; $c1c9: a2 01
             ROR $10,x          ; $c1e0: 76 10     
             LDX $41            ; $c1e2: a6 41     
             ROR $10,x          ; $c1e4: 76 10     
-            rol                ; $c1e6: 2a        
+            ROL                ; $c1e6: 2a        
             ROR $10,x          ; $c1e7: 76 10     
-            rol                ; $c1e9: 2a        
+            ROL                ; $c1e9: 2a        
             AND #$03           ; $c1ea: 29 03     
             CMP #$01           ; $c1ec: c9 01     
-            rol $22            ; $c1ee: 26 22     
+            ROL $22            ; $c1ee: 26 22     
             ROR $11            ; $c1f0: 66 11     
             ROR $10            ; $c1f2: 66 10     
-            rol $24            ; $c1f4: 26 24     
+            ROL $24            ; $c1f4: 26 24     
             ROR $11            ; $c1f6: 66 11     
             ROR $10            ; $c1f8: 66 10     
-            rol $25            ; $c1fa: 26 25     
+            ROL $25            ; $c1fa: 26 25     
             LDA $10,x          ; $c1fc: b5 10     
             AND #$0f           ; $c1fe: 29 0f     
             LSR                ; $c200: 4a        
@@ -473,11 +475,11 @@ __c305:     LDA $2c            ; $c305: a5 2c
             INY                ; $c316: c8        
             SBC $29            ; $c317: e5 29     
             ASL $10            ; $c319: 06 10     
-            rol                ; $c31b: 2a        
+            ROL                ; $c31b: 2a        
             ASL $10            ; $c31c: 06 10     
-            rol                ; $c31e: 2a        
+            ROL                ; $c31e: 2a        
             ASL $10            ; $c31f: 06 10     
-            rol                ; $c321: 2a        
+            ROL                ; $c321: 2a        
             BCC __c326         ; $c322: 90 02     
             DEC $11            ; $c324: c6 11     
 __c326:     STA $10            ; $c326: 85 10     
@@ -487,11 +489,11 @@ __c326:     STA $10            ; $c326: 85 10
             LDA ($1e),y        ; $c32d: b1 1e     
             INY                ; $c32f: c8        
             ASL $16            ; $c330: 06 16     
-            rol                ; $c332: 2a        
+            ROL                ; $c332: 2a        
             ASL $16            ; $c333: 06 16     
-            rol                ; $c335: 2a        
+            ROL                ; $c335: 2a        
             ASL $16            ; $c336: 06 16     
-            rol                ; $c338: 2a        
+            ROL                ; $c338: 2a        
             STA $16            ; $c339: 85 16     
             JSR __c342         ; $c33b: 20 42 c3  
             PLA                ; $c33e: 68        
@@ -566,9 +568,9 @@ __c3d7:     LDY #$06           ; $c3d7: a0 06
             EOR #$40           ; $c3df: 49 40     
             STA $13            ; $c3e1: 85 13     
 __c3e3:     LDA $13            ; $c3e3: a5 13     
-            rol                ; $c3e5: 2a        
-            rol                ; $c3e6: 2a        
-            rol                ; $c3e7: 2a        
+            ROL                ; $c3e5: 2a        
+            ROL                ; $c3e6: 2a        
+            ROL                ; $c3e7: 2a        
             AND #$03           ; $c3e8: 29 03     
             STA $14            ; $c3ea: 85 14     
 __c3ec:     JSR __c401         ; $c3ec: 20 01 c4  
@@ -1021,18 +1023,18 @@ __c71f:     LDA $14            ; $c71f: a5 14
             LDA $11            ; $c727: a5 11     
             STA $18            ; $c729: 85 18     
             ASL $17            ; $c72b: 06 17     
-            rol $18            ; $c72d: 26 18     
+            ROL $18            ; $c72d: 26 18     
             ASL $17            ; $c72f: 06 17     
-            rol                ; $c731: 2a        
+            ROL                ; $c731: 2a        
             ASL $17            ; $c732: 06 17     
             ASL $17            ; $c734: 06 17     
-            rol $18            ; $c736: 26 18     
+            ROL $18            ; $c736: 26 18     
             ASL $17            ; $c738: 06 17     
-            rol $18            ; $c73a: 26 18     
+            ROL $18            ; $c73a: 26 18     
             ASL $17            ; $c73c: 06 17     
-            rol $18            ; $c73e: 26 18     
+            ROL $18            ; $c73e: 26 18     
             ASL $17            ; $c740: 06 17     
-            rol                ; $c742: 2a        
+            ROL                ; $c742: 2a        
             AND #$03           ; $c743: 29 03     
             TAX                ; $c745: aa        
             LDA $14            ; $c746: a5 14     
@@ -4435,11 +4437,11 @@ __e3ad:     STX $1b            ; $e3ad: 86 1b
 __e3bd:     LDA $10            ; $e3bd: a5 10     
             AND #$1f           ; $e3bf: 29 1f     
             ASL $10            ; $e3c1: 06 10     
-            rol $11            ; $e3c3: 26 11     
+            ROL $11            ; $e3c3: 26 11     
             ASL $10            ; $e3c5: 06 10     
-            rol $11            ; $e3c7: 26 11     
+            ROL $11            ; $e3c7: 26 11     
             ASL $10            ; $e3c9: 06 10     
-            rol $11            ; $e3cb: 26 11     
+            ROL $11            ; $e3cb: 26 11     
             STA $10            ; $e3cd: 85 10     
             LDA $11            ; $e3cf: a5 11     
             AND #$20           ; $e3d1: 29 20     
@@ -4938,11 +4940,11 @@ __e7f5:     LDA #$00           ; $e7f5: a9 00
             CLC                ; $e803: 18        
             ADC #$01           ; $e804: 69 01     
             ASL $10            ; $e806: 06 10     
-            rol                ; $e808: 2a        
+            ROL                ; $e808: 2a        
             ASL $10            ; $e809: 06 10     
-            rol                ; $e80b: 2a        
+            ROL                ; $e80b: 2a        
             ASL $10            ; $e80c: 06 10     
-            rol                ; $e80e: 2a        
+            ROL                ; $e80e: 2a        
             STA $10            ; $e80f: 85 10     
             BCC __e815         ; $e811: 90 02     
             DEC $11            ; $e813: c6 11     
@@ -6524,7 +6526,7 @@ __f534:     TAX                ; $f534: aa
             STA $f6            ; $f54d: 85 f6     
 __f54f:     INY                ; $f54f: c8        
             LDA ($f0),y        ; $f550: b1 f0     
-            STA $4000,x        ; $f552: 9d 00 40  This is actually writing to $4005 as well for the sweep control.
+            STA $4000,x        ; $f552: 9d 00 40  This is actually writing to $4005 as well for the sweep contROL.
             INX                ; $f555: e8        
             DEC $f6            ; $f556: c6 f6     
             BNE __f54f         ; $f558: d0 f5     
