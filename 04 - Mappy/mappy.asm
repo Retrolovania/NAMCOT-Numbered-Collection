@@ -46,30 +46,30 @@ __c000:     .hex 43 4f 50 59   ; $c000: 43 4f 50 59   Data
 ;-------------------------------------------------------------------------------
 ; reset vector
 ;-------------------------------------------------------------------------------
-reset:      SEI                ; $c031: 78    Disable interrupts.
-            CLD                ; $c032: d8    Turns off decimal mode.        
-            LDX #$5F           ; $c033: a2 5f     Load value $5F into X register. (Immediate)
-            TXS                ; $c035: 9a        Transfer X to stack pointer. (Mappy doesn't need all of zeropage.)
-            LDA #$00           ; $c036: a9 00     Load value $00 into Accumulator. (Immediate)
+reset:      SEI                ; $c031: 78          Disable interrupts.
+            CLD                ; $c032: d8          Turns off decimal mode.        
+            LDX #$5F           ; $c033: a2 5f       Load value $5F into X register. (Immediate)
+            TXS                ; $c035: 9a          Transfer X to stack pointer. (Mappy doesn't need all of zeropage.)
+            LDA #$00           ; $c036: a9 00       Load value $00 into Accumulator. (Immediate)
             STA PPUCTRL        ; $c038: 8d 00 20    Store Accumulator in PPUCTRL (clears it)
             STA PPUMASK        ; $c03b: 8d 01 20    Store Accumulator in PPUMASK (clears it)
 Wait_VBlank:     
             LDA PPUSTATUS      ; $c03e: ad 02 20    Load value in PPUSTATUS to Accumulator.
-            BPL Wait_VBlank         ; $c041: 10 fb    If PPUSTATUS value is greater than or equal to zero (most significant bit of A isn't set), then loop. If not, then continue. 
-            LDA #$07           ; $c043: a9 07    Load value $07 into Accumulator. (Immediate)      
-            STA $01            ; $c045: 85 01    Store Accumulator value at address $01 (this is zeropage).
-            LDA #$00           ; $c047: a9 00    Load value $00 into Accumulator. (Immediate)     
-            STA $00            ; $c049: 85 00    Store Accumulator value at address $00 (this is zeropage).    
-            TAY                ; $c04b: a8    Transfer Accumulator value to Y register. (essentially clears Y)
+            BPL Wait_VBlank    ; $c041: 10 fb       If PPUSTATUS value is greater than or equal to zero (most significant bit of A isn't set), then loop. If not, then continue. 
+            LDA #$07           ; $c043: a9 07       Load value $07 into Accumulator. (Immediate)      
+            STA $01            ; $c045: 85 01       Store Accumulator value at address $01 (this is zeropage).
+            LDA #$00           ; $c047: a9 00       Load value $00 into Accumulator. (Immediate)     
+            STA $00            ; $c049: 85 00       Store Accumulator value at address $00 (this is zeropage).    
+            TAY                ; $c04b: a8          Transfer Accumulator value to Y register. (essentially clears Y)
 Mem_Clear:  
-            STA ($00),Y        ; $c04c: 91 00    Store Accumulator value at address ($00 + Y value)
-            INY                ; $c04e: c8    Increment Y by one.        
-            BNE Mem_Clear      ; $c04f: d0 fb    Is the Zero Flag (Z) clear? If so, keep going. If not, loop.
-            DEC $01            ; $c051: c6 01    Decrement value at address $01 by one.
-            BNE Mem_Clear      ; $c053: d0 f7    Is the Zero Flag (Z) clear? If so, keep going. If not, loop.     
+            STA ($00),Y        ; $c04c: 91 00       Store Accumulator value at address ($00 + Y value)
+            INY                ; $c04e: c8          Increment Y by one.        
+            BNE Mem_Clear      ; $c04f: d0 fb       Is the Zero Flag (Z) clear? If so, keep going. If not, loop.
+            DEC $01            ; $c051: c6 01       Decrement value at address $01 by one.
+            BNE Mem_Clear      ; $c053: d0 f7       Is the Zero Flag (Z) clear? If so, keep going. If not, loop.     
             JSR __c25c         ; $c055: 20 5c c2    Jump to function __c25c
-            LDA #$5A           ; $c058: a9 5a    Load value $5A into Accumulator.     
-            STA $3E            ; $c05a: 85 3e    Store Accumulator value at address 3E 
+            LDA #$5A           ; $c058: a9 5a       Load value $5A into Accumulator.     
+            STA $3E            ; $c05a: 85 3e       Store Accumulator value at address 3E 
             LDA #$A5           ; $c05c: a9 a5     
             STA $3F            ; $c05e: 85 3f     
             LDY #$00           ; $c060: a0 00     
