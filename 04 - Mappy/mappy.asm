@@ -12,7 +12,7 @@
             .db "NES", $1A     ; Header
             .db 1              ; 1 x 16k PRG banks
             .db 1              ; 1 x 8k CHR banks
-            .db %00000001      ; Mirroring: Vertical
+            .db %00000001      ; Mirroring: VeRTIcal
                                ; SRAM: Not used
                                ; 512k Trainer: Not used
                                ; 4 Screen VRAM: Not used
@@ -105,18 +105,18 @@ __c06d:
             STA PPUCTRL        ; $c09e: 8d 00 20    Store Accumulator value in PPUCTRL.  
             JSR __f4f1         ; $c0a1: 20 f1 f4    Jump to subroutine __f4f1  
             LDA $23            ; $c0a4: a5 23       Load value at address $23 into Acummulator   
-            BEQ __c0b5         ; $c0a6: f0 0d       Is the Zero Flag (Z) set? If so, keep going. If not, jump to __c0b5
+            BEQ __c0b5         ; $c0a6: f0 0d       Is the Zero Flag (Z) set? If so, keep going. If not, branch to __c0b5
             JSR __d735         ; $c0a8: 20 35 d7    Jump to subroutine __d735
             LDA $24            ; $c0ab: a5 24       Load value at address $24 into Acummulator   
             AND #$03           ; $c0ad: 29 03       Logically AND $03 with value in Acummulator. 
             CMP #$01           ; $c0af: c9 01       Compare value $01 with value in Acummulator. 
-            BNE __c0c7         ; $c0b1: d0 14       Is the Zero Flag (Z) clear? If so, keep going. If not, jump to __c0c7 
-            BEQ __c0c7         ; $c0b3: f0 12       Is the Zero Flag (Z) set? If so, keep going. If not, jump to __c0c7 (We're going to __c0c7 whether we like it or not!)
+            BNE __c0c7         ; $c0b1: d0 14       Is the Zero Flag (Z) clear? If so, keep going. If not, branch to __c0c7 
+            BEQ __c0c7         ; $c0b3: f0 12       Is the Zero Flag (Z) set? If so, keep going. If not, branch to __c0c7 (We're going to __c0c7 whether we like it or not!)
 __c0b5:     
             LDA $24            ; $c0b5: a5 24       Load value at $24 to Acummulator
             AND #$03           ; $c0b7: 29 03       Logically AND $03 with value in Acummulator. 
             CMP #$01           ; $c0b9: c9 01       Compare value $01 with value in Acummulator.      
-            BNE __c0bf         ; $c0bb: d0 02       Is the Zero Flag (Z) clear? If so, keep going. If not, jump to __c0bf      
+            BNE __c0bf         ; $c0bb: d0 02       Is the Zero Flag (Z) clear? If so, keep going. If not, branch to __c0bf      
             NOP                ; $c0bd: ea          Do nothing.
             NOP                ; $c0be: ea          Do nothing.
 __c0bf:     
@@ -126,27 +126,27 @@ __c0bf:
 __c0c7:     
             INC $21            ; $c0c7: e6 21       Increment value in address $21 by one
             LDA #$00           ; $c0c9: a9 00       Load value $00 into Accumulator.  
-            STA $20            ; $c0cb: 85 20       Store Accumulator value at zeropage address $20.     
+            STA $20            ; $c0cb: 85 20       Store Accumulator value at address $20.     
             JMP __c06d         ; $c0cd: 4c 6d c0    Jump to __c06d
 
 ;-------------------------------------------------------------------------------
 __c0d0:     
             LDX #$00           ; $c0d0: a2 00       Load value $00 into X register. (clears it)         
             LDA $23            ; $c0d2: a5 23       Load value at $23 to Acummulator 
-            BEQ __c117         ; $c0d4: f0 41       Is the Zero Flag (Z) set? If so, keep going. If not, jump to __c117     
+            BEQ __c117         ; $c0d4: f0 41       Is the Zero Flag (Z) set? If so, keep going. If not, branch to __c117     
             LDA $24            ; $c0d6: a5 24       Load value at $24 to Acummulator 
             AND #$03           ; $c0d8: 29 03       Logically AND $03 with value in Acummulator.       
             CMP #$01           ; $c0da: c9 01       Compare value $01 with value in Acummulator. 
             NOP                ; $c0dc: ea          Do nothing.
             NOP                ; $c0dd: ea          Do nothing.
             LDA #$68           ; $c0de: a9 68       Load value $00 into Accumulator.      
-            STA $10            ; $c0e0: 85 10       Store Accumulator value in zeropage address $10
+            STA $10            ; $c0e0: 85 10       Store Accumulator value in address $10
             LDY #$67           ; $c0e2: a0 67       Load value $67 into Y register.         
             LDA $21            ; $c0e4: a5 21       Load value at $21 to Acummulator       
             AND #$10           ; $c0e6: 29 10       Logically AND $10 with value in Acummulator.
-            BNE __c0ec         ; $c0e8: d0 02       Is the Zero Flag (Z) clear? If so, keep going. If not, jump to __c0ec     
+            BNE __c0ec         ; $c0e8: d0 02       Is the Zero Flag (Z) clear? If so, keep going. If not, branch to __c0ec     
             LDY #$F7           ; $c0ea: a0 f7       Load value $F7 into Y register.       
-__c0ec:     STY $11            ; $c0ec: 84 11       Store Y value into zeropage address $11
+__c0ec:     STY $11            ; $c0ec: 84 11       Store Y value into address $11
             LDY #$00           ; $c0ee: a0 00       Load value $00 into Y register. (clears it)
 __c0f0:     LDA $11            ; $c0f0: a5 11       Load value at $11 to Acummulator  
             STA $0700,X        ; $c0f2: 9d 00 07    Store Accumulator value at address ($0700 + X value)
@@ -162,10 +162,10 @@ __c0f0:     LDA $11            ; $c0f0: a5 11       Load value at $11 to Acummul
             STA $0700,X        ; $c106: 9d 00 07    Store Accumulator value at address ($0700 + X value)  
             CLC                ; $c109: 18          Clear the carry flag.
             ADC #$08           ; $c10a: 69 08       Load value $08 into Accumulator. (Immediate; carry flag is not set...what was the point of clearing it?)
-            STA $10            ; $c10c: 85 10       Store Accumulator value in zeropage address $10     
+            STA $10            ; $c10c: 85 10       Store Accumulator value in address $10     
             INX                ; $c10e: e8          Increment X by one        
             CPX #$14           ; $c10f: e0 14       Compare value $14 with value in X
-            BNE __c0f0         ; $c111: d0 dd       Is the Zero Flag (Z) clear? If so, keep going. If not, jump to __c0f0 
+            BNE __c0f0         ; $c111: d0 dd       Is the Zero Flag (Z) clear? If so, keep going. If not, branch to __c0f0 
 No_Negative:     
             INX                ; $c113: e8          Increment X by one        
             BPL __c113         ; $c114: 10 fd       If X is greater than or equal to zero (most significant bit of A isn't set), then loop. If not, then continue.
@@ -197,7 +197,7 @@ __c128:
             LDX __c140,Y       ; $c134: be 40 c1    Load value at (__c140 + Y) to X (__c140 = 3F)
             STA $00C1,X        ; $c137: 9d c1 00    Store Accumulator value at address ($00C1 + X)
             TXS                ; $c13a: 9a          Transfer X to stack pointer. 
-            JMP ($001E)        ; $c13b: 6c 1e 00    Indirectly jump to address $001E
+            JMP ($001E)        ; $c13b: 6c 1e 00    Indirectly jump to address $001E (actual address is the value stored in $001E)
 
 ;-------------------------------------------------------------------------------
 __c13e:     .hex 4f            ; $c13e: 4f            Data
@@ -223,7 +223,7 @@ Sub_Redirect:
             JSR Disable_Render         ; $c150: 20 41 c2    Jump to subroutine Disable_Render
 __c153:     
             CPX $2A            ; $c153: e4 2a       Compare value $2A with value in X    
-            BEQ Clear_X        ; $c155: f0 1e       Is the Zero Flag (Z) set? If so, keep going. If not, jump to Clear_X
+            BEQ Clear_X        ; $c155: f0 1e       Is the Zero Flag (Z) set? If so, keep going. If not, branch to Clear_X
             LDY $0500,X        ; $c157: bc 00 05    Load value at ($0500 + X) to Y
             INX                ; $c15a: e8          Increment X by one
             LDA $0500,X        ; $c15b: bd 00 05    Load value at ($0500 + X) to Acummulator
@@ -237,13 +237,13 @@ __c169:
             INX                ; $c16c: e8          Increment X by one  
             STA PPUDATA        ; $c16d: 8d 07 20    Store Accumulator value at PPUDATA 
             DEY                ; $c170: 88          Decrement Y by one
-            BNE __c169         ; $c171: d0 f6       Is the Zero Flag (Z) clear? If so, keep going. If not, jump to __c169
-            BEQ __c153         ; $c173: f0 de       Is the Zero Flag (Z) set? If so, keep going. If not, jump to __c153
+            BNE __c169         ; $c171: d0 f6       Is the Zero Flag (Z) clear? If so, keep going. If not, branch to __c169
+            BEQ __c153         ; $c173: f0 de       Is the Zero Flag (Z) set? If so, keep going. If not, branch to __c153
 Clear_X:     
             LDX #$00           ; $c175: a2 00       Load value $00 into X register. (clears it)
 __c177:     
             CPX $2B            ; $c177: e4 2b       Compare value $2B with value in X     
-            BEQ __c1a2         ; $c179: f0 27       Is the Zero Flag (Z) set? If so, keep going. If not, jump to __c1a2     
+            BEQ __c1a2         ; $c179: f0 27       Is the Zero Flag (Z) set? If so, keep going. If not, branch to __c1a2     
             LDY $04C0,X        ; $c17b: bc c0 04    Load value at ($04C0 + X) to Y  
             INX                ; $c17e: e8          Increment X by one        
             LDA $04C0,X        ; $c17f: bd c0 04    Load value at ($04C0 + X) to Acummulator  
@@ -252,10 +252,10 @@ __c177:
             STY PPUADDR        ; $c186: 8c 06 20    Store Y value at PPUADDR  
             LDA $04C0,X        ; $c189: bd c0 04    Load value at ($04C0 + X) to Acummulator  
             INX                ; $c18c: e8          Increment X by one        
-            STA $1E            ; $c18d: 85 1e       Store Accumulator value at zeropage address $1E
+            STA $1E            ; $c18d: 85 1e       Store Accumulator value at address $1E
             LDA $04C0,X        ; $c18f: bd c0 04    Load value at ($04C0 + X) to Acummulator  
             INX                ; $c192: e8          Increment X by one        
-            STA $1F            ; $c193: 85 1f       Store Accumulator value at zeropage address $1F     
+            STA $1F            ; $c193: 85 1f       Store Accumulator value at address $1F     
             LDA PPUDATA        ; $c195: ad 07 20    Load value in PPUDATA to Accumulator.
             LDA PPUDATA        ; $c198: ad 07 20    Load value in PPUDATA to Accumulator.  
             LDY #$08           ; $c19b: a0 08       Load value $08 to Y
@@ -285,8 +285,8 @@ __c1bd:
             NOP                ; $c1c0: ea          Do nothing.        
             INX                ; $c1c1: e8          Increment X by one        
             BNE __c1bd         ; $c1c2: d0 f9       Is the Zero Flag (Z) clear? If so, keep going. If not, loop     
-            STX $2A            ; $c1c4: 86 2a       Store X value at zeropage address $2A
-            STX $2B            ; $c1c6: 86 2b       Store X value at zeropage address $2B    
+            STX $2A            ; $c1c4: 86 2a       Store X value at address $2A
+            STX $2B            ; $c1c6: 86 2b       Store X value at address $2B    
             RTS                ; $c1c8: 60          Return
 
 ;-------------------------------------------------------------------------------
@@ -324,25 +324,25 @@ __c1c9:     LDX #$01           ; $c1c9: a2 01       Load value $01 to X
             LDA __c258,X       ; $c203: bd 58 c2    Load value at (__c258 + X) to Acummulator   
             LDX #$00           ; $c206: a2 00       Load $00 to X (clears it)
             CMP $26            ; $c208: c5 26       Compare value at $26 with value in Acummulator.
-            BEQ __c20d         ; $c20a: f0 01       Is the Zero Flag (Z) set? If so, keep going. If not, jump to __c20d
+            BEQ __c20d         ; $c20a: f0 01       Is the Zero Flag (Z) set? If so, keep going. If not, branch to __c20d
             INX                ; $c20c: e8          Increment X by one
 __c20d:     
-            STA $26            ; $c20d: 85 26       Store Accumulator value at zeropage address $26
-            STX $27            ; $c20f: 86 27       Store X value at zeropage address $27     
+            STA $26            ; $c20d: 85 26       Store Accumulator value at address $26
+            STX $27            ; $c20f: 86 27       Store X value at address $27     
             LDA $42            ; $c211: a5 42       Load value at address $42 to Acummulator
-            BEQ __c234         ; $c213: f0 1f       Is the Zero Flag (Z) set? If so, keep going. If not, jump to __c234 
+            BEQ __c234         ; $c213: f0 1f       Is the Zero Flag (Z) set? If so, keep going. If not, branch to __c234 
             LDA $4F            ; $c215: a5 4f       Load value at address $4F to Acummulator     
             ORA $4B            ; $c217: 05 4b       Logically OR value at $4B with value in Acummulator
-            BNE __c234         ; $c219: d0 19       Is the Zero Flag (Z) set? If so, keep going. If not, jump to __c234     
+            BNE __c234         ; $c219: d0 19       Is the Zero Flag (Z) set? If so, keep going. If not, branch to __c234     
             LDA $040F          ; $c21b: ad 0f 04    Load value at $040F to Acummulator
-            BEQ __c234         ; $c21e: f0 14       Is the Zero Flag (Z) set? If so, keep going. If not, jump to __c234    
+            BEQ __c234         ; $c21e: f0 14       Is the Zero Flag (Z) set? If so, keep going. If not, branch to __c234    
             LDA $25            ; $c220: a5 25       Load value at $25 to Acummulator    
             AND #$03           ; $c222: 29 03       Logically AND $03 with value in Acummulator.       
             CMP #$01           ; $c224: c9 01       Compare $01 with value in Acummulator.     
-            BNE __c233         ; $c226: d0 0b       Is the Zero Flag (Z) set? If so, keep going. If not, jump to __c233
+            BNE __c233         ; $c226: d0 0b       Is the Zero Flag (Z) set? If so, keep going. If not, branch to __c233
             EOR $23            ; $c228: 45 23       Logically EOR value at $23 with Acummulator
             STA $23            ; $c22a: 85 23       Store Accumulator value at address $23
-            BEQ __c233         ; $c22c: f0 05       Is the Zero Flag (Z) clear? If so, keep going. If not, jump to __c233
+            BEQ __c233         ; $c22c: f0 05       Is the Zero Flag (Z) clear? If so, keep going. If not, branch to __c233
             LDA #$01           ; $c22e: a9 01       Load $01 to Acummulator 
             STA $0600          ; $c230: 8d 00 06    Store Accumulator value at address $6000
 __c233:     
@@ -351,21 +351,21 @@ __c233:
 ;-------------------------------------------------------------------------------
 __c234:     
             LDA #$00           ; $c234: a9 00       Load $00 to Acummulator (clears it)   
-            STA $23            ; $c236: 85 23       Store Accumulator value at zeropage address $23   
+            STA $23            ; $c236: 85 23       Store Accumulator value at address $23   
             RTS                ; $c238: 60          Return        
 
 ;-------------------------------------------------------------------------------
 Enable_Render:     
             LDX #$1E           ; $c239: a2 1e       Load $1E to X   
             STX PPUMASK        ; $c23b: 8e 01 20    Store X value in PPUMASK ($1E = 00011110 -> show sprites, show background, show sprites/background in leftmost 8 pixels of screen)
-            STX $2D            ; $c23e: 86 2d       Store X value in zeropage address $2D
+            STX $2D            ; $c23e: 86 2d       Store X value in address $2D
             RTS                ; $c240: 60          Return
 
 ;-------------------------------------------------------------------------------
 Disable_Render:     
             LDX #$00           ; $c241: a2 00       Load $00 to X
             STX PPUMASK        ; $c243: 8e 01 20    Store X value in PPUMASK (clears it and disables everything)  
-            STX $2D            ; $c246: 86 2d       Store X value in zeropage address $2D     
+            STX $2D            ; $c246: 86 2d       Store X value in address $2D     
             RTS                ; $c248: 60          Return        
 
 ;-------------------------------------------------------------------------------
@@ -384,167 +384,179 @@ __c24b:
 __c258:     
             .hex 00 ff 01 00   ; $c258: 00 ff 01 00   Data
 __c25c:     
-            LDA $3E            ; $c25c: a5 3e     
-            CMP #$5A           ; $c25e: c9 5a     
-            BNE __c2a7         ; $c260: d0 45     
-            LDA $3F            ; $c262: a5 3f     
-            CMP #$A5           ; $c264: c9 a5     
-            BNE __c2a7         ; $c266: d0 3f     
-            LDA $41            ; $c268: a5 41     
-            BEQ __c26f         ; $c26a: f0 03     
-            JSR __ca81         ; $c26c: 20 81 ca  
+            LDA $3E            ; $c25c: a5 3e       Load value at $3E to Acummulator  
+            CMP #$5A           ; $c25e: c9 5a       Compare $5A with value in Acummulator.      
+            BNE __c2a7         ; $c260: d0 45       Is the Zero Flag (Z) set? If so, keep going. If not, branch to __c2a7
+            LDA $3F            ; $c262: a5 3f       Load value at $3F to Acummulator      
+            CMP #$A5           ; $c264: c9 a5       Compare $A5 with value in Acummulator.     
+            BNE __c2a7         ; $c266: d0 3f       Is the Zero Flag (Z) set? If so, keep going. If not, branch to __c2a7     
+            LDA $41            ; $c268: a5 41       Load value at $41 to Acummulator     
+            BEQ __c26f         ; $c26a: f0 03       Is the Zero Flag (Z) clear? If so, keep going. If not, branch to __c26f     
+            JSR __ca81         ; $c26c: 20 81 ca    Jump to subroutine __ca81
 __c26f:     
-            JSR __c2b3         ; $c26f: 20 b3 c2  
-            JSR __c2e5         ; $c272: 20 e5 c2  
-            LDX #$01           ; $c275: a2 01     
-            LDA $00,x          ; $c277: b5 00     
-            INX                ; $c279: e8        
-            STA $40            ; $c27a: 85 40     
-            LDA $00,x          ; $c27c: b5 00     
-            INX                ; $c27e: e8        
-            STA $41            ; $c27f: 85 41     
-            LDA $00,x          ; $c281: b5 00     
-            INX                ; $c283: e8        
-            STA $4a            ; $c284: 85 4a     
-            LDA $00,x          ; $c286: b5 00     
-            INX                ; $c288: e8        
-            STA $77            ; $c289: 85 77     
-            LDY #$71           ; $c28b: a0 71     
-            JSR __c297         ; $c28d: 20 97 c2  
-            LDY #$b1           ; $c290: a0 b1     
-            JSR __c297         ; $c292: 20 97 c2  
-            LDY #$44           ; $c295: a0 44     
-__c297:     LDA #$04           ; $c297: a9 04     
-            STA $00            ; $c299: 85 00     
-__c29b:     LDA $00,x          ; $c29b: b5 00     
-            INX                ; $c29d: e8        
-            STA $0000,y        ; $c29e: 99 00 00  
-            INY                ; $c2a1: c8        
-            DEC $00            ; $c2a2: c6 00     
-            BNE __c29b         ; $c2a4: d0 f5     
-            RTS                ; $c2a6: 60        
+            JSR __c2b3         ; $c26f: 20 b3 c2    Jump to subroutine __c2b3
+            JSR __c2e5         ; $c272: 20 e5 c2    Jump to subroutine __c2e5
+            LDX #$01           ; $c275: a2 01       Load $01 to X    
+            LDA $00,X          ; $c277: b5 00       Load value at ($00 + X) to Acummulator     
+            INX                ; $c279: e8          Increment X by one
+            STA $40            ; $c27a: 85 40       Store Accumulator value at address $40    
+            LDA $00,X          ; $c27c: b5 00       Load value at ($00 + X) to Acummulator     
+            INX                ; $c27e: e8          Increment X by one        
+            STA $41            ; $c27f: 85 41       Store Accumulator value at address $41     
+            LDA $00,X          ; $c281: b5 00       Load value at ($00 + X) to Acummulator     
+            INX                ; $c283: e8          Increment X by one        
+            STA $4A            ; $c284: 85 4a       Store Accumulator value at address $4A     
+            LDA $00,X          ; $c286: b5 00       Load value at ($00 + X) to Acummulator     
+            INX                ; $c288: e8          Increment X by one         
+            STA $77            ; $c289: 85 77       Store Accumulator value at address $77     
+            LDY #$71           ; $c28b: a0 71       Load $71 to Y     
+            JSR __c297         ; $c28d: 20 97 c2    Jump to subroutine __c297   
+            LDY #$B1           ; $c290: a0 b1       Load $B1 to Y     
+            JSR __c297         ; $c292: 20 97 c2    Jump to subroutine __c297  (again?)
+            LDY #$44           ; $c295: a0 44       Load $44 to Y     
+__c297:     
+            LDA #$04           ; $c297: a9 04       Load $04 to Acummulator     
+            STA $00            ; $c299: 85 00       Store Accumulator value at address $00     
+__c29b:     
+            LDA $00,X          ; $c29b: b5 00       Load value at ($00 + X) to Acummulator     
+            INX                ; $c29d: e8          Increment X by one        
+            STA $0000,Y        ; $c29e: 99 00 00    Store Accumulator value at address ($0000 + Y)
+            INY                ; $c2a1: c8          Increment Y by one        
+            DEC $00            ; $c2a2: c6 00       Decrement value at $00 by one
+            BNE __c29b         ; $c2a4: d0 f5       Is the Zero Flag (Z) set? If so, keep going. If not, loop    
+            RTS                ; $c2a6: 60          Return
 
 ;-------------------------------------------------------------------------------
-__c2a7:     JSR __c2e5         ; $c2a7: 20 e5 c2  
-            LDA #$02           ; $c2aa: a9 02     
-            STA $45            ; $c2ac: 85 45     
-            LDA #$01           ; $c2ae: a9 01     
-            STA $77            ; $c2b0: 85 77     
-            RTS                ; $c2b2: 60        
+__c2a7:     JSR __c2e5         ; $c2a7: 20 e5 c2    Jump to subroutine __c2e5  
+            LDA #$02           ; $c2aa: a9 02       Load $02 to Acummulator     
+            STA $45            ; $c2ac: 85 45       Store Accumulator value at address $45     
+            LDA #$01           ; $c2ae: a9 01       Load $01 to Acummulator     
+            STA $77            ; $c2b0: 85 77       Store Accumulator value at address $77     
+            RTS                ; $c2b2: 60          Return        
 
 ;-------------------------------------------------------------------------------
-__c2b3:     LDX #$01           ; $c2b3: a2 01     
-            LDA $40            ; $c2b5: a5 40     
-            STA $00,x          ; $c2b7: 95 00     
-            INX                ; $c2b9: e8        
-            LDA $41            ; $c2ba: a5 41     
-            STA $00,x          ; $c2bc: 95 00     
-            INX                ; $c2be: e8        
-            LDA $4a            ; $c2bf: a5 4a     
-            STA $00,x          ; $c2c1: 95 00     
-            INX                ; $c2c3: e8        
-            LDA $77            ; $c2c4: a5 77     
-            STA $00,x          ; $c2c6: 95 00     
-            INX                ; $c2c8: e8        
-            LDY #$71           ; $c2c9: a0 71     
-            JSR __c2d5         ; $c2cb: 20 d5 c2  
-            LDY #$b1           ; $c2ce: a0 b1     
-            JSR __c2d5         ; $c2d0: 20 d5 c2  
-            LDY #$44           ; $c2d3: a0 44     
-__c2d5:     LDA #$04           ; $c2d5: a9 04     
-            STA $00            ; $c2d7: 85 00     
-__c2d9:     LDA $0000,y        ; $c2d9: b9 00 00  
-            INY                ; $c2dc: c8        
-            STA $00,x          ; $c2dd: 95 00     
-            INX                ; $c2df: e8        
-            DEC $00            ; $c2e0: c6 00     
-            BNE __c2d9         ; $c2e2: d0 f5     
-            RTS                ; $c2e4: 60        
+__c2b3:     LDX #$01           ; $c2b3: a2 01       Load $01 to X   
+            LDA $40            ; $c2b5: a5 40       Load value at $40 to Acummulator     
+            STA $00,X          ; $c2b7: 95 00       Store Accumulator value at address ($00 + X)     
+            INX                ; $c2b9: e8          Increment X by one        
+            LDA $41            ; $c2ba: a5 41       Load value at $41 to Acummulator     
+            STA $00,X          ; $c2bc: 95 00       Store Accumulator value at address ($00 + X)     
+            INX                ; $c2be: e8          Increment X by one        
+            LDA $4A            ; $c2bf: a5 4a       Load value at $4A to Acummulator     
+            STA $00,X          ; $c2c1: 95 00       Store Accumulator value at address ($00 + X)     
+            INX                ; $c2c3: e8          Increment X by one        
+            LDA $77            ; $c2c4: a5 77       Load value at $77 to Acummulator     
+            STA $00,X          ; $c2c6: 95 00       Store Accumulator value at address ($00 + X)     
+            INX                ; $c2c8: e8          Increment X by one        
+            LDY #$71           ; $c2c9: a0 71       Load $71 to Y     
+            JSR __c2d5         ; $c2cb: 20 d5 c2    Jump to subroutine __c2d5   
+            LDY #$B1           ; $c2ce: a0 b1       Load $B1 to Y     
+            JSR __c2d5         ; $c2d0: 20 d5 c2    Jump to subroutine __c2d5  
+            LDY #$44           ; $c2d3: a0 44       Load $44 to Y     
+__c2d5:
+            LDA #$04           ; $c2d5: a9 04       Load $04 to Acummulator     
+            STA $00            ; $c2d7: 85 00       Store Accumulator value at address $00     
+__c2d9:     
+            LDA $0000,Y        ; $c2d9: b9 00 00    Load value at address ($0000 + Y) to Accumulator
+            INY                ; $c2dc: c8          Increment Y by one        
+            STA $00,X          ; $c2dd: 95 00       Store Accumulator value at address ($00 + X)     
+            INX                ; $c2df: e8          Increment X by one        
+            DEC $00            ; $c2e0: c6 00       Decrement value at $00 by one     
+            BNE __c2d9         ; $c2e2: d0 f5       Is the Zero Flag (Z) set? If so, keep going. If not, loop     
+            RTS                ; $c2e4: 60          Return
 
 ;-------------------------------------------------------------------------------
-__c2e5:     LDX #$20           ; $c2e5: a2 20     
-            LDA #$00           ; $c2e7: a9 00     
-__c2e9:     STA $00,x          ; $c2e9: 95 00     
+__c2e5:     
+            LDX #$20           ; $c2e5: a2 20       Load $20 to X     
+            LDA #$00           ; $c2e7: a9 00       Load $00 to Acummulator (clears it)
+__c2e9:     
+            STA $00,X          ; $c2e9: 95 00       Store Accumulator value at address ($00 + X)     
             INX                ; $c2eb: e8        
-            BNE __c2e9         ; $c2ec: d0 fb     
-            RTS                ; $c2ee: 60        
+            BNE __c2e9         ; $c2ec: d0 fb       Is the Zero Flag (Z) set? If so, keep going. If not, loop      
+            RTS                ; $c2ee: 60          Return        
 
 ;-------------------------------------------------------------------------------
-; nmi vector
+; NMI vector
 ;-------------------------------------------------------------------------------
-nmi:        php                ; $c2ef: 08        
-            PHA                ; $c2f0: 48        
-            TXA                ; $c2f1: 8a        
-            PHA                ; $c2f2: 48        
-            TYA                ; $c2f3: 98        
-            PHA                ; $c2f4: 48        
-            LDA $20            ; $c2f5: a5 20     
-            BEQ __c2fc         ; $c2f7: f0 03     
-            JSR __f4f1         ; $c2f9: 20 f1 f4  
-__c2fc:     INC $20            ; $c2fc: e6 20     
-            PLA                ; $c2fe: 68        
-            TAY                ; $c2ff: a8        
-            PLA                ; $c300: 68        
-            TAX                ; $c301: aa        
-            PLA                ; $c302: 68        
-            plp                ; $c303: 28        
-; irq/brk vector
+NMI:        
+            PHP                ; $c2ef: 08          Push processor's status flags onto stack
+            PHA                ; $c2f0: 48          Push Accumulator value onto stack
+            TXA                ; $c2f1: 8a          Transfer X value to Accumulator
+            PHA                ; $c2f2: 48          Push Accumulator value onto stack        
+            TYA                ; $c2f3: 98          Transfer Y value to Accumulator        
+            PHA                ; $c2f4: 48          Push Accumulator value onto stack        
+            LDA $20            ; $c2f5: a5 20       Load value at address $20 to Accumulator 
+            BEQ Reverse_NMI    ; $c2f7: f0 03       Is the Zero Flag (Z) clear? If so, keep going. If not, branch to Reverse_NMI    
+            JSR __f4f1         ; $c2f9: 20 f1 f4    Jump to subroutine __f4f1   
+Reverse_NMI:     
+            INC $20            ; $c2fc: e6 20       Increment value at address $20 by one
+            PLA                ; $c2fe: 68          Pull Accumulator value from stack
+            TAY                ; $c2ff: a8          Transfer Accumulator value to Y
+            PLA                ; $c300: 68          Pull Accumulator value from stack       
+            TAX                ; $c301: aa          Transfer Accumulator value to X        
+            PLA                ; $c302: 68          Pull Accumulator value from stack        
+            PLP                ; $c303: 28          Pull processor's status flags from stack
+; IRQ/brk vector
 ;-------------------------------------------------------------------------------
-irq:        rti                ; $c304: 40        
+IRQ:        RTI                ; $c304: 40          Pull processor's status flags and program counter from stack, then continue execution from the address in PC
 
 ;-------------------------------------------------------------------------------
-__c305:     LDA $2c            ; $c305: a5 2c     
-            PHA                ; $c307: 48        
-            LDY #$00           ; $c308: a0 00     
-            STY $11            ; $c30a: 84 11     
-            LDA ($1e),y        ; $c30c: b1 1e     
-            INY                ; $c30e: c8        
-            SEC                ; $c30f: 38        
-            SBC $28            ; $c310: e5 28     
-            STA $10            ; $c312: 85 10     
-            LDA ($1e),y        ; $c314: b1 1e     
-            INY                ; $c316: c8        
-            SBC $29            ; $c317: e5 29     
-            ASL $10            ; $c319: 06 10     
-            ROL                ; $c31b: 2a        
-            ASL $10            ; $c31c: 06 10     
-            ROL                ; $c31e: 2a        
-            ASL $10            ; $c31f: 06 10     
-            ROL                ; $c321: 2a        
-            BCC __c326         ; $c322: 90 02     
-            DEC $11            ; $c324: c6 11     
-__c326:     STA $10            ; $c326: 85 10     
-            LDA ($1e),y        ; $c328: b1 1e     
-            INY                ; $c32a: c8        
-            STA $16            ; $c32b: 85 16     
-            LDA ($1e),y        ; $c32d: b1 1e     
-            INY                ; $c32f: c8        
-            ASL $16            ; $c330: 06 16     
-            ROL                ; $c332: 2a        
-            ASL $16            ; $c333: 06 16     
-            ROL                ; $c335: 2a        
-            ASL $16            ; $c336: 06 16     
-            ROL                ; $c338: 2a        
-            STA $16            ; $c339: 85 16     
-            JSR __c342         ; $c33b: 20 42 c3  
-            PLA                ; $c33e: 68        
-            CMP $2c            ; $c33f: c5 2c     
-            RTS                ; $c341: 60        
+__c305:     LDA $2C            ; $c305: a5 2c       Load value at $2C to Acummulator     
+            PHA                ; $c307: 48          Push Accumulator value onto stack        
+            LDY #$00           ; $c308: a0 00       Load $00 to Y     
+            STY $11            ; $c30a: 84 11       Store Y value at address $11 (clears it)
+            LDA ($1E),Y        ; $c30c: b1 1e       Load ((Value from address $1E) + Y) to Acummulator
+            INY                ; $c30e: c8          Increment Y by one
+            SEC                ; $c30f: 38          Set carry flag to 1
+            SBC $28            ; $c310: e5 28       Subtract value at address $28 from A, updating flags & storing result in A
+            STA $10            ; $c312: 85 10       Store Acummulator value at address $10
+            LDA ($1E),Y        ; $c314: b1 1e       Load ((Value from address $1E) + Y) to Acummulator     
+            INY                ; $c316: c8          Increment Y by one        
+            SBC $29            ; $c317: e5 29       Subtract value at address $29 from A, updating flags & storing result in A     
+            ASL $10            ; $c319: 06 10       Shift the value in address $10 left one bit.     
+            ROL                ; $c31b: 2a          Rotate Acummulator value one bit left.
+            ASL $10            ; $c31c: 06 10       Shift the value in address $10 left one bit.     
+            ROL                ; $c31e: 2a          Rotate Acummulator value one bit left.
+            ASL $10            ; $c31f: 06 10       Shift the value in address $10 left one bit.     
+            ROL                ; $c321: 2a          Rotate Acummulator value one bit left.
+            BCC __c326         ; $c322: 90 02       Is the carry flag clear? If not, keep going. If so, branch to __c326
+            DEC $11            ; $c324: c6 11       Decrement value at $11 by one       
+__c326:     
+            STA $10            ; $c326: 85 10       Store Acummulator value at address $10
+            LDA ($1E),Y        ; $c328: b1 1e       Load ((Value from address $1E) + Y) to Acummulator     
+            INY                ; $c32a: c8          Increment Y by one        
+            STA $16            ; $c32b: 85 16       Store Acummulator value at address $16     
+            LDA ($1E),Y        ; $c32d: b1 1e       Load ((Value from address $1E) + Y) to Acummulator     
+            INY                ; $c32f: c8          Increment Y by one        
+            ASL $16            ; $c330: 06 16       Shift the value in address $16 left one bit.     
+            ROL                ; $c332: 2a          Rotate Acummulator value one bit left.        
+            ASL $16            ; $c333: 06 16       Shift the value in address $16 left one bit.     
+            ROL                ; $c335: 2a          Rotate Acummulator value one bit left.        
+            ASL $16            ; $c336: 06 16       Shift the value in address $16 left one bit.     
+            ROL                ; $c338: 2a          Rotate Acummulator value one bit left.        
+            STA $16            ; $c339: 85 16       Store Acummulator value at address $16     
+            JSR __c342         ; $c33b: 20 42 c3    Jump to subroutine __c342 
+            PLA                ; $c33e: 68          Pull Accumulator value from stack        
+            CMP $2C            ; $c33f: c5 2c       Compare $2C with value in Acummulator.     
+            RTS                ; $c341: 60          Return
 
 ;-------------------------------------------------------------------------------
-__c342:     LDA ($1e),y        ; $c342: b1 1e     
-            STA $15            ; $c344: 85 15     
-            AND #$fe           ; $c346: 29 fe     
-            TAX                ; $c348: aa        
-            LDA __c356,x       ; $c349: bd 56 c3  
-            STA $1c            ; $c34c: 85 1c     
-            LDA __c357,x       ; $c34e: bd 57 c3  
-            STA $1d            ; $c351: 85 1d     
-            JMP ($001c)        ; $c353: 6c 1c 00  
+__c342:     
+            LDA ($1E),Y        ; $c342: b1 1e       Load ((Value from address $1E) + Y) to Acummulator      
+            STA $15            ; $c344: 85 15       Store Acummulator value at address $15     
+            AND #$FE           ; $c346: 29 fe       Logically AND $FE with value in Acummulator.
+            TAX                ; $c348: aa          Transfer Accumulator value to X 
+            LDA __c356,X       ; $c349: bd 56 c3    Load value at (__c356 + X) to Acummulator
+            STA $1C            ; $c34c: 85 1c       Store Acummulator value at address $1C    
+            LDA __c357,X       ; $c34e: bd 57 c3    Load value at (__c357 + X) to Acummulator  
+            STA $1D            ; $c351: 85 1d       Store Acummulator value at address $1D     
+            JMP ($001C)        ; $c353: 6c 1c 00    Indirectly jump to address $001C  
 
 ;-------------------------------------------------------------------------------
-__c356:     .hex 4f            ; $c356: 4f            Data
-__c357:     .hex c1 c0 c3 a8   ; $c357: c1 c0 c3 a8   Data
+__c356:     
+            .hex 4f            ; $c356: 4f            Data
+__c357:    
+            .hex c1 c0 c3 a8   ; $c357: c1 c0 c3 a8   Data     ; This is a jump table. Function pointers galore! Read each word as second byte before first: C14F is the first one.
             .hex c4 b0 c4 c6   ; $c35b: c4 b0 c4 c6   Data
             .hex c4 f5 c4 18   ; $c35f: c4 f5 c4 18   Data
             .hex c5 10 c5 21   ; $c363: c5 10 c5 21   Data
@@ -570,30 +582,31 @@ __c357:     .hex c1 c0 c3 a8   ; $c357: c1 c0 c3 a8   Data
             .hex c3            ; $c3b3: c3            Data
 
 ;-------------------------------------------------------------------------------
-__c3b4:     LDY #$05           ; $c3b4: a0 05     
-            LDA ($1e),y        ; $c3b6: b1 1e     
-            TAX                ; $c3b8: aa        
-            LDA __c47c,x       ; $c3b9: bd 7c c4  
-            STA $13            ; $c3bc: 85 13     
-            TXA                ; $c3be: 8a        
-            RTS                ; $c3bf: 60        
+__c3b4:     
+            LDY #$05           ; $c3b4: a0 05     
+            LDA ($1E),Y        ; $c3b6: b1 1e       Load ((Value from address $1E) + Y) to Acummulator      
+            TAX                ; $c3b8: aa          Transfer Accumulator value to X        
+            LDA __c47c,X       ; $c3b9: bd 7c c4    Load value at (__c47c + X) to Acummulator  
+            STA $13            ; $c3bc: 85 13       Store Acummulator value at address $13     
+            TXA                ; $c3be: 8a          Transfer X value to Accumulator        
+            RTS                ; $c3bf: 60          Return
 
 ;-------------------------------------------------------------------------------
-            JSR __c3b4         ; $c3c0: 20 b4 c3  
-            ASL                ; $c3c3: 0a        
-            ASL                ; $c3c4: 0a        
-            STA $12            ; $c3c5: 85 12     
-            LDY #$07           ; $c3c7: a0 07     
-            LDA ($1e),y        ; $c3c9: b1 1e     
-            LSR                ; $c3cb: 4a        
-            LSR                ; $c3cc: 4a        
-            AND #$03           ; $c3cd: 29 03     
+            JSR __c3b4         ; $c3c0: 20 b4 c3    Jump to subroutine __c3b4
+            ASL                ; $c3c3: 0a          Shift value in Acummulator left one bit
+            ASL                ; $c3c4: 0a          Shift value in Acummulator left one bit        
+            STA $12            ; $c3c5: 85 12       Store Acummulator value at address $12     
+            LDY #$07           ; $c3c7: a0 07       Load $07 to Y
+            LDA ($1E),Y        ; $c3c9: b1 1e       Load ((Value from address $1E) + Y) to Acummulator
+            LSR                ; $c3cb: 4a          Shift Acummulator one bit right        
+            LSR                ; $c3cc: 4a          Shift Acummulator one bit right        
+            AND #$03           ; $c3cd: 29 03       Logically AND $03 with value in Acummulator.     
             ORA $12            ; $c3cf: 05 12     
 __c3d1:     TAX                ; $c3d1: aa        
-            LDA __c480,x       ; $c3d2: bd 80 c4  
+            LDA __c480,X       ; $c3d2: bd 80 c4  
             STA $12            ; $c3d5: 85 12     
 __c3d7:     LDY #$06           ; $c3d7: a0 06     
-            LDA ($1e),y        ; $c3d9: b1 1e     
+            LDA ($1E),Y        ; $c3d9: b1 1e     
             bmi __c3e3         ; $c3db: 30 06     
             LDA $13            ; $c3dd: a5 13     
             EOR #$40           ; $c3df: 49 40     
@@ -777,13 +790,13 @@ __c520:     RTS                ; $c520: 60
             STA $14            ; $c52a: 85 14     
             LDY #$07           ; $c52c: a0 07     
             LDA ($1e),y        ; $c52e: b1 1e     
-            php                ; $c530: 08        
+            PHP                ; $c530: 08        
             ASL                ; $c531: 0a        
             TAX                ; $c532: aa        
             JSR __c540         ; $c533: 20 40 c5  
             LDX #$28           ; $c536: a2 28     
             JSR __c540         ; $c538: 20 40 c5  
-            plp                ; $c53b: 28        
+            PLP                ; $c53b: 28        
             BPL __c562         ; $c53c: 10 24     
             LDX #$2c           ; $c53e: a2 2c     
 __c540:     JSR __c543         ; $c540: 20 43 c5  
@@ -7487,6 +7500,6 @@ __ffe1:     .hex 85 11 c8 40   ; $ffe1: 85 11 c8 40   Data
 ;-------------------------------------------------------------------------------
 ; Vector Table
 ;-------------------------------------------------------------------------------
-vectors:    .dw nmi                        ; $fffa: ef c2     Vector table
+vectors:    .dw NMI                        ; $fffa: ef c2     Vector table
             .dw reset                      ; $fffc: 31 c0     Vector table
-            .dw irq                        ; $fffe: 04 c3     Vector table
+            .dw IRQ                        ; $fffe: 04 c3     Vector table
