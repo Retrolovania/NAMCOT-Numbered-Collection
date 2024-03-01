@@ -802,56 +802,60 @@ __c520:
             RTS                ; $c520: 60          Return        
 
 ;-------------------------------------------------------------------------------
-            LDA $21            ; $c521: a5 21     
-            LSR                ; $c523: 4a        
-            AND #$03           ; $c524: 29 03     
-            STA $13            ; $c526: 85 13     
-            LDA #$00           ; $c528: a9 00     
-            STA $14            ; $c52a: 85 14     
-            LDY #$07           ; $c52c: a0 07     
-            LDA ($1e),y        ; $c52e: b1 1e     
-            PHP                ; $c530: 08        
-            ASL                ; $c531: 0a        
-            TAX                ; $c532: aa        
-            JSR __c540         ; $c533: 20 40 c5  
-            LDX #$28           ; $c536: a2 28     
-            JSR __c540         ; $c538: 20 40 c5  
-            PLP                ; $c53b: 28        
-            BPL __c562         ; $c53c: 10 24     
-            LDX #$2c           ; $c53e: a2 2c     
+            LDA $21            ; $c521: a5 21       Load value at $21 to A     
+            LSR                ; $c523: 4a          Shift A one bit right        
+            AND #$03           ; $c524: 29 03       Logically AND $03 with value in A     
+            STA $13            ; $c526: 85 13       Store A value at address $13     
+            LDA #$00           ; $c528: a9 00       Load $00 to A (clears it)    
+            STA $14            ; $c52a: 85 14       Store A value at address $14     
+            LDY #$07           ; $c52c: a0 07       Load $07 to Y     
+            LDA ($1E),Y        ; $c52e: b1 1e       Load ((Value from address $1E) + Y) to A     
+            PHP                ; $c530: 08          Push processor's status flags onto stack        
+            ASL                ; $c531: 0a          Shift value in A left one bit        
+            TAX                ; $c532: aa          Transfer A to X
+            JSR __c540         ; $c533: 20 40 c5    Jump to subroutine __c540    
+            LDX #$28           ; $c536: a2 28       Load $28 to X     
+            JSR __c540         ; $c538: 20 40 c5    Jump to subroutine __c540  
+            PLP                ; $c53b: 28          Pull processor's status flags from stack        
+            BPL __c562         ; $c53c: 10 24       If X is greater than or equal to zero (most significant bit of A isn't set), then branch to __c562. If not, then continue.     
+            LDX #$2C           ; $c53e: a2 2c       Load $2C to X    
 __c540:     
-            JSR __c543         ; $c540: 20 43 c5  
+            JSR __c543         ; $c540: 20 43 c5    Jump to subroutine __c543  
 __c543:     
-            JSR __c563         ; $c543: 20 63 c5  
-            LDA $16            ; $c546: a5 16     
-            CLC                ; $c548: 18        
-            ADC #$08           ; $c549: 69 08     
-            STA $16            ; $c54b: 85 16     
-            JSR __c563         ; $c54d: 20 63 c5  
-            LDA $16            ; $c550: a5 16     
-            SEC                ; $c552: 38        
-            SBC #$08           ; $c553: e9 08     
-            STA $16            ; $c555: 85 16     
-            LDA $10            ; $c557: a5 10     
-            CLC                ; $c559: 18        
-            ADC #$08           ; $c55a: 69 08     
-            STA $10            ; $c55c: 85 10     
-            BCC __c562         ; $c55e: 90 02     
-            INC $11            ; $c560: e6 11     
-__c562:     RTS                ; $c562: 60        
+            JSR __c563         ; $c543: 20 63 c5    Jump to subroutine __c563  
+            LDA $16            ; $c546: a5 16       Load value at $16 to A     
+            CLC                ; $c548: 18          Clear carry flag        
+            ADC #$08           ; $c549: 69 08       Add $08 to A, updating flags and storing result in A     
+            STA $16            ; $c54b: 85 16       Store A value at address $16     
+            JSR __c563         ; $c54d: 20 63 c5    Jump to subroutine __c563  
+            LDA $16            ; $c550: a5 16       Load value at $16 to A     
+            SEC                ; $c552: 38          Set carry flag to 1        
+            SBC #$08           ; $c553: e9 08       Subtract $08 from A, updating flags & storing result in A     
+            STA $16            ; $c555: 85 16       Store A value at address $16     
+            LDA $10            ; $c557: a5 10       Load value at $10 to A     
+            CLC                ; $c559: 18          Clear carry flag        
+            ADC #$08           ; $c55a: 69 08       Add $08 to A, updating flags and storing result in A     
+            STA $10            ; $c55c: 85 10       Store A value at address $10     
+            BCC __c562         ; $c55e: 90 02       Is the carry flag clear? If not, keep going. If so, branch to __c562
+            INC $11            ; $c560: e6 11       Increment value at address $11 by one     
+__c562:     
+            RTS                ; $c562: 60          Return        
 
 ;-------------------------------------------------------------------------------
-__c563:     LDA __c573,x       ; $c563: bd 73 c5  
-            BEQ __c571         ; $c566: f0 09     
-            STA $12            ; $c568: 85 12     
-            STX $17            ; $c56a: 86 17     
-            JSR __c415         ; $c56c: 20 15 c4  
-            LDX $17            ; $c56f: a6 17     
-__c571:     INX                ; $c571: e8        
-            RTS                ; $c572: 60        
+__c563:     
+            LDA __c573,X       ; $c563: bd 73 c5    Load value at (__c573 + X) to A
+            BEQ __c571         ; $c566: f0 09       Is the Zero Flag (Z) clear? If so, keep going. If not, branch to __c571
+            STA $12            ; $c568: 85 12       Store A value at address $12       
+            STX $17            ; $c56a: 86 17       Store X value at address $12     
+            JSR __c415         ; $c56c: 20 15 c4    Jump to subroutine __c415  
+            LDX $17            ; $c56f: a6 17       Load value at $17 to X      
+__c571:     
+            INX                ; $c571: e8          Increment X by one
+            RTS                ; $c572: 60          Return
 
 ;-------------------------------------------------------------------------------
-__c573:     .hex 00 00 58 5c   ; $c573: 00 00 58 5c   Data
+__c573:     
+            .hex 00 00 58 5c   ; $c573: 00 00 58 5c   Data
             .hex 00 00 5e 5f   ; $c577: 00 00 5e 5f   Data
             .hex 00 00 58 64   ; $c57b: 00 00 58 64   Data
             .hex 5a 5b 58 5c   ; $c57f: 5a 5b 58 5c   Data
@@ -865,224 +869,250 @@ __c573:     .hex 00 00 58 5c   ; $c573: 00 00 58 5c   Data
             .hex 00 65 58 5c   ; $c59f: 00 65 58 5c   Data
 
 ;-------------------------------------------------------------------------------
-            LDA #$02           ; $c5a3: a9 02     
-            STA $13            ; $c5a5: 85 13     
-            LDA #$70           ; $c5a7: a9 70     
-            STA $12            ; $c5a9: 85 12     
-            LDA #$00           ; $c5ab: a9 00     
-            STA $14            ; $c5ad: 85 14     
-            JMP __c3ec         ; $c5af: 4c ec c3  
+            LDA #$02           ; $c5a3: a9 02       Load $02 to A    
+            STA $13            ; $c5a5: 85 13       Store A value at address $13     
+            LDA #$70           ; $c5a7: a9 70       Load $70 to A     
+            STA $12            ; $c5a9: 85 12       Store A value at address $12     
+            LDA #$00           ; $c5ab: a9 00       Load $00 to A    
+            STA $14            ; $c5ad: 85 14       Store A value at address $14     
+            JMP __c3ec         ; $c5af: 4c ec c3    Jump to __c3ec  
 
 ;-------------------------------------------------------------------------------
-__c5b2:     LDA #$02           ; $c5b2: a9 02     
-            STA $13            ; $c5b4: 85 13     
-            LDA #$00           ; $c5b6: a9 00     
-            STA $14            ; $c5b8: 85 14     
-            LDA #$69           ; $c5ba: a9 69     
-            STA $12            ; $c5bc: 85 12     
-            LDA $10            ; $c5be: a5 10     
-            SEC                ; $c5c0: 38        
-            SBC #$08           ; $c5c1: e9 08     
-            STA $10            ; $c5c3: 85 10     
-            BCS __c5c9         ; $c5c5: b0 02     
-            DEC $11            ; $c5c7: c6 11     
-__c5c9:     LDA $16            ; $c5c9: a5 16     
-            SEC                ; $c5cb: 38        
-            SBC #$08           ; $c5cc: e9 08     
-            STA $16            ; $c5ce: 85 16     
-            JSR __c401         ; $c5d0: 20 01 c4  
-            LDA $10            ; $c5d3: a5 10     
-            SEC                ; $c5d5: 38        
-            SBC #$08           ; $c5d6: e9 08     
-            STA $10            ; $c5d8: 85 10     
-            BCS __c5de         ; $c5da: b0 02     
-            DEC $11            ; $c5dc: c6 11     
-__c5de:     LDA $16            ; $c5de: a5 16     
-            CLC                ; $c5e0: 18        
-            ADC #$08           ; $c5e1: 69 08     
-            STA $16            ; $c5e3: 85 16     
-            JSR __c40f         ; $c5e5: 20 0f c4  
-            LDA $10            ; $c5e8: a5 10     
-            CLC                ; $c5ea: 18        
-            ADC #$08           ; $c5eb: 69 08     
-            STA $10            ; $c5ed: 85 10     
-            BCC __c5f3         ; $c5ef: 90 02     
-            INC $11            ; $c5f1: e6 11     
-__c5f3:     JMP __c3ec         ; $c5f3: 4c ec c3  
+__c5b2:                                             ;This code is triggered when enemies are pushed off the screen by microwaves, and lasts until the score is tallied up and is scrolled across the screen
+            LDA #$02           ; $c5b2: a9 02       Load $02 to A     
+            STA $13            ; $c5b4: 85 13       Store A value at address $13      
+            LDA #$00           ; $c5b6: a9 00       Load $00 to A     
+            STA $14            ; $c5b8: 85 14       Store A value at address $14     
+            LDA #$69           ; $c5ba: a9 69       Load $69 to A     
+            STA $12            ; $c5bc: 85 12       Store A value at address $12     
+            LDA $10            ; $c5be: a5 10       Load value at $10 to A      
+            SEC                ; $c5c0: 38          Set carry flag to 1        
+            SBC #$08           ; $c5c1: e9 08       Subtract $08 from A, updating flags & storing result in A     
+            STA $10            ; $c5c3: 85 10       Store A value at address $10     
+            BCS __c5c9         ; $c5c5: b0 02       Is the carry flag set? If not, then continue. If so, branch to __c5c9       
+            DEC $11            ; $c5c7: c6 11       Decrement value at $11 by one       
+__c5c9:     
+            LDA $16            ; $c5c9: a5 16       Load value at $16 to A      
+            SEC                ; $c5cb: 38          Set carry flag to 1        
+            SBC #$08           ; $c5cc: e9 08       Subtract $08 from A, updating flags & storing result in A      
+            STA $16            ; $c5ce: 85 16       Store A value at address $16     
+            JSR __c401         ; $c5d0: 20 01 c4    Jump to subroutine __c401
+            LDA $10            ; $c5d3: a5 10       Load value at $10 to A     
+            SEC                ; $c5d5: 38          Set carry flag to 1        
+            SBC #$08           ; $c5d6: e9 08       Subtract $08 from A, updating flags & storing result in A     
+            STA $10            ; $c5d8: 85 10       Store A value at address $10     
+            BCS __c5de         ; $c5da: b0 02       Is the carry flag set? If not, then continue. If so, branch to __c5de     
+            DEC $11            ; $c5dc: c6 11       Decrement value at $11 by one     
+__c5de:     
+            LDA $16            ; $c5de: a5 16       Load value at $16 to A     
+            CLC                ; $c5e0: 18          Clear carry flag        
+            ADC #$08           ; $c5e1: 69 08       Add $08 to A, updating flags and storing result in A     
+            STA $16            ; $c5e3: 85 16       Store A value at address $16     
+            JSR __c40f         ; $c5e5: 20 0f c4    Jump to subroutine __c40f  
+            LDA $10            ; $c5e8: a5 10       Load value at $10 to A     
+            CLC                ; $c5ea: 18          Clear carry flag        
+            ADC #$08           ; $c5eb: 69 08       Add $08 to A, updating flags and storing result in A     
+            STA $10            ; $c5ed: 85 10       Store A value at address $10     
+            BCC __c5f3         ; $c5ef: 90 02       Is the carry flag clear? If not, keep going. If so, branch to __c5f3     
+            INC $11            ; $c5f1: e6 11       Increment value at $11 by one     
+__c5f3:     
+            JMP __c3ec         ; $c5f3: 4c ec c3    Jump to __c3ec  
 
 ;-------------------------------------------------------------------------------
-            LDA #$00           ; $c5f6: a9 00     
-            STA $13            ; $c5f8: 85 13     
-            LDY #$07           ; $c5fa: a0 07     
-            LDA ($1e),y        ; $c5fc: b1 1e     
-            ASL                ; $c5fe: 0a        
-            BMI __c614         ; $c5ff: 30 13     
-            AND #$0c           ; $c601: 29 0c     
-            ORA #$80           ; $c603: 09 80     
-            STA $12            ; $c605: 85 12     
-            LDA ($1e),y        ; $c607: b1 1e     
-            AND #$08           ; $c609: 29 08     
-            BEQ __c611         ; $c60b: f0 04     
-            LDA #$c0           ; $c60d: a9 c0     
-            STA $13            ; $c60f: 85 13     
-__c611:     JMP __c3d7         ; $c611: 4c d7 c3  
+            LDA #$00           ; $c5f6: a9 00       Load $00 to A     
+            STA $13            ; $c5f8: 85 13       Store A value at address $13     
+            LDY #$07           ; $c5fa: a0 07       Load $07 to Y     
+            LDA ($1E),Y        ; $c5fc: b1 1e       Load ((Value from address $1E) + Y) to A
+            ASL                ; $c5fe: 0a          Shift value in A left one bit        
+            BMI Mappy_Death_2  ; $c5ff: 30 13       Is the Negative register set? If not, then continue. If so, branch to Mappy_Death_2     
+            AND #$0C           ; $c601: 29 0c       Logically AND $0C with value in A     
+            ORA #$80           ; $c603: 09 80       Logically OR $80 with A      
+            STA $12            ; $c605: 85 12       Store A value at address $12     
+            LDA ($1E),Y        ; $c607: b1 1e       Load ((Value from address $1E) + Y) to A 
+            AND #$08           ; $c609: 29 08       Logically AND $08 with value in A
+            BEQ __c611         ; $c60b: f0 04       Is the Zero Flag (Z) clear? If so, keep going. If not, branch to __c611     
+            LDA #$C0           ; $c60d: a9 c0       Load $C0 to A     
+            STA $13            ; $c60f: 85 13       Store A value at address $13     
+__c611:     
+            JMP __c3d7         ; $c611: 4c d7 c3    Jump to __c3d7   
 
 ;-------------------------------------------------------------------------------
-__c614:     LSR                ; $c614: 4a        
-            AND #$04           ; $c615: 29 04     
-            ORA #$90           ; $c617: 09 90     
-            STA $12            ; $c619: 85 12     
-            JMP __c3d7         ; $c61b: 4c d7 c3  
+Mappy_Death_2:     
+            LSR                ; $c614: 4a          Shift A one bit right        
+            AND #$04           ; $c615: 29 04       Logically AND $04 with value in A     
+            ORA #$90           ; $c617: 09 90       Logically OR $90 with A     
+            STA $12            ; $c619: 85 12       Store A value at address $12     
+            JMP __c3d7         ; $c61b: 4c d7 c3    Jump to __c3d7  
 
 ;-------------------------------------------------------------------------------
-            LDA #$02           ; $c61e: a9 02     
-            STA $13            ; $c620: 85 13     
-            LDA #$00           ; $c622: a9 00     
-            STA $14            ; $c624: 85 14     
-            LDA $21            ; $c626: a5 21     
-            AND #$20           ; $c628: 29 20     
-            BEQ __c63d         ; $c62a: f0 11     
-            LDA #$e8           ; $c62c: a9 e8     
-            STA $12            ; $c62e: 85 12     
-            JSR __c64c         ; $c630: 20 4c c6  
-            LDA $16            ; $c633: a5 16     
-            SEC                ; $c635: 38        
-            SBC #$08           ; $c636: e9 08     
-            STA $16            ; $c638: 85 16     
-            JMP __c415         ; $c63a: 4c 15 c4  
+            LDA #$02           ; $c61e: a9 02       Load $02 to A     
+            STA $13            ; $c620: 85 13       Store A value at address $13     
+            LDA #$00           ; $c622: a9 00       Load $00 to A     
+            STA $14            ; $c624: 85 14       Store A value at address $14     
+            LDA $21            ; $c626: a5 21       Load value at $21 to A      
+            AND #$20           ; $c628: 29 20       Logically AND $20 with value in A     
+            BEQ Render_Bonus_1 ; $c62a: f0 11       Is the Zero Flag (Z) clear? If so, keep going. If not, branch to Render_Bonus_1     
+            LDA #$E8           ; $c62c: a9 e8       Load $E8 to A     
+            STA $12            ; $c62e: 85 12       Store A value at address $12     
+            JSR Render_Bonus_2 ; $c630: 20 4c c6    Jump to subroutine Render_Bonus_2  
+            LDA $16            ; $c633: a5 16       Load value at $16 to A     
+            SEC                ; $c635: 38          Set carry flag to 1        
+            SBC #$08           ; $c636: e9 08       Subtract $08 from A, updating flags & storing result in A     
+            STA $16            ; $c638: 85 16       Store A value at address $16    
+            JMP __c415         ; $c63a: 4c 15 c4    Jump to __c415  
 
 ;-------------------------------------------------------------------------------
-__c63d:     LDA #$dd           ; $c63d: a9 dd     
-            STA $12            ; $c63f: 85 12     
-            LDA $10            ; $c641: a5 10     
-            SEC                ; $c643: 38        
-            SBC #$06           ; $c644: e9 06     
-            STA $10            ; $c646: 85 10     
-            BCS __c64c         ; $c648: b0 02     
-            DEC $11            ; $c64a: c6 11     
-__c64c:     LDA #$03           ; $c64c: a9 03     
-            STA $18            ; $c64e: 85 18     
-__c650:     JSR __c65c         ; $c650: 20 5c c6  
-            DEC $18            ; $c653: c6 18     
-            BNE __c650         ; $c655: d0 f9     
-            LDA #$02           ; $c657: a9 02     
-            JMP __c65e         ; $c659: 4c 5e c6  
+Render_Bonus_1:     
+            LDA #$DD           ; $c63d: a9 dd       Load $DD to A     
+            STA $12            ; $c63f: 85 12       Store A value at address $12     
+            LDA $10            ; $c641: a5 10       Load value at $10 to A     
+            SEC                ; $c643: 38          Set carry flag to 1        
+            SBC #$06           ; $c644: e9 06       Subtract $06 from A, updating flags & storing result in A     
+            STA $10            ; $c646: 85 10       Store A value at address $10     
+            BCS Render_Bonus_2 ; $c648: b0 02       Is the carry flag set? If not, then continue. If so, branch to Render_Bonus_2
+            DEC $11            ; $c64a: c6 11       Decrement value at $11 by one     
+Render_Bonus_2:     
+            LDA #$03           ; $c64c: a9 03       Load $03 to A     
+            STA $18            ; $c64e: 85 18       Store A value at address $18     
+Render_Bonus_3:     
+            JSR __c65c         ; $c650: 20 5c c6    Jump to subroutine __c65c  
+            DEC $18            ; $c653: c6 18       Decrement value at $18 by one     
+            BNE Render_Bonus_3 ; $c655: d0 f9       Is the Zero Flag (Z) set? If so, keep going. If not, loop     
+            LDA #$02           ; $c657: a9 02       Load $02 to A
+            JMP __c65e         ; $c659: 4c 5e c6    Jump to __c65e  
 
 ;-------------------------------------------------------------------------------
-__c65c:     LDA #$03           ; $c65c: a9 03     
-__c65e:     STA $17            ; $c65e: 85 17     
-__c660:     JSR __c415         ; $c660: 20 15 c4  
-            LDA $10            ; $c663: a5 10     
-            CLC                ; $c665: 18        
-            ADC #$08           ; $c666: 69 08     
-            STA $10            ; $c668: 85 10     
-            BCC __c66e         ; $c66a: 90 02     
-            INC $11            ; $c66c: e6 11     
-__c66e:     INC $12            ; $c66e: e6 12     
-            DEC $17            ; $c670: c6 17     
-            BNE __c660         ; $c672: d0 ec     
-            LDA $10            ; $c674: a5 10     
-            SEC                ; $c676: 38        
-            SBC #$18           ; $c677: e9 18     
-            STA $10            ; $c679: 85 10     
-            BCS __c67f         ; $c67b: b0 02     
-            DEC $11            ; $c67d: c6 11     
-__c67f:     LDA $16            ; $c67f: a5 16     
-            CLC                ; $c681: 18        
-            ADC #$08           ; $c682: 69 08     
-            STA $16            ; $c684: 85 16     
-            RTS                ; $c686: 60        
+__c65c:     
+            LDA #$03           ; $c65c: a9 03       Load $03 to A     
+__c65e:     
+            STA $17            ; $c65e: 85 17       Store A value at address $17     
+__c660:     
+            JSR __c415         ; $c660: 20 15 c4    Jump to subroutine __c415  
+            LDA $10            ; $c663: a5 10       Load value at $10 to A    
+            CLC                ; $c665: 18          Clear carry flag        
+            ADC #$08           ; $c666: 69 08       Add $08 to A, updating flags and storing result in A     
+            STA $10            ; $c668: 85 10       Store A value at address $10     
+            BCC __c66e         ; $c66a: 90 02       Is the carry flag clear? If not, keep going. If so, branch to __c66e     
+            INC $11            ; $c66c: e6 11       Increment value at $11 by one     
+__c66e:     
+            INC $12            ; $c66e: e6 12       Increment value at $12 by one     
+            DEC $17            ; $c670: c6 17       Decrement value at $17 by one     
+            BNE __c660         ; $c672: d0 ec       Is the Zero Flag (Z) set? If so, keep going. If not, branch to __c660    
+            LDA $10            ; $c674: a5 10       Load value at $10 to A     
+            SEC                ; $c676: 38          Set carry flag to 1        
+            SBC #$18           ; $c677: e9 18       Subtract $18 from A, updating flags & storing result in A     
+            STA $10            ; $c679: 85 10       Store A value at address $10      
+            BCS __c67f         ; $c67b: b0 02       Is the carry flag set? If not, then continue. If so, branch to __c67f     
+            DEC $11            ; $c67d: c6 11       Decrement value at $11 by one     
+__c67f:     
+            LDA $16            ; $c67f: a5 16       Load value at $16 to A     
+            CLC                ; $c681: 18          Clear carry flag        
+            ADC #$08           ; $c682: 69 08       Add $08 to A, updating flags and storing result in A     
+            STA $16            ; $c684: 85 16       Store A value at address $16     
+            RTS                ; $c686: 60          Return
 
 ;-------------------------------------------------------------------------------
-            LDA #$02           ; $c687: a9 02     
-            STA $13            ; $c689: 85 13     
-            LDA #$00           ; $c68b: a9 00     
-            STA $14            ; $c68d: 85 14     
-            LDA #$f4           ; $c68f: a9 f4     
-            STA $12            ; $c691: 85 12     
-            LDA #$08           ; $c693: a9 08     
-            STA $17            ; $c695: 85 17     
-__c697:     JSR __c415         ; $c697: 20 15 c4  
-            LDA $10            ; $c69a: a5 10     
-            CLC                ; $c69c: 18        
-            ADC #$08           ; $c69d: 69 08     
-            STA $10            ; $c69f: 85 10     
-            BCC __c6a5         ; $c6a1: 90 02     
-            INC $11            ; $c6a3: e6 11     
-__c6a5:     INC $12            ; $c6a5: e6 12     
-            DEC $17            ; $c6a7: c6 17     
-            BNE __c697         ; $c6a9: d0 ec     
-            RTS                ; $c6ab: 60        
+            LDA #$02           ; $c687: a9 02       Load $02 to A      
+            STA $13            ; $c689: 85 13       Store A value at address $13    
+            LDA #$00           ; $c68b: a9 00       Load $00 to A     
+            STA $14            ; $c68d: 85 14       Store A value at address $14     
+            LDA #$F4           ; $c68f: a9 f4       Load $F4 to A    
+            STA $12            ; $c691: 85 12       Store A value at address $12     
+            LDA #$08           ; $c693: a9 08       Load $08 to A     
+            STA $17            ; $c695: 85 17       Store A value at address $17     
+__c697:     
+            JSR __c415         ; $c697: 20 15 c4    Jump to subroutine __c415  
+            LDA $10            ; $c69a: a5 10       Load value at $10 to A     
+            CLC                ; $c69c: 18          Clear carry flag        
+            ADC #$08           ; $c69d: 69 08       Add $08 to A, updating flags and storing result in A     
+            STA $10            ; $c69f: 85 10       Store A value at address $10     
+            BCC __c6a5         ; $c6a1: 90 02       Is the carry flag clear? If not, keep going. If so, branch to __c6a5     
+            INC $11            ; $c6a3: e6 11       Increment value at $11 by one     
+__c6a5:     
+            INC $12            ; $c6a5: e6 12       Increment value at $12 by one     
+            DEC $17            ; $c6a7: c6 17       Decrement value at $17 by one     
+            BNE __c697         ; $c6a9: d0 ec       Is the Zero Flag (Z) set? If so, keep going. If not, branch to __c697     
+            RTS                ; $c6ab: 60          Return        
 
 ;-------------------------------------------------------------------------------
-            LDY #$07           ; $c6ac: a0 07     
-            LDA ($1e),y        ; $c6ae: b1 1e     
-            CMP #$08           ; $c6b0: c9 08     
-            LDA #$98           ; $c6b2: a9 98     
-            BCC __c6b8         ; $c6b4: 90 02     
-            LDA #$9c           ; $c6b6: a9 9c     
-__c6b8:     STA $12            ; $c6b8: 85 12     
-            LDA #$00           ; $c6ba: a9 00     
-            STA $13            ; $c6bc: 85 13     
-            JMP __c3d7         ; $c6be: 4c d7 c3  
+            LDY #$07           ; $c6ac: a0 07       Load $07 to Y     
+            LDA ($1E),Y        ; $c6ae: b1 1e       Load ((Value from address $1E) + Y) to A     
+            CMP #$08           ; $c6b0: c9 08       Compare value $08 with value in A     
+            LDA #$98           ; $c6b2: a9 98       Load $98 to A     
+            BCC __c6b8         ; $c6b4: 90 02       Is the carry flag clear? If not, keep going. If so, branch to __c6b8     
+            LDA #$9C           ; $c6b6: a9 9c       Load $9C to A     
+__c6b8:     
+            STA $12            ; $c6b8: 85 12       Store A value at address $12     
+            LDA #$00           ; $c6ba: a9 00       Load $00 to A     
+            STA $13            ; $c6bc: 85 13       Store A value at address $13     
+            JMP __c3d7         ; $c6be: 4c d7 c3    Jump to __c3d7  
 
 ;-------------------------------------------------------------------------------
-            LDA $1e            ; $c6c1: a5 1e     
-            CMP #$20           ; $c6c3: c9 20     
-            BCC __c6cc         ; $c6c5: 90 05     
-            BNE __c6d7         ; $c6c7: d0 0e     
-            JMP __c5b2         ; $c6c9: 4c b2 c5  
+            LDA $1E            ; $c6c1: a5 1e       Load value at $1E to A     
+            CMP #$20           ; $c6c3: c9 20       Compare value $20 with value in A     
+            BCC __c6cc         ; $c6c5: 90 05       Is the carry flag clear? If not, keep going. If so, branch to __c6cc     
+            BNE __c6d7         ; $c6c7: d0 0e       Is the Zero Flag (Z) set? If so, keep going. If not, branch to __c6d7
+            JMP __c5b2         ; $c6c9: 4c b2 c5    Jump to __c5b2  
 
 ;-------------------------------------------------------------------------------
-__c6cc:     LDA #$a8           ; $c6cc: a9 a8     
-            STA $12            ; $c6ce: 85 12     
-            LDA #$02           ; $c6d0: a9 02     
-            STA $13            ; $c6d2: 85 13     
-            JMP __c3d7         ; $c6d4: 4c d7 c3  
+__c6cc:     
+            LDA #$A8           ; $c6cc: a9 a8       Load $A8 to A     
+            STA $12            ; $c6ce: 85 12       Store A value at address $12     
+            LDA #$02           ; $c6d0: a9 02       Load $02 to A     
+            STA $13            ; $c6d2: 85 13       Store A value at address $13     
+            JMP __c3d7         ; $c6d4: 4c d7 c3    Jump to __c3d7  
 
 ;-------------------------------------------------------------------------------
-__c6d7:     LDA #$2c           ; $c6d7: a9 2c     
-            STA $12            ; $c6d9: 85 12     
-            LDA #$01           ; $c6db: a9 01     
-            STA $13            ; $c6dd: 85 13     
-            JSR __c3d7         ; $c6df: 20 d7 c3  
-            LDA $16            ; $c6e2: a5 16     
-            SEC                ; $c6e4: 38        
-            SBC #$10           ; $c6e5: e9 10     
-            STA $16            ; $c6e7: 85 16     
-            LDA #$ae           ; $c6e9: a9 ae     
-            STA $12            ; $c6eb: 85 12     
-            LDA #$03           ; $c6ed: a9 03     
-            STA $13            ; $c6ef: 85 13     
-            JSR __e84d         ; $c6f1: 20 4d e8  
-            LDA #$67           ; $c6f4: a9 67     
-            STA $12            ; $c6f6: 85 12     
-            JMP __e84d         ; $c6f8: 4c 4d e8  
+__c6d7:     
+            LDA #$2C           ; $c6d7: a9 2c       Load $2C to A     
+            STA $12            ; $c6d9: 85 12       Store A value at address $12     
+            LDA #$01           ; $c6db: a9 01       Load $01 to A     
+            STA $13            ; $c6dd: 85 13       Store A value at address $13     
+            JSR __c3d7         ; $c6df: 20 d7 c3    Jump to subroutine __c3d7  
+            LDA $16            ; $c6e2: a5 16       Load value at $16 to A     
+            SEC                ; $c6e4: 38          Set carry flag to 1        
+            SBC #$10           ; $c6e5: e9 10       Subtract $10 from A, updating flags & storing result in A     
+            STA $16            ; $c6e7: 85 16       Store A value at address $16     
+            LDA #$AE           ; $c6e9: a9 ae       Load $AE to A     
+            STA $12            ; $c6eb: 85 12       Store A value at address $12     
+            LDA #$03           ; $c6ed: a9 03       Load $03 to A     
+            STA $13            ; $c6ef: 85 13       Store A value at address $13     
+            JSR __e84d         ; $c6f1: 20 4d e8    Jump to subroutine __e84d  
+            LDA #$67           ; $c6f4: a9 67       Load $67 to A     
+            STA $12            ; $c6f6: 85 12       Store A value at address $12    
+            JMP __e84d         ; $c6f8: 4c 4d e8    Jump to __e84d  
 
 ;-------------------------------------------------------------------------------
-__c6fb:     LDY #$00           ; $c6fb: a0 00     
-__c6fd:     LDA ($12),y        ; $c6fd: b1 12     
-            BNE __c717         ; $c6ff: d0 16     
-            INY                ; $c701: c8        
-__c702:     LDA ($12),y        ; $c702: b1 12     
-            BEQ __c716         ; $c704: f0 10     
-            BPL __c70a         ; $c706: 10 02     
-            DEC $11            ; $c708: c6 11     
-__c70a:     INY                ; $c70a: c8        
-            CLC                ; $c70b: 18        
-            ADC $10            ; $c70c: 65 10     
-            STA $10            ; $c70e: 85 10     
-            BCC __c6fd         ; $c710: 90 eb     
-            INC $11            ; $c712: e6 11     
-            BCS __c6fd         ; $c714: b0 e7     
-__c716:     RTS                ; $c716: 60        
+__c6fb:     
+            LDY #$00           ; $c6fb: a0 00       Load $00 to Y     
+__c6fd:     
+            LDA ($12),Y        ; $c6fd: b1 12       Load ((Value from address $12) + Y) to A     
+            BNE __c717         ; $c6ff: d0 16       Is the Zero Flag (Z) set? If so, keep going. If not, branch to __c717     
+            INY                ; $c701: c8          Increment Y by one
+__c702:     
+            LDA ($12),Y        ; $c702: b1 12       Load ((Value from address $12) + Y) to A     
+            BEQ __c716         ; $c704: f0 10       Is the Zero Flag (Z) clear? If so, keep going. If not, branch to __c716     
+            BPL __c70a         ; $c706: 10 02       If X is greater than or equal to zero (most significant bit of A isn't set), then branch to __c70a. If not, then continue.
+            DEC $11            ; $c708: c6 11       Decrement value at $11 by one     
+__c70a:     
+            INY                ; $c70a: c8          Increment Y by one        
+            CLC                ; $c70b: 18          Clear carry flag        
+            ADC $10            ; $c70c: 65 10       Add value at $10 to A, updating flags and storing result in A     
+            STA $10            ; $c70e: 85 10       Store A value at address $10     
+            BCC __c6fd         ; $c710: 90 eb       Is the carry flag clear? If not, keep going. If so, branch to __c6fd     
+            INC $11            ; $c712: e6 11       Increment value at $11 by one     
+            BCS __c6fd         ; $c714: b0 e7       Is the carry flag set? If not, then continue. If so, branch to __c6fd     
+__c716:     
+            RTS                ; $c716: 60          Return
 
 ;-------------------------------------------------------------------------------
-__c717:     INY                ; $c717: c8        
-            STA $15            ; $c718: 85 15     
-            STA $16            ; $c71a: 85 16     
-            JSR __c78e         ; $c71c: 20 8e c7  
-__c71f:     LDA $14            ; $c71f: a5 14     
+__c717:     
+            INY                ; $c717: c8          Increment Y by one        
+            STA $15            ; $c718: 85 15       Store A value at address $15     
+            STA $16            ; $c71a: 85 16       Store A value at address $16     
+            JSR __c78e         ; $c71c: 20 8e c7    Jump to subroutine __c78e  
+__c71f:     
+            LDA $14            ; $c71f: a5 14     
             BMI __c781         ; $c721: 30 5e     
             LDA $10            ; $c723: a5 10     
             STA $17            ; $c725: 85 17     
@@ -1109,7 +1139,8 @@ __c71f:     LDA $14            ; $c71f: a5 14
             INX                ; $c74c: e8        
             DEX                ; $c74d: ca        
             BEQ __c759         ; $c74e: f0 09     
-__c750:     ASL                ; $c750: 0a        
+__c750:     
+            ASL                ; $c750: 0a        
             ASL                ; $c751: 0a        
             ASL $17            ; $c752: 06 17     
             ASL $17            ; $c754: 06 17     
@@ -1965,7 +1996,7 @@ __ce98:     JSR __c141         ; $ce98: 20 41 c1
             STA $14            ; $cea7: 85 14     
             LDA #$02           ; $cea9: a9 02     
             STA $13            ; $ceab: 85 13     
-            JSR __c63d         ; $cead: 20 3d c6  
+            JSR Render_Bonus_1         ; $cead: 20 3d c6  
             JSR __d71c         ; $ceb0: 20 1c d7  
             JSR __d5ab         ; $ceb3: 20 ab d5  
             DEC $0f            ; $ceb6: c6 0f     
