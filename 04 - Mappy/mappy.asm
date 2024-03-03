@@ -1112,133 +1112,147 @@ __c717:
             STA $16            ; $c71a: 85 16       Store A value at address $16     
             JSR __c78e         ; $c71c: 20 8e c7    Jump to subroutine __c78e  
 __c71f:     
-            LDA $14            ; $c71f: a5 14     
-            BMI __c781         ; $c721: 30 5e     
-            LDA $10            ; $c723: a5 10     
-            STA $17            ; $c725: 85 17     
-            LDA $11            ; $c727: a5 11     
-            STA $18            ; $c729: 85 18     
-            ASL $17            ; $c72b: 06 17     
-            ROL $18            ; $c72d: 26 18     
-            ASL $17            ; $c72f: 06 17     
-            ROL                ; $c731: 2a        
-            ASL $17            ; $c732: 06 17     
-            ASL $17            ; $c734: 06 17     
-            ROL $18            ; $c736: 26 18     
-            ASL $17            ; $c738: 06 17     
-            ROL $18            ; $c73a: 26 18     
-            ASL $17            ; $c73c: 06 17     
-            ROL $18            ; $c73e: 26 18     
-            ASL $17            ; $c740: 06 17     
-            ROL                ; $c742: 2a        
-            AND #$03           ; $c743: 29 03     
-            TAX                ; $c745: aa        
-            LDA $14            ; $c746: a5 14     
-            STA $17            ; $c748: 85 17     
-            LDA #$03           ; $c74a: a9 03     
-            INX                ; $c74c: e8        
-            DEX                ; $c74d: ca        
-            BEQ __c759         ; $c74e: f0 09     
+            LDA $14            ; $c71f: a5 14       Load value at $14 to A     
+            BMI __c781         ; $c721: 30 5e       Is the Negative register set? If not, then continue. If so, branch to __c781     
+            LDA $10            ; $c723: a5 10       Load value at $10 to A     
+            STA $17            ; $c725: 85 17       Store A value at address $17     
+            LDA $11            ; $c727: a5 11       Load value at $11 to A     
+            STA $18            ; $c729: 85 18       Store A value at address $18     
+            ASL $17            ; $c72b: 06 17       Shift the value in address $17 left one bit.     
+            ROL $18            ; $c72d: 26 18       Rotate value at $18 one bit left.     
+            ASL $17            ; $c72f: 06 17       Shift the value in address $17 left one bit.     
+            ROL                ; $c731: 2a          Rotate A value one bit left.        
+            ASL $17            ; $c732: 06 17       Shift the value in address $17 left one bit.     
+            ASL $17            ; $c734: 06 17       Shift the value in address $17 left one bit.     
+            ROL $18            ; $c736: 26 18       Rotate value at $18 one bit left.     
+            ASL $17            ; $c738: 06 17       Shift the value in address $17 left one bit.     
+            ROL $18            ; $c73a: 26 18       Rotate value at $18 one bit left.     
+            ASL $17            ; $c73c: 06 17       Shift the value in address $17 left one bit.     
+            ROL $18            ; $c73e: 26 18       Rotate value at $18 one bit left.     
+            ASL $17            ; $c740: 06 17       Shift the value in address $17 left one bit.     
+            ROL                ; $c742: 2a          Rotate A value one bit left.        
+            AND #$03           ; $c743: 29 03       Logically AND $03 with value in A     
+            TAX                ; $c745: aa          Transfer A to X
+            LDA $14            ; $c746: a5 14       Load value at $14 to A     
+            STA $17            ; $c748: 85 17       Store A value at address $17     
+            LDA #$03           ; $c74a: a9 03       Load $03 to A
+            INX                ; $c74c: e8          Increment X by one
+            DEX                ; $c74d: ca          Decrement X by one
+            BEQ __c759         ; $c74e: f0 09       Is the Zero Flag (Z) clear? If so, keep going. If not, branch to __c759     
 __c750:     
-            ASL                ; $c750: 0a        
-            ASL                ; $c751: 0a        
-            ASL $17            ; $c752: 06 17     
-            ASL $17            ; $c754: 06 17     
-            DEX                ; $c756: ca        
-            BNE __c750         ; $c757: d0 f7     
-__c759:     LDX $18            ; $c759: a6 18     
-            EOR #$ff           ; $c75b: 49 ff     
-            AND $0180,x        ; $c75d: 3d 80 01  
-            ORA $17            ; $c760: 05 17     
-            STA $0180,x        ; $c762: 9d 80 01  
-            LSR $18            ; $c765: 46 18     
-            LSR $18            ; $c767: 46 18     
-            LSR $18            ; $c769: 46 18     
-            TXA                ; $c76b: 8a        
-            AND #$07           ; $c76c: 29 07     
-            TAX                ; $c76e: aa        
-            LDA #$01           ; $c76f: a9 01     
-            INX                ; $c771: e8        
-            DEX                ; $c772: ca        
-            BEQ __c779         ; $c773: f0 04     
-__c775:     ASL                ; $c775: 0a        
-            DEX                ; $c776: ca        
-            BNE __c775         ; $c777: d0 fc     
-__c779:     LDX $18            ; $c779: a6 18     
-            ORA $0170,x        ; $c77b: 1d 70 01  
-            STA $0170,x        ; $c77e: 9d 70 01  
-__c781:     INC $10            ; $c781: e6 10     
-            BNE __c787         ; $c783: d0 02     
-            INC $11            ; $c785: e6 11     
-__c787:     DEC $16            ; $c787: c6 16     
-            BNE __c71f         ; $c789: d0 94     
-            JMP __c702         ; $c78b: 4c 02 c7  
+            ASL                ; $c750: 0a          Shift value in A left one bit        
+            ASL                ; $c751: 0a          Shift value in A left one bit        
+            ASL $17            ; $c752: 06 17       Shift the value in address $17 left one bit.     
+            ASL $17            ; $c754: 06 17       Shift the value in address $17 left one bit.     
+            DEX                ; $c756: ca          Decrement X by one        
+            BNE __c750         ; $c757: d0 f7       Is the Zero Flag (Z) set? If so, keep going. If not, loop     
+__c759:     
+            LDX $18            ; $c759: a6 18       Load value at $18 to X     
+            EOR #$FF           ; $c75b: 49 ff       Logically EOR $FF with A       
+            AND $0180,X        ; $c75d: 3d 80 01    Logically AND value at ($0180 + X) with A
+            ORA $17            ; $c760: 05 17       Logically OR value at $17 with A      
+            STA $0180,X        ; $c762: 9d 80 01    Store A value at address ($0180 + X)
+            LSR $18            ; $c765: 46 18       Shift value at $18 one bit right     
+            LSR $18            ; $c767: 46 18       Shift value at $18 one bit right     
+            LSR $18            ; $c769: 46 18       Shift value at $18 one bit right     
+            TXA                ; $c76b: 8a          Transfer X to A
+            AND #$07           ; $c76c: 29 07       Logically AND $07 with A
+            TAX                ; $c76e: aa          Transfer A to X
+            LDA #$01           ; $c76f: a9 01       Load $01 to A
+            INX                ; $c771: e8          Increment X by one
+            DEX                ; $c772: ca          Decrement X by one
+            BEQ __c779         ; $c773: f0 04       Is the Zero Flag (Z) clear? If so, keep going. If not, branch to __c779     
+__c775:     
+            ASL                ; $c775: 0a          Shift value in A left one bit        
+            DEX                ; $c776: ca          Decrement X by one        
+            BNE __c775         ; $c777: d0 fc       Is the Zero Flag (Z) set? If so, keep going. If not, loop     
+__c779:     
+            LDX $18            ; $c779: a6 18       Load value at $18 to X     
+            ORA $0170,X        ; $c77b: 1d 70 01    Logically OR value at ($0170 + X) with A  
+            STA $0170,X        ; $c77e: 9d 70 01    Store A value at address ($0170 + X)  
+__c781:     
+            INC $10            ; $c781: e6 10       Increment value at $10 by one     
+            BNE __c787         ; $c783: d0 02       Is the Zero Flag (Z) set? If so, keep going. If not, branch to __c787    
+            INC $11            ; $c785: e6 11       Increment value at $11 by one     
+__c787:     
+            DEC $16            ; $c787: c6 16       Decrement value at $16 by one     
+            BNE __c71f         ; $c789: d0 94       Is the Zero Flag (Z) set? If so, keep going. If not, branch to __c71f     
+            JMP __c702         ; $c78b: 4c 02 c7    Jump to __c702
 
 ;-------------------------------------------------------------------------------
-__c78e:     LDA $2d            ; $c78e: a5 2d     
-            BEQ __c7b4         ; $c790: f0 22     
-            LDX $2a            ; $c792: a6 2a     
-            LDA $10            ; $c794: a5 10     
-            STA $0500,x        ; $c796: 9d 00 05  
-            INX                ; $c799: e8        
-            LDA $11            ; $c79a: a5 11     
-            STA $0500,x        ; $c79c: 9d 00 05  
-            INX                ; $c79f: e8        
-            LDA $15            ; $c7a0: a5 15     
-            STA $0500,x        ; $c7a2: 9d 00 05  
-            INX                ; $c7a5: e8        
-__c7a6:     LDA ($12),y        ; $c7a6: b1 12     
-            INY                ; $c7a8: c8        
-            STA $0500,x        ; $c7a9: 9d 00 05  
-            INX                ; $c7ac: e8        
-            DEC $15            ; $c7ad: c6 15     
-            BNE __c7a6         ; $c7af: d0 f5     
-            STX $2a            ; $c7b1: 86 2a     
-            RTS                ; $c7b3: 60        
+__c78e:     
+            LDA $2D            ; $c78e: a5 2d       Load value at $2D to A     
+            BEQ VRAM_Address   ; $c790: f0 22       Is the Zero Flag (Z) clear? If so, keep going. If not, branch to VRAM_Address     
+            LDX $2A            ; $c792: a6 2a       Load value at $2A to X     
+            LDA $10            ; $c794: a5 10       Load value at $10 to A     
+            STA $0500,X        ; $c796: 9d 00 05    Store A value at address ($0500 + X)  
+            INX                ; $c799: e8          Increment X by one
+            LDA $11            ; $c79a: a5 11       Load value at $11 to A     
+            STA $0500,X        ; $c79c: 9d 00 05    Store A value at address ($0500 + X)  
+            INX                ; $c79f: e8          Increment X by one
+            LDA $15            ; $c7a0: a5 15       Load value at $15 to A     
+            STA $0500,X        ; $c7a2: 9d 00 05    Store A value at address ($0500 + X)  
+            INX                ; $c7a5: e8          Increment X by one
+__c7a6:     
+            LDA ($12),Y        ; $c7a6: b1 12       Load ((Value from address $12) + Y) to A     
+            INY                ; $c7a8: c8          Increment Y by one
+            STA $0500,X        ; $c7a9: 9d 00 05    Store A value at address ($0500 + X)  
+            INX                ; $c7ac: e8          Increment X by one
+            DEC $15            ; $c7ad: c6 15       Decrement value at $15 by one    
+            BNE __c7a6         ; $c7af: d0 f5       Is the Zero Flag (Z) set? If so, keep going. If not, loop     
+            STX $2A            ; $c7b1: 86 2a       Store value at $2A to X
+            RTS                ; $c7b3: 60          Return
 
 ;-------------------------------------------------------------------------------
-__c7b4:     LDA $11            ; $c7b4: a5 11     
-            STA PPUADDR          ; $c7b6: 8d 06 20  
-            LDA $10            ; $c7b9: a5 10     
-            STA PPUADDR          ; $c7bb: 8d 06 20  
-__c7be:     LDA ($12),y        ; $c7be: b1 12     
-            INY                ; $c7c0: c8        
-            STA PPUDATA          ; $c7c1: 8d 07 20  
-            DEC $15            ; $c7c4: c6 15     
-            BNE __c7be         ; $c7c6: d0 f6     
-            RTS                ; $c7c8: 60        
+VRAM_Address:     
+            LDA $11            ; $c7b4: a5 11       Load value at $11 to A
+            STA PPUADDR        ; $c7b6: 8d 06 20    Store A value at PPUADDR
+            LDA $10            ; $c7b9: a5 10       Load value at $10 to A     
+            STA PPUADDR        ; $c7bb: 8d 06 20    Store A value at PPUADDR
+VRAM_Update:     
+            LDA ($12),Y        ; $c7be: b1 12       Load ((Value from address $12) + Y) to A     
+            INY                ; $c7c0: c8          Increment Y by one
+            STA PPUDATA        ; $c7c1: 8d 07 20    Store A value at PPUADDR  
+            DEC $15            ; $c7c4: c6 15       Decrement value at $15 by one     
+            BNE VRAM_Update    ; $c7c6: d0 f6       Is the Zero Flag (Z) set? If so, keep going. If not, loop     
+            RTS                ; $c7c8: 60          Return
 
 ;-------------------------------------------------------------------------------
-__c7c9:     LDA #$00           ; $c7c9: a9 00     
-            STA $12            ; $c7cb: 85 12     
-            STA $13            ; $c7cd: 85 13     
-            LDA #$c0           ; $c7cf: a9 c0     
-            STA $10            ; $c7d1: 85 10     
-            LDA #$23           ; $c7d3: a9 23     
-            STA $11            ; $c7d5: 85 11     
-            JSR __c7e2         ; $c7d7: 20 e2 c7  
-            LDA #$c0           ; $c7da: a9 c0     
-            STA $10            ; $c7dc: 85 10     
-            LDA #$27           ; $c7de: a9 27     
-            STA $11            ; $c7e0: 85 11     
-__c7e2:     LDA #$08           ; $c7e2: a9 08     
-            STA $14            ; $c7e4: 85 14     
-__c7e6:     LDA #$08           ; $c7e6: a9 08     
-            STA $15            ; $c7e8: 85 15     
-__c7ea:     LDY $12            ; $c7ea: a4 12     
-            LDA $0170,y        ; $c7ec: b9 70 01  
-            BEQ __c803         ; $c7ef: f0 12     
-            LSR                ; $c7f1: 4a        
-            STA $0170,y        ; $c7f2: 99 70 01  
-            BCC __c7fa         ; $c7f5: 90 03     
-            JSR __c818         ; $c7f7: 20 18 c8  
-__c7fa:     INC $10            ; $c7fa: e6 10     
-            INC $13            ; $c7fc: e6 13     
-            DEC $15            ; $c7fe: c6 15     
-            JMP __c7ea         ; $c800: 4c ea c7  
+__c7c9:     LDA #$00           ; $c7c9: a9 00       Load $00 to A
+            STA $12            ; $c7cb: 85 12       Store A value at address $12
+            STA $13            ; $c7cd: 85 13       Store A value at address $13    
+            LDA #$C0           ; $c7cf: a9 c0       Load $C0 to A     
+            STA $10            ; $c7d1: 85 10       Store A value at address $10    
+            LDA #$23           ; $c7d3: a9 23       Load $23 to A     
+            STA $11            ; $c7d5: 85 11       Store A value at address $11     
+            JSR __c7e2         ; $c7d7: 20 e2 c7    Jump to subroutine  __c7e2
+            LDA #$C0           ; $c7da: a9 c0       Load $C0 to A      
+            STA $10            ; $c7dc: 85 10       Store A value at address $10     
+            LDA #$27           ; $c7de: a9 27       Load $27 to A      
+            STA $11            ; $c7e0: 85 11       Store A value at address $11     
+__c7e2:     
+            LDA #$08           ; $c7e2: a9 08       Load $08 to A     
+            STA $14            ; $c7e4: 85 14       Store A value at address $14     
+__c7e6:     
+            LDA #$08           ; $c7e6: a9 08       Load $08 to A     
+            STA $15            ; $c7e8: 85 15       Store A value at address $15     
+__c7ea:     
+            LDY $12            ; $c7ea: a4 12       Load value at $12 to Y    
+            LDA $0170,Y        ; $c7ec: b9 70 01    Load value at ($0170 + Y) to A
+            BEQ __c803         ; $c7ef: f0 12       Is the Zero Flag (Z) clear? If so, keep going. If not, branch to __c803     
+            LSR                ; $c7f1: 4a          Shift A one bit right        
+            STA $0170,Y        ; $c7f2: 99 70 01    Store A value at address ($0170 + Y)  
+            BCC __c7fa         ; $c7f5: 90 03       Is the carry flag clear? If not, keep going. If so, branch to __c7fa     
+            JSR __c818         ; $c7f7: 20 18 c8    Jump to subroutine __c818
+__c7fa:     
+            INC $10            ; $c7fa: e6 10       Increment value at $10 by one     
+            INC $13            ; $c7fc: e6 13       Increment value at $13 by one     
+            DEC $15            ; $c7fe: c6 15       Decrement value at $15 by one     
+            JMP __c7ea         ; $c800: 4c ea c7    Jump to __c7ea
 
 ;-------------------------------------------------------------------------------
-__c803:     LDA $10            ; $c803: a5 10     
+__c803:     
+            LDA $10            ; $c803: a5 10     
             CLC                ; $c805: 18        
             ADC $15            ; $c806: 65 15     
             STA $10            ; $c808: 85 10     
@@ -1252,7 +1266,8 @@ __c803:     LDA $10            ; $c803: a5 10
             RTS                ; $c817: 60        
 
 ;-------------------------------------------------------------------------------
-__c818:     LDA $2d            ; $c818: a5 2d     
+__c818:     
+            LDA $2d            ; $c818: a5 2d     
             BEQ __c83c         ; $c81a: f0 20     
             LDX $2a            ; $c81c: a6 2a     
             LDA $10            ; $c81e: a5 10     
