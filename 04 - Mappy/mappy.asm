@@ -1391,59 +1391,64 @@ __c8f9:
             CPX #$40           ; $c8fe: e0 40       Compare $40 with X
             BNE __c8f9         ; $c900: d0 f7       Is the Zero Flag (Z) set? If so, keep going. If not, loop     
 __c902:     
-            JSR __f3c1         ; $c902: 20 c1 f3  
-            JSR __d7f1         ; $c905: 20 f1 d7  
-            JSR __d846         ; $c908: 20 46 d8  
-            LDA #$00           ; $c90b: a9 00     
-            STA $4B            ; $c90d: 85 4b     
-            STA $4F            ; $c90f: 85 4f     
-            STA $31            ; $c911: 85 31     
-            LDA #$3C           ; $c913: a9 3c     
-            STA $0F            ; $c915: 85 0f     
+            JSR __f3c1         ; $c902: 20 c1 f3    Jump to subroutine __f3c1  
+            JSR __d7f1         ; $c905: 20 f1 d7    Jump to subroutine __d7f1  
+            JSR __d846         ; $c908: 20 46 d8    Jump to subroutine __d846  
+            LDA #$00           ; $c90b: a9 00       Load $00 to A
+            STA $4B            ; $c90d: 85 4b       Store A value at address $4B
+            STA $4F            ; $c90f: 85 4f       Store A value at address $4F     
+            STA $31            ; $c911: 85 31       Store A value at address $31    
+            LDA #$3C           ; $c913: a9 3c       Load $3C to A     
+            STA $0F            ; $c915: 85 0f       Store A value at address $0F     
 __c917:     
-            JSR __c141         ; $c917: 20 41 c1  
-            JSR __cb60         ; $c91a: 20 60 cb  
-            JSR __cb02         ; $c91d: 20 02 cb  
-            LDA __cba6         ; $c920: ad a6 cb  
-            STA $1e            ; $c923: 85 1e     
-            LDA __cba7         ; $c925: ad a7 cb  
-            STA $1f            ; $c928: 85 1f     
-            JSR __cb3b         ; $c92a: 20 3b cb  
-            DEC $0f            ; $c92d: c6 0f     
-            BNE __c917         ; $c92f: d0 e6     
-            LDA #$02           ; $c931: a9 02     
-            STA $040f          ; $c933: 8d 0f 04  
-            LDX #$20           ; $c936: a2 20     
-__c938:     LDA #$02           ; $c938: a9 02     
-            STA $040f,x        ; $c93a: 9d 0f 04  
-            TXA                ; $c93d: 8a        
-            CLC                ; $c93e: 18        
-            ADC #$10           ; $c93f: 69 10     
-            TAX                ; $c941: aa        
-            CPX $68            ; $c942: e4 68     
-            BNE __c938         ; $c944: d0 f2     
-__c946:     JSR __c141         ; $c946: 20 41 c1  
-            LDA $60            ; $c949: a5 60     
-            CMP #$01           ; $c94b: c9 01     
-            BEQ __c961         ; $c94d: f0 12     
-            CMP #$03           ; $c94f: c9 03     
-            BNE __c959         ; $c951: d0 06     
-            LDA $61            ; $c953: a5 61     
-            CMP #$3c           ; $c955: c9 3c     
-            BNE __c961         ; $c957: d0 08     
-__c959:     LDA #$01           ; $c959: a9 01     
-            STA $0613          ; $c95b: 8d 13 06  
-            STA $0614          ; $c95e: 8d 14 06  
-__c961:     JSR __cb60         ; $c961: 20 60 cb  
-            JSR __f2e6         ; $c964: 20 e6 f2  
-            LDA $4f            ; $c967: a5 4f     
-            BNE __c972         ; $c969: d0 07     
-            LDA $4b            ; $c96b: a5 4b     
-            BEQ __c946         ; $c96d: f0 d7     
-            JMP __ca28         ; $c96f: 4c 28 ca  
+            JSR __c141         ; $c917: 20 41 c1    Jump to subroutine __c141  
+            JSR __cb60         ; $c91a: 20 60 cb    Jump to subroutine __cb60  
+            JSR __cb02         ; $c91d: 20 02 cb    Jump to subroutine __cb02  
+            LDA __cba6         ; $c920: ad a6 cb    Load value at __cba6 to A
+            STA $1E            ; $c923: 85 1e       Store A value at address $1E     
+            LDA __cba7         ; $c925: ad a7 cb    Load value at __cba7 to A  
+            STA $1F            ; $c928: 85 1f       Store A value at address $1F     
+            JSR __cb3b         ; $c92a: 20 3b cb    Jump to subroutine __cb3b  
+            DEC $0F            ; $c92d: c6 0f       Decrement value at $0F by one
+            BNE __c917         ; $c92f: d0 e6       Is the Zero Flag (Z) set? If so, keep going. If not, loop       
+            LDA #$02           ; $c931: a9 02       Load $02 to A
+            STA $040F          ; $c933: 8d 0f 04    Store A value at address $040F
+            LDX #$20           ; $c936: a2 20       Load $20 to X
+__c938:     
+            LDA #$02           ; $c938: a9 02       Load $02 to A     
+            STA $040F,X        ; $c93a: 9d 0f 04    Store A value at address ($040F + X)  
+            TXA                ; $c93d: 8a          Transfer X to A
+            CLC                ; $c93e: 18          Clear carry flag
+            ADC #$10           ; $c93f: 69 10       Add $10 to A, updating flags and storing result in A      
+            TAX                ; $c941: aa          Transfer A to X
+            CPX $68            ; $c942: e4 68       Compare value at $68 to X
+            BNE __c938         ; $c944: d0 f2       Is the Zero Flag (Z) set? If so, keep going. If not, loop     
+__c946:     
+            JSR __c141         ; $c946: 20 41 c1    Jump to subroutine __c141 
+            LDA $60            ; $c949: a5 60       Load value at $60 to A     
+            CMP #$01           ; $c94b: c9 01       Compare $01 with value in A
+            BEQ __c961         ; $c94d: f0 12       Is the Zero Flag (Z) clear? If so, keep going. If not, branch to __c961       
+            CMP #$03           ; $c94f: c9 03       Compare $03 with value in A     
+            BNE __c959         ; $c951: d0 06       Is the Zero Flag (Z) set? If so, keep going. If not, branch to __c959    
+            LDA $61            ; $c953: a5 61       Load value at $61 to A     
+            CMP #$3C           ; $c955: c9 3c       Compare $3C with value in A       
+            BNE __c961         ; $c957: d0 08       Is the Zero Flag (Z) set? If so, keep going. If not, branch to __c961     
+__c959:     
+            LDA #$01           ; $c959: a9 01       Load $01 to A     
+            STA $0613          ; $c95b: 8d 13 06    Store A value at address $0613
+            STA $0614          ; $c95e: 8d 14 06    Store A value at address $0614  
+__c961:     
+            JSR __cb60         ; $c961: 20 60 cb    Jump to subroutine __cb60  
+            JSR __f2e6         ; $c964: 20 e6 f2    Jump to subroutine __f2e6 
+            LDA $4F            ; $c967: a5 4f       Load value at $4F to A     
+            BNE __c972         ; $c969: d0 07       Is the Zero Flag (Z) set? If so, keep going. If not, branch to __c972     
+            LDA $4B            ; $c96b: a5 4b       Load value at $4B to A     
+            BEQ __c946         ; $c96d: f0 d7       Is the Zero Flag (Z) clear? If so, keep going. If not, branch to __c946     
+            JMP __ca28         ; $c96f: 4c 28 ca    Jump to __ca28
 
 ;-------------------------------------------------------------------------------
-__c972:     JSR __c141         ; $c972: 20 41 c1  
+__c972:     
+            JSR __c141         ; $c972: 20 41 c1  
             JSR __cb60         ; $c975: 20 60 cb  
             LDA $04a5          ; $c978: ad a5 04  
             ORA $04ad          ; $c97b: 0d ad 04  
@@ -1703,20 +1708,27 @@ __cb7b:     JSR __e3fe         ; $cb7b: 20 fe e3
             JMP __d5ab         ; $cb87: 4c ab d5  
 
 ;-------------------------------------------------------------------------------
-__cb8a:     .hex 8c            ; $cb8a: 8c            Data
-__cb8b:     .hex cb 58 00 78   ; $cb8b: cb 58 00 78   Data
+__cb8a:     
+            .hex 8c            ; $cb8a: 8c            Data
+__cb8b:     
+            .hex cb 58 00 78   ; $cb8b: cb 58 00 78   Data
             .hex 07 d0 d1 d2   ; $cb8f: 07 d0 d1 d2   Data
             .hex d3 d4 d5 00   ; $cb93: d3 d4 d5 00   Data
-__cb97:     .hex 99            ; $cb97: 99            Data
-__cb98:     .hex cb 58 00 88   ; $cb98: cb 58 00 88   Data
+__cb97:     
+            .hex 99            ; $cb97: 99            Data
+__cb98:     
+            .hex cb 58 00 88   ; $cb98: cb 58 00 88   Data
             .hex 09 d8 d2 d9   ; $cb9c: 09 d8 d2 d9   Data
             .hex d4 00 da db   ; $cba0: d4 00 da db   Data
             .hex d4 d5         ; $cba4: d4 d5         Data
-__cba6:     .hex a8            ; $cba6: a8            Data
-__cba7:     .hex cb 60 00 88   ; $cba7: cb 60 00 88   Data
+__cba6:     
+            .hex a8            ; $cba6: a8            Data
+__cba7:     
+            .hex cb 60 00 88   ; $cba7: cb 60 00 88   Data
             .hex 05 d5 d4 d2   ; $cbab: 05 d5 d4 d2   Data
             .hex ca d3         ; $cbaf: ca d3         Data
-__cbb1:     JSR __cbf5         ; $cbb1: 20 f5 cb  
+__cbb1:     
+            JSR __cbf5         ; $cbb1: 20 f5 cb  
             LDY #$02           ; $cbb4: a0 02     
             JSR __cc15         ; $cbb6: 20 15 cc  
             LDY #$00           ; $cbb9: a0 00     
