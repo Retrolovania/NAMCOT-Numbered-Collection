@@ -1448,21 +1448,23 @@ __c961:
 
 ;-------------------------------------------------------------------------------
 __c972:     
-            JSR __c141         ; $c972: 20 41 c1  
-            JSR __cb60         ; $c975: 20 60 cb  
-            LDA $04a5          ; $c978: ad a5 04  
-            ORA $04ad          ; $c97b: 0d ad 04  
-            BNE __c972         ; $c97e: d0 f2     
-            LDA #$b4           ; $c980: a9 b4     
-            STA $0f            ; $c982: 85 0f     
-__c984:     JSR __c141         ; $c984: 20 41 c1  
-            LDA $0f            ; $c987: a5 0f     
+            JSR __c141         ; $c972: 20 41 c1    Jump to subroutine __c141  
+            JSR __cb60         ; $c975: 20 60 cb    Jump to subroutine __cb60  
+            LDA $04A5          ; $c978: ad a5 04    Load value at $04A5 to A  
+            ORA $04AD          ; $c97b: 0d ad 04    Logically OR value at $04AD with A
+            BNE __c972         ; $c97e: d0 f2       Is the Zero Flag (Z) set? If so, keep going. If not, loop    
+            LDA #$B4           ; $c980: a9 b4       Load $B4 to A
+            STA $0F            ; $c982: 85 0f       Store A value at address 0F
+__c984:     
+            JSR __c141         ; $c984: 20 41 c1  
+            LDA $0F            ; $c987: a5 0f     
             CMP #$78           ; $c989: c9 78     
             BNE __c995         ; $c98b: d0 08     
             LDA #$01           ; $c98d: a9 01     
             STA $0611          ; $c98f: 8d 11 06  
             STA $0612          ; $c992: 8d 12 06  
-__c995:     JSR __cb60         ; $c995: 20 60 cb  
+__c995:     
+            JSR __cb60         ; $c995: 20 60 cb  
             DEC $0f            ; $c998: c6 0f     
             BNE __c984         ; $c99a: d0 e8     
             JSR __f4bf         ; $c99c: 20 bf f4  
