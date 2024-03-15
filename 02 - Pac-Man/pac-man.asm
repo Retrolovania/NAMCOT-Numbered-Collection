@@ -61,13 +61,13 @@ Mem_Clear:
             STA $0000,Y        ; $c048: 99 00 00    Store A value at address ($0000 + Y)
             INY                ; $c04b: c8          Increment Y by one
             CPY #$3E           ; $c04c: c0 3e       Compare $3E to value in Y
-            BNE Mem_Clear      ; $c04e: d0 f8       Is the Zero Flag (Z) clear? If so, keep going. If not, loop.       
+            BNE Mem_Clear      ; $c04e: d0 f8       Loop if Zero Flag is not clear.       
             LDX #$08           ; $c050: a2 08       Load $08 to X
             LDY #$87           ; $c052: a0 87       Load $87 to Y
 __c054:     
             STA ($00),Y        ; $c054: 91 00       Store A value at address ($00 + Y value)     
             INY                ; $c056: c8          Increment Y by one
-            BNE __c054         ; $c057: d0 fb       Is the Zero Flag (Z) clear? If so, keep going. If not, loop.     
+            BNE __c054         ; $c057: d0 fb       Loop if Zero Flag is not clear.     
             INC $01            ; $c059: e6 01       Increent value at $01 by one.
             CPX $01            ; $c05b: e4 01       Compare value at $01 with X
 __c05d:     
@@ -81,25 +81,25 @@ __c05d:
 __c077:     
             LDA __c0eb,Y       ; $c077: b9 eb c0    Load value at (__c0eb + Y) to A
             CMP $0052,Y        ; $c07a: d9 52 00    Compare value at ($0052 + Y) to A
-            BNE __c086         ; $c07d: d0 07       Is the Zero Flag (Z) clear? If so, keep going. If not, branch to __c086       
+            BNE __c086         ; $c07d: d0 07       Branch to __c086 if Zero Flag is not clear        
             INY                ; $c07f: c8          Increment Y by one
             CPY #$0F           ; $c080: c0 0f       Compare $0F to Y
-            BNE __c077         ; $c082: d0 f3       Is the Zero Flag (Z) clear? If so, keep going. If not, loop       
-            BEQ __c0a0         ; $c084: f0 1a       Is the Zero Flag (Z) set? If so, keep going. If not, branch to __c0a0    
+            BNE __c077         ; $c082: d0 f3       Loop if Zero Flag is not clear       
+            BEQ __c0a0         ; $c084: f0 1a       Branch to __c0a0 if Zero Flag is clear    
 __c086:     
             LDA #$00           ; $c086: a9 00       Clear A
             TAY                ; $c088: a8          Transfer A to Y
 __c089:     
             STA $0000,Y        ; $c089: 99 00 00    Store A value at ($0000 + Y)
             INY                ; $c08c: c8          Increment Y by one
-            BNE __c089         ; $c08d: d0 fa       Is the Zero Flag (Z) clear? If so, keep going. If not, loop       
+            BNE __c089         ; $c08d: d0 fa       Loop if Zero Flag is not clear       
             LDY #$00           ; $c08f: a0 00       Clear Y
 __c091:     
             LDA __c0eb,Y       ; $c091: b9 eb c0    Load value at (__c0eb + Y) to A
             STA $0052,Y        ; $c094: 99 52 00    Store A value at ($0052 + Y)    
             INY                ; $c097: c8          Increment Y by one
             CPY #$0F           ; $c098: c0 0f       Compare $0F with Y
-            BNE __c091         ; $c09a: d0 f5       Is the Zero Flag (Z) clear? If so, keep going. If not, loop       
+            BNE __c091         ; $c09a: d0 f5       Loop if Zero Flag is not clear       
             LDA #$01           ; $c09c: a9 01       Load $01 to A
             STA $64            ; $c09e: 85 64       Store A value at $64
 __c0a0:     
@@ -109,9 +109,9 @@ __c0a0:
             STA $45            ; $c0a6: 85 45       Store A value at $45
             LDA #$01           ; $c0a8: a9 01       Load $01 to A
             CMP $47            ; $c0aa: c5 47       Compare value at $47 with A
-            BNE __c0c7         ; $c0ac: d0 19       Is the Zero Flag (Z) clear? If so, keep going. If not, branch to __c0c7     
+            BNE __c0c7         ; $c0ac: d0 19       Branch to __c0c7 if Zero Flag is not clear     
             CMP $46            ; $c0ae: c5 46       Compare value at $46 with A     
-            BNE __c0c7         ; $c0b0: d0 15       Is the Zero Flag (Z) clear? If so, keep going. If not, branch to __c0c7     
+            BNE __c0c7         ; $c0b0: d0 15       Branch to __c0c7 if Zero Flag is not clear     
 __c0b2:     
             LDA $0077,Y        ; $c0b2: b9 77 00    Load value at ($0077 + Y) to A  
             STA $00            ; $c0b5: 85 00       Store A value at $00
@@ -121,7 +121,7 @@ __c0b2:
             STA $0067,Y        ; $c0bf: 99 67 00    Store A value at ($0067 + Y)  
             INY                ; $c0c2: c8          Increment Y by one
             CPY #$10           ; $c0c3: c0 10       Compare $10 with Y
-            BNE __c0b2         ; $c0c5: d0 eb       Is the Zero Flag (Z) clear? If so, keep going. If not, loop
+            BNE __c0b2         ; $c0c5: d0 eb       Loop if Zero Flag is not clear
 __c0c7:     
             LDA #$1F           ; $c0c7: a9 1f       Load $1F to A
             STA APUCTRL        ; $c0c9: 8d 15 40    Store A value at APUCTRL
@@ -176,106 +176,119 @@ nmi:
             LDA #$01           ; $c12c: a9 01       Load $01 to A
             STA JOYSTROBE      ; $c12e: 8d 16 40    Store A value at JOYSTROBE    
             LDA #$00           ; $c131: a9 00       Clear A
-            STA JOYSTROBE      ; $c133: 8d 16 40    Store A value at PPUCTRL  
+            STA JOYSTROBE      ; $c133: 8d 16 40    Store A value at JOYSTROBE  
             LDX #$08           ; $c136: a2 08       Load $08 to X
 __c138:     
             LDA JOYSTROBE      ; $c138: ad 16 40    Load value at JOYSTROBE to A
-            AND #$03           ; $c13b: 29 03     
-            CMP #$01           ; $c13d: c9 01     
-            ROR $4d            ; $c13f: 66 4d     
-            LDA FrameCtr       ; $c141: ad 17 40  
-            AND #$03           ; $c144: 29 03     
-            CMP #$01           ; $c146: c9 01     
-            ROR $4e            ; $c148: 66 4e     
-            DEX                ; $c14a: ca        
-            BNE __c138         ; $c14b: d0 eb     
-            LDX $4d            ; $c14d: a6 4d     
-            LDA $46            ; $c14f: a5 46     
-            AND $47            ; $c151: 25 47     
-            BEQ __c157         ; $c153: f0 02     
-            LDX $4e            ; $c155: a6 4e     
-__c157:     STX $4f            ; $c157: 86 4f     
-            INC $4b            ; $c159: e6 4b     
-            LDA $48            ; $c15b: a5 48     
-            BNE __c162         ; $c15d: d0 03     
-            JSR __ee5c         ; $c15f: 20 5c ee  
-__c162:     PLA                ; $c162: 68        
-            TAY                ; $c163: a8        
-            PLA                ; $c164: 68        
-            TAX                ; $c165: aa        
-            PLA                ; $c166: 68        
+            AND #$03           ; $c13b: 29 03       Logically AND $03 with A
+            CMP #$01           ; $c13d: c9 01       Compare $01 with A
+            ROR $4D            ; $c13f: 66 4d       Rotate value at $4D one bit right.     
+            LDA FrameCtr       ; $c141: ad 17 40    Load value at FrameCtr to A
+            AND #$03           ; $c144: 29 03       Logically AND $03 with A       
+            CMP #$01           ; $c146: c9 01       Compare $01 with A     
+            ROR $4E            ; $c148: 66 4e       Rotate value at $4E one bit right.    
+            DEX                ; $c14a: ca          Decrement X by one
+            BNE __c138         ; $c14b: d0 eb       Loop if Zero Flag is not clear     
+            LDX $4D            ; $c14d: a6 4d       Load value at $4D to X
+            LDA $46            ; $c14f: a5 46       Load value at $46 to A
+            AND $47            ; $c151: 25 47       Logically AND value at $47 with A
+            BEQ __c157         ; $c153: f0 02       Branch to __c157 if Zero Flag is clear
+            LDX $4E            ; $c155: a6 4e       Load value at $4E to X
+__c157:     
+            STX $4F            ; $c157: 86 4f       Store X value at $4F 
+            INC $4B            ; $c159: e6 4b       Increment value at $4B by one
+            LDA $48            ; $c15b: a5 48       Load value at $48 to A
+            BNE __c162         ; $c15d: d0 03       Branch to __c162 if Zero Flag is not clear       
+            JSR __ee5c         ; $c15f: 20 5c ee    Jump to subroutine __ee5c
+__c162:     
+            PLA                ; $c162: 68          Pull A value from stack          
+            TAY                ; $c163: a8          Transfer A to Y
+            PLA                ; $c164: 68          Pull A value from stack        
+            TAX                ; $c165: aa          Transfer A to X
+            PLA                ; $c166: 68          Pull A value from stack        
 ; irq/brk vector
 ;-------------------------------------------------------------------------------
-irq:        rti                ; $c167: 40        
+irq:        
+            RTI                ; $c167: 40          Retrieve flags and program counter from stack, then resume execution from PC
 
 ;-------------------------------------------------------------------------------
-__c168:     LDA #$01           ; $c168: a9 01     
-            STA $40            ; $c16a: 85 40     
-__c16c:     LDA $40            ; $c16c: a5 40     
-            BNE __c16c         ; $c16e: d0 fc     
-            LDA #$08           ; $c170: a9 08     
-            STA PPUCTRL          ; $c172: 8d 00 20  
-            STA $43            ; $c175: 85 43     
-            LDA PPUSTATUS          ; $c177: ad 02 20  
-            LDA #$00           ; $c17a: a9 00     
-            STA PPUMASK          ; $c17c: 8d 01 20  
-            TAX                ; $c17f: aa        
-__c180:     STA $0700,x        ; $c180: 9d 00 07  
-            INX                ; $c183: e8        
-            BNE __c180         ; $c184: d0 fa     
-            STA $46            ; $c186: 85 46     
-            JSR __e2ff         ; $c188: 20 ff e2  
-            JSR __c284         ; $c18b: 20 84 c2  
-            JSR __c21f         ; $c18e: 20 1f c2  
-            JSR __e393         ; $c191: 20 93 e3  
-            LDA PPUSTATUS          ; $c194: ad 02 20  
-            LDA #$3f           ; $c197: a9 3f     
-            STA PPUADDR          ; $c199: 8d 06 20  
-            LDA #$00           ; $c19c: a9 00     
-            STA PPUADDR          ; $c19e: 8d 06 20  
-            LDY #$00           ; $c1a1: a0 00     
-__c1a3:     LDA __c395,Y       ; $c1a3: b9 95 c3  
-            STA PPUDATA          ; $c1a6: 8d 07 20  
-            INY                ; $c1a9: c8        
-            CPY #$10           ; $c1aa: c0 10     
-            BNE __c1a3         ; $c1ac: d0 f5     
-            LDA #$2d           ; $c1ae: a9 2d     
-            STA $6c            ; $c1b0: 85 6c     
-            STA $6d            ; $c1b2: 85 6d     
-            STA $6e            ; $c1b4: 85 6e     
-            STA $6f            ; $c1b6: 85 6f     
-            LDA #$ff           ; $c1b8: a9 ff     
-            STA $023f          ; $c1ba: 8d 3f 02  
-            STA $48            ; $c1bd: 85 48     
-            LDA #$00           ; $c1bf: a9 00     
-            STA $47            ; $c1c1: 85 47     
-            STA $46            ; $c1c3: 85 46     
-            STA $42            ; $c1c5: 85 42     
-            STA $41            ; $c1c7: 85 41     
-            STA $4c            ; $c1c9: 85 4c     
-            STA $87            ; $c1cb: 85 87     
-            STA $88            ; $c1cd: 85 88     
-            LDA $3f            ; $c1cf: a5 3f     
-            BNE __c1d7         ; $c1d1: d0 04     
-            LDA #$8a           ; $c1d3: a9 8a     
-            BNE __c1d9         ; $c1d5: d0 02     
-__c1d7:     LDA #$88           ; $c1d7: a9 88     
-__c1d9:     STA PPUCTRL          ; $c1d9: 8d 00 20  
-            STA $43            ; $c1dc: 85 43     
-__c1de:     LDA #$01           ; $c1de: a9 01     
-            STA $40            ; $c1e0: 85 40     
-__c1e2:     LDA $40            ; $c1e2: a5 40     
-            BNE __c1e2         ; $c1e4: d0 fc     
-            LDY $3f            ; $c1e6: a4 3f     
-            LDA __c1f5,Y       ; $c1e8: b9 f5 c1  
-            STA $10            ; $c1eb: 85 10     
-            LDA __c1f6,Y       ; $c1ed: b9 f6 c1  
-            STA $11            ; $c1f0: 85 11     
-            JMP ($0010)        ; $c1f2: 6c 10 00  
+__c168:     
+            LDA #$01           ; $c168: a9 01       Load $01 to A     
+            STA $40            ; $c16a: 85 40       Store A value at $40     
+__c16c:     
+            LDA $40            ; $c16c: a5 40       Load value at $40 to A     
+            BNE __c16c         ; $c16e: d0 fc       Loop if Zero Flag is not clear     
+            LDA #$08           ; $c170: a9 08       Load $08 to A     
+            STA PPUCTRL        ; $c172: 8d 00 20    Store A value at PPUCTRL  
+            STA $43            ; $c175: 85 43       Store A value at $43 
+            LDA PPUSTATUS      ; $c177: ad 02 20    Load value at PPUSTATUS to A  
+            LDA #$00           ; $c17a: a9 00       Clear A
+            STA PPUMASK        ; $c17c: 8d 01 20    Store A value at PPUMASK  
+            TAX                ; $c17f: aa          Transfer A to X
+__c180:     
+            STA $0700,X        ; $c180: 9d 00 07    Store A value at address ($0700 + X)  
+            INX                ; $c183: e8          Increment X by one
+            BNE __c180         ; $c184: d0 fa       Loop if Zero Flag is not clear     
+            STA $46            ; $c186: 85 46       Store A value at $46  
+            JSR __e2ff         ; $c188: 20 ff e2    Jump to subroutine __e2ff
+            JSR __c284         ; $c18b: 20 84 c2    Jump to subroutine __c284  
+            JSR __c21f         ; $c18e: 20 1f c2    Jump to subroutine __c21f  
+            JSR __e393         ; $c191: 20 93 e3    Jump to subroutine __e393  
+            LDA PPUSTATUS      ; $c194: ad 02 20    Load value at PPUSTATUS to A  
+            LDA #$3F           ; $c197: a9 3f       Load $3F to A
+            STA PPUADDR        ; $c199: 8d 06 20    Store A value at PPUADDR  
+            LDA #$00           ; $c19c: a9 00       Clear A
+            STA PPUADDR        ; $c19e: 8d 06 20    Store A value at PPUADDR  
+            LDY #$00           ; $c1a1: a0 00       Clear Y
+__c1a3:     
+            LDA __c395,Y       ; $c1a3: b9 95 c3    Load value at (__c395 + Y) to A  
+            STA PPUDATA        ; $c1a6: 8d 07 20    Store A value at PPUDATA    
+            INY                ; $c1a9: c8          Increment Y by one
+            CPY #$10           ; $c1aa: c0 10       Compare $10 with Y
+            BNE __c1a3         ; $c1ac: d0 f5       Loop if Zero Flag is not clear     
+            LDA #$2D           ; $c1ae: a9 2d       Load $2D to A
+            STA $6C            ; $c1b0: 85 6c       Store A value at $6C
+            STA $6D            ; $c1b2: 85 6d       Store A value at $6D     
+            STA $6E            ; $c1b4: 85 6e       Store A value at $6E     
+            STA $6F            ; $c1b6: 85 6f       Store A value at $6F     
+            LDA #$FF           ; $c1b8: a9 ff       Load $FF to A
+            STA $023F          ; $c1ba: 8d 3f 02    Store A value at $023F  
+            STA $48            ; $c1bd: 85 48       Store A value at $48     
+            LDA #$00           ; $c1bf: a9 00       Clear A     
+            STA $47            ; $c1c1: 85 47       Store A value at $47     
+            STA $46            ; $c1c3: 85 46       Store A value at $46     
+            STA $42            ; $c1c5: 85 42       Store A value at $42     
+            STA $41            ; $c1c7: 85 41       Store A value at $41     
+            STA $4C            ; $c1c9: 85 4c       Store A value at $4C     
+            STA $87            ; $c1cb: 85 87       Store A value at $87       
+            STA $88            ; $c1cd: 85 88       Store A value at $88     
+            LDA $3F            ; $c1cf: a5 3f       Load value at $3F to A
+            BNE __c1d7         ; $c1d1: d0 04       Branch to __c1d7 if Zero Flag is not clear      
+            LDA #$8A           ; $c1d3: a9 8a       Load $8A to A
+            BNE __c1d9         ; $c1d5: d0 02       Branch to __c1d9 if Zero Flag is not clear       
+__c1d7:     
+            LDA #$88           ; $c1d7: a9 88       Load $88 to A
+__c1d9:     
+            STA PPUCTRL        ; $c1d9: 8d 00 20    Store A value at PPUCTRL  
+            STA $43            ; $c1dc: 85 43       Store A value at $43
+__c1de:     
+            LDA #$01           ; $c1de: a9 01       Load $01 to A
+            STA $40            ; $c1e0: 85 40       Store A value at $40     
+__c1e2:     
+            LDA $40            ; $c1e2: a5 40       Load value at $40 to A     
+            BNE __c1e2         ; $c1e4: d0 fc       Loop if Zero Flag is not clear      
+            LDY $3F            ; $c1e6: a4 3f       Load $3F to Y
+            LDA __c1f5,Y       ; $c1e8: b9 f5 c1    Load value at (__c1f5 + Y) to A    
+            STA $10            ; $c1eb: 85 10       Store A value at $10      
+            LDA __c1f6,Y       ; $c1ed: b9 f6 c1    Load value at (__c1f6 + Y) to A  
+            STA $11            ; $c1f0: 85 11       Store A value at $11      
+            JMP ($0010)        ; $c1f2: 6c 10 00    Indirectly jump to address $0010  
 
 ;-------------------------------------------------------------------------------
-__c1f5:     .hex fb            ; $c1f5: fb            Data
-__c1f6:     .hex c1 bd c3 58   ; $c1f6: c1 bd c3 58   Data
+__c1f5:     
+            .hex fb            ; $c1f5: fb            Data
+__c1f6:     
+            .hex c1 bd c3 58   ; $c1f6: c1 bd c3 58   Data
             .hex c4 a5 4d 29   ; $c1fa: c4 a5 4d 29   Data
             .hex 0c f0 07 a9   ; $c1fe: 0c f0 07 a9   Data
             .hex 02 85 3f 4c   ; $c202: 02 85 3f 4c   Data
@@ -286,70 +299,80 @@ __c1f6:     .hex c1 bd c3 58   ; $c1f6: c1 bd c3 58   Data
             .hex 85 43 a9 02   ; $c216: 85 43 a9 02   Data
             .hex 85 3f 4c de   ; $c21a: 85 3f 4c de   Data
             .hex c1            ; $c21e: c1            Data
-__c21f:     LDA #$20           ; $c21f: a9 20     
-            STA $00            ; $c221: 85 00     
-            LDA #$e5           ; $c223: a9 e5     
-            STA $01            ; $c225: 85 01     
-            LDA #$06           ; $c227: a9 06     
-            STA $02            ; $c229: 85 02     
-            LDY #$00           ; $c22b: a0 00     
-__c22d:     LDA PPUSTATUS          ; $c22d: ad 02 20  
-            LDA $00            ; $c230: a5 00     
-            STA PPUADDR          ; $c232: 8d 06 20  
-            LDA $01            ; $c235: a5 01     
-            STA PPUADDR          ; $c237: 8d 06 20  
-            LDA #$17           ; $c23a: a9 17     
-            STA $03            ; $c23c: 85 03     
-__c23e:     LDA __c29f,Y       ; $c23e: b9 9f c2  
-            STA PPUDATA          ; $c241: 8d 07 20  
-            INY                ; $c244: c8        
-            DEC $03            ; $c245: c6 03     
-            BNE __c23e         ; $c247: d0 f5     
-            LDA $01            ; $c249: a5 01     
-            CLC                ; $c24b: 18        
-            ADC #$20           ; $c24c: 69 20     
-            STA $01            ; $c24e: 85 01     
-            LDA #$00           ; $c250: a9 00     
-            ADC $00            ; $c252: 65 00     
-            STA $00            ; $c254: 85 00     
-            DEC $02            ; $c256: c6 02     
-            BNE __c22d         ; $c258: d0 d3     
-            LDA #$06           ; $c25a: a9 06     
-__c25c:     .hex 85 00 a0 00   ; $c25c: 85 00 a0 00   Data
-__c260:     LDA PPUSTATUS          ; $c260: ad 02 20  
-            LDA __c329,Y       ; $c263: b9 29 c3  
-            STA PPUADDR          ; $c266: 8d 06 20  
-            INY                ; $c269: c8        
-            LDA __c329,Y       ; $c26a: b9 29 c3  
-            STA PPUADDR          ; $c26d: 8d 06 20  
-            INY                ; $c270: c8        
-__c271:     LDA __c329,Y       ; $c271: b9 29 c3  
-            CMP #$ff           ; $c274: c9 ff     
-            BEQ __c27e         ; $c276: f0 06     
-            STA PPUDATA          ; $c278: 8d 07 20  
-            INY                ; $c27b: c8        
-            BNE __c271         ; $c27c: d0 f3     
-__c27e:     INY                ; $c27e: c8        
-            DEC $00            ; $c27f: c6 00     
-            BNE __c260         ; $c281: d0 dd     
-            RTS                ; $c283: 60        
+__c21f:     
+            LDA #$20           ; $c21f: a9 20       Load $20 to A     
+            STA $00            ; $c221: 85 00       Store A value at $00
+            LDA #$E5           ; $c223: a9 e5       Load $E5 to A     
+            STA $01            ; $c225: 85 01       Store A value at $01
+            LDA #$06           ; $c227: a9 06       Load $00 to A     
+            STA $02            ; $c229: 85 02       Store A value at $02
+            LDY #$00           ; $c22b: a0 00       Clear Y
+__c22d:     
+            LDA PPUSTATUS      ; $c22d: ad 02 20    Load value at PPUSTATUS to A  
+            LDA $00            ; $c230: a5 00       Load value at $00 to A
+            STA PPUADDR        ; $c232: 8d 06 20    Store A value at PPUADDR
+            LDA $01            ; $c235: a5 01       Load value at $01 to A     
+            STA PPUADDR        ; $c237: 8d 06 20    Store A value at PPUADDR  
+            LDA #$17           ; $c23a: a9 17       Load $17 to A     
+            STA $03            ; $c23c: 85 03       Store A value at $03 
+__c23e:     
+            LDA __c29f,Y       ; $c23e: b9 9f c2    Load value at (__c29f + Y) to A    
+            STA PPUDATA        ; $c241: 8d 07 20    Store A value at PPUDATA
+            INY                ; $c244: c8          Increment Y by one
+            DEC $03            ; $c245: c6 03       Decrement value at $03 by one
+            BNE __c23e         ; $c247: d0 f5       Loop if Zero Flag is not clear       
+            LDA $01            ; $c249: a5 01       Load value at $01 to A  
+            CLC                ; $c24b: 18          Clear the carry flag.        
+            ADC #$20           ; $c24c: 69 20       Add $20 to A, updating flags and storing result in A     
+            STA $01            ; $c24e: 85 01       Store A value at $01
+            LDA #$00           ; $c250: a9 00       Clear A
+            ADC $00            ; $c252: 65 00       Add value at $00 to A, updating flags and storing result in A       
+            STA $00            ; $c254: 85 00       Store A value at $00
+            DEC $02            ; $c256: c6 02       Decrement value at $02 by one
+            BNE __c22d         ; $c258: d0 d3       Branch to __c22d if Zero Flag is not clear       
+            LDA #$06           ; $c25a: a9 06       Load $06 to A
+__c25c:     
+            .hex 85 00 a0 00   ; $c25c: 85 00 a0 00   Data
+__c260:     
+            LDA PPUSTATUS      ; $c260: ad 02 20    Load value at PPUSTATUS to A  
+            LDA __c329,Y       ; $c263: b9 29 c3    Load value at (__c329 + Y) to A   
+            STA PPUADDR        ; $c266: 8d 06 20    Store A value at PPUADDR  
+            INY                ; $c269: c8          Increment Y by one
+            LDA __c329,Y       ; $c26a: b9 29 c3    Load value at (__c329 + Y) to A  
+            STA PPUADDR        ; $c26d: 8d 06 20    Store A value at PPUADDR  
+            INY                ; $c270: c8          Increment Y by one
+__c271:     
+            LDA __c329,Y       ; $c271: b9 29 c3    Load value at (__c329 + Y) to A  
+            CMP #$FF           ; $c274: c9 ff       Compare $FF with A
+            BEQ __c27e         ; $c276: f0 06       Branch to __c27e if Zero Flag is clear     
+            STA PPUDATA        ; $c278: 8d 07 20    Store A value at PPUDATA  
+            INY                ; $c27b: c8          Increment Y by one
+            BNE __c271         ; $c27c: d0 f3       Loop if Zero Flag is not clear       
+__c27e:     
+            INY                ; $c27e: c8          Increment Y by one        
+            DEC $00            ; $c27f: c6 00       Decrement value at $00 by one
+            BNE __c260         ; $c281: d0 dd       Branch to __c260 if Zero Flag is not clear     
+            RTS                ; $c283: 60          Return       
 
 ;-------------------------------------------------------------------------------
-__c284:     LDA PPUSTATUS          ; $c284: ad 02 20  
-            LDA #$23           ; $c287: a9 23     
-            STA PPUADDR          ; $c289: 8d 06 20  
-            LDA #$c8           ; $c28c: a9 c8     
-            STA PPUADDR          ; $c28e: 8d 06 20  
-            LDY #$00           ; $c291: a0 00     
-__c293:     LDA __c3a5,Y       ; $c293: b9 a5 c3  
-            STA PPUDATA          ; $c296: 8d 07 20  
-            INY                ; $c299: c8        
-            CPY #$18           ; $c29a: c0 18     
-            BNE __c293         ; $c29c: d0 f5     
-            RTS                ; $c29e: 60        
+__c284:     
+            LDA PPUSTATUS      ; $c284: ad 02 20    Load value at PPUSTATUS to A  
+            LDA #$23           ; $c287: a9 23       Load $23 to A     
+            STA PPUADDR        ; $c289: 8d 06 20    Store A value at PPUADDR  
+            LDA #$C8           ; $c28c: a9 c8       Load $C8 to A     
+            STA PPUADDR        ; $c28e: 8d 06 20    Store A value at PPUADDR  
+            LDY #$00           ; $c291: a0 00       Clear Y
+__c293:     
+            LDA __c3a5,Y       ; $c293: b9 a5 c3    Load value at (__c3a5 + Y) to A  
+            STA PPUDATA        ; $c296: 8d 07 20    Store A value at PPUDATA  
+            INY                ; $c299: c8          Increment Y by one
+            CPY #$18           ; $c29a: c0 18       Compare $18 with Y
+            BNE __c293         ; $c29c: d0 f5       Loop if Zero Flag is not clear     
+            RTS                ; $c29e: 60          Return
 
 ;-------------------------------------------------------------------------------
-__c29f:     .hex e4 e8 e8 e8   ; $c29f: e4 e8 e8 e8   Data
+__c29f:     
+            .hex e4 e8 e8 e8   ; $c29f: e4 e8 e8 e8   Data
             .hex e8 e8 e8 e8   ; $c2a3: e8 e8 e8 e8   Data
             .hex e8 e8 e8 e8   ; $c2a7: e8 e8 e8 e8   Data
             .hex e8 e8 e8 e8   ; $c2ab: e8 e8 e8 e8   Data
@@ -378,13 +401,15 @@ __c29f:     .hex e4 e8 e8 e8   ; $c29f: e4 e8 e8 e8   Data
             .hex dc d7 dd de   ; $c307: dc d7 dd de   Data
             .hex df e0 e1 e2   ; $c30b: df e0 e1 e2   Data
             .hex e3 a3         ; $c30f: e3 a3         Data
-__c311:     .hex e9 e7 ea ea   ; $c311: e9 e7 ea ea   Data
+__c311:     
+            .hex e9 e7 ea ea   ; $c311: e9 e7 ea ea   Data
             .hex ea ea ea ea   ; $c315: ea ea ea ea   Data
             .hex ea ea ea ea   ; $c319: ea ea ea ea   Data
             .hex ea ea ea ea   ; $c31d: ea ea ea ea   Data
             .hex ea ea ea ea   ; $c321: ea ea ea ea   Data
             .hex ea ea ea e6   ; $c325: ea ea ea e6   Data
-__c329:     .hex 20 65 b0 b3   ; $c329: 20 65 b0 b3   Data
+__c329:     
+            .hex 20 65 b0 b3   ; $c329: 20 65 b0 b3   Data
             .hex b2 20 20 20   ; $c32d: b2 20 20 20   Data
             .hex 20 b4 b5 b6   ; $c331: 20 b4 b5 b6   Data
             .hex b7 b8 b9 ba   ; $c335: b7 b8 b9 ba   Data
@@ -411,11 +436,13 @@ __c329:     .hex 20 65 b0 b3   ; $c329: 20 65 b0 b3   Data
             .hex 54 53 20 52   ; $c389: 54 53 20 52   Data
             .hex 45 53 45 52   ; $c38d: 45 53 45 52   Data
             .hex 56 45 44 ff   ; $c391: 56 45 44 ff   Data
-__c395:     .hex 0f 20 0f 06   ; $c395: 0f 20 0f 06   Data
+__c395:     
+            .hex 0f 20 0f 06   ; $c395: 0f 20 0f 06   Data
             .hex 0f 26 20 27   ; $c399: 0f 26 20 27   Data
             .hex 0f 06 0f 26   ; $c39d: 0f 06 0f 26   Data
             .hex 0f 06 20 26   ; $c3a1: 0f 06 20 26   Data
-__c3a5:     .hex 80 a0 a0 a0   ; $c3a5: 80 a0 a0 a0   Data
+__c3a5:     
+            .hex 80 a0 a0 a0   ; $c3a5: 80 a0 a0 a0   Data
             .hex a0 a0 a0 00   ; $c3a9: a0 a0 a0 00   Data
             .hex 00 66 55 55   ; $c3ad: 00 66 55 55   Data
             .hex 55 55 dd 00   ; $c3b1: 55 55 dd 00   Data
@@ -423,14 +450,15 @@ __c3a5:     .hex 80 a0 a0 a0   ; $c3a5: 80 a0 a0 a0   Data
             .hex 0a 0a 0a 00   ; $c3b9: 0a 0a 0a 00   Data
 
 ;-------------------------------------------------------------------------------
-            LDA $87            ; $c3bd: a5 87     
-            ORA $88            ; $c3bf: 05 88     
-            BNE __c3dc         ; $c3c1: d0 19     
-            LDY #$00           ; $c3c3: a0 00     
-__c3c5:     LDA __c44d,Y       ; $c3c5: b9 4d c4  
+            LDA $87            ; $c3bd: a5 87       Load value at $87 to A     
+            ORA $88            ; $c3bf: 05 88       Logically OR value at $88 with A
+            BNE __c3dc         ; $c3c1: d0 19       Branch to __c3dc if Zero Flag is not clear     
+            LDY #$00           ; $c3c3: a0 00       Clear Y     
+__c3c5:     
+            LDA __c44d,Y       ; $c3c5: b9 4d c4  
             STA $024b,Y        ; $c3c8: 99 4b 02  
             INY                ; $c3cb: c8        
-            CMP #$ff           ; $c3cc: c9 ff     
+            CMP #$FF           ; $c3cc: c9 ff     
             BNE __c3c5         ; $c3ce: d0 f5     
             LDA $4d            ; $c3d0: a5 4d     
             AND #$04           ; $c3d2: 29 04     
@@ -438,7 +466,8 @@ __c3c5:     LDA __c44d,Y       ; $c3c5: b9 4d c4
             LDA $4d            ; $c3d6: a5 4d     
             AND #$08           ; $c3d8: 29 08     
             STA $51            ; $c3da: 85 51     
-__c3dc:     CLC                ; $c3dc: 18        
+__c3dc:     
+            CLC                ; $c3dc: 18        
             LDA #$01           ; $c3dd: a9 01     
             ADC $87            ; $c3df: 65 87     
             STA $87            ; $c3e1: 85 87     
@@ -454,7 +483,8 @@ __c3dc:     CLC                ; $c3dc: 18
             JMP __c1de         ; $c3f5: 4c de c1  
 
 ;-------------------------------------------------------------------------------
-__c3f8:     LDA $4d            ; $c3f8: a5 4d     
+__c3f8:     
+            LDA $4d            ; $c3f8: a5 4d     
             AND #$04           ; $c3fa: 29 04     
             CMP $50            ; $c3fc: c5 50     
             BEQ __c42f         ; $c3fe: f0 2f     
@@ -472,9 +502,9 @@ __c3f8:     LDA $4d            ; $c3f8: a5 4d
             STA $47            ; $c416: 85 47     
             BEQ __c41b         ; $c418: f0 01     
             INX                ; $c41a: e8        
-__c41b:     LDA __c455,x       ; $c41b: bd 55 c4  
+__c41b:     LDA __c455,X       ; $c41b: bd 55 c4  
             STA $024d          ; $c41e: 8d 4d 02  
-            LDA __c456,x       ; $c421: bd 56 c4  
+            LDA __c456,X       ; $c421: bd 56 c4  
             STA $0251          ; $c424: 8d 51 02  
             LDA #$22           ; $c427: a9 22     
             STA $024b          ; $c429: 8d 4b 02  
@@ -536,10 +566,10 @@ __c475:     .hex c4 b9 c4 b9   ; $c475: c4 b9 c4 b9   Data
 __c490:     LDA $40            ; $c490: a5 40     
             BNE __c490         ; $c492: d0 fc     
             LDA #$08           ; $c494: a9 08     
-            STA PPUCTRL          ; $c496: 8d 00 20  
+            STA PPUCTRL        ; $c496: 8d 00 20  
             STA $43            ; $c499: 85 43     
             LDA #$00           ; $c49b: a9 00     
-            STA PPUMASK          ; $c49d: 8d 01 20  
+            STA PPUMASK        ; $c49d: 8d 01 20  
             STA $88            ; $c4a0: 85 88     
             JSR __c51e         ; $c4a2: 20 1e c5  
             JSR __c54e         ; $c4a5: 20 4e c5  
@@ -547,7 +577,7 @@ __c490:     LDA $40            ; $c490: a5 40
             INC $87            ; $c4ab: e6 87     
             INC $87            ; $c4ad: e6 87     
             LDA #$88           ; $c4af: a9 88     
-            STA PPUCTRL          ; $c4b1: 8d 00 20  
+            STA PPUCTRL        ; $c4b1: 8d 00 20  
             STA $43            ; $c4b4: 85 43     
             JMP __c1de         ; $c4b6: 4c de c1  
 
@@ -592,7 +622,7 @@ __c4ec:     LDY $87            ; $c4ec: a4 87
 __c4fa:     LDA ($00),Y        ; $c4fa: b1 00     
             STA $024b,Y        ; $c4fc: 99 4b 02  
             INY                ; $c4ff: c8        
-            CMP #$ff           ; $c500: c9 ff     
+            CMP #$FF           ; $c500: c9 ff     
             BNE __c4fa         ; $c502: d0 f6     
             LDA ($00),Y        ; $c504: b1 00     
             BEQ __c509         ; $c506: f0 01     
@@ -615,46 +645,46 @@ __c513:     LDA __c688,Y       ; $c513: b9 88 c6
 
 ;-------------------------------------------------------------------------------
 __c51e:     LDA #$20           ; $c51e: a9 20     
-            STA PPUADDR          ; $c520: 8d 06 20  
+            STA PPUADDR        ; $c520: 8d 06 20  
             LDA #$c0           ; $c523: a9 c0     
-            STA PPUADDR          ; $c525: 8d 06 20  
+            STA PPUADDR        ; $c525: 8d 06 20  
             LDA #$17           ; $c528: a9 17     
             STA $00            ; $c52a: 85 00     
 __c52c:     LDA #$1c           ; $c52c: a9 1c     
             STA $01            ; $c52e: 85 01     
             LDA #$2d           ; $c530: a9 2d     
-            STA PPUDATA          ; $c532: 8d 07 20  
-            STA PPUDATA          ; $c535: 8d 07 20  
+            STA PPUDATA        ; $c532: 8d 07 20  
+            STA PPUDATA        ; $c535: 8d 07 20  
             LDA #$20           ; $c538: a9 20     
-__c53a:     STA PPUDATA          ; $c53a: 8d 07 20  
+__c53a:     STA PPUDATA        ; $c53a: 8d 07 20  
             DEC $01            ; $c53d: c6 01     
             BNE __c53a         ; $c53f: d0 f9     
             LDA #$2d           ; $c541: a9 2d     
-            STA PPUDATA          ; $c543: 8d 07 20  
-            STA PPUDATA          ; $c546: 8d 07 20  
+            STA PPUDATA        ; $c543: 8d 07 20  
+            STA PPUDATA        ; $c546: 8d 07 20  
             DEC $00            ; $c549: c6 00     
             BPL __c52c         ; $c54b: 10 df     
             RTS                ; $c54d: 60        
 
 ;-------------------------------------------------------------------------------
 __c54e:     LDA #$23           ; $c54e: a9 23     
-            STA PPUADDR          ; $c550: 8d 06 20  
+            STA PPUADDR        ; $c550: 8d 06 20  
             LDA #$c0           ; $c553: a9 c0     
-            STA PPUADDR          ; $c555: 8d 06 20  
+            STA PPUADDR        ; $c555: 8d 06 20  
             LDY #$20           ; $c558: a0 20     
             LDA #$00           ; $c55a: a9 00     
-__c55c:     STA PPUDATA          ; $c55c: 8d 07 20  
+__c55c:     STA PPUDATA        ; $c55c: 8d 07 20  
             DEY                ; $c55f: 88        
             BNE __c55c         ; $c560: d0 fa     
             LDA #$23           ; $c562: a9 23     
-            STA PPUADDR          ; $c564: 8d 06 20  
+            STA PPUADDR        ; $c564: 8d 06 20  
             LDA #$d0           ; $c567: a9 d0     
-            STA PPUADDR          ; $c569: 8d 06 20  
+            STA PPUADDR        ; $c569: 8d 06 20  
             LDA #$03           ; $c56c: a9 03     
             STA $00            ; $c56e: 85 00     
             LDA #$55           ; $c570: a9 55     
 __c572:     LDY #$08           ; $c572: a0 08     
-__c574:     STA PPUDATA          ; $c574: 8d 07 20  
+__c574:     STA PPUDATA        ; $c574: 8d 07 20  
             DEY                ; $c577: 88        
             BNE __c574         ; $c578: d0 fa     
             CLC                ; $c57a: 18        
@@ -662,25 +692,25 @@ __c574:     STA PPUDATA          ; $c574: 8d 07 20
             DEC $00            ; $c57d: c6 00     
             BNE __c572         ; $c57f: d0 f1     
             LDA #$3f           ; $c581: a9 3f     
-            STA PPUADDR          ; $c583: 8d 06 20  
+            STA PPUADDR        ; $c583: 8d 06 20  
             LDA #$00           ; $c586: a9 00     
-            STA PPUADDR          ; $c588: 8d 06 20  
+            STA PPUADDR        ; $c588: 8d 06 20  
             LDY #$00           ; $c58b: a0 00     
 __c58d:     LDA __c5b3,Y       ; $c58d: b9 b3 c5  
-            STA PPUDATA          ; $c590: 8d 07 20  
+            STA PPUDATA        ; $c590: 8d 07 20  
             INY                ; $c593: c8        
             CPY #$20           ; $c594: c0 20     
             BNE __c58d         ; $c596: d0 f5     
             LDA #$23           ; $c598: a9 23     
-            STA PPUADDR          ; $c59a: 8d 06 20  
+            STA PPUADDR        ; $c59a: 8d 06 20  
             LDA #$e8           ; $c59d: a9 e8     
-            STA PPUADDR          ; $c59f: 8d 06 20  
+            STA PPUADDR        ; $c59f: 8d 06 20  
             LDA #$aa           ; $c5a2: a9 aa     
-            STA PPUDATA          ; $c5a4: 8d 07 20  
-            STA PPUDATA          ; $c5a7: 8d 07 20  
-            STA PPUDATA          ; $c5aa: 8d 07 20  
+            STA PPUDATA        ; $c5a4: 8d 07 20  
+            STA PPUDATA        ; $c5a7: 8d 07 20  
+            STA PPUDATA        ; $c5aa: 8d 07 20  
             LDA #$22           ; $c5ad: a9 22     
-            STA PPUDATA          ; $c5af: 8d 07 20  
+            STA PPUDATA        ; $c5af: 8d 07 20  
             RTS                ; $c5b2: 60        
 
 ;-------------------------------------------------------------------------------
@@ -932,12 +962,12 @@ __c688:     .hex 48 1c 40 26   ; $c688: 48 1c 40 26   Data
             .hex 09 08 01 01   ; $c984: 09 08 01 01   Data
             .hex 1e 1f         ; $c988: 1e 1f         Data
 __c98a:     LDA #$08           ; $c98a: a9 08     
-            STA PPUCTRL          ; $c98c: 8d 00 20  
+            STA PPUCTRL        ; $c98c: 8d 00 20  
             STA $43            ; $c98f: 85 43     
-__c991:     LDA PPUSTATUS          ; $c991: ad 02 20  
+__c991:     LDA PPUSTATUS      ; $c991: ad 02 20  
             BPL __c991         ; $c994: 10 fb     
             LDA #$00           ; $c996: a9 00     
-            STA PPUMASK          ; $c998: 8d 01 20  
+            STA PPUMASK        ; $c998: 8d 01 20  
             STA $3f            ; $c99b: 85 3f     
             STA $46            ; $c99d: 85 46     
             STA $69            ; $c99f: 85 69     
@@ -961,13 +991,13 @@ __c9b9:     STA $0067,Y        ; $c9b9: 99 67 00
             STA $77            ; $c9c5: 85 77     
             STA $0600          ; $c9c7: 8d 00 06  
             STA $0601          ; $c9ca: 8d 01 06  
-__c9cd:     LDA #$ff           ; $c9cd: a9 ff     
+__c9cd:     LDA #$FF           ; $c9cd: a9 ff     
             STA $68            ; $c9cf: 85 68     
             STA $78            ; $c9d1: 85 78     
             STA $0245          ; $c9d3: 8d 45 02  
             LDA #$88           ; $c9d6: a9 88     
             STA $43            ; $c9d8: 85 43     
-            STA PPUCTRL          ; $c9da: 8d 00 20  
+            STA PPUCTRL        ; $c9da: 8d 00 20  
 __c9dd:     LDA #$01           ; $c9dd: a9 01     
             STA $40            ; $c9df: 85 40     
 __c9e1:     LDA $40            ; $c9e1: a5 40     
@@ -1015,7 +1045,7 @@ __ca41:     .hex 8e 4b 02 a9   ; $ca41: 8e 4b 02 a9   Data
             .hex a5 4a 29 01   ; $ca4d: a5 4a 29 01   Data
             .hex f0 05 a2 00   ; $ca51: f0 05 a2 00   Data
             .hex 8d 0f 06      ; $ca55: 8d 0f 06      Data
-__ca58:     LDA __ca91,x       ; $ca58: bd 91 ca  
+__ca58:     LDA __ca91,X       ; $ca58: bd 91 ca  
             STA $024d,Y        ; $ca5b: 99 4d 02  
             INX                ; $ca5e: e8        
             INY                ; $ca5f: c8        
@@ -1052,12 +1082,12 @@ __caa4:     .hex a9 60 85 00   ; $caa4: a9 60 85 00   Data
             .hex a0 00 84 05   ; $cab4: a0 00 84 05   Data
             .hex 84 06 84 07   ; $cab8: 84 06 84 07   Data
 __cabc:     LDX $06            ; $cabc: a6 06     
-            LDA __cbf6,x       ; $cabe: bd f6 cb  
+            LDA __cbf6,X       ; $cabe: bd f6 cb  
             STA $02            ; $cac1: 85 02     
-            LDA __cbf7,x       ; $cac3: bd f7 cb  
+            LDA __cbf7,X       ; $cac3: bd f7 cb  
             STA $03            ; $cac6: 85 03     
             LDX $07            ; $cac8: a6 07     
-            LDA __cbfc,x       ; $caca: bd fc cb  
+            LDA __cbfc,X       ; $caca: bd fc cb  
             STA $08            ; $cacd: 85 08     
 __cacf:     .hex a5 03 91 00   ; $cacf: a5 03 91 00   Data
             .hex a6            ; $cad3: a6            Data
@@ -1195,10 +1225,10 @@ __cc08:     .hex 17 23 19 23   ; $cc08: 17 23 19 23   Data
             .hex 08 a2 fe      ; $cc20: 08 a2 fe      Data
 __cc23:     INX                ; $cc23: e8        
             INX                ; $cc24: e8        
-            CMP $b8,x          ; $cc25: d5 b8     
+            CMP $b8,X          ; $cc25: d5 b8     
             BNE __cc23         ; $cc27: d0 fa     
             LDA #$06           ; $cc29: a9 06     
-            STA $b8,x          ; $cc2b: 95 b8     
+            STA $b8,X          ; $cc2b: 95 b8     
 __cc2d:     .hex 20 c9 dd 20   ; $cc2d: 20 c9 dd 20   Data
             .hex 7f d8 20 37   ; $cc31: 7f d8 20 37   Data
             .hex d9 20 ab d9   ; $cc35: d9 20 ab d9   Data
@@ -1208,7 +1238,7 @@ __cc2d:     .hex 20 c9 dd 20   ; $cc2d: 20 c9 dd 20   Data
             .hex 87 a9 0a 85   ; $cc45: 87 a9 0a 85   Data
             .hex db 8d 03 06   ; $cc49: db 8d 03 06   Data
             .hex a9 00 aa      ; $cc4d: a9 00 aa      Data
-__cc50:     STA $1e,x          ; $cc50: 95 1e     
+__cc50:     STA $1e,X          ; $cc50: 95 1e     
             INX                ; $cc52: e8        
             CPX #$14           ; $cc53: e0 14     
             BNE __cc50         ; $cc55: d0 f9     
@@ -1246,12 +1276,12 @@ __cca4:     LDA $67            ; $cca4: a5 67
             LDA $46            ; $ccaa: a5 46     
             BEQ __ccbf         ; $ccac: f0 11     
             LDX #$0f           ; $ccae: a2 0f     
-__ccb0:     LDA $67,x          ; $ccb0: b5 67     
+__ccb0:     LDA $67,X          ; $ccb0: b5 67     
             STA $00            ; $ccb2: 85 00     
-            LDA $77,x          ; $ccb4: b5 77     
-            STA $67,x          ; $ccb6: 95 67     
+            LDA $77,X          ; $ccb4: b5 77     
+            STA $67,X          ; $ccb6: 95 67     
             LDA $00            ; $ccb8: a5 00     
-            STA $77,x          ; $ccba: 95 77     
+            STA $77,X          ; $ccba: 95 77     
             DEX                ; $ccbc: ca        
             BPL __ccb0         ; $ccbd: 10 f1     
 __ccbf:     LDA #$00           ; $ccbf: a9 00     
@@ -1262,12 +1292,12 @@ __ccbf:     LDA #$00           ; $ccbf: a9 00
 
 ;-------------------------------------------------------------------------------
 __ccca:     LDX #$0f           ; $ccca: a2 0f     
-__cccc:     LDA $67,x          ; $cccc: b5 67     
+__cccc:     LDA $67,X          ; $cccc: b5 67     
             STA $00            ; $ccce: 85 00     
-            LDA $77,x          ; $ccd0: b5 77     
-            STA $67,x          ; $ccd2: 95 67     
+            LDA $77,X          ; $ccd0: b5 77     
+            STA $67,X          ; $ccd2: 95 67     
             LDA $00            ; $ccd4: a5 00     
-            STA $77,x          ; $ccd6: 95 77     
+            STA $77,X          ; $ccd6: 95 77     
             DEX                ; $ccd8: ca        
             BPL __cccc         ; $ccd9: 10 f1     
             INC $46            ; $ccdb: e6 46     
@@ -1280,7 +1310,7 @@ __cce3:     JMP __c9dd         ; $cce3: 4c dd c9
             LDA $87            ; $cce6: a5 87     
             BNE __ccfb         ; $cce8: d0 11     
             LDX #$00           ; $ccea: a2 00     
-__ccec:     STA $1e,x          ; $ccec: 95 1e     
+__ccec:     STA $1e,X          ; $ccec: 95 1e     
             INX                ; $ccee: e8        
             CPX #$14           ; $ccef: e0 14     
             BNE __ccec         ; $ccf1: d0 f9     
@@ -1297,7 +1327,7 @@ __ccfb:     LDA $4b            ; $ccfb: a5 4b
             BNE __cd0b         ; $cd07: d0 02     
             LDX #$04           ; $cd09: a2 04     
 __cd0b:     LDY #$03           ; $cd0b: a0 03     
-__cd0d:     LDA __cd59,x       ; $cd0d: bd 59 cd  
+__cd0d:     LDA __cd59,X       ; $cd0d: bd 59 cd  
             STA $024b,Y        ; $cd10: 99 4b 02  
             INX                ; $cd13: e8        
             DEY                ; $cd14: 88        
@@ -1357,12 +1387,12 @@ __cd6c:     STA $0700,Y        ; $cd6c: 99 00 07
             STY $06            ; $cd84: 84 06     
             STY $07            ; $cd86: 84 07     
 __cd88:     LDX $06            ; $cd88: a6 06     
-            LDA __ce29,x       ; $cd8a: bd 29 ce  
+            LDA __ce29,X       ; $cd8a: bd 29 ce  
             STA $02            ; $cd8d: 85 02     
-            LDA __ce2a,x       ; $cd8f: bd 2a ce  
+            LDA __ce2a,X       ; $cd8f: bd 2a ce  
             STA $03            ; $cd92: 85 03     
             LDX $07            ; $cd94: a6 07     
-            LDA __ce31,x       ; $cd96: bd 31 ce  
+            LDA __ce31,X       ; $cd96: bd 31 ce  
             STA $08            ; $cd99: 85 08     
 __cd9b:     .hex a5 03 91 00   ; $cd9b: a5 03 91 00   Data
             .hex a6 05 bd 01   ; $cd9f: a6 05 bd 01   Data
@@ -1421,27 +1451,27 @@ __ce31:     .hex 04 04 06 03   ; $ce31: 04 04 06 03   Data
 __ce39:     LDA $40            ; $ce39: a5 40     
             BNE __ce39         ; $ce3b: d0 fc     
             LDA #$08           ; $ce3d: a9 08     
-            STA PPUCTRL          ; $ce3f: 8d 00 20  
+            STA PPUCTRL        ; $ce3f: 8d 00 20  
             STA $43            ; $ce42: 85 43     
             LDA #$00           ; $ce44: a9 00     
-            STA PPUMASK          ; $ce46: 8d 01 20  
+            STA PPUMASK        ; $ce46: 8d 01 20  
             LDX #$00           ; $ce49: a2 00     
-__ce4b:     STA $87,x          ; $ce4b: 95 87     
+__ce4b:     STA $87,X          ; $ce4b: 95 87     
             INX                ; $ce4d: e8        
             CPX #$69           ; $ce4e: e0 69     
             BNE __ce4b         ; $ce50: d0 f9     
             TAX                ; $ce52: aa        
-__ce53:     STA $0700,x        ; $ce53: 9d 00 07  
+__ce53:     STA $0700,X        ; $ce53: 9d 00 07  
             INX                ; $ce56: e8        
             BNE __ce53         ; $ce57: d0 fa     
-            LDA PPUSTATUS          ; $ce59: ad 02 20  
+            LDA PPUSTATUS      ; $ce59: ad 02 20  
             LDA #$3f           ; $ce5c: a9 3f     
-            STA PPUADDR          ; $ce5e: 8d 06 20  
+            STA PPUADDR        ; $ce5e: 8d 06 20  
             LDA #$00           ; $ce61: a9 00     
-            STA PPUADDR          ; $ce63: 8d 06 20  
+            STA PPUADDR        ; $ce63: 8d 06 20  
             LDY #$00           ; $ce66: a0 00     
 __ce68:     LDA __d060,Y       ; $ce68: b9 60 d0  
-            STA PPUDATA          ; $ce6b: 8d 07 20  
+            STA PPUDATA        ; $ce6b: 8d 07 20  
             INY                ; $ce6e: c8        
             CPY #$20           ; $ce6f: c0 20     
             BNE __ce68         ; $ce71: d0 f5     
@@ -1475,7 +1505,7 @@ __cead:     DEX                ; $cead: ca
             BNE __cead         ; $ceb2: d0 f9     
 __ceb4:     STA $00            ; $ceb4: 85 00     
             TAX                ; $ceb6: aa        
-            LDA __eb42,x       ; $ceb7: bd 42 eb  
+            LDA __eb42,X       ; $ceb7: bd 42 eb  
             TAX                ; $ceba: aa        
             LDA #$00           ; $cebb: a9 00     
             CLC                ; $cebd: 18        
@@ -1486,22 +1516,22 @@ __cebe:     DEX                ; $cebe: ca
 __cec5:     TAY                ; $cec5: a8        
             LDX #$00           ; $cec6: a2 00     
 __cec8:     LDA __ebcc,Y       ; $cec8: b9 cc eb  
-            STA $9f,x          ; $cecb: 95 9f     
+            STA $9f,X          ; $cecb: 95 9f     
             INX                ; $cecd: e8        
             INY                ; $cece: c8        
             CPX #$16           ; $cecf: e0 16     
             BNE __cec8         ; $ced1: d0 f5     
             LDX $00            ; $ced3: a6 00     
-            LDA __eb42,x       ; $ced5: bd 42 eb  
+            LDA __eb42,X       ; $ced5: bd 42 eb  
             ASL                ; $ced8: 0a        
             ASL                ; $ced9: 0a        
             ASL                ; $ceda: 0a        
             TAX                ; $cedb: aa        
             LDY #$00           ; $cedc: a0 00     
             STY $d0            ; $cede: 84 d0     
-            LDA __ec3a,x       ; $cee0: bd 3a ec  
+            LDA __ec3a,X       ; $cee0: bd 3a ec  
             STA $cf            ; $cee3: 85 cf     
-__cee5:     LDA __ec3a,x       ; $cee5: bd 3a ec  
+__cee5:     LDA __ec3a,X       ; $cee5: bd 3a ec  
             STA $0097,Y        ; $cee8: 99 97 00  
             INX                ; $ceeb: e8        
             INY                ; $ceec: c8        
@@ -1509,24 +1539,24 @@ __cee5:     LDA __ec3a,x       ; $cee5: bd 3a ec
             BNE __cee5         ; $ceef: d0 f4     
             INC $00            ; $cef1: e6 00     
             LDX $00            ; $cef3: a6 00     
-            LDA __eb42,x       ; $cef5: bd 42 eb  
+            LDA __eb42,X       ; $cef5: bd 42 eb  
             STA $8c            ; $cef8: 85 8c     
             INC $00            ; $cefa: e6 00     
             LDX $00            ; $cefc: a6 00     
-            LDA __eb42,x       ; $cefe: bd 42 eb  
+            LDA __eb42,X       ; $cefe: bd 42 eb  
             ASL                ; $cf01: 0a        
             TAX                ; $cf02: aa        
-            LDA __ec5a,x       ; $cf03: bd 5a ec  
+            LDA __ec5a,X       ; $cf03: bd 5a ec  
             STA $8d            ; $cf06: 85 8d     
             INX                ; $cf08: e8        
-            LDA __ec5a,x       ; $cf09: bd 5a ec  
+            LDA __ec5a,X       ; $cf09: bd 5a ec  
             STA $8e            ; $cf0c: 85 8e     
             INC $00            ; $cf0e: e6 00     
             LDA $69            ; $cf10: a5 69     
             BEQ __cf38         ; $cf12: f0 24     
             LDX #$0c           ; $cf14: a2 0c     
             LDY #$00           ; $cf16: a0 00     
-            LDA __ec68,x       ; $cf18: bd 68 ec  
+            LDA __ec68,X       ; $cf18: bd 68 ec  
             STA $008f,Y        ; $cf1b: 99 8f 00  
             INY                ; $cf1e: c8        
             INX                ; $cf1f: e8        
@@ -1536,7 +1566,7 @@ __cee5:     LDA __ec3a,x       ; $cee5: bd 3a ec
             STA $01            ; $cf25: 85 01     
 __cf27:     LDA $01            ; $cf27: a5 01     
             CLC                ; $cf29: 18        
-            ADC __ec68,x       ; $cf2a: 7d 68 ec  
+            ADC __ec68,X       ; $cf2a: 7d 68 ec  
             STA $008f,Y        ; $cf2d: 99 8f 00  
             INY                ; $cf30: c8        
             INX                ; $cf31: e8        
@@ -1544,12 +1574,12 @@ __cf27:     LDA $01            ; $cf27: a5 01
             BNE __cf27         ; $cf34: d0 f1     
             BEQ __cf4e         ; $cf36: f0 16     
 __cf38:     LDX $00            ; $cf38: a6 00     
-            LDA __eb42,x       ; $cf3a: bd 42 eb  
+            LDA __eb42,X       ; $cf3a: bd 42 eb  
             ASL                ; $cf3d: 0a        
             ASL                ; $cf3e: 0a        
             TAX                ; $cf3f: aa        
             LDY #$00           ; $cf40: a0 00     
-__cf42:     LDA __ec68,x       ; $cf42: bd 68 ec  
+__cf42:     LDA __ec68,X       ; $cf42: bd 68 ec  
             STA $008f,Y        ; $cf45: 99 8f 00  
             INX                ; $cf48: e8        
             INY                ; $cf49: c8        
@@ -1565,17 +1595,17 @@ __cf4e:     LDA #$04           ; $cf4e: a9 04
 __cf5c:     DEC $01            ; $cf5c: c6 01     
             BEQ __cf6c         ; $cf5e: f0 0c     
             LDA #$02           ; $cf60: a9 02     
-            STA $ba,x          ; $cf62: 95 ba     
+            STA $ba,X          ; $cf62: 95 ba     
             LDA #$00           ; $cf64: a9 00     
-            STA $bb,x          ; $cf66: 95 bb     
+            STA $bb,X          ; $cf66: 95 bb     
             INX                ; $cf68: e8        
             INX                ; $cf69: e8        
             BNE __cf5c         ; $cf6a: d0 f0     
 __cf6c:     LDA #$00           ; $cf6c: a9 00     
 __cf6e:     CPX #$06           ; $cf6e: e0 06     
             BEQ __cf7a         ; $cf70: f0 08     
-            STA $ba,x          ; $cf72: 95 ba     
-            STA $bb,x          ; $cf74: 95 bb     
+            STA $ba,X          ; $cf72: 95 ba     
+            STA $bb,X          ; $cf74: 95 bb     
             INX                ; $cf76: e8        
             INX                ; $cf77: e8        
             BNE __cf6e         ; $cf78: d0 f4     
@@ -1583,11 +1613,11 @@ __cf7a:     LDA $90            ; $cf7a: a5 90
             STA $d3            ; $cf7c: 85 d3     
             INC $00            ; $cf7e: e6 00     
             LDX $00            ; $cf80: a6 00     
-            LDA __eb42,x       ; $cf82: bd 42 eb  
+            LDA __eb42,X       ; $cf82: bd 42 eb  
             STA $93            ; $cf85: 85 93     
             INC $00            ; $cf87: e6 00     
             LDX $00            ; $cf89: a6 00     
-            LDA __eb42,x       ; $cf8b: bd 42 eb  
+            LDA __eb42,X       ; $cf8b: bd 42 eb  
             STA $96            ; $cf8e: 85 96     
             LDA $a5            ; $cf90: a5 a5     
             STA $b5            ; $cf92: 85 b5     
@@ -1613,7 +1643,7 @@ __cf7a:     LDA $90            ; $cf7a: a5 90
             BEQ __cfbe         ; $cfba: f0 02     
             LDY #$09           ; $cfbc: a0 09     
 __cfbe:     LDA __d04e,Y       ; $cfbe: b9 4e d0  
-            STA $026b,x        ; $cfc1: 9d 6b 02  
+            STA $026b,X        ; $cfc1: 9d 6b 02  
             INY                ; $cfc4: c8        
             INX                ; $cfc5: e8        
             CPX #$09           ; $cfc6: e0 09     
@@ -1634,10 +1664,10 @@ __cfe5:     INY                ; $cfe5: c8
             CPY #$04           ; $cfe6: c0 04     
             BNE __cfd9         ; $cfe8: d0 ef     
             STY $c0            ; $cfea: 84 c0     
-            LDA #$ff           ; $cfec: a9 ff     
+            LDA #$FF           ; $cfec: a9 ff     
             STA $89            ; $cfee: 85 89     
             LDA #$88           ; $cff0: a9 88     
-            STA PPUCTRL          ; $cff2: 8d 00 20  
+            STA PPUCTRL        ; $cff2: 8d 00 20  
             STA $43            ; $cff5: 85 43     
             JMP __c9dd         ; $cff7: 4c dd c9  
 
@@ -1652,11 +1682,11 @@ __d004:     STY $00            ; $d004: 84 00
             STA $01            ; $d008: 85 01     
             LDA #$0a           ; $d00a: a9 0a     
             STA $02            ; $d00c: 85 02     
-            LDA PPUSTATUS          ; $d00e: ad 02 20  
+            LDA PPUSTATUS      ; $d00e: ad 02 20  
             LDA $00            ; $d011: a5 00     
-            STA PPUADDR          ; $d013: 8d 06 20  
+            STA PPUADDR        ; $d013: 8d 06 20  
             LDA $01            ; $d016: a5 01     
-            STA PPUADDR          ; $d018: 8d 06 20  
+            STA PPUADDR        ; $d018: 8d 06 20  
             LDA #$06           ; $d01b: a9 06     
             STA $03            ; $d01d: 85 03     
 __d01f:     .hex a9 20 8d 07   ; $d01f: a9 20 8d 07   Data
@@ -1684,15 +1714,15 @@ __d060:     .hex 0f 20 0f 06   ; $d060: 0f 20 0f 06   Data
             .hex 0f 11 20 33   ; $d074: 0f 11 20 33   Data
             .hex 0f 21 20 21   ; $d078: 0f 21 20 21   Data
             .hex 0f 09 20 17   ; $d07c: 0f 09 20 17   Data
-__d080:     LDA PPUSTATUS          ; $d080: ad 02 20  
+__d080:     LDA PPUSTATUS      ; $d080: ad 02 20  
             LDA #$23           ; $d083: a9 23     
-            STA PPUADDR          ; $d085: 8d 06 20  
+            STA PPUADDR        ; $d085: 8d 06 20  
             LDA #$c0           ; $d088: a9 c0     
-            STA PPUADDR          ; $d08a: 8d 06 20  
+            STA PPUADDR        ; $d08a: 8d 06 20  
             LDX #$01           ; $d08d: a2 01     
 __d08f:     LDY #$00           ; $d08f: a0 00     
 __d091:     LDA __d0af,Y       ; $d091: b9 af d0  
-            STA PPUDATA          ; $d094: 8d 07 20  
+            STA PPUDATA        ; $d094: 8d 07 20  
             INY                ; $d097: c8        
             CPY #$40           ; $d098: c0 40     
             BNE __d091         ; $d09a: d0 f5     
@@ -1701,11 +1731,11 @@ __d091:     LDA __d0af,Y       ; $d091: b9 af d0
             RTS                ; $d09f: 60        
 
 ;-------------------------------------------------------------------------------
-__d0a0:     LDA PPUSTATUS          ; $d0a0: ad 02 20  
+__d0a0:     LDA PPUSTATUS      ; $d0a0: ad 02 20  
             LDA #$2b           ; $d0a3: a9 2b     
-            STA PPUADDR          ; $d0a5: 8d 06 20  
+            STA PPUADDR        ; $d0a5: 8d 06 20  
             LDA #$c0           ; $d0a8: a9 c0     
-            STA PPUADDR          ; $d0aa: 8d 06 20  
+            STA PPUADDR        ; $d0aa: 8d 06 20  
             BNE __d08f         ; $d0ad: d0 e0     
 __d0af:     .hex 55 55 55 55   ; $d0af: 55 55 55 55   Data
             .hex 55 11 00 00   ; $d0b3: 55 11 00 00   Data
@@ -1736,12 +1766,12 @@ __d0ef:     LDA $89            ; $d0ef: a5 89
             BPL __d117         ; $d101: 10 14     
             STA $88            ; $d103: 85 88     
             LDX #$00           ; $d105: a2 00     
-__d107:     LDA $39,x          ; $d107: b5 39     
+__d107:     LDA $39,X          ; $d107: b5 39     
             AND #$fc           ; $d109: 29 fc     
             STA $00            ; $d10b: 85 00     
             TXA                ; $d10d: 8a        
             ORA $00            ; $d10e: 05 00     
-            STA $39,x          ; $d110: 95 39     
+            STA $39,X          ; $d110: 95 39     
             INX                ; $d112: e8        
             CPX #$04           ; $d113: e0 04     
             BNE __d107         ; $d115: d0 f0     
@@ -1751,24 +1781,24 @@ __d117:     LDA $89            ; $d117: a5 89
             LDX #$00           ; $d11d: a2 00     
 __d11f:     .hex a5 8a 29 08   ; $d11f: a5 8a 29 08   Data
             .hex d0 02 a2 05   ; $d123: d0 02 a2 05   Data
-__d127:     LDY #$ff           ; $d127: a0 ff     
+__d127:     LDY #$FF           ; $d127: a0 ff     
 __d129:     INY                ; $d129: c8        
             LDA $024b,Y        ; $d12a: b9 4b 02  
-            CMP #$ff           ; $d12d: c9 ff     
+            CMP #$FF           ; $d12d: c9 ff     
             BNE __d129         ; $d12f: d0 f8     
             TYA                ; $d131: 98        
             BNE __d135         ; $d132: d0 01     
             INX                ; $d134: e8        
-__d135:     LDA __d205,x       ; $d135: bd 05 d2  
+__d135:     LDA __d205,X       ; $d135: bd 05 d2  
             STA $024b,Y        ; $d138: 99 4b 02  
             INY                ; $d13b: c8        
             INX                ; $d13c: e8        
-            CMP #$ff           ; $d13d: c9 ff     
+            CMP #$FF           ; $d13d: c9 ff     
             BNE __d135         ; $d13f: d0 f4     
 __d141:     LDA $88            ; $d141: a5 88     
             BNE __d174         ; $d143: d0 2f     
             LDA $cf            ; $d145: a5 cf     
-            CMP #$ff           ; $d147: c9 ff     
+            CMP #$FF           ; $d147: c9 ff     
             BEQ __d174         ; $d149: f0 29     
             INC $d1            ; $d14b: e6 d1     
             LDA $d1            ; $d14d: a5 d1     
@@ -1788,7 +1818,7 @@ __d141:     LDA $88            ; $d141: a5 88
 __d16a:     LDA $d2            ; $d16a: a5 d2     
 __d16c:     STA $87            ; $d16c: 85 87     
             LDX $d0            ; $d16e: a6 d0     
-            LDA $97,x          ; $d170: b5 97     
+            LDA $97,X          ; $d170: b5 97     
             STA $cf            ; $d172: 85 cf     
 __d174:     LDA $d3            ; $d174: a5 d3     
             BEQ __d197         ; $d176: f0 1f     
@@ -1799,10 +1829,10 @@ __d174:     LDA $d3            ; $d174: a5 d3
             JSR __d1eb         ; $d17f: 20 eb d1  
             LDA $d3            ; $d182: a5 d3     
             LDX #$00           ; $d184: a2 00     
-__d186:     CMP $8f,x          ; $d186: d5 8f     
+__d186:     CMP $8f,X          ; $d186: d5 8f     
             BNE __d192         ; $d188: d0 08     
             INX                ; $d18a: e8        
-            LDA $8f,x          ; $d18b: b5 8f     
+            LDA $8f,X          ; $d18b: b5 8f     
             STA $d3            ; $d18d: 85 d3     
             JMP __d197         ; $d18f: 4c 97 d1  
 
@@ -1826,7 +1856,7 @@ __d197:     INC $d6            ; $d197: e6 d6
 __d1b2:     LDX $d4            ; $d1b2: a6 d4     
             CPX #$02           ; $d1b4: e0 02     
             BEQ __d1cf         ; $d1b6: f0 17     
-            LDA $8d,x          ; $d1b8: b5 8d     
+            LDA $8d,X          ; $d1b8: b5 8d     
             CMP $6a            ; $d1ba: c5 6a     
             BNE __d1cf         ; $d1bc: d0 11     
             INC $d4            ; $d1be: e6 d4     
@@ -1835,9 +1865,9 @@ __d1b2:     LDX $d4            ; $d1b2: a6 d4
             TXA                ; $d1c4: 8a        
             ASL                ; $d1c5: 0a        
             TAX                ; $d1c6: aa        
-            LDA $ab,x          ; $d1c7: b5 ab     
+            LDA $ab,X          ; $d1c7: b5 ab     
             STA $ca            ; $d1c9: 85 ca     
-            LDA $ac,x          ; $d1cb: b5 ac     
+            LDA $ac,X          ; $d1cb: b5 ac     
             STA $cb            ; $d1cd: 85 cb     
 __d1cf:     ORA $d7            ; $d1cf: 05 d7     
             ORA $d8            ; $d1d1: 05 d8     
@@ -1859,10 +1889,10 @@ __d1ea:     RTS                ; $d1ea: 60
 
 ;-------------------------------------------------------------------------------
 __d1eb:     LDX #$00           ; $d1eb: a2 00     
-__d1ed:     LDA $ba,x          ; $d1ed: b5 ba     
+__d1ed:     LDA $ba,X          ; $d1ed: b5 ba     
             BNE __d1f6         ; $d1ef: d0 05     
             LDA #$02           ; $d1f1: a9 02     
-            STA $ba,x          ; $d1f3: 95 ba     
+            STA $ba,X          ; $d1f3: 95 ba     
             RTS                ; $d1f5: 60        
 
 ;-------------------------------------------------------------------------------
@@ -1893,7 +1923,7 @@ __d214:     LDA #$1e           ; $d214: a9 1e
             LDA #$01           ; $d21c: a9 01     
             STA $02            ; $d21e: 85 02     
             LDX #$00           ; $d220: a2 00     
-__d222:     LDA $b8,x          ; $d222: b5 b8     
+__d222:     LDA $b8,X          ; $d222: b5 b8     
             CMP #$04           ; $d224: c9 04     
             BNE __d25a         ; $d226: d0 32     
             LDY #$00           ; $d228: a0 00     
@@ -1955,7 +1985,7 @@ __d26a:     CPX #$08           ; $d26a: e0 08
             STA $de            ; $d290: 85 de     
             INC $d9            ; $d292: e6 d9     
             LDA #$08           ; $d294: a9 08     
-            STA $b8,x          ; $d296: 95 b8     
+            STA $b8,X          ; $d296: 95 b8     
             STA $0607          ; $d298: 8d 07 06  
             LDA #$06           ; $d29b: a9 06     
             STA $3f            ; $d29d: 85 3f     
@@ -2010,11 +2040,11 @@ __d2fb:     LDA $48            ; $d2fb: a5 48
 __d302:     LDA $4f            ; $d302: a5 4f     
             AND #$f0           ; $d304: 29 f0     
             BEQ __d33d         ; $d306: f0 35     
-            LDX #$ff           ; $d308: a2 ff     
+            LDX #$FF           ; $d308: a2 ff     
 __d30a:     INX                ; $d30a: e8        
             ASL                ; $d30b: 0a        
             bcc __d30a         ; $d30c: 90 fc     
-            LDA __d46d,x       ; $d30e: bd 6d d4  
+            LDA __d46d,X       ; $d30e: bd 6d d4  
 __d311:     STA $50            ; $d311: 85 50     
             CLC                ; $d313: 18        
             ADC #$02           ; $d314: 69 02     
@@ -2035,7 +2065,7 @@ __d32d:     LDA $50            ; $d32d: a5 50
 
 ;-------------------------------------------------------------------------------
 __d334:     LDX $50            ; $d334: a6 50     
-            LDA $022b,x        ; $d336: bd 2b 02  
+            LDA $022b,X        ; $d336: bd 2b 02  
             AND #$f0           ; $d339: 29 f0     
             BEQ __d341         ; $d33b: f0 04     
 __d33d:     LDA $51            ; $d33d: a5 51     
@@ -2057,9 +2087,9 @@ __d349:     LDA $022a          ; $d349: ad 2a 02
             BEQ __d360         ; $d35c: f0 02     
             DEX                ; $d35e: ca        
             DEX                ; $d35f: ca        
-__d360:     LDA $9f,x          ; $d360: b5 9f     
+__d360:     LDA $9f,X          ; $d360: b5 9f     
             STA $b5            ; $d362: 85 b5     
-            LDA $a0,x          ; $d364: b5 a0     
+            LDA $a0,X          ; $d364: b5 a0     
             STA $b6            ; $d366: 85 b6     
             LDA $51            ; $d368: a5 51     
             ASL                ; $d36a: 0a        
@@ -2089,10 +2119,10 @@ __d394:     CLC                ; $d394: 18
             LDX #$00           ; $d39c: a2 00     
             BEQ __d3a2         ; $d39e: f0 02     
             LDX #$02           ; $d3a0: a2 02     
-__d3a2:     LDA $1b,x          ; $d3a2: b5 1b     
+__d3a2:     LDA $1b,X          ; $d3a2: b5 1b     
             CLC                ; $d3a4: 18        
             ADC $b5            ; $d3a5: 65 b5     
-            STA $1b,x          ; $d3a7: 95 1b     
+            STA $1b,X          ; $d3a7: 95 1b     
             LDA #$00           ; $d3a9: a9 00     
             ADC $b6            ; $d3ab: 65 b6     
             STA $cc            ; $d3ad: 85 cc     
@@ -2130,22 +2160,22 @@ __d3dd:     .hex b5 1a 18 69   ; $d3dd: b5 1a 18 69   Data
             .hex 85 01 d0 08   ; $d401: 85 01 d0 08   Data
             .hex a2 02 86 00   ; $d405: a2 02 86 00   Data
             .hex a9 00 85 01   ; $d409: a9 00 85 01   Data
-__d40d:     LDA $1a,x          ; $d40d: b5 1a     
+__d40d:     LDA $1a,X          ; $d40d: b5 1a     
             sec                ; $d40f: 38        
             sbc #$01           ; $d410: e9 01     
-            STA $1a,x          ; $d412: 95 1a     
+            STA $1a,X          ; $d412: 95 1a     
             AND #$04           ; $d414: 29 04     
             BEQ __d42c         ; $d416: f0 14     
             LDX $01            ; $d418: a6 01     
-            LDA $022b,x        ; $d41a: bd 2b 02  
+            LDA $022b,X        ; $d41a: bd 2b 02  
             AND #$f0           ; $d41d: 29 f0     
             BEQ __d42c         ; $d41f: f0 0b     
             LDX $00            ; $d421: a6 00     
-            LDA $1a,x          ; $d423: b5 1a     
+            LDA $1a,X          ; $d423: b5 1a     
             CLC                ; $d425: 18        
             ADC #$04           ; $d426: 69 04     
             AND #$fc           ; $d428: 29 fc     
-            STA $1a,x          ; $d42a: 95 1a     
+            STA $1a,X          ; $d42a: 95 1a     
 __d42c:     LDA $1a            ; $d42c: a5 1a     
             CMP #$18           ; $d42e: c9 18     
             bcc __d43c         ; $d430: 90 0a     
@@ -2209,12 +2239,12 @@ __d4a2:     .hex 18 02 40 01   ; $d4a2: 18 02 40 01   Data
             .hex 38 01 18 02   ; $d4ae: 38 01 18 02   Data
             .hex e0 03 30 00   ; $d4b2: e0 03 30 00   Data
 __d4b6:     plp                ; $d4b6: 28        
-            ORA ($28,x)        ; $d4b7: 01 28     
+            ORA ($28,X)        ; $d4b7: 01 28     
             .hex 02            ; $d4b9: 02        Invalid Opcode - KIL 
             JSR $8002          ; $d4ba: 20 02 80  
-            .hex 03 40         ; $d4bd: 03 40     Invalid Opcode - SLO ($40,x)
+            .hex 03 40         ; $d4bd: 03 40     Invalid Opcode - SLO ($40,X)
             brk                ; $d4bf: 00        
-            rti                ; $d4c0: 40        
+            RTI                ; $d4c0: 40        
 
 ;-------------------------------------------------------------------------------
             .hex 01            ; $d4c1: 01        Suspected data
@@ -2237,7 +2267,7 @@ __d4dc:     .hex 00 18 69 04   ; $d4dc: 00 18 69 04   Data
             .hex 02 06 04 e8   ; $d4e8: 02 06 04 e8   Data
             .hex e8 e0 08 d0   ; $d4ec: e8 e0 08 d0   Data
             .hex e7 60         ; $d4f0: e7 60         Data
-__d4f2:     LDY $b8,x          ; $d4f2: b4 b8     
+__d4f2:     LDY $b8,X          ; $d4f2: b4 b8     
             LDA __d501,Y       ; $d4f4: b9 01 d5  
             STA $10            ; $d4f7: 85 10     
             LDA __d502,Y       ; $d4f9: b9 02 d5  
@@ -2269,14 +2299,14 @@ __d544:     .hex b1 02 38 f5   ; $d544: b1 02 38 f5   Data
             .hex 00 b0 02 a9   ; $d54c: 00 b0 02 a9   Data
             .hex 01            ; $d550: 01            Data
 __d551:     CLC                ; $d551: 18        
-            ADC $c3,x          ; $d552: 75 c3     
+            ADC $c3,X          ; $d552: 75 c3     
             STA $cc            ; $d554: 85 cc     
 __d556:     DEC $cc            ; $d556: c6 cc     
             BPL __d55b         ; $d558: 10 01     
             RTS                ; $d55a: 60        
 
 ;-------------------------------------------------------------------------------
-__d55b:     LDA $b9,x          ; $d55b: b5 b9     
+__d55b:     LDA $b9,X          ; $d55b: b5 b9     
             ASL                ; $d55d: 0a        
             TAY                ; $d55e: a8        
             LDA __d56c,Y       ; $d55f: b9 6c d5  
@@ -2340,7 +2370,7 @@ __d5d9:     LDY #$00           ; $d5d9: a0 00
             CMP #$70           ; $d5e5: c9 70     
             BNE __d606         ; $d5e7: d0 1d     
             LDA #$02           ; $d5e9: a9 02     
-            STA $b8,x          ; $d5eb: 95 b8     
+            STA $b8,X          ; $d5eb: 95 b8     
             LDA #$00           ; $d5ed: a9 00     
             CLC                ; $d5ef: 18        
             sbc $04            ; $d5f0: e5 04     
@@ -2357,7 +2387,7 @@ __d5d9:     LDY #$00           ; $d5d9: a0 00
             RTS                ; $d605: 60        
 
 ;-------------------------------------------------------------------------------
-__d606:     LDA $b8,x          ; $d606: b5 b8     
+__d606:     LDA $b8,X          ; $d606: b5 b8     
             CMP #$06           ; $d608: c9 06     
             BNE __d617         ; $d60a: d0 0b     
             LDA #$60           ; $d60c: a9 60     
@@ -2427,11 +2457,11 @@ __d685:     INC $05            ; $d685: e6 05
             CLC                ; $d694: 18        
             ADC #$02           ; $d695: 69 02     
             AND #$03           ; $d697: 29 03     
-            CMP $b9,x          ; $d699: d5 b9     
+            CMP $b9,X          ; $d699: d5 b9     
             BEQ __d67d         ; $d69b: f0 e0     
             LDA $05            ; $d69d: a5 05     
             AND #$03           ; $d69f: 29 03     
-__d6a1:     STA $b9,x          ; $d6a1: 95 b9     
+__d6a1:     STA $b9,X          ; $d6a1: 95 b9     
             JMP __d556         ; $d6a3: 4c 56 d5  
 
 ;-------------------------------------------------------------------------------
@@ -2462,7 +2492,7 @@ __d6c8:     .hex e8 e8 00 00   ; $d6c8: e8 e8 00 00   Data
             .hex cd a5 1c 38   ; $d6d8: cd a5 1c 38   Data
             .hex e5 20 18 65   ; $d6dc: e5 20 18 65   Data
             .hex 1c 85 ce      ; $d6e0: 1c 85 ce      Data
-__d6e3:     LDA $b8,x          ; $d6e3: b5 b8     
+__d6e3:     LDA $b8,X          ; $d6e3: b5 b8     
             sec                ; $d6e5: 38        
             sbc #$04           ; $d6e6: e9 04     
             TAY                ; $d6e8: a8        
@@ -2472,15 +2502,15 @@ __d6e3:     LDA $b8,x          ; $d6e3: b5 b8
             STA $0b            ; $d6f1: 85 0b     
             JSR __e42b         ; $d6f3: 20 2b e4  
             LDA $0c            ; $d6f6: a5 0c     
-            CMP #$ff           ; $d6f8: c9 ff     
+            CMP #$FF           ; $d6f8: c9 ff     
             BNE __d700         ; $d6fa: d0 04     
             LDA #$02           ; $d6fc: a9 02     
             BNE __d708         ; $d6fe: d0 08     
 __d700:     LDA $0d            ; $d700: a5 0d     
-            CMP #$ff           ; $d702: c9 ff     
+            CMP #$FF           ; $d702: c9 ff     
             BNE __d70b         ; $d704: d0 05     
             LDA $0c            ; $d706: a5 0c     
-__d708:     STA $b9,x          ; $d708: 95 b9     
+__d708:     STA $b9,X          ; $d708: 95 b9     
             RTS                ; $d70a: 60        
 
 ;-------------------------------------------------------------------------------
@@ -2531,7 +2561,7 @@ __d755:     CMP $000c,Y        ; $d755: d9 0c 00
             INC $05            ; $d75f: e6 05     
             DEC $06            ; $d761: c6 06     
             BNE __d74e         ; $d763: d0 e9     
-            LDA $b9,x          ; $d765: b5 b9     
+            LDA $b9,X          ; $d765: b5 b9     
             sec                ; $d767: 38        
             sbc #$01           ; $d768: e9 01     
             AND #$03           ; $d76a: 29 03     
@@ -2541,7 +2571,7 @@ __d76e:     CMP $000c,Y        ; $d76e: d9 0c 00
             INY                ; $d773: c8        
             CPY #$04           ; $d774: c0 04     
             BNE __d76e         ; $d776: d0 f6     
-            LDA $b9,x          ; $d778: b5 b9     
+            LDA $b9,X          ; $d778: b5 b9     
             CLC                ; $d77a: 18        
             ADC #$01           ; $d77b: 69 01     
             AND #$03           ; $d77d: 29 03     
@@ -2562,9 +2592,9 @@ __d78c:     .hex b5 b8 c9 06   ; $d78c: b5 b8 c9 06   Data
             .hex b0 04 c9 30   ; $d7a0: b0 04 c9 30   Data
             .hex b0 09         ; $d7a4: b0 09         Data
 __d7a6:     LDA $b3            ; $d7a6: a5 b3     
-            STA $c2,x          ; $d7a8: 95 c2     
+            STA $c2,X          ; $d7a8: 95 c2     
             LDA $b4            ; $d7aa: a5 b4     
-            STA $c3,x          ; $d7ac: 95 c3     
+            STA $c3,X          ; $d7ac: 95 c3     
             RTS                ; $d7ae: 60        
 
 ;-------------------------------------------------------------------------------
@@ -2581,23 +2611,23 @@ __d7af:     LDA $04            ; $d7af: a5 04
 
 ;-------------------------------------------------------------------------------
 __d7c1:     LDA $af            ; $d7c1: a5 af     
-            STA $c2,x          ; $d7c3: 95 c2     
+            STA $c2,X          ; $d7c3: 95 c2     
             LDA $b0            ; $d7c5: a5 b0     
-            STA $c3,x          ; $d7c7: 95 c3     
+            STA $c3,X          ; $d7c7: 95 c3     
             RTS                ; $d7c9: 60        
 
 ;-------------------------------------------------------------------------------
 __d7ca:     LDA $b1            ; $d7ca: a5 b1     
-            STA $c2,x          ; $d7cc: 95 c2     
+            STA $c2,X          ; $d7cc: 95 c2     
             LDA $b2            ; $d7ce: a5 b2     
-            STA $c3,x          ; $d7d0: 95 c3     
+            STA $c3,X          ; $d7d0: 95 c3     
             RTS                ; $d7d2: 60        
 
 ;-------------------------------------------------------------------------------
 __d7d3:     LDA #$00           ; $d7d3: a9 00     
-            STA $c2,x          ; $d7d5: 95 c2     
+            STA $c2,X          ; $d7d5: 95 c2     
             LDA #$02           ; $d7d7: a9 02     
-            STA $c3,x          ; $d7d9: 95 c3     
+            STA $c3,X          ; $d7d9: 95 c3     
             RTS                ; $d7db: 60        
 
 ;-------------------------------------------------------------------------------
@@ -2627,9 +2657,9 @@ __d81d:     .hex a9 00 95 b9   ; $d81d: a9 00 95 b9   Data
             .hex 02 c9 58 f0   ; $d831: 02 c9 58 f0   Data
             .hex 01 60         ; $d835: 01 60         Data
 __d837:     LDA #$01           ; $d837: a9 01     
-            STA $b9,x          ; $d839: 95 b9     
+            STA $b9,X          ; $d839: 95 b9     
             LDA #$04           ; $d83b: a9 04     
-            STA $b8,x          ; $d83d: 95 b8     
+            STA $b8,X          ; $d83d: 95 b8     
             RTS                ; $d83f: 60        
 
 ;-------------------------------------------------------------------------------
@@ -2637,7 +2667,7 @@ __d837:     LDA #$01           ; $d837: a9 01
             STA $05            ; $d842: 85 05     
             LDA #$80           ; $d844: a9 80     
             STA $06            ; $d846: 85 06     
-            LDY $b9,x          ; $d848: b4 b9     
+            LDY $b9,X          ; $d848: b4 b9     
             LDA __d857,Y       ; $d84a: b9 57 d8  
             STA $10            ; $d84d: 85 10     
             LDA __d858,Y       ; $d84f: b9 58 d8  
@@ -2683,7 +2713,7 @@ __d895:     JSR __d8af         ; $d895: 20 af d8
             RTS                ; $d8ae: 60        
 
 ;-------------------------------------------------------------------------------
-__d8af:     LDY $b8,x          ; $d8af: b4 b8     
+__d8af:     LDY $b8,X          ; $d8af: b4 b8     
             LDA __d8be,Y       ; $d8b1: b9 be d8  
             STA $10            ; $d8b4: 85 10     
             LDA __d8bf,Y       ; $d8b6: b9 bf d8  
@@ -2697,7 +2727,7 @@ __d8bf:     .hex d8 c8 d8 c8   ; $d8bf: d8 c8 d8 c8   Data
             .hex d8 60         ; $d8c7: d8 60         Data
 __d8c9:     LDX #$00           ; $d8c9: a2 00     
             STX $00            ; $d8cb: 86 00     
-__d8cd:     LDA $b8,x          ; $d8cd: b5 b8     
+__d8cd:     LDA $b8,X          ; $d8cd: b5 b8     
             CMP #$06           ; $d8cf: c9 06     
             BNE __d8d7         ; $d8d1: d0 04     
             STA $0608          ; $d8d3: 8d 08 06  
@@ -2779,7 +2809,7 @@ __d94a:     JSR __d956         ; $d94a: 20 56 d9
             CPX #$08           ; $d951: e0 08     
             BNE __d94a         ; $d953: d0 f5     
 __d955:     .hex 60            ; $d955: 60            Data
-__d956:     LDY $b8,x          ; $d956: b4 b8     
+__d956:     LDY $b8,X          ; $d956: b4 b8     
             LDA __d965,Y       ; $d958: b9 65 d9  
             STA $10            ; $d95b: 85 10     
             LDA __d966,Y       ; $d95d: b9 66 d9  
@@ -2822,8 +2852,8 @@ __d99e:     DEC $03            ; $d99e: c6 03
 __d9a7:     STA $02            ; $d9a7: 85 02     
             BMI __d983         ; $d9a9: 30 d8     
 __d9ab:     LDX #$23           ; $d9ab: a2 23     
-__d9ad:     LDA $1a,x          ; $d9ad: b5 1a     
-            STA $0274,x        ; $d9af: 9d 74 02  
+__d9ad:     LDA $1a,X          ; $d9ad: b5 1a     
+            STA $0274,X        ; $d9af: 9d 74 02  
             DEX                ; $d9b2: ca        
             BPL __d9ad         ; $d9b3: 10 f8     
             LDA #$84           ; $d9b5: a9 84     
@@ -2882,14 +2912,14 @@ __d9f7:     CMP #$19           ; $d9f7: c9 19
             LDA $04            ; $da27: a5 04     
             STA ($00),Y        ; $da29: 91 00     
             LDX $02            ; $da2b: a6 02     
-            LDA $028d,x        ; $da2d: bd 8d 02  
+            LDA $028d,X        ; $da2d: bd 8d 02  
             STA $028c          ; $da30: 8d 8c 02  
             LDA $05            ; $da33: a5 05     
-            STA $028d,x        ; $da35: 9d 8d 02  
-            LDA $0293,x        ; $da38: bd 93 02  
+            STA $028d,X        ; $da35: 9d 8d 02  
+            LDA $0293,X        ; $da38: bd 93 02  
             STA $0292          ; $da3b: 8d 92 02  
             LDA $06            ; $da3e: a5 06     
-            STA $0293,x        ; $da40: 9d 93 02  
+            STA $0293,X        ; $da40: 9d 93 02  
             JMP __da56         ; $da43: 4c 56 da  
 
 ;-------------------------------------------------------------------------------
@@ -2923,10 +2953,10 @@ __da70:     LDA #$00           ; $da70: a9 00
 __da75:     LDY #$02           ; $da75: a0 02     
             LDA ($00),Y        ; $da77: b1 00     
             BNE __da7f         ; $da79: d0 04     
-            LDA #$ff           ; $da7b: a9 ff     
+            LDA #$FF           ; $da7b: a9 ff     
             BNE __da83         ; $da7d: d0 04     
 __da7f:     CLC                ; $da7f: 18        
-            ADC __ddc1,x       ; $da80: 7d c1 dd  
+            ADC __ddc1,X       ; $da80: 7d c1 dd  
 __da83:     LDY #$00           ; $da83: a0 00     
             STA ($02),Y        ; $da85: 91 02     
             LDY $04            ; $da87: a4 04     
@@ -3015,10 +3045,10 @@ __db02:     LDA $028c,Y        ; $db02: b9 8c 02
 __db22:     LDY #$00           ; $db22: a0 00     
             LDA ($00),Y        ; $db24: b1 00     
             BNE __db2c         ; $db26: d0 04     
-            LDA #$ff           ; $db28: a9 ff     
+            LDA #$FF           ; $db28: a9 ff     
             BNE __db30         ; $db2a: d0 04     
 __db2c:     CLC                ; $db2c: 18        
-            ADC __ddc2,x       ; $db2d: 7d c2 dd  
+            ADC __ddc2,X       ; $db2d: 7d c2 dd  
 __db30:     LDY #$03           ; $db30: a0 03     
             STA ($02),Y        ; $db32: 91 02     
             LDA $02            ; $db34: a5 02     
@@ -3212,7 +3242,7 @@ __ddc9:     LDA $4b            ; $ddc9: a5 4b
 
 ;-------------------------------------------------------------------------------
 __ddd0:     TAX                ; $ddd0: aa        
-__ddd1:     LDA $6c,x          ; $ddd1: b5 6c     
+__ddd1:     LDA $6c,X          ; $ddd1: b5 6c     
             CMP #$07           ; $ddd3: c9 07     
             BEQ __dde1         ; $ddd5: f0 0a     
             CMP #$01           ; $ddd7: c9 01     
@@ -3220,7 +3250,7 @@ __ddd1:     LDA $6c,x          ; $ddd1: b5 6c
             LDA #$02           ; $dddb: a9 02     
             BNE __dde1         ; $dddd: d0 02     
 __dddf:     LDA #$01           ; $dddf: a9 01     
-__dde1:     STA $6c,x          ; $dde1: 95 6c     
+__dde1:     STA $6c,X          ; $dde1: 95 6c     
             INX                ; $dde3: e8        
             CPX #$04           ; $dde4: e0 04     
             BNE __ddd1         ; $dde6: d0 e9     
@@ -3233,61 +3263,61 @@ __dde9:     LDA $48            ; $dde9: a5 48
 
 ;-------------------------------------------------------------------------------
 __ddf0:     LDA $023f          ; $ddf0: ad 3f 02  
-            CMP #$ff           ; $ddf3: c9 ff     
+            CMP #$FF           ; $ddf3: c9 ff     
             BEQ __de4a         ; $ddf5: f0 53     
-            LDA PPUSTATUS          ; $ddf7: ad 02 20  
+            LDA PPUSTATUS      ; $ddf7: ad 02 20  
             LDA $026b          ; $ddfa: ad 6b 02  
-            STA PPUADDR          ; $ddfd: 8d 06 20  
+            STA PPUADDR        ; $ddfd: 8d 06 20  
             LDA $026c          ; $de00: ad 6c 02  
-            STA PPUADDR          ; $de03: 8d 06 20  
+            STA PPUADDR        ; $de03: 8d 06 20  
             LDY #$00           ; $de06: a0 00     
 __de08:     LDA $023f,Y        ; $de08: b9 3f 02  
-            STA PPUDATA          ; $de0b: 8d 07 20  
+            STA PPUDATA        ; $de0b: 8d 07 20  
             INY                ; $de0e: c8        
             CPY #$06           ; $de0f: c0 06     
             BNE __de08         ; $de11: d0 f5     
             LDA #$30           ; $de13: a9 30     
-            STA PPUDATA          ; $de15: 8d 07 20  
-            LDA #$ff           ; $de18: a9 ff     
+            STA PPUDATA        ; $de15: 8d 07 20  
+            LDA #$FF           ; $de18: a9 ff     
             STA $023f          ; $de1a: 8d 3f 02  
             LDA $0245          ; $de1d: ad 45 02  
-            CMP #$ff           ; $de20: c9 ff     
+            CMP #$FF           ; $de20: c9 ff     
             BEQ __de4a         ; $de22: f0 26     
-            LDA PPUSTATUS          ; $de24: ad 02 20  
+            LDA PPUSTATUS      ; $de24: ad 02 20  
             LDA $0272          ; $de27: ad 72 02  
-            STA PPUADDR          ; $de2a: 8d 06 20  
+            STA PPUADDR        ; $de2a: 8d 06 20  
             LDA $0273          ; $de2d: ad 73 02  
-            STA PPUADDR          ; $de30: 8d 06 20  
+            STA PPUADDR        ; $de30: 8d 06 20  
             LDY #$00           ; $de33: a0 00     
 __de35:     LDA $0245,Y        ; $de35: b9 45 02  
-            STA PPUDATA          ; $de38: 8d 07 20  
+            STA PPUDATA        ; $de38: 8d 07 20  
             INY                ; $de3b: c8        
             CPY #$06           ; $de3c: c0 06     
             BNE __de35         ; $de3e: d0 f5     
             LDA #$30           ; $de40: a9 30     
-            STA PPUDATA          ; $de42: 8d 07 20  
-            LDA #$ff           ; $de45: a9 ff     
+            STA PPUDATA        ; $de42: 8d 07 20  
+            LDA #$FF           ; $de45: a9 ff     
             STA $0245          ; $de47: 8d 45 02  
 __de4a:     LDA $4b            ; $de4a: a5 4b     
             AND #$07           ; $de4c: 29 07     
             BNE __de7e         ; $de4e: d0 2e     
-            LDA PPUSTATUS          ; $de50: ad 02 20  
+            LDA PPUSTATUS      ; $de50: ad 02 20  
             LDA $026d          ; $de53: ad 6d 02  
-            STA PPUADDR          ; $de56: 8d 06 20  
+            STA PPUADDR        ; $de56: 8d 06 20  
             LDA $026e          ; $de59: ad 6e 02  
-            STA PPUADDR          ; $de5c: 8d 06 20  
+            STA PPUADDR        ; $de5c: 8d 06 20  
             LDX #$00           ; $de5f: a2 00     
             LDA $4b            ; $de61: a5 4b     
             AND #$18           ; $de63: 29 18     
             BEQ __de74         ; $de65: f0 0d     
-__de67:     LDA $026f,x        ; $de67: bd 6f 02  
-            STA PPUDATA          ; $de6a: 8d 07 20  
+__de67:     LDA $026f,X        ; $de67: bd 6f 02  
+            STA PPUDATA        ; $de6a: 8d 07 20  
             INX                ; $de6d: e8        
             CPX #$03           ; $de6e: e0 03     
             BNE __de67         ; $de70: d0 f5     
             BEQ __de7e         ; $de72: f0 0a     
 __de74:     LDA #$20           ; $de74: a9 20     
-__de76:     STA PPUDATA          ; $de76: 8d 07 20  
+__de76:     STA PPUDATA        ; $de76: 8d 07 20  
             INX                ; $de79: e8        
             CPX #$03           ; $de7a: e0 03     
             BNE __de76         ; $de7c: d0 f8     
@@ -3297,34 +3327,34 @@ __de7e:     LDY #$00           ; $de7e: a0 00
             AND $47            ; $de84: 25 47     
             BEQ __de8a         ; $de86: f0 02     
             LDY #$08           ; $de88: a0 08     
-__de8a:     LDA PPUSTATUS          ; $de8a: ad 02 20  
+__de8a:     LDA PPUSTATUS      ; $de8a: ad 02 20  
             LDA __DECf,Y       ; $de8d: b9 cf de  
-            STA PPUADDR          ; $de90: 8d 06 20  
+            STA PPUADDR        ; $de90: 8d 06 20  
             LDA __ded0,Y       ; $de93: b9 d0 de  
-            STA PPUADDR          ; $de96: 8d 06 20  
-            LDA $6c,x          ; $de99: b5 6c     
-            STA PPUDATA          ; $de9b: 8d 07 20  
+            STA PPUADDR        ; $de96: 8d 06 20  
+            LDA $6c,X          ; $de99: b5 6c     
+            STA PPUDATA        ; $de9b: 8d 07 20  
             INY                ; $de9e: c8        
             INY                ; $de9f: c8        
             INX                ; $dea0: e8        
             CPX #$04           ; $dea1: e0 04     
             BNE __de8a         ; $dea3: d0 e5     
-            LDA PPUSTATUS          ; $dea5: ad 02 20  
-            LDY #$ff           ; $dea8: a0 ff     
+            LDA PPUSTATUS      ; $dea5: ad 02 20  
+            LDY #$FF           ; $dea8: a0 ff     
 __deaa:     INY                ; $deaa: c8        
             LDA $024b,Y        ; $deab: b9 4b 02  
-            CMP #$ff           ; $deae: c9 ff     
+            CMP #$FF           ; $deae: c9 ff     
             BEQ __DECb         ; $deb0: f0 19     
-            STA PPUADDR          ; $deb2: 8d 06 20  
+            STA PPUADDR        ; $deb2: 8d 06 20  
             INY                ; $deb5: c8        
             LDA $024b,Y        ; $deb6: b9 4b 02  
-            STA PPUADDR          ; $deb9: 8d 06 20  
+            STA PPUADDR        ; $deb9: 8d 06 20  
 __debc:     INY                ; $debc: c8        
             LDA $024b,Y        ; $debd: b9 4b 02  
             BEQ __deaa         ; $DEC0: f0 e8     
-            CMP #$ff           ; $DEC2: c9 ff     
+            CMP #$FF           ; $DEC2: c9 ff     
             BEQ __DECb         ; $DEC4: f0 05     
-            STA PPUDATA          ; $DEC6: 8d 07 20  
+            STA PPUDATA        ; $DEC6: 8d 07 20  
             BNE __debc         ; $DEC9: d0 f1     
 __DECb:     STA $024b          ; $DECb: 8d 4b 02  
             RTS                ; $DECe: 60        
@@ -3368,7 +3398,7 @@ __df0f:     LDA $02            ; $df0f: a5 02
             BEQ __df18         ; $df15: f0 01     
             INX                ; $df17: e8        
 __df18:     LDA #$07           ; $df18: a9 07     
-            STA $6c,x          ; $df1a: 95 6c     
+            STA $6c,X          ; $df1a: 95 6c     
             LDX #$04           ; $df1c: a2 04     
 __df1e:     LDA #$00           ; $df1e: a9 00     
             STA $d5            ; $df20: 85 d5     
@@ -3378,10 +3408,10 @@ __df1e:     LDA #$00           ; $df1e: a9 00
             LDA $1c            ; $df28: a5 1c     
             STA $03            ; $df2a: 85 03     
             JSR __e1dd         ; $df2c: 20 dd e1  
-            LDY #$ff           ; $df2f: a0 ff     
+            LDY #$FF           ; $df2f: a0 ff     
 __df31:     INY                ; $df31: c8        
             LDA $024b,Y        ; $df32: b9 4b 02  
-            CMP #$ff           ; $df35: c9 ff     
+            CMP #$FF           ; $df35: c9 ff     
             BNE __df31         ; $df37: d0 f8     
             TYA                ; $df39: 98        
             BEQ __df42         ; $df3a: f0 06     
@@ -3394,14 +3424,14 @@ __df42:     LDA $03            ; $df42: a5 03
             LDA $02            ; $df48: a5 02     
             STA $024b,Y        ; $df4a: 99 4b 02  
             INY                ; $df4d: c8        
-            LDA __dfa6,x       ; $df4e: bd a6 df  
+            LDA __dfa6,X       ; $df4e: bd a6 df  
             STA $024b,Y        ; $df51: 99 4b 02  
             INY                ; $df54: c8        
-            LDA #$ff           ; $df55: a9 ff     
+            LDA #$FF           ; $df55: a9 ff     
             STA $024b,Y        ; $df57: 99 4b 02  
             LDA #$07           ; $df5a: a9 07     
             STA $022a          ; $df5c: 8d 2a 02  
-            LDA __dfa7,x       ; $df5f: bd a7 df  
+            LDA __dfa7,X       ; $df5f: bd a7 df  
             STA $dc            ; $df62: 85 dc     
             DEC $6a            ; $df64: c6 6a     
             BNE __df74         ; $df66: d0 0c     
@@ -3440,10 +3470,10 @@ __df99:     LDA $6a            ; $df99: a5 6a
 __dfa6:     .hex 08            ; $dfa6: 08            Data
 __dfa7:     .hex 01 07 01 07   ; $dfa7: 01 07 01 07   Data
             .hex 05 a2 00      ; $dfab: 05 a2 00      Data
-__dfae:     LDA $ba,x          ; $dfae: b5 ba     
+__dfae:     LDA $ba,X          ; $dfae: b5 ba     
             BNE __dfb7         ; $dfb0: d0 05     
             LDA #$02           ; $dfb2: a9 02     
-            STA $ba,x          ; $dfb4: 95 ba     
+            STA $ba,X          ; $dfb4: 95 ba     
             RTS                ; $dfb6: 60        
 
 ;-------------------------------------------------------------------------------
@@ -3465,26 +3495,26 @@ __dfd0:     STA $89            ; $dfd0: 85 89
             LDA #$0f           ; $dfd2: a9 0f     
             STA $88            ; $dfd4: 85 88     
             LDX #$03           ; $dfd6: a2 03     
-__dfd8:     LDA $39,x          ; $dfd8: b5 39     
+__dfd8:     LDA $39,X          ; $dfd8: b5 39     
             AND #$fc           ; $dfda: 29 fc     
             ORA #$01           ; $dfdc: 09 01     
-            STA $39,x          ; $dfde: 95 39     
+            STA $39,X          ; $dfde: 95 39     
             DEX                ; $dfe0: ca        
             BPL __dfd8         ; $dfe1: 10 f5     
-            LDY #$ff           ; $dfe3: a0 ff     
+            LDY #$FF           ; $dfe3: a0 ff     
 __dfe5:     INY                ; $dfe5: c8        
             LDA $024b,Y        ; $dfe6: b9 4b 02  
-            CMP #$ff           ; $dfe9: c9 ff     
+            CMP #$FF           ; $dfe9: c9 ff     
             BNE __dfe5         ; $dfeb: d0 f8     
             LDX #$00           ; $dfed: a2 00     
             TYA                ; $dfef: 98        
             BNE __dff3         ; $dff0: d0 01     
             INX                ; $dff2: e8        
-__dff3:     LDA __e05b,x       ; $dff3: bd 5b e0  
+__dff3:     LDA __e05b,X       ; $dff3: bd 5b e0  
             STA $024b,Y        ; $dff6: 99 4b 02  
             INY                ; $dff9: c8        
             INX                ; $dffa: e8        
-            CMP #$ff           ; $dffb: c9 ff     
+            CMP #$FF           ; $dffb: c9 ff     
             BNE __dff3         ; $dffd: d0 f4     
             LDA #$00           ; $dfff: a9 00     
             STA $d9            ; $e001: 85 d9     
@@ -3502,10 +3532,10 @@ __e003:     LDX #$00           ; $e003: a2 00
             BEQ __e01f         ; $e019: f0 04     
             LDA $d2            ; $e01b: a5 d2     
             BNE __e046         ; $e01d: d0 27     
-__e01f:     LDA $b8,x          ; $e01f: b5 b8     
+__e01f:     LDA $b8,X          ; $e01f: b5 b8     
             CMP #$04           ; $e021: c9 04     
             BNE __e046         ; $e023: d0 21     
-            LDA $b9,x          ; $e025: b5 b9     
+            LDA $b9,X          ; $e025: b5 b9     
             CLC                ; $e027: 18        
             ADC #$02           ; $e028: 69 02     
             AND #$03           ; $e02a: 29 03     
@@ -3521,7 +3551,7 @@ __e01f:     LDA $b8,x          ; $e01f: b5 b8
             AND #$f8           ; $e03e: 29 f8     
             BNE __e046         ; $e040: d0 04     
 __e042:     LDA $04            ; $e042: a5 04     
-            STA $b9,x          ; $e044: 95 b9     
+            STA $b9,X          ; $e044: 95 b9     
 __e046:     LDA $00            ; $e046: a5 00     
             CLC                ; $e048: 18        
             ADC #$04           ; $e049: 69 04     
@@ -3568,13 +3598,13 @@ __e08c:     LDA $0070,Y        ; $e08c: b9 70 00
             CMP #$30           ; $e092: c9 30     
             BNE __e0a5         ; $e094: d0 0f     
             LDA #$20           ; $e096: a9 20     
-            STA $023f,x        ; $e098: 9d 3f 02  
+            STA $023f,X        ; $e098: 9d 3f 02  
             INX                ; $e09b: e8        
             DEY                ; $e09c: 88        
             BNE __e08c         ; $e09d: d0 ed     
 __e09f:     LDA $0070,Y        ; $e09f: b9 70 00  
             JSR __e148         ; $e0a2: 20 48 e1  
-__e0a5:     STA $023f,x        ; $e0a5: 9d 3f 02  
+__e0a5:     STA $023f,X        ; $e0a5: 9d 3f 02  
             INX                ; $e0a8: e8        
             DEY                ; $e0a9: 88        
             BPL __e09f         ; $e0aa: 10 f3     
@@ -3592,10 +3622,10 @@ __e0a5:     STA $023f,x        ; $e0a5: 9d 3f 02
             sbc #$02           ; $e0c2: e9 02     
             ASL                ; $e0c4: 0a        
             STA $00            ; $e0c5: 85 00     
-            LDY #$ff           ; $e0c7: a0 ff     
+            LDY #$FF           ; $e0c7: a0 ff     
 __e0c9:     INY                ; $e0c9: c8        
             LDA $024b,Y        ; $e0ca: b9 4b 02  
-            CMP #$ff           ; $e0cd: c9 ff     
+            CMP #$FF           ; $e0cd: c9 ff     
             BNE __e0c9         ; $e0cf: d0 f8     
             TYA                ; $e0d1: 98        
             BEQ __e0da         ; $e0d2: f0 06     
@@ -3607,13 +3637,13 @@ __e0da:     LDA $46            ; $e0da: a5 46
             .hex f0            ; $e0de: f0        Suspected data
 __e0df:     .hex 02 a9 08      ; $e0df: 02 a9 08      Data
 __e0e2:     .hex 85 01 a2 00   ; $e0e2: 85 01 a2 00   Data
-__e0e6:     LDA __e13a,x       ; $e0e6: bd 3a e1  
+__e0e6:     LDA __e13a,X       ; $e0e6: bd 3a e1  
             CLC                ; $e0e9: 18        
             ADC $01            ; $e0ea: 65 01     
             STA $024b,Y        ; $e0ec: 99 4b 02  
             INY                ; $e0ef: c8        
             INX                ; $e0f0: e8        
-            LDA __e13a,x       ; $e0f1: bd 3a e1  
+            LDA __e13a,X       ; $e0f1: bd 3a e1  
             CLC                ; $e0f4: 18        
             ADC $00            ; $e0f5: 65 00     
             STA $024b,Y        ; $e0f7: 99 4b 02  
@@ -3621,7 +3651,7 @@ __e0e6:     LDA __e13a,x       ; $e0e6: bd 3a e1
             STA $02            ; $e0fc: 85 02     
 __e0fe:     INY                ; $e0fe: c8        
             INX                ; $e0ff: e8        
-            LDA __e13a,x       ; $e100: bd 3a e1  
+            LDA __e13a,X       ; $e100: bd 3a e1  
             STA $024b,Y        ; $e103: 99 4b 02  
             DEC $02            ; $e106: c6 02     
             BNE __e0fe         ; $e108: d0 f4     
@@ -3643,14 +3673,14 @@ __e11d:     DEY                ; $e11d: 88
 
 ;-------------------------------------------------------------------------------
 __e121:     LDX #$00           ; $e121: a2 00     
-__e123:     LDA $023f,x        ; $e123: bd 3f 02  
-            STA $0245,x        ; $e126: 9d 45 02  
+__e123:     LDA $023f,X        ; $e123: bd 3f 02  
+            STA $0245,X        ; $e126: 9d 45 02  
             INX                ; $e129: e8        
             CPX #$06           ; $e12a: e0 06     
             BNE __e123         ; $e12c: d0 f5     
             LDX #$00           ; $e12e: a2 00     
-__e130:     LDA $70,x          ; $e130: b5 70     
-            STA $61,x          ; $e132: 95 61     
+__e130:     LDA $70,X          ; $e130: b5 70     
+            STA $61,X          ; $e132: 95 61     
             INX                ; $e134: e8        
             CPX #$06           ; $e135: e0 06     
             BNE __e130         ; $e137: d0 f7     
@@ -3683,9 +3713,9 @@ __e154:     LDA $1a            ; $e154: a5 1a
             STA $0201          ; $e166: 8d 01 02  
             LDX #$00           ; $e169: a2 00     
             LDY #$00           ; $e16b: a0 00     
-__e16d:     LDA $1a,x          ; $e16d: b5 1a     
+__e16d:     LDA $1a,X          ; $e16d: b5 1a     
             STA $02            ; $e16f: 85 02     
-            LDA $1c,x          ; $e171: b5 1c     
+            LDA $1c,X          ; $e171: b5 1c     
             STA $03            ; $e173: 85 03     
             JSR __e1dd         ; $e175: 20 dd e1  
             LDA #$20           ; $e178: a9 20     
@@ -3787,14 +3817,14 @@ __e214:     LDA $03            ; $e214: a5 03
 ;-------------------------------------------------------------------------------
 __e21c:     LDX #$00           ; $e21c: a2 00     
             LDY #$00           ; $e21e: a0 00     
-            LDA PPUSTATUS          ; $e220: ad 02 20  
-__e223:     LDA $0200,x        ; $e223: bd 00 02  
-            STA PPUADDR          ; $e226: 8d 06 20  
+            LDA PPUSTATUS      ; $e220: ad 02 20  
+__e223:     LDA $0200,X        ; $e223: bd 00 02  
+            STA PPUADDR        ; $e226: 8d 06 20  
             INX                ; $e229: e8        
-            LDA $0200,x        ; $e22a: bd 00 02  
-            STA PPUADDR          ; $e22d: 8d 06 20  
-            LDA PPUDATA          ; $e230: ad 07 20  
-            LDA PPUDATA          ; $e233: ad 07 20  
+            LDA $0200,X        ; $e22a: bd 00 02  
+            STA PPUADDR        ; $e22d: 8d 06 20  
+            LDA PPUDATA        ; $e230: ad 07 20  
+            LDA PPUDATA        ; $e233: ad 07 20  
             STA $022a,Y        ; $e236: 99 2a 02  
             INX                ; $e239: e8        
             INY                ; $e23a: c8        
@@ -3838,11 +3868,11 @@ __e26e:     LDA __fff9         ; $e26e: ad f9 ff
             STA $00            ; $e276: 85 00     
             LDX #$1b           ; $e278: a2 1b     
             LDY #$00           ; $e27a: a0 00     
-__e27c:     LDA PPUSTATUS          ; $e27c: ad 02 20  
+__e27c:     LDA PPUSTATUS      ; $e27c: ad 02 20  
             LDA $02            ; $e27f: a5 02     
-            STA PPUADDR          ; $e281: 8d 06 20  
+            STA PPUADDR        ; $e281: 8d 06 20  
             LDA $03            ; $e284: a5 03     
-            STA PPUADDR          ; $e286: 8d 06 20  
+            STA PPUADDR        ; $e286: 8d 06 20  
             LDA #$16           ; $e289: a9 16     
             STA $04            ; $e28b: 85 04     
 __e28d:     LDA #$00           ; $e28d: a9 00     
@@ -3854,7 +3884,7 @@ __e28d:     LDA #$00           ; $e28d: a9 00
             rol $05            ; $e297: 26 05     
             LDA ($00),Y        ; $e299: b1 00     
             AND #$3f           ; $e29b: 29 3f     
-__e29d:     STA PPUDATA          ; $e29d: 8d 07 20  
+__e29d:     STA PPUDATA        ; $e29d: 8d 07 20  
             DEC $04            ; $e2a0: c6 04     
             DEC $05            ; $e2a2: c6 05     
             BPL __e29d         ; $e2a4: 10 f7     
@@ -3883,13 +3913,13 @@ __e2ab:     LDA $04            ; $e2ab: a5 04
             LDA #$29           ; $e2cf: a9 29     
             STA $00            ; $e2d1: 85 00     
 __e2d3:     LDX #$07           ; $e2d3: a2 07     
-            LDA PPUSTATUS          ; $e2d5: ad 02 20  
+            LDA PPUSTATUS      ; $e2d5: ad 02 20  
             LDA $00            ; $e2d8: a5 00     
-            STA PPUADDR          ; $e2da: 8d 06 20  
+            STA PPUADDR        ; $e2da: 8d 06 20  
             LDA $01            ; $e2dd: a5 01     
-            STA PPUADDR          ; $e2df: 8d 06 20  
+            STA PPUADDR        ; $e2df: 8d 06 20  
             LDA __e2fc,Y       ; $e2e2: b9 fc e2  
-__e2e5:     STA PPUDATA          ; $e2e5: 8d 07 20  
+__e2e5:     STA PPUDATA        ; $e2e5: 8d 07 20  
             DEX                ; $e2e8: ca        
             BPL __e2e5         ; $e2e9: 10 fa     
             LDA $01            ; $e2eb: a5 01     
@@ -3905,11 +3935,11 @@ __e2e5:     STA PPUDATA          ; $e2e5: 8d 07 20
 
 ;-------------------------------------------------------------------------------
 __e2fc:     .hex 2d 04 2d      ; $e2fc: 2d 04 2d      Data
-__e2ff:     LDA PPUSTATUS          ; $e2ff: ad 02 20  
+__e2ff:     LDA PPUSTATUS      ; $e2ff: ad 02 20  
             LDA #$20           ; $e302: a9 20     
-            STA PPUADDR          ; $e304: 8d 06 20  
+            STA PPUADDR        ; $e304: 8d 06 20  
             LDA #$00           ; $e307: a9 00     
-            STA PPUADDR          ; $e309: 8d 06 20  
+            STA PPUADDR        ; $e309: 8d 06 20  
             LDA #$01           ; $e30c: a9 01     
             STA $02            ; $e30e: 85 02     
 __e310:     LDA #$01           ; $e310: a9 01     
@@ -3919,7 +3949,7 @@ __e310:     LDA #$01           ; $e310: a9 01
             LDA #$c0           ; $e318: a9 c0     
             STA $01            ; $e31a: 85 01     
             LDA #$2d           ; $e31c: a9 2d     
-__e31e:     STA PPUDATA          ; $e31e: 8d 07 20  
+__e31e:     STA PPUDATA        ; $e31e: 8d 07 20  
             DEC $01            ; $e321: c6 01     
             BNE __e31e         ; $e323: d0 f9     
             DEC $00            ; $e325: c6 00     
@@ -3932,24 +3962,24 @@ __e31e:     STA PPUDATA          ; $e31e: 8d 07 20
             BEQ __e31e         ; $e333: f0 e9     
 __e335:     DEC $02            ; $e335: c6 02     
             BNE __e349         ; $e337: d0 10     
-            LDA PPUSTATUS          ; $e339: ad 02 20  
+            LDA PPUSTATUS      ; $e339: ad 02 20  
             LDA #$28           ; $e33c: a9 28     
-            STA PPUADDR          ; $e33e: 8d 06 20  
+            STA PPUADDR        ; $e33e: 8d 06 20  
             LDA #$00           ; $e341: a9 00     
-            STA PPUADDR          ; $e343: 8d 06 20  
+            STA PPUADDR        ; $e343: 8d 06 20  
             JMP __e310         ; $e346: 4c 10 e3  
 
 ;-------------------------------------------------------------------------------
 __e349:     LDA #$01           ; $e349: a9 01     
             STA $00            ; $e34b: 85 00     
-            LDA PPUSTATUS          ; $e34d: ad 02 20  
+            LDA PPUSTATUS      ; $e34d: ad 02 20  
             LDA #$23           ; $e350: a9 23     
-            STA PPUADDR          ; $e352: 8d 06 20  
+            STA PPUADDR        ; $e352: 8d 06 20  
             LDA #$c0           ; $e355: a9 c0     
-            STA PPUADDR          ; $e357: 8d 06 20  
+            STA PPUADDR        ; $e357: 8d 06 20  
 __e35a:     LDA #$00           ; $e35a: a9 00     
             TAY                ; $e35c: a8        
-__e35d:     STA PPUDATA          ; $e35d: 8d 07 20  
+__e35d:     STA PPUDATA        ; $e35d: 8d 07 20  
             INY                ; $e360: c8        
             CPY #$20           ; $e361: c0 20     
             BNE __e35d         ; $e363: d0 f8     
@@ -3958,11 +3988,11 @@ __e35d:     STA PPUDATA          ; $e35d: 8d 07 20
             RTS                ; $e369: 60        
 
 ;-------------------------------------------------------------------------------
-__e36a:     LDA PPUSTATUS          ; $e36a: ad 02 20  
+__e36a:     LDA PPUSTATUS      ; $e36a: ad 02 20  
             LDA #$2b           ; $e36d: a9 2b     
-            STA PPUADDR          ; $e36f: 8d 06 20  
+            STA PPUADDR        ; $e36f: 8d 06 20  
             LDA #$c0           ; $e372: a9 c0     
-            STA PPUADDR          ; $e374: 8d 06 20  
+            STA PPUADDR        ; $e374: 8d 06 20  
             BNE __e35a         ; $e377: d0 e1     
 __e379:     LDA #$20           ; $e379: a9 20     
             STA $00            ; $e37b: 85 00     
@@ -3995,14 +4025,14 @@ __e3a5:     LDA $47            ; $e3a5: a5 47
             TAX                ; $e3af: aa        
 __e3b0:     LDA #$03           ; $e3b0: a9 03     
             STA $05            ; $e3b2: 85 05     
-__e3b4:     LDA PPUSTATUS          ; $e3b4: ad 02 20  
+__e3b4:     LDA PPUSTATUS      ; $e3b4: ad 02 20  
             LDA $00            ; $e3b7: a5 00     
-            STA PPUADDR          ; $e3b9: 8d 06 20  
+            STA PPUADDR        ; $e3b9: 8d 06 20  
             LDA $01            ; $e3bc: a5 01     
-            STA PPUADDR          ; $e3be: 8d 06 20  
-            LDA __e419,x       ; $e3c1: bd 19 e4  
+            STA PPUADDR        ; $e3be: 8d 06 20  
+            LDA __e419,X       ; $e3c1: bd 19 e4  
             STA $02            ; $e3c4: 85 02     
-            LDA __e41a,x       ; $e3c6: bd 1a e4  
+            LDA __e41a,X       ; $e3c6: bd 1a e4  
             STA $03            ; $e3c9: 85 03     
             JSR __e3ee         ; $e3cb: 20 ee e3  
             INX                ; $e3ce: e8        
@@ -4030,20 +4060,20 @@ __e3f0:     LDA ($02),Y        ; $e3f0: b1 02
             AND #$0f           ; $e3f2: 29 0f     
             BNE __e402         ; $e3f4: d0 0c     
             LDA #$20           ; $e3f6: a9 20     
-            STA PPUDATA          ; $e3f8: 8d 07 20  
+            STA PPUDATA        ; $e3f8: 8d 07 20  
             DEY                ; $e3fb: 88        
             BNE __e3f0         ; $e3fc: d0 f2     
             BEQ __e40b         ; $e3fe: f0 0b     
 __e400:     LDA ($02),Y        ; $e400: b1 02     
 __e402:     JSR __e148         ; $e402: 20 48 e1  
-            STA PPUDATA          ; $e405: 8d 07 20  
+            STA PPUDATA        ; $e405: 8d 07 20  
             DEY                ; $e408: 88        
             BNE __e400         ; $e409: d0 f5     
 __e40b:     LDA ($02),Y        ; $e40b: b1 02     
             JSR __e148         ; $e40d: 20 48 e1  
-            STA PPUDATA          ; $e410: 8d 07 20  
+            STA PPUDATA        ; $e410: 8d 07 20  
             LDA #$30           ; $e413: a9 30     
-            STA PPUDATA          ; $e415: 8d 07 20  
+            STA PPUDATA        ; $e415: 8d 07 20  
             RTS                ; $e418: 60        
 
 ;-------------------------------------------------------------------------------
@@ -4053,7 +4083,7 @@ __e41a:     .hex 00 70 00 80   ; $e41a: 00 70 00 80   Data
             .hex 00 70 00      ; $e422: 00 70 00      Data
 __e425:     .hex 70 00         ; $e425: 70 00         Data
 __e427:     .hex 61 00 80 00   ; $e427: 61 00 80 00   Data
-__e42b:     LDY #$ff           ; $e42b: a0 ff     
+__e42b:     LDY #$FF           ; $e42b: a0 ff     
             STY $0c            ; $e42d: 84 0c     
             STY $0d            ; $e42f: 84 0d     
             STY $0e            ; $e431: 84 0e     
@@ -4071,22 +4101,22 @@ __e444:     TYA                ; $e444: 98
 __e448:     INY                ; $e448: c8        
             CPY #$04           ; $e449: c0 04     
             BNE __e436         ; $e44b: d0 e9     
-            LDA $b9,x          ; $e44d: b5 b9     
+            LDA $b9,X          ; $e44d: b5 b9     
             CLC                ; $e44f: 18        
             ADC #$02           ; $e450: 69 02     
             AND #$03           ; $e452: 29 03     
             TAY                ; $e454: a8        
-            LDA #$ff           ; $e455: a9 ff     
+            LDA #$FF           ; $e455: a9 ff     
             STA $000c,Y        ; $e457: 99 0c 00  
             LDA #$03           ; $e45a: a9 03     
             STA $0b            ; $e45c: 85 0b     
 __e45e:     LDY #$00           ; $e45e: a0 00     
 __e460:     LDA $000c,Y        ; $e460: b9 0c 00  
-            CMP #$ff           ; $e463: c9 ff     
+            CMP #$FF           ; $e463: c9 ff     
             BNE __e472         ; $e465: d0 0b     
             LDA $000d,Y        ; $e467: b9 0d 00  
             STA $000c,Y        ; $e46a: 99 0c 00  
-            LDA #$ff           ; $e46d: a9 ff     
+            LDA #$FF           ; $e46d: a9 ff     
             STA $000d,Y        ; $e46f: 99 0d 00  
 __e472:     INY                ; $e472: c8        
             CPY #$03           ; $e473: c0 03     
@@ -4102,16 +4132,16 @@ __e480:     LDA __e4b6,Y       ; $e480: b9 b6 e4
             CPX #$00           ; $e483: e0 00     
             BNE __e489         ; $e485: d0 02     
             ADC #$07           ; $e487: 69 07     
-__e489:     STA PPUADDR          ; $e489: 8d 06 20  
+__e489:     STA PPUADDR        ; $e489: 8d 06 20  
             INY                ; $e48c: c8        
             LDA __e4b6,Y       ; $e48d: b9 b6 e4  
-            STA PPUADDR          ; $e490: 8d 06 20  
+            STA PPUADDR        ; $e490: 8d 06 20  
             INY                ; $e493: c8        
             LDA __e4b6,Y       ; $e494: b9 b6 e4  
             STA $00            ; $e497: 85 00     
 __e499:     INY                ; $e499: c8        
             LDA __e4b6,Y       ; $e49a: b9 b6 e4  
-            STA PPUDATA          ; $e49d: 8d 07 20  
+            STA PPUDATA        ; $e49d: 8d 07 20  
             DEC $00            ; $e4a0: c6 00     
             BNE __e499         ; $e4a2: d0 f5     
             INY                ; $e4a4: c8        
@@ -4173,22 +4203,22 @@ __e506:     LDY #$3c           ; $e506: a0 3c
             STA $01            ; $e510: 85 01     
             BNE __e4f6         ; $e512: d0 e2     
 __e514:     LDA $00            ; $e514: a5 00     
-            STA PPUADDR          ; $e516: 8d 06 20  
+            STA PPUADDR        ; $e516: 8d 06 20  
             LDA $01            ; $e519: a5 01     
-            STA PPUADDR          ; $e51b: 8d 06 20  
-            STY PPUDATA          ; $e51e: 8c 07 20  
+            STA PPUADDR        ; $e51b: 8d 06 20  
+            STY PPUDATA        ; $e51e: 8c 07 20  
             INY                ; $e521: c8        
-            STY PPUDATA          ; $e522: 8c 07 20  
+            STY PPUDATA        ; $e522: 8c 07 20  
             LDA $00            ; $e525: a5 00     
-            STA PPUADDR          ; $e527: 8d 06 20  
+            STA PPUADDR        ; $e527: 8d 06 20  
             LDA $01            ; $e52a: a5 01     
             CLC                ; $e52c: 18        
             ADC #$20           ; $e52d: 69 20     
-            STA PPUADDR          ; $e52f: 8d 06 20  
+            STA PPUADDR        ; $e52f: 8d 06 20  
             INY                ; $e532: c8        
-            STY PPUDATA          ; $e533: 8c 07 20  
+            STY PPUDATA        ; $e533: 8c 07 20  
             INY                ; $e536: c8        
-            STY PPUDATA          ; $e537: 8c 07 20  
+            STY PPUDATA        ; $e537: 8c 07 20  
             RTS                ; $e53a: 60        
 
 ;-------------------------------------------------------------------------------
@@ -4224,7 +4254,7 @@ __e582:     DEC $04            ; $e582: c6 04
             CLC                ; $e588: 18        
             ADC #$38           ; $e589: 69 38     
             STA $01            ; $e58b: 85 01     
-__e58d:     LDA __e619,x       ; $e58d: bd 19 e6  
+__e58d:     LDA __e619,X       ; $e58d: bd 19 e6  
             STA $05            ; $e590: 85 05     
             ASL                ; $e592: 0a        
             ASL                ; $e593: 0a        
@@ -4260,36 +4290,36 @@ __e5b3:     LDY $06            ; $e5b3: a4 06
             AND $46            ; $e5cf: 25 46     
             BEQ __e5d5         ; $e5d1: f0 02     
             LDX #$2b           ; $e5d3: a2 2b     
-__e5d5:     STX PPUADDR          ; $e5d5: 8e 06 20  
+__e5d5:     STX PPUADDR        ; $e5d5: 8e 06 20  
             STX $00            ; $e5d8: 86 00     
             LDA #$e5           ; $e5da: a9 e5     
-            STA PPUADDR          ; $e5dc: 8d 06 20  
+            STA PPUADDR        ; $e5dc: 8d 06 20  
             LDX #$00           ; $e5df: a2 00     
 __e5e1:     LDA #$03           ; $e5e1: a9 03     
             STA $01            ; $e5e3: 85 01     
-__e5e5:     LDA $0a,x          ; $e5e5: b5 0a     
-            STA PPUDATA          ; $e5e7: 8d 07 20  
+__e5e5:     LDA $0a,X          ; $e5e5: b5 0a     
+            STA PPUDATA        ; $e5e7: 8d 07 20  
             INX                ; $e5ea: e8        
             DEC $01            ; $e5eb: c6 01     
             BNE __e5e5         ; $e5ed: d0 f6     
             INC $02            ; $e5ef: e6 02     
             BNE __e5ff         ; $e5f1: d0 0c     
             LDA $00            ; $e5f3: a5 00     
-            STA PPUADDR          ; $e5f5: 8d 06 20  
+            STA PPUADDR        ; $e5f5: 8d 06 20  
             LDA #$ed           ; $e5f8: a9 ed     
-            STA PPUADDR          ; $e5fa: 8d 06 20  
+            STA PPUADDR        ; $e5fa: 8d 06 20  
             BNE __e5e1         ; $e5fd: d0 e2     
 __e5ff:     LDA #$3f           ; $e5ff: a9 3f     
-            STA PPUADDR          ; $e601: 8d 06 20  
+            STA PPUADDR        ; $e601: 8d 06 20  
             LDA #$1d           ; $e604: a9 1d     
-            STA PPUADDR          ; $e606: 8d 06 20  
+            STA PPUADDR        ; $e606: 8d 06 20  
             LDA $68            ; $e609: a5 68     
             CMP #$10           ; $e60b: c9 10     
             bcc __e611         ; $e60d: 90 02     
             LDA #$0f           ; $e60f: a9 0f     
 __e611:     TAY                ; $e611: a8        
             LDA __e645,Y       ; $e612: b9 45 e6  
-            STA PPUDATA          ; $e615: 8d 07 20  
+            STA PPUDATA        ; $e615: 8d 07 20  
             RTS                ; $e618: 60        
 
 ;-------------------------------------------------------------------------------
@@ -4311,13 +4341,13 @@ __e645:     .hex 16 16 26 26   ; $e645: 16 16 26 26   Data
             .hex 12 12 12 12   ; $e651: 12 12 12 12   Data
             .hex a9 08 85 43   ; $e655: a9 08 85 43   Data
             .hex 8d 00 20      ; $e659: 8d 00 20      Data
-__e65c:     LDA PPUSTATUS          ; $e65c: ad 02 20  
+__e65c:     LDA PPUSTATUS      ; $e65c: ad 02 20  
             BPL __e65c         ; $e65f: 10 fb     
             LDA #$01           ; $e661: a9 01     
             STA $060d          ; $e663: 8d 0d 06  
             STA $060e          ; $e666: 8d 0e 06  
             LDA #$00           ; $e669: a9 00     
-            STA PPUMASK          ; $e66b: 8d 01 20  
+            STA PPUMASK        ; $e66b: 8d 01 20  
             JSR __e6c4         ; $e66e: 20 c4 e6  
             LDA #$01           ; $e671: a9 01     
             STA $028d          ; $e673: 8d 8d 02  
@@ -4327,20 +4357,20 @@ __e65c:     LDA PPUSTATUS          ; $e65c: ad 02 20
             STA $0278          ; $e67d: 8d 78 02  
             LDA #$7c           ; $e680: a9 7c     
             STA $027a          ; $e682: 8d 7a 02  
-            LDA #$ff           ; $e685: a9 ff     
+            LDA #$FF           ; $e685: a9 ff     
             STA $1e            ; $e687: 85 1e     
             LDA #$00           ; $e689: a9 00     
             STA $1f            ; $e68b: 85 1f     
             LDA #$00           ; $e68d: a9 00     
             STA $88            ; $e68f: 85 88     
-            LDA PPUSTATUS          ; $e691: ad 02 20  
+            LDA PPUSTATUS      ; $e691: ad 02 20  
             LDA #$3f           ; $e694: a9 3f     
-            STA PPUADDR          ; $e696: 8d 06 20  
+            STA PPUADDR        ; $e696: 8d 06 20  
             LDA #$10           ; $e699: a9 10     
-            STA PPUADDR          ; $e69b: 8d 06 20  
+            STA PPUADDR        ; $e69b: 8d 06 20  
             LDY #$00           ; $e69e: a0 00     
 __e6a0:     LDA __e73b,Y       ; $e6a0: b9 3b e7  
-            STA PPUDATA          ; $e6a3: 8d 07 20  
+            STA PPUDATA        ; $e6a3: 8d 07 20  
             INY                ; $e6a6: c8        
             CPY #$10           ; $e6a7: c0 10     
             BNE __e6a0         ; $e6a9: d0 f5     
@@ -4351,7 +4381,7 @@ __e6a0:     LDA __e73b,Y       ; $e6a0: b9 3b e7
             LDA #$10           ; $e6b6: a9 10     
             STA $3f            ; $e6b8: 85 3f     
             LDA #$88           ; $e6ba: a9 88     
-            STA PPUCTRL          ; $e6bc: 8d 00 20  
+            STA PPUCTRL        ; $e6bc: 8d 00 20  
             STA $43            ; $e6bf: 85 43     
             JMP __c9dd         ; $e6c1: 4c dd c9  
 
@@ -4361,10 +4391,10 @@ __e6c4:     LDX #$20           ; $e6c4: a2 20
             AND $46            ; $e6c8: 25 46     
             BEQ __e6ce         ; $e6ca: f0 02     
             LDX #$28           ; $e6cc: a2 28     
-__e6ce:     LDA PPUSTATUS          ; $e6ce: ad 02 20  
-            STX PPUADDR          ; $e6d1: 8e 06 20  
+__e6ce:     LDA PPUSTATUS      ; $e6ce: ad 02 20  
+            STX PPUADDR        ; $e6d1: 8e 06 20  
             LDA #$00           ; $e6d4: a9 00     
-            STA PPUADDR          ; $e6d6: 8d 06 20  
+            STA PPUADDR        ; $e6d6: 8d 06 20  
             LDA #$1c           ; $e6d9: a9 1c     
             STA $00            ; $e6db: 85 00     
 __e6dd:     LDA #$02           ; $e6dd: a9 02     
@@ -4374,7 +4404,7 @@ __e6dd:     LDA #$02           ; $e6dd: a9 02
             LDA #$02           ; $e6e5: a9 02     
             STA $03            ; $e6e7: 85 03     
             LDA #$2d           ; $e6e9: a9 2d     
-__e6eb:     STA PPUDATA          ; $e6eb: 8d 07 20  
+__e6eb:     STA PPUDATA        ; $e6eb: 8d 07 20  
             LDX $01            ; $e6ee: a6 01     
             BEQ __e6fa         ; $e6f0: f0 08     
             DEC $01            ; $e6f2: c6 01     
@@ -4393,7 +4423,7 @@ __e706:     DEC $03            ; $e706: c6 03
             BNE __e6dd         ; $e70c: d0 cf     
             LDA #$00           ; $e70e: a9 00     
             TAX                ; $e710: aa        
-__e711:     STA PPUDATA          ; $e711: 8d 07 20  
+__e711:     STA PPUDATA        ; $e711: 8d 07 20  
             INX                ; $e714: e8        
             CPX #$40           ; $e715: e0 40     
             BNE __e711         ; $e717: d0 f8     
@@ -4408,12 +4438,12 @@ __e720:     LDX #$22           ; $e720: a2 22
             AND $46            ; $e724: 25 46     
             BEQ __e72a         ; $e726: f0 02     
             LDX #$2a           ; $e728: a2 2a     
-__e72a:     LDA PPUSTATUS          ; $e72a: ad 02 20  
-            STX PPUADDR          ; $e72d: 8e 06 20  
+__e72a:     LDA PPUSTATUS      ; $e72a: ad 02 20  
+            STX PPUADDR        ; $e72d: 8e 06 20  
             LDA #$30           ; $e730: a9 30     
-            STA PPUADDR          ; $e732: 8d 06 20  
+            STA PPUADDR        ; $e732: 8d 06 20  
             LDA #$5e           ; $e735: a9 5e     
-            STA PPUDATA          ; $e737: 8d 07 20  
+            STA PPUDATA        ; $e737: 8d 07 20  
             RTS                ; $e73a: 60        
 
 ;-------------------------------------------------------------------------------
@@ -4631,14 +4661,14 @@ __e9b7:     LDY #$00           ; $e9b7: a0 00
             CMP #$c0           ; $e9cc: c9 c0     
             bcc __e9da         ; $e9ce: 90 0a     
 __e9d0:     LDA #$20           ; $e9d0: a9 20     
-            ORA $0292,x        ; $e9d2: 1d 92 02  
-            STA $0292,x        ; $e9d5: 9d 92 02  
+            ORA $0292,X        ; $e9d2: 1d 92 02  
+            STA $0292,X        ; $e9d5: 9d 92 02  
             BNE __e9e6         ; $e9d8: d0 0c     
 __e9da:     CMP #$40           ; $e9da: c9 40     
             bcc __e9d0         ; $e9dc: 90 f2     
             LDA #$df           ; $e9de: a9 df     
-            AND $0292,x        ; $e9e0: 3d 92 02  
-            STA $0292,x        ; $e9e3: 9d 92 02  
+            AND $0292,X        ; $e9e0: 3d 92 02  
+            STA $0292,X        ; $e9e3: 9d 92 02  
 __e9e6:     LDY #$00           ; $e9e6: a0 00     
             LDA ($02),Y        ; $e9e8: b1 02     
             CMP #$fc           ; $e9ea: c9 fc     
@@ -4839,30 +4869,30 @@ __ec08:     BNE __ec0a         ; $ec08: d0 00
 __ec0a:     bvs __ec0c         ; $ec0a: 70 00     
 __ec0c:     bvs __ec0e         ; $ec0c: 70 00     
 __ec0e:     brk                ; $ec0e: 00        
-            ORA ($f0,x)        ; $ec0f: 01 f0     
+            ORA ($f0,X)        ; $ec0f: 01 f0     
             brk                ; $ec11: 00        
             BNE __ec14         ; $ec12: d0 00     
 __ec14:     brk                ; $ec14: 00        
-            ORA ($f0,x)        ; $ec15: 01 f0     
+            ORA ($f0,X)        ; $ec15: 01 f0     
             brk                ; $ec17: 00        
             BNE __ec1a         ; $ec18: d0 00     
 __ec1a:     brk                ; $ec1a: 00        
-            ORA ($10,x)        ; $ec1b: 01 10     
-            ORA ($f0,x)        ; $ec1d: 01 f0     
+            ORA ($10,X)        ; $ec1b: 01 10     
+            ORA ($f0,X)        ; $ec1d: 01 f0     
             brk                ; $ec1f: 00        
             .hex 80 00         ; $ec20: 80 00     Invalid Opcode - NOP #$00
             .hex 80 00         ; $ec22: 80 00     Invalid Opcode - NOP #$00
             brk                ; $ec24: 00        
-            ORA ($f0,x)        ; $ec25: 01 f0     
+            ORA ($f0,X)        ; $ec25: 01 f0     
             brk                ; $ec27: 00        
             BNE __ec2a         ; $ec28: d0 00     
 __ec2a:     brk                ; $ec2a: 00        
-            ORA ($f0,x)        ; $ec2b: 01 f0     
+            ORA ($f0,X)        ; $ec2b: 01 f0     
             brk                ; $ec2d: 00        
             BNE __ec30         ; $ec2e: d0 00     
 __ec30:     JSR $3001          ; $ec30: 20 01 30  
-            ORA ($10,x)        ; $ec33: 01 10     
-            ORA ($80,x)        ; $ec35: 01 80     
+            ORA ($10,X)        ; $ec33: 01 10     
+            ORA ($80,X)        ; $ec35: 01 80     
             brk                ; $ec37: 00        
             .hex 80 00         ; $ec38: 80 00     Invalid Opcode - NOP #$00
 __ec3a:     .hex 07 14 07 14   ; $ec3a: 07 14 07 14   Data
@@ -4910,164 +4940,164 @@ __ecbd:     .hex 1c 03 1e 10   ; $ecbd: 1c 03 1e 10   Data
             .hex 11 2d 11 03   ; $ecd5: 11 2d 11 03   Data
             .hex 1f 10 1d 03   ; $ecd9: 1f 10 1d 03   Data
             .hex 1b            ; $ecdd: 1b            Data
-__ecde:     .hex 03 1f         ; $ecde: 03 1f     Invalid Opcode - SLO ($1f,x)
+__ecde:     .hex 03 1f         ; $ecde: 03 1f     Invalid Opcode - SLO ($1f,X)
             BPL __ecf2         ; $ece0: 10 10     
             BPL __ed01         ; $ece2: 10 1d     
-__ece4:     .hex 03 1b         ; $ece4: 03 1b     Invalid Opcode - SLO ($1b,x)
-            .hex 03 1f         ; $ece6: 03 1f     Invalid Opcode - SLO ($1f,x)
+__ece4:     .hex 03 1b         ; $ece4: 03 1b     Invalid Opcode - SLO ($1b,X)
+            .hex 03 1f         ; $ece6: 03 1f     Invalid Opcode - SLO ($1f,X)
 __ece8:     BPL __ed07         ; $ece8: 10 1d     
-            .hex 03 11         ; $ecea: 03 11     Invalid Opcode - SLO ($11,x)
+            .hex 03 11         ; $ecea: 03 11     Invalid Opcode - SLO ($11,X)
             AND $0311          ; $ecec: 2d 11 03  
-            ASL $1c10,x        ; $ecef: 1e 10 1c  
-__ecf2:     .hex 03 11         ; $ecf2: 03 11     Invalid Opcode - SLO ($11,x)
-            .hex 03 1e         ; $ecf4: 03 1e     Invalid Opcode - SLO ($1e,x)
+            ASL $1c10,X        ; $ecef: 1e 10 1c  
+__ecf2:     .hex 03 11         ; $ecf2: 03 11     Invalid Opcode - SLO ($11,X)
+            .hex 03 1e         ; $ecf4: 03 1e     Invalid Opcode - SLO ($1e,X)
             BPL __ed0b         ; $ecf6: 10 13     
             BPL __ed16         ; $ecf8: 10 1c     
-            .hex 03 11         ; $ecfa: 03 11     Invalid Opcode - SLO ($11,x)
-            .hex 03 1e         ; $ecfc: 03 1e     Invalid Opcode - SLO ($1e,x)
+            .hex 03 11         ; $ecfa: 03 11     Invalid Opcode - SLO ($11,X)
+            .hex 03 1e         ; $ecfc: 03 1e     Invalid Opcode - SLO ($1e,X)
             BPL __ed1c         ; $ecfe: 10 1c     
             .hex 03            ; $ed00: 03        Suspected data
 __ed01:     ORA ($2d),Y        ; $ed01: 11 2d     
             ORA ($c3),Y        ; $ed03: 11 c3     
-            .hex 03 11         ; $ed05: 03 11     Invalid Opcode - SLO ($11,x)
-__ed07:     .hex 83 11         ; $ed07: 83 11     Invalid Opcode - SAX ($11,x)
-            .hex 83 11         ; $ed09: 83 11     Invalid Opcode - SAX ($11,x)
-__ed0b:     .hex c3 03         ; $ed0b: c3 03     Invalid Opcode - DCP ($03,x)
+            .hex 03 11         ; $ed05: 03 11     Invalid Opcode - SLO ($11,X)
+__ed07:     .hex 83 11         ; $ed07: 83 11     Invalid Opcode - SAX ($11,X)
+            .hex 83 11         ; $ed09: 83 11     Invalid Opcode - SAX ($11,X)
+__ed0b:     .hex c3 03         ; $ed0b: c3 03     Invalid Opcode - DCP ($03,X)
             ORA ($2d),Y        ; $ed0d: 11 2d     
-            ASL $1d90,x        ; $ed0f: 1e 90 1d  
-            .hex 03 15         ; $ed12: 03 15     Invalid Opcode - SLO ($15,x)
+            ASL $1d90,X        ; $ed0f: 1e 90 1d  
+            .hex 03 15         ; $ed12: 03 15     Invalid Opcode - SLO ($15,X)
             BPL __ed2e         ; $ed14: 10 18     
 __ed16:     PHP                ; $ed16: 08        
             .hex 1a            ; $ed17: 1a        Invalid Opcode - NOP 
             PHP                ; $ed18: 08        
             ORA $1410,Y        ; $ed19: 19 10 14  
-__ed1c:     .hex 03 1f         ; $ed1c: 03 1f     Invalid Opcode - SLO ($1f,x)
+__ed1c:     .hex 03 1f         ; $ed1c: 03 1f     Invalid Opcode - SLO ($1f,X)
             bcc __ed3c         ; $ed1e: 90 1c     
             AND $11e0          ; $ed20: 2d e0 11  
-            .hex 03 11         ; $ed23: 03 11     Invalid Opcode - SLO ($11,x)
+            .hex 03 11         ; $ed23: 03 11     Invalid Opcode - SLO ($11,X)
             CPY #$80           ; $ed25: c0 80     
             ORA ($03),Y        ; $ed27: 11 03     
             ORA ($e0),Y        ; $ed29: 11 e0     
             AND $11e0          ; $ed2b: 2d e0 11  
-__ed2e:     .hex 03 11         ; $ed2e: 03 11     Invalid Opcode - SLO ($11,x)
+__ed2e:     .hex 03 11         ; $ed2e: 03 11     Invalid Opcode - SLO ($11,X)
             brk                ; $ed30: 00        
-            .hex 1f 17 2c      ; $ed31: 1f 17 2c  Invalid Opcode - SLO $2c17,x
-            ASL $1d,x          ; $ed34: 16 1d     
+            .hex 1f 17 2c      ; $ed31: 1f 17 2c  Invalid Opcode - SLO $2c17,X
+            ASL $1d,X          ; $ed34: 16 1d     
             brk                ; $ed36: 00        
             ORA ($03),Y        ; $ed37: 11 03     
             ORA ($e0),Y        ; $ed39: 11 e0     
             .hex 2d            ; $ed3b: 2d        Suspected data
 __ed3c:     .hex 22            ; $ed3c: 22        Invalid Opcode - KIL 
             bcc __ed5b         ; $ed3d: 90 1c     
-            .hex 03 1a         ; $ed3f: 03 1a     Invalid Opcode - SLO ($1a,x)
+            .hex 03 1a         ; $ed3f: 03 1a     Invalid Opcode - SLO ($1a,X)
             brk                ; $ed41: 00        
             ORA ($80),Y        ; $ed42: 11 80     
             ORA ($00),Y        ; $ed44: 11 00     
             .hex 1a            ; $ed46: 1a        Invalid Opcode - NOP 
-            .hex 03 1e         ; $ed47: 03 1e     Invalid Opcode - SLO ($1e,x)
+            .hex 03 1e         ; $ed47: 03 1e     Invalid Opcode - SLO ($1e,X)
             bcc __ed6c         ; $ed49: 90 21     
             .hex 04 06         ; $ed4b: 04 06     Invalid Opcode - NOP $06
             CPY #$03           ; $ed4d: c0 03     
-            rti                ; $ed4f: 40        
+            RTI                ; $ed4f: 40        
 
 ;-------------------------------------------------------------------------------
             ORA ($80),Y        ; $ed50: 11 80     
             ORA ($40),Y        ; $ed52: 11 40     
-            .hex 03 c0         ; $ed54: 03 c0     Invalid Opcode - SLO ($c0,x)
+            .hex 03 c0         ; $ed54: 03 c0     Invalid Opcode - SLO ($c0,X)
             ORA $2d            ; $ed56: 05 2d     
             .hex 22            ; $ed58: 22        Invalid Opcode - KIL 
             bcc __ed78         ; $ed59: 90 1d     
-__ed5b:     .hex 03 1b         ; $ed5b: 03 1b     Invalid Opcode - SLO ($1b,x)
+__ed5b:     .hex 03 1b         ; $ed5b: 03 1b     Invalid Opcode - SLO ($1b,X)
             brk                ; $ed5d: 00        
-            ASL $1c90,x        ; $ed5e: 1e 90 1c  
+            ASL $1c90,X        ; $ed5e: 1e 90 1c  
             brk                ; $ed61: 00        
             .hex 1b 03 1f      ; $ed62: 1b 03 1f  Invalid Opcode - SLO $1f03,Y
             bcc __ed88         ; $ed65: 90 21     
             AND $11e0          ; $ed67: 2d e0 11  
-            .hex 03 11         ; $ed6a: 03 11     Invalid Opcode - SLO ($11,x)
+            .hex 03 11         ; $ed6a: 03 11     Invalid Opcode - SLO ($11,X)
 __ed6c:     CPY #$80           ; $ed6c: c0 80     
             ORA ($03),Y        ; $ed6e: 11 03     
             ORA ($e0),Y        ; $ed70: 11 e0     
             AND $11e0          ; $ed72: 2d e0 11  
-            .hex 03 11         ; $ed75: 03 11     Invalid Opcode - SLO ($11,x)
+            .hex 03 11         ; $ed75: 03 11     Invalid Opcode - SLO ($11,X)
             brk                ; $ed77: 00        
-__ed78:     .hex 1f 90 1d      ; $ed78: 1f 90 1d  Invalid Opcode - SLO $1d90,x
+__ed78:     .hex 1f 90 1d      ; $ed78: 1f 90 1d  Invalid Opcode - SLO $1d90,X
             brk                ; $ed7b: 00        
             ORA ($03),Y        ; $ed7c: 11 03     
             ORA ($e0),Y        ; $ed7e: 11 e0     
             AND $901f          ; $ed80: 2d 1f 90  
-            .hex 1c 03 1a      ; $ed83: 1c 03 1a  Invalid Opcode - NOP $1a03,x
+            .hex 1c 03 1a      ; $ed83: 1c 03 1a  Invalid Opcode - NOP $1a03,X
             brk                ; $ed86: 00        
             .hex 1e            ; $ed87: 1e        Suspected data
 __ed88:     BPL __ed9d         ; $ed88: 10 13     
             BPL __eda8         ; $ed8a: 10 1c     
             brk                ; $ed8c: 00        
             .hex 1a            ; $ed8d: 1a        Invalid Opcode - NOP 
-            .hex 03 1e         ; $ed8e: 03 1e     Invalid Opcode - SLO ($1e,x)
+            .hex 03 1e         ; $ed8e: 03 1e     Invalid Opcode - SLO ($1e,X)
             bcc __edaf         ; $ed90: 90 1d     
             AND __c311         ; $ed92: 2d 11 c3  
-            .hex c3 03         ; $ed95: c3 03     Invalid Opcode - DCP ($03,x)
+            .hex c3 03         ; $ed95: c3 03     Invalid Opcode - DCP ($03,X)
             ORA ($c3),Y        ; $ed97: 11 c3     
-            .hex c3 03         ; $ed99: c3 03     Invalid Opcode - DCP ($03,x)
+            .hex c3 03         ; $ed99: c3 03     Invalid Opcode - DCP ($03,X)
             ORA ($2d),Y        ; $ed9b: 11 2d     
 __ed9d:     ORA ($03),Y        ; $ed9d: 11 03     
             ORA $1d10,Y        ; $ed9f: 19 10 1d  
-            .hex 03 19         ; $eda2: 03 19     Invalid Opcode - SLO ($19,x)
+            .hex 03 19         ; $eda2: 03 19     Invalid Opcode - SLO ($19,X)
             BPL __edbe         ; $eda4: 10 18     
             ORA #$1a           ; $eda6: 09 1a     
 __eda8:     ORA #$19           ; $eda8: 09 19     
             BPL __edc4         ; $edaa: 10 18     
-            .hex 03 1f         ; $edac: 03 1f     Invalid Opcode - SLO ($1f,x)
+            .hex 03 1f         ; $edac: 03 1f     Invalid Opcode - SLO ($1f,X)
             .hex 10            ; $edae: 10        Suspected data
 __edaf:     CLC                ; $edaf: 18        
-            .hex 03 11         ; $edb0: 03 11     Invalid Opcode - SLO ($11,x)
+            .hex 03 11         ; $edb0: 03 11     Invalid Opcode - SLO ($11,X)
             AND $0111          ; $edb2: 2d 11 01  
-            .hex 43 11         ; $edb5: 43 11     Invalid Opcode - SRE ($11,x)
-            .hex c3 03         ; $edb7: c3 03     Invalid Opcode - DCP ($03,x)
+            .hex 43 11         ; $edb5: 43 11     Invalid Opcode - SRE ($11,X)
+            .hex c3 03         ; $edb7: c3 03     Invalid Opcode - DCP ($03,X)
             brk                ; $edb9: 00        
-            .hex c3 03         ; $edba: c3 03     Invalid Opcode - DCP ($03,x)
+            .hex c3 03         ; $edba: c3 03     Invalid Opcode - DCP ($03,X)
             ORA ($43),Y        ; $edbc: 11 43     
-__edbe:     ORA ($11,x)        ; $edbe: 01 11     
+__edbe:     ORA ($11,X)        ; $edbe: 01 11     
             AND $1015          ; $edc0: 2d 15 10  
             .hex 1d            ; $edc3: 1d        Suspected data
-__edc4:     .hex 03 11         ; $edc4: 03 11     Invalid Opcode - SLO ($11,x)
-            .hex 03 1b         ; $edc6: 03 1b     Invalid Opcode - SLO ($1b,x)
-            .hex 03 1f         ; $edc8: 03 1f     Invalid Opcode - SLO ($1f,x)
+__edc4:     .hex 03 11         ; $edc4: 03 11     Invalid Opcode - SLO ($11,X)
+            .hex 03 1b         ; $edc6: 03 1b     Invalid Opcode - SLO ($1b,X)
+            .hex 03 1f         ; $edc8: 03 1f     Invalid Opcode - SLO ($1f,X)
             bcc __ede9         ; $edca: 90 1d     
-            .hex 03 1b         ; $edcc: 03 1b     Invalid Opcode - SLO ($1b,x)
-            .hex 03 11         ; $edce: 03 11     Invalid Opcode - SLO ($11,x)
-            .hex 03 1f         ; $edd0: 03 1f     Invalid Opcode - SLO ($1f,x)
+            .hex 03 1b         ; $edcc: 03 1b     Invalid Opcode - SLO ($1b,X)
+            .hex 03 11         ; $edce: 03 11     Invalid Opcode - SLO ($11,X)
+            .hex 03 1f         ; $edd0: 03 1f     Invalid Opcode - SLO ($1f,X)
             BPL __ede8         ; $edd2: 10 14     
             AND $1015          ; $edd4: 2d 15 10  
-            .hex 1c 03 1a      ; $edd7: 1c 03 1a  Invalid Opcode - NOP $1a03,x
-            .hex 03 11         ; $edda: 03 11     Invalid Opcode - SLO ($11,x)
-            .hex 03 1e         ; $eddc: 03 1e     Invalid Opcode - SLO ($1e,x)
+            .hex 1c 03 1a      ; $edd7: 1c 03 1a  Invalid Opcode - NOP $1a03,X
+            .hex 03 11         ; $edda: 03 11     Invalid Opcode - SLO ($11,X)
+            .hex 03 1e         ; $eddc: 03 1e     Invalid Opcode - SLO ($1e,X)
             BPL __edf3         ; $edde: 10 13     
             BPL __edfe         ; $ede0: 10 1c     
-            .hex 03 11         ; $ede2: 03 11     Invalid Opcode - SLO ($11,x)
-            .hex 03 1a         ; $ede4: 03 1a     Invalid Opcode - SLO ($1a,x)
-__ede6:     .hex 03 1e         ; $ede6: 03 1e     Invalid Opcode - SLO ($1e,x)
+            .hex 03 11         ; $ede2: 03 11     Invalid Opcode - SLO ($11,X)
+            .hex 03 1a         ; $ede4: 03 1a     Invalid Opcode - SLO ($1a,X)
+__ede6:     .hex 03 1e         ; $ede6: 03 1e     Invalid Opcode - SLO ($1e,X)
 __ede8:     .hex 10            ; $ede8: 10        Suspected data
-__ede9:     .hex 14 2d         ; $ede9: 14 2d     Invalid Opcode - NOP $2d,x
+__ede9:     .hex 14 2d         ; $ede9: 14 2d     Invalid Opcode - NOP $2d,X
             ORA ($c3),Y        ; $edeb: 11 c3     
-            .hex 03 11         ; $eded: 03 11     Invalid Opcode - SLO ($11,x)
-            .hex 83 11         ; $edef: 83 11     Invalid Opcode - SAX ($11,x)
-            .hex 83 11         ; $edf1: 83 11     Invalid Opcode - SAX ($11,x)
-__edf3:     .hex c3 03         ; $edf3: c3 03     Invalid Opcode - DCP ($03,x)
+            .hex 03 11         ; $eded: 03 11     Invalid Opcode - SLO ($11,X)
+            .hex 83 11         ; $edef: 83 11     Invalid Opcode - SAX ($11,X)
+            .hex 83 11         ; $edf1: 83 11     Invalid Opcode - SAX ($11,X)
+__edf3:     .hex c3 03         ; $edf3: c3 03     Invalid Opcode - DCP ($03,X)
             ORA ($2d),Y        ; $edf5: 11 2d     
             ORA ($03),Y        ; $edf7: 11 03     
             ORA $1290,Y        ; $edf9: 19 90 12  
             BPL __ee16         ; $edfc: 10 18     
-__edfe:     .hex 03 1a         ; $edfe: 03 1a     Invalid Opcode - SLO ($1a,x)
-            .hex 03 19         ; $ee00: 03 19     Invalid Opcode - SLO ($19,x)
+__edfe:     .hex 03 1a         ; $edfe: 03 1a     Invalid Opcode - SLO ($1a,X)
+            .hex 03 19         ; $ee00: 03 19     Invalid Opcode - SLO ($19,X)
             BPL __ee16         ; $ee02: 10 12     
             bcc __ee1e         ; $ee04: 90 18     
-            .hex 03 11         ; $ee06: 03 11     Invalid Opcode - SLO ($11,x)
+            .hex 03 11         ; $ee06: 03 11     Invalid Opcode - SLO ($11,X)
             AND __c311         ; $ee08: 2d 11 c3  
-            .hex c3 c3         ; $ee0b: c3 c3     Invalid Opcode - DCP ($c3,x)
-            .hex c3 83         ; $ee0d: c3 83     Invalid Opcode - DCP ($83,x)
+            .hex c3 c3         ; $ee0b: c3 c3     Invalid Opcode - DCP ($c3,X)
+            .hex c3 83         ; $ee0d: c3 83     Invalid Opcode - DCP ($83,X)
             ORA ($2d),Y        ; $ee0f: 11 2d     
-            ASL __d0d0,x       ; $ee11: 1e d0 d0  
+            ASL __d0d0,X       ; $ee11: 1e d0 d0  
             BNE __ede6         ; $ee14: d0 d0     
 __ee16:     bcc __ee34         ; $ee16: 90 1c     
 __ee18:     LDA #$00           ; $ee18: a9 00     
@@ -5113,7 +5143,7 @@ __ee5c:     LDA #$00           ; $ee5c: a9 00
             STA $fa            ; $ee62: 85 fa     
             STA $fb            ; $ee64: 85 fb     
             STA $fd            ; $ee66: 85 fd     
-            STA $ff            ; $ee68: 85 ff     
+            STA $FF            ; $ee68: 85 ff     
             LDA #$f8           ; $ee6a: a9 f8     
             STA $fe            ; $ee6c: 85 fe     
 __ee6e:     LDY $fd            ; $ee6e: a4 fd     
@@ -5150,7 +5180,7 @@ __ee83:     sec                ; $ee83: 38
 __eea0:     PHA                ; $eea0: 48        
             INY                ; $eea1: c8        
             LDA ($f2),Y        ; $eea2: b1 f2     
-            STA ($f6,x)        ; $eea4: 81 f6     
+            STA ($f6,X)        ; $eea4: 81 f6     
             INC $f6            ; $eea6: e6 f6     
             PLA                ; $eea8: 68        
             sec                ; $eea9: 38        
@@ -5245,16 +5275,16 @@ __ef2e:     JSR __f04f         ; $ef2e: 20 4f f0
             lsr                ; $ef3d: 4a        
             lsr                ; $ef3e: 4a        
             TAX                ; $ef3f: aa        
-            LDA __f074,x       ; $ef40: bd 74 f0  
+            LDA __f074,X       ; $ef40: bd 74 f0  
             STA $fe            ; $ef43: 85 fe     
-            LDA __f075,x       ; $ef45: bd 75 f0  
-            STA $ff            ; $ef48: 85 ff     
+            LDA __f075,X       ; $ef45: bd 75 f0  
+            STA $FF            ; $ef48: 85 ff     
             PLA                ; $ef4a: 68        
             AND #$0f           ; $ef4b: 29 0f     
             BEQ __ef57         ; $ef4d: f0 08     
             TAX                ; $ef4f: aa        
 __ef50:     lsr $fe            ; $ef50: 46 fe     
-            ROR $ff            ; $ef52: 66 ff     
+            ROR $FF            ; $ef52: 66 ff     
             DEX                ; $ef54: ca        
             BNE __ef50         ; $ef55: d0 f9     
 __ef57:     LDA $fd            ; $ef57: a5 fd     
@@ -5265,7 +5295,7 @@ __ef57:     LDA $fd            ; $ef57: a5 fd
             AND #$f8           ; $ef5f: 29 f8     
             ORA $fe            ; $ef61: 05 fe     
             STA ($f2),Y        ; $ef63: 91 f2     
-            LDA $ff            ; $ef65: a5 ff     
+            LDA $FF            ; $ef65: a5 ff     
             DEY                ; $ef67: 88        
             STA ($f2),Y        ; $ef68: 91 f2     
             LDY $fd            ; $ef6a: a4 fd     
@@ -5301,10 +5331,10 @@ __ef98:     RTS                ; $ef98: 60
 __ef99:     AND #$0f           ; $ef99: 29 0f     
             ASL                ; $ef9b: 0a        
             TAX                ; $ef9c: aa        
-            LDA __efaa,x       ; $ef9d: bd aa ef  
+            LDA __efaa,X       ; $ef9d: bd aa ef  
             STA $fe            ; $efa0: 85 fe     
-            LDA __efab,x       ; $efa2: bd ab ef  
-            STA $ff            ; $efa5: 85 ff     
+            LDA __efab,X       ; $efa2: bd ab ef  
+            STA $FF            ; $efa5: 85 ff     
             JMP ($00fe)        ; $efa7: 6c fe 00  
 
 ;-------------------------------------------------------------------------------
@@ -5358,16 +5388,16 @@ __f04f:     LDA $fd            ; $f04f: a5 fd
             STA $fe            ; $f057: 85 fe     
             INY                ; $f059: c8        
             LDA ($f2),Y        ; $f05a: b1 f2     
-            STA $ff            ; $f05c: 85 ff     
+            STA $FF            ; $f05c: 85 ff     
             LDX #$00           ; $f05e: a2 00     
-            LDA ($fe,x)        ; $f060: a1 fe     
+            LDA ($fe,X)        ; $f060: a1 fe     
             PHA                ; $f062: 48        
             LDA $fe            ; $f063: a5 fe     
             DEY                ; $f065: 88        
             CLC                ; $f066: 18        
             ADC #$01           ; $f067: 69 01     
             STA ($f2),Y        ; $f069: 91 f2     
-            LDA $ff            ; $f06b: a5 ff     
+            LDA $FF            ; $f06b: a5 ff     
             ADC #$00           ; $f06d: 69 00     
             INY                ; $f06f: c8        
             STA ($f2),Y        ; $f070: 91 f2     
@@ -5452,7 +5482,7 @@ __f18e:     .hex 73 01         ; $f18e: 73 01     Invalid Opcode - RRA ($01),Y
             CPY #$08           ; $f190: c0 08     
             BEQ __f195         ; $f192: f0 01     
             .hex 03            ; $f194: 03        Suspected data
-__f195:     .hex 7f 08 72      ; $f195: 7f 08 72  Invalid Opcode - RRA $7208,x
+__f195:     .hex 7f 08 72      ; $f195: 7f 08 72  Invalid Opcode - RRA $7208,X
             .hex 02            ; $f198: 02        Invalid Opcode - KIL 
             .hex 82 08         ; $f199: 82 08     Invalid Opcode - NOP #$08
             .hex 72            ; $f19b: 72        Invalid Opcode - KIL 
@@ -5470,7 +5500,7 @@ __f195:     .hex 7f 08 72      ; $f195: 7f 08 72  Invalid Opcode - RRA $7208,x
             PHP                ; $f1ac: 08        
             .hex b2            ; $f1ad: b2        Invalid Opcode - KIL 
             .hex 02            ; $f1ae: 02        Invalid Opcode - KIL 
-            .hex 03 10         ; $f1af: 03 10     Invalid Opcode - SLO ($10,x)
+            .hex 03 10         ; $f1af: 03 10     Invalid Opcode - SLO ($10,X)
             CPY #$08           ; $f1b1: c0 08     
             .hex 72            ; $f1b3: 72        Invalid Opcode - KIL 
             .hex 02            ; $f1b4: 02        Invalid Opcode - KIL 
@@ -5512,11 +5542,11 @@ __f195:     .hex 7f 08 72      ; $f195: 7f 08 72  Invalid Opcode - RRA $7208,x
             LDX #$02           ; $f1e5: a2 02     
             .hex b2            ; $f1e7: b2        Invalid Opcode - KIL 
             PHP                ; $f1e8: 08        
-            .hex 03 02         ; $f1e9: 03 02     Invalid Opcode - SLO ($02,x)
+            .hex 03 02         ; $f1e9: 03 02     Invalid Opcode - SLO ($02,X)
             .hex 13 0a         ; $f1eb: 13 0a     Invalid Opcode - SLO ($0a),Y
             .hex 13 02         ; $f1ed: 13 02     Invalid Opcode - SLO ($02),Y
-            .hex 23 0c         ; $f1ef: 23 0c     Invalid Opcode - RLA ($0c,x)
-            .hex 03 02         ; $f1f1: 03 02     Invalid Opcode - SLO ($02,x)
+            .hex 23 0c         ; $f1ef: 23 0c     Invalid Opcode - RLA ($0c,X)
+            .hex 03 02         ; $f1f1: 03 02     Invalid Opcode - SLO ($02,X)
             .hex 13 08         ; $f1f3: 13 08     Invalid Opcode - SLO ($08),Y
             LDX #$02           ; $f1f5: a2 02     
             .hex b2            ; $f1f7: b2        Invalid Opcode - KIL 
@@ -5530,8 +5560,8 @@ __f195:     .hex 7f 08 72      ; $f195: 7f 08 72  Invalid Opcode - RRA $7208,x
             .hex 82 10         ; $f201: 82 10     Invalid Opcode - NOP #$10
             CPY #$08           ; $f203: c0 08     
             BEQ __f209         ; $f205: f0 02     
-            STA ($7f,x)        ; $f207: 81 7f     
-__f209:     rti                ; $f209: 40        
+            STA ($7f,X)        ; $f207: 81 7f     
+__f209:     RTI                ; $f209: 40        
 
 ;-------------------------------------------------------------------------------
             .hex 80 08         ; $f20a: 80 08     Invalid Opcode - NOP #$08
@@ -5546,11 +5576,11 @@ __f209:     rti                ; $f209: 40
             CPY #$06           ; $f21c: c0 06     
             .hex 80 04         ; $f21e: 80 04     Invalid Opcode - NOP #$04
             CPY #$02           ; $f220: c0 02     
-            ORA ($04,x)        ; $f222: 01 04     
+            ORA ($04,X)        ; $f222: 01 04     
             CPY #$01           ; $f224: c0 01     
             ORA ($04),Y        ; $f226: 11 04     
             CPY #$01           ; $f228: c0 01     
-            AND ($04,x)        ; $f22a: 21 04     
+            AND ($04,X)        ; $f22a: 21 04     
             CPY #$01           ; $f22c: c0 01     
             AND ($04),Y        ; $f22e: 31 04     
             CPY #$01           ; $f230: c0 01     
@@ -5566,11 +5596,11 @@ __f209:     rti                ; $f209: 40
             CPY #$06           ; $f244: c0 06     
             .hex 80 04         ; $f246: 80 04     Invalid Opcode - NOP #$04
             CPY #$02           ; $f248: c0 02     
-            ORA ($04,x)        ; $f24a: 01 04     
+            ORA ($04,X)        ; $f24a: 01 04     
             CPY #$01           ; $f24c: c0 01     
             ORA ($04),Y        ; $f24e: 11 04     
             CPY #$01           ; $f250: c0 01     
-            AND ($04,x)        ; $f252: 21 04     
+            AND ($04,X)        ; $f252: 21 04     
             CPY #$01           ; $f254: c0 01     
             AND ($04),Y        ; $f256: 31 04     
             CPY #$01           ; $f258: c0 01     
@@ -5586,18 +5616,18 @@ __f209:     rti                ; $f209: 40
             CPY #$06           ; $f26c: c0 06     
             .hex 80 04         ; $f26e: 80 04     Invalid Opcode - NOP #$04
             CPY #$02           ; $f270: c0 02     
-            ORA ($04,x)        ; $f272: 01 04     
+            ORA ($04,X)        ; $f272: 01 04     
             CPY #$01           ; $f274: c0 01     
             ORA ($04),Y        ; $f276: 11 04     
             CPY #$01           ; $f278: c0 01     
-            AND ($04,x)        ; $f27a: 21 04     
+            AND ($04,X)        ; $f27a: 21 04     
             CPY #$01           ; $f27c: c0 01     
             AND ($04),Y        ; $f27e: 31 04     
             CPY #$01           ; $f280: c0 01     
-            STA ($0a,x)        ; $f282: 81 0a     
+            STA ($0a,X)        ; $f282: 81 0a     
             AND ($04),Y        ; $f284: 31 04     
             CPY #$01           ; $f286: c0 01     
-            AND ($04,x)        ; $f288: 21 04     
+            AND ($04,X)        ; $f288: 21 04     
             CPY #$01           ; $f28a: c0 01     
             ORA ($04),Y        ; $f28c: 11 04     
             CPY #$01           ; $f28e: c0 01     
@@ -5621,57 +5651,57 @@ __f2aa:     TYA                ; $f2aa: 98
             .hex 7f            ; $f2ab: 7f        Suspected data
 __f2ac:     plp                ; $f2ac: 28        
             .hex 33 01         ; $f2ad: 33 01     Invalid Opcode - RLA ($01),Y
-            .hex 23 01         ; $f2af: 23 01     Invalid Opcode - RLA ($01,x)
+            .hex 23 01         ; $f2af: 23 01     Invalid Opcode - RLA ($01,X)
             .hex 13 01         ; $f2b1: 13 01     Invalid Opcode - SLO ($01),Y
-            .hex 03 01         ; $f2b3: 03 01     Invalid Opcode - SLO ($01,x)
+            .hex 03 01         ; $f2b3: 03 01     Invalid Opcode - SLO ($01,X)
             LDX #$01           ; $f2b5: a2 01     
             .hex 82 01         ; $f2b7: 82 01     Invalid Opcode - NOP #$01
             .hex 72            ; $f2b9: 72        Invalid Opcode - KIL 
-            ORA ($52,x)        ; $f2ba: 01 52     
-            ORA ($32,x)        ; $f2bc: 01 32     
-            ORA ($12,x)        ; $f2be: 01 12     
-            ORA ($a1,x)        ; $f2c0: 01 a1     
-            ORA ($71,x)        ; $f2c2: 01 71     
-            ORA ($31,x)        ; $f2c4: 01 31     
-            ORA ($f0,x)        ; $f2c6: 01 f0     
-            ORA ($42,x)        ; $f2c8: 01 42     
-            .hex 7f 38 23      ; $f2ca: 7f 38 23  Invalid Opcode - RRA $2338,x
+            ORA ($52,X)        ; $f2ba: 01 52     
+            ORA ($32,X)        ; $f2bc: 01 32     
+            ORA ($12,X)        ; $f2be: 01 12     
+            ORA ($a1,X)        ; $f2c0: 01 a1     
+            ORA ($71,X)        ; $f2c2: 01 71     
+            ORA ($31,X)        ; $f2c4: 01 31     
+            ORA ($f0,X)        ; $f2c6: 01 f0     
+            ORA ($42,X)        ; $f2c8: 01 42     
+            .hex 7f 38 23      ; $f2ca: 7f 38 23  Invalid Opcode - RRA $2338,X
             .hex 02            ; $f2cd: 02        Invalid Opcode - KIL 
             .hex 33 02         ; $f2ce: 33 02     Invalid Opcode - RLA ($02),Y
-            .hex 43 02         ; $f2d0: 43 02     Invalid Opcode - SRE ($02,x)
+            .hex 43 02         ; $f2d0: 43 02     Invalid Opcode - SRE ($02,X)
             .hex 53 02         ; $f2d2: 53 02     Invalid Opcode - SRE ($02),Y
-            .hex 43 02         ; $f2d4: 43 02     Invalid Opcode - SRE ($02,x)
+            .hex 43 02         ; $f2d4: 43 02     Invalid Opcode - SRE ($02,X)
             .hex 33 02         ; $f2d6: 33 02     Invalid Opcode - RLA ($02),Y
-            .hex 23 02         ; $f2d8: 23 02     Invalid Opcode - RLA ($02,x)
+            .hex 23 02         ; $f2d8: 23 02     Invalid Opcode - RLA ($02,X)
             .hex 13 02         ; $f2da: 13 02     Invalid Opcode - SLO ($02),Y
-            .hex 23 02         ; $f2dc: 23 02     Invalid Opcode - RLA ($02,x)
+            .hex 23 02         ; $f2dc: 23 02     Invalid Opcode - RLA ($02,X)
             .hex 33 02         ; $f2de: 33 02     Invalid Opcode - RLA ($02),Y
-            .hex 43 02         ; $f2e0: 43 02     Invalid Opcode - SRE ($02,x)
+            .hex 43 02         ; $f2e0: 43 02     Invalid Opcode - SRE ($02,X)
             .hex 33 02         ; $f2e2: 33 02     Invalid Opcode - RLA ($02),Y
-            .hex 23 02         ; $f2e4: 23 02     Invalid Opcode - RLA ($02,x)
+            .hex 23 02         ; $f2e4: 23 02     Invalid Opcode - RLA ($02,X)
             .hex 13 02         ; $f2e6: 13 02     Invalid Opcode - SLO ($02),Y
-            .hex 03 02         ; $f2e8: 03 02     Invalid Opcode - SLO ($02,x)
+            .hex 03 02         ; $f2e8: 03 02     Invalid Opcode - SLO ($02,X)
             .hex 13 02         ; $f2ea: 13 02     Invalid Opcode - SLO ($02),Y
-            .hex 23 02         ; $f2ec: 23 02     Invalid Opcode - RLA ($02,x)
+            .hex 23 02         ; $f2ec: 23 02     Invalid Opcode - RLA ($02,X)
             .hex 33 02         ; $f2ee: 33 02     Invalid Opcode - RLA ($02),Y
-            .hex 23 02         ; $f2f0: 23 02     Invalid Opcode - RLA ($02,x)
+            .hex 23 02         ; $f2f0: 23 02     Invalid Opcode - RLA ($02,X)
             .hex 13 02         ; $f2f2: 13 02     Invalid Opcode - SLO ($02),Y
-            .hex 03 02         ; $f2f4: 03 02     Invalid Opcode - SLO ($02,x)
+            .hex 03 02         ; $f2f4: 03 02     Invalid Opcode - SLO ($02,X)
             .hex b2            ; $f2f6: b2        Invalid Opcode - KIL 
             .hex 02            ; $f2f7: 02        Invalid Opcode - KIL 
-            .hex 03 02         ; $f2f8: 03 02     Invalid Opcode - SLO ($02,x)
+            .hex 03 02         ; $f2f8: 03 02     Invalid Opcode - SLO ($02,X)
             .hex 13 02         ; $f2fa: 13 02     Invalid Opcode - SLO ($02),Y
-            .hex 23 02         ; $f2fc: 23 02     Invalid Opcode - RLA ($02,x)
+            .hex 23 02         ; $f2fc: 23 02     Invalid Opcode - RLA ($02,X)
             .hex 13 02         ; $f2fe: 13 02     Invalid Opcode - SLO ($02),Y
-            .hex 03 02         ; $f300: 03 02     Invalid Opcode - SLO ($02,x)
+            .hex 03 02         ; $f300: 03 02     Invalid Opcode - SLO ($02,X)
             .hex b2            ; $f302: b2        Invalid Opcode - KIL 
             .hex 02            ; $f303: 02        Invalid Opcode - KIL 
             LDX #$02           ; $f304: a2 02     
             .hex b2            ; $f306: b2        Invalid Opcode - KIL 
             .hex 02            ; $f307: 02        Invalid Opcode - KIL 
-            .hex 03 02         ; $f308: 03 02     Invalid Opcode - SLO ($02,x)
-            .hex 23 02         ; $f30a: 23 02     Invalid Opcode - RLA ($02,x)
-            .hex 03 02         ; $f30c: 03 02     Invalid Opcode - SLO ($02,x)
+            .hex 03 02         ; $f308: 03 02     Invalid Opcode - SLO ($02,X)
+            .hex 23 02         ; $f30a: 23 02     Invalid Opcode - RLA ($02,X)
+            .hex 03 02         ; $f30c: 03 02     Invalid Opcode - SLO ($02,X)
             .hex b2            ; $f30e: b2        Invalid Opcode - KIL 
             .hex 02            ; $f30f: 02        Invalid Opcode - KIL 
             LDX #$02           ; $f310: a2 02     
@@ -5680,7 +5710,7 @@ __f2ac:     plp                ; $f2ac: 28
             LDX #$02           ; $f314: a2 02     
             .hex b2            ; $f316: b2        Invalid Opcode - KIL 
             .hex 02            ; $f317: 02        Invalid Opcode - KIL 
-            .hex 03 02         ; $f318: 03 02     Invalid Opcode - SLO ($02,x)
+            .hex 03 02         ; $f318: 03 02     Invalid Opcode - SLO ($02,X)
             .hex b2            ; $f31a: b2        Invalid Opcode - KIL 
             .hex 02            ; $f31b: 02        Invalid Opcode - KIL 
             LDX #$02           ; $f31c: a2 02     
@@ -5690,7 +5720,7 @@ __f2ac:     plp                ; $f2ac: 28
             .hex 92            ; $f322: 92        Invalid Opcode - KIL 
             .hex 02            ; $f323: 02        Invalid Opcode - KIL 
             LDX #$02           ; $f324: a2 02     
-            .hex 03 02         ; $f326: 03 02     Invalid Opcode - SLO ($02,x)
+            .hex 03 02         ; $f326: 03 02     Invalid Opcode - SLO ($02,X)
             LDX #$02           ; $f328: a2 02     
             .hex 92            ; $f32a: 92        Invalid Opcode - KIL 
             .hex 02            ; $f32b: 02        Invalid Opcode - KIL 
@@ -5698,42 +5728,42 @@ __f2ac:     plp                ; $f2ac: 28
             .hex f2            ; $f32e: f2        Invalid Opcode - KIL 
             brk                ; $f32f: 00        
             .hex f3 00         ; $f330: f3 00     Invalid Opcode - ISC ($00),Y
-            sbc $18,x          ; $f332: f5 18     
+            sbc $18,X          ; $f332: f5 18     
             AND ($01),Y        ; $f334: 31 01     
             ADC ($01),Y        ; $f336: 71 01     
             LDA ($01),Y        ; $f338: b1 01     
             .hex 32            ; $f33a: 32        Invalid Opcode - KIL 
-            ORA ($72,x)        ; $f33b: 01 72     
-            ORA ($b2,x)        ; $f33d: 01 b2     
-            ORA ($33,x)        ; $f33f: 01 33     
-            ORA ($73,x)        ; $f341: 01 73     
-            ORA ($c0,x)        ; $f343: 01 c0     
+            ORA ($72,X)        ; $f33b: 01 72     
+            ORA ($b2,X)        ; $f33d: 01 b2     
+            ORA ($33,X)        ; $f33f: 01 33     
+            ORA ($73,X)        ; $f341: 01 73     
+            ORA ($c0,X)        ; $f343: 01 c0     
             .hex 02            ; $f345: 02        Invalid Opcode - KIL 
             AND ($01),Y        ; $f346: 31 01     
             ADC ($01),Y        ; $f348: 71 01     
             LDA ($01),Y        ; $f34a: b1 01     
             .hex 32            ; $f34c: 32        Invalid Opcode - KIL 
-            ORA ($72,x)        ; $f34d: 01 72     
-            ORA ($b2,x)        ; $f34f: 01 b2     
-            ORA ($33,x)        ; $f351: 01 33     
-            ORA ($73,x)        ; $f353: 01 73     
-            ORA ($f0,x)        ; $f355: 01 f0     
-            ORA ($81,x)        ; $f357: 01 81     
-            .hex 7f 40 31      ; $f359: 7f 40 31  Invalid Opcode - RRA $3140,x
+            ORA ($72,X)        ; $f34d: 01 72     
+            ORA ($b2,X)        ; $f34f: 01 b2     
+            ORA ($33,X)        ; $f351: 01 33     
+            ORA ($73,X)        ; $f353: 01 73     
+            ORA ($f0,X)        ; $f355: 01 f0     
+            ORA ($81,X)        ; $f357: 01 81     
+            .hex 7f 40 31      ; $f359: 7f 40 31  Invalid Opcode - RRA $3140,X
             PHP                ; $f35c: 08        
             .hex 32            ; $f35d: 32        Invalid Opcode - KIL 
             PHP                ; $f35e: 08        
-            LDA ($08,x)        ; $f35f: a1 08     
+            LDA ($08,X)        ; $f35f: a1 08     
             ADC ($08),Y        ; $f361: 71 08     
             .hex 32            ; $f363: 32        Invalid Opcode - KIL 
             .hex 07 a1         ; $f364: 07 a1     Invalid Opcode - SLO $a1
             .hex 07 71         ; $f366: 07 71     Invalid Opcode - SLO $71
             .hex 0c c0 06      ; $f368: 0c c0 06  Invalid Opcode - NOP $06c0
-            EOR ($08,x)        ; $f36b: 41 08     
+            EOR ($08,X)        ; $f36b: 41 08     
             .hex 42            ; $f36d: 42        Invalid Opcode - KIL 
             PHP                ; $f36e: 08        
             LDA ($08),Y        ; $f36f: b1 08     
-            STA ($08,x)        ; $f371: 81 08     
+            STA ($08,X)        ; $f371: 81 08     
             .hex 42            ; $f373: 42        Invalid Opcode - KIL 
             .hex 07 b1         ; $f374: 07 b1     Invalid Opcode - SLO $b1
             .hex 07 81         ; $f376: 07 81     Invalid Opcode - SLO $81
@@ -5741,25 +5771,25 @@ __f2ac:     plp                ; $f2ac: 28
             AND ($08),Y        ; $f37b: 31 08     
             .hex 32            ; $f37d: 32        Invalid Opcode - KIL 
             PHP                ; $f37e: 08        
-            LDA ($08,x)        ; $f37f: a1 08     
+            LDA ($08,X)        ; $f37f: a1 08     
             ADC ($08),Y        ; $f381: 71 08     
             .hex 32            ; $f383: 32        Invalid Opcode - KIL 
             .hex 07 a1         ; $f384: 07 a1     Invalid Opcode - SLO $a1
             .hex 07 71         ; $f386: 07 71     Invalid Opcode - SLO $71
             .hex 0c c0 06      ; $f388: 0c c0 06  Invalid Opcode - NOP $06c0
-            ADC ($05,x)        ; $f38b: 61 05     
+            ADC ($05,X)        ; $f38b: 61 05     
             ADC ($05),Y        ; $f38d: 71 05     
-            STA ($05,x)        ; $f38f: 81 05     
-            STA ($05,x)        ; $f391: 81 05     
+            STA ($05,X)        ; $f38f: 81 05     
+            STA ($05,X)        ; $f391: 81 05     
             STA ($05),Y        ; $f393: 91 05     
-            LDA ($05,x)        ; $f395: a1 05     
-            LDA ($05,x)        ; $f397: a1 05     
+            LDA ($05,X)        ; $f395: a1 05     
+            LDA ($05,X)        ; $f397: a1 05     
             LDA ($05),Y        ; $f399: b1 05     
             .hex 02            ; $f39b: 02        Invalid Opcode - KIL 
             ORA $32            ; $f39c: 05 32     
             .hex 0c f0 02      ; $f39e: 0c f0 02  Invalid Opcode - NOP $02f0
             .hex 82 7f         ; $f3a1: 82 7f     Invalid Opcode - NOP #$7f
-            rti                ; $f3a3: 40        
+            RTI                ; $f3a3: 40        
 
 ;-------------------------------------------------------------------------------
             BMI __f3be         ; $f3a4: 30 18     
@@ -5767,12 +5797,12 @@ __f2ac:     plp                ; $f2ac: 28
             BMI __f3b8         ; $f3a8: 30 0e     
             LDY #$0c           ; $f3aa: a0 0c     
             CPY #$06           ; $f3ac: c0 06     
-            rti                ; $f3ae: 40        
+            RTI                ; $f3ae: 40        
 
 ;-------------------------------------------------------------------------------
             CLC                ; $f3af: 18        
             bcs __f3ba         ; $f3b0: b0 08     
-            rti                ; $f3b2: 40        
+            RTI                ; $f3b2: 40        
 
 ;-------------------------------------------------------------------------------
             ASL $0cb0          ; $f3b3: 0e b0 0c  
@@ -5783,1058 +5813,1058 @@ __f3ba:     LDY #$08           ; $f3ba: a0 08
 __f3be:     LDY #$0c           ; $f3be: a0 0c     
             CPY #$06           ; $f3c0: c0 06     
             LDY #$0f           ; $f3c2: a0 0f     
-            ORA ($0f,x)        ; $f3c4: 01 0f     
-            AND ($0f,x)        ; $f3c6: 21 0f     
+            ORA ($0f,X)        ; $f3c4: 01 0f     
+            AND ($0f,X)        ; $f3c6: 21 0f     
             AND ($0c),Y        ; $f3c8: 31 0c     
             BEQ __f3cd         ; $f3ca: f0 01     
 __f3cc:     .hex 9f            ; $f3cc: 9f        Suspected data
-__f3cd:     .hex 7f 28 01      ; $f3cd: 7f 28 01  Invalid Opcode - RRA $0128,x
-            ORA ($41,x)        ; $f3d0: 01 41     
-__f3d2:     ORA ($71,x)        ; $f3d2: 01 71     
-            ORA ($a1,x)        ; $f3d4: 01 a1     
-            ORA ($02,x)        ; $f3d6: 01 02     
-            ORA ($f5,x)        ; $f3d8: 01 f5     
+__f3cd:     .hex 7f 28 01      ; $f3cd: 7f 28 01  Invalid Opcode - RRA $0128,X
+            ORA ($41,X)        ; $f3d0: 01 41     
+__f3d2:     ORA ($71,X)        ; $f3d2: 01 71     
+            ORA ($a1,X)        ; $f3d4: 01 a1     
+            ORA ($02,X)        ; $f3d6: 01 02     
+            ORA ($f5,X)        ; $f3d8: 01 f5     
             CLC                ; $f3da: 18        
             BEQ __f3de         ; $f3db: f0 01     
             .hex 9f            ; $f3dd: 9f        Suspected data
-__f3de:     .hex 7f 28 02      ; $f3de: 7f 28 02  Invalid Opcode - RRA $0228,x
-            ORA ($a1,x)        ; $f3e1: 01 a1     
-            ORA ($71,x)        ; $f3e3: 01 71     
-            ORA ($41,x)        ; $f3e5: 01 41     
-            ORA ($f5,x)        ; $f3e7: 01 f5     
+__f3de:     .hex 7f 28 02      ; $f3de: 7f 28 02  Invalid Opcode - RRA $0228,X
+            ORA ($a1,X)        ; $f3e1: 01 a1     
+            ORA ($71,X)        ; $f3e3: 01 71     
+            ORA ($41,X)        ; $f3e5: 01 41     
+            ORA ($f5,X)        ; $f3e7: 01 f5     
             CLC                ; $f3e9: 18        
-            ORA ($01,x)        ; $f3ea: 01 01     
+            ORA ($01,X)        ; $f3ea: 01 01     
             BEQ __f3ef         ; $f3ec: f0 01     
             .hex 9f            ; $f3ee: 9f        Suspected data
-__f3ef:     .hex 7f 28 52      ; $f3ef: 7f 28 52  Invalid Opcode - RRA $5228,x
-            ORA ($92,x)        ; $f3f2: 01 92     
-            ORA ($03,x)        ; $f3f4: 01 03     
-            ORA ($33,x)        ; $f3f6: 01 33     
-            ORA ($f5,x)        ; $f3f8: 01 f5     
+__f3ef:     .hex 7f 28 52      ; $f3ef: 7f 28 52  Invalid Opcode - RRA $5228,X
+            ORA ($92,X)        ; $f3f2: 01 92     
+            ORA ($03,X)        ; $f3f4: 01 03     
+            ORA ($33,X)        ; $f3f6: 01 33     
+            ORA ($f5,X)        ; $f3f8: 01 f5     
             CLC                ; $f3fa: 18        
             .hex 53 03         ; $f3fb: 53 03     Invalid Opcode - SRE ($03),Y
-            sbc $28,x          ; $f3fd: f5 28     
+            sbc $28,X          ; $f3fd: f5 28     
             .hex 53 01         ; $f3ff: 53 01     Invalid Opcode - SRE ($01),Y
             .hex 33 01         ; $f401: 33 01     Invalid Opcode - RLA ($01),Y
-            .hex 03 01         ; $f403: 03 01     Invalid Opcode - SLO ($01,x)
+            .hex 03 01         ; $f403: 03 01     Invalid Opcode - SLO ($01,X)
             .hex 92            ; $f405: 92        Invalid Opcode - KIL 
-            ORA ($f5,x)        ; $f406: 01 f5     
+            ORA ($f5,X)        ; $f406: 01 f5     
             CLC                ; $f408: 18        
             .hex 52            ; $f409: 52        Invalid Opcode - KIL 
-            .hex 03 92         ; $f40a: 03 92     Invalid Opcode - SLO ($92,x)
-            ORA ($13,x)        ; $f40c: 01 13     
-            ORA ($43,x)        ; $f40e: 01 43     
-            ORA ($73,x)        ; $f410: 01 73     
-            ORA ($f5,x)        ; $f412: 01 f5     
+            .hex 03 92         ; $f40a: 03 92     Invalid Opcode - SLO ($92,X)
+            ORA ($13,X)        ; $f40c: 01 13     
+            ORA ($43,X)        ; $f40e: 01 43     
+            ORA ($73,X)        ; $f410: 01 73     
+            ORA ($f5,X)        ; $f412: 01 f5     
             CLC                ; $f414: 18        
             .hex 93 0a         ; $f415: 93 0a     Invalid Opcode - AHX ($0a),Y
-            sbc $28,x          ; $f417: f5 28     
+            sbc $28,X          ; $f417: f5 28     
             .hex 93 01         ; $f419: 93 01     Invalid Opcode - AHX ($01),Y
             .hex 73 01         ; $f41b: 73 01     Invalid Opcode - RRA ($01),Y
-            .hex 43 01         ; $f41d: 43 01     Invalid Opcode - SRE ($01,x)
+            .hex 43 01         ; $f41d: 43 01     Invalid Opcode - SRE ($01,X)
             .hex 13 01         ; $f41f: 13 01     Invalid Opcode - SLO ($01),Y
-            sbc $18,x          ; $f421: f5 18     
+            sbc $18,X          ; $f421: f5 18     
             .hex 92            ; $f423: 92        Invalid Opcode - KIL 
-            .hex 03 f0         ; $f424: 03 f0     Invalid Opcode - SLO ($f0,x)
-            .hex ff ff ff      ; $f426: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f429: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f42c: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f42f: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f432: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f435: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f438: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f43b: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f43e: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f441: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f444: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f447: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f44a: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f44d: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f450: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f453: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f456: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f459: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f45c: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f45f: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f462: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f465: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f468: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f46b: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f46e: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f471: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f474: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f477: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f47a: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f47d: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f480: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f483: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f486: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f489: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f48c: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f48f: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f492: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f495: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f498: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f49b: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f49e: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f4a1: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f4a4: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f4a7: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f4aa: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f4ad: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f4b0: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f4b3: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f4b6: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f4b9: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f4bc: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f4bf: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f4c2: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f4c5: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f4c8: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f4cb: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f4ce: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f4d1: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f4d4: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f4d7: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f4da: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f4dd: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f4e0: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f4e3: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f4e6: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f4e9: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f4ec: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f4ef: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f4f2: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f4f5: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f4f8: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f4fb: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f4fe: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f501: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f504: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f507: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f50a: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f50d: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f510: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f513: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f516: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f519: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f51c: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f51f: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f522: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f525: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f528: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f52b: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f52e: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f531: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f534: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f537: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f53a: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f53d: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f540: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f543: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f546: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f549: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f54c: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f54f: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f552: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f555: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f558: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f55b: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f55e: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f561: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f564: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f567: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f56a: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f56d: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f570: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f573: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f576: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f579: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f57c: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f57f: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f582: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f585: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f588: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f58b: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f58e: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f591: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f594: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f597: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f59a: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f59d: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f5a0: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f5a3: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f5a6: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f5a9: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f5ac: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f5af: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f5b2: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f5b5: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f5b8: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f5bb: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f5be: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f5c1: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f5c4: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f5c7: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f5ca: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f5cd: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f5d0: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f5d3: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f5d6: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f5d9: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f5dc: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f5df: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f5e2: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f5e5: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f5e8: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f5eb: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f5ee: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f5f1: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f5f4: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f5f7: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f5fa: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f5fd: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f600: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f603: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f606: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f609: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f60c: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f60f: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f612: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f615: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f618: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f61b: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f61e: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f621: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f624: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f627: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f62a: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f62d: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f630: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f633: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f636: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f639: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f63c: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f63f: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f642: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f645: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f648: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f64b: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f64e: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f651: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f654: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f657: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f65a: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f65d: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f660: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f663: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f666: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f669: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f66c: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f66f: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f672: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f675: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f678: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f67b: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f67e: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f681: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f684: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f687: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f68a: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f68d: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f690: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f693: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f696: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f699: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f69c: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f69f: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f6a2: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f6a5: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f6a8: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f6ab: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f6ae: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f6b1: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f6b4: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f6b7: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f6ba: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f6bd: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f6c0: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f6c3: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f6c6: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f6c9: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f6cc: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f6cf: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f6d2: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f6d5: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f6d8: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f6db: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f6de: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f6e1: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f6e4: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f6e7: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f6ea: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f6ed: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f6f0: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f6f3: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f6f6: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f6f9: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f6fc: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f6ff: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f702: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f705: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f708: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f70b: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f70e: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f711: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f714: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f717: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f71a: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f71d: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f720: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f723: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f726: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f729: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f72c: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f72f: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f732: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f735: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f738: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f73b: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f73e: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f741: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f744: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f747: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f74a: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f74d: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f750: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f753: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f756: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f759: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f75c: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f75f: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f762: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f765: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f768: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f76b: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f76e: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f771: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f774: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f777: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f77a: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f77d: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f780: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f783: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f786: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f789: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f78c: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f78f: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f792: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f795: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f798: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f79b: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f79e: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f7a1: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f7a4: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f7a7: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f7aa: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f7ad: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f7b0: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f7b3: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f7b6: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f7b9: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f7bc: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f7bf: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f7c2: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f7c5: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f7c8: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f7cb: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f7ce: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f7d1: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f7d4: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f7d7: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f7da: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f7dd: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f7e0: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f7e3: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f7e6: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f7e9: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f7ec: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f7ef: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f7f2: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f7f5: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f7f8: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f7fb: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f7fe: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f801: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f804: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f807: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f80a: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f80d: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f810: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f813: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f816: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f819: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f81c: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f81f: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f822: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f825: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f828: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f82b: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f82e: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f831: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f834: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f837: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f83a: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f83d: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f840: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f843: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f846: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f849: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f84c: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f84f: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f852: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f855: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f858: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f85b: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f85e: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f861: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f864: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f867: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f86a: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f86d: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f870: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f873: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f876: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f879: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f87c: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f87f: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f882: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f885: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f888: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f88b: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f88e: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f891: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f894: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f897: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f89a: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f89d: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f8a0: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f8a3: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f8a6: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f8a9: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f8ac: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f8af: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f8b2: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f8b5: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f8b8: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f8bb: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f8be: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f8c1: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f8c4: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f8c7: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f8ca: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f8cd: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f8d0: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f8d3: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f8d6: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f8d9: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f8dc: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f8df: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f8e2: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f8e5: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f8e8: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f8eb: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f8ee: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f8f1: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f8f4: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f8f7: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f8fa: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f8fd: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f900: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f903: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f906: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f909: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f90c: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f90f: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f912: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f915: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f918: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f91b: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f91e: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f921: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f924: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f927: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f92a: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f92d: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f930: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f933: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f936: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f939: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f93c: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f93f: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f942: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f945: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f948: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f94b: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f94e: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f951: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f954: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f957: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f95a: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f95d: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f960: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f963: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f966: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f969: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f96c: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f96f: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f972: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f975: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f978: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f97b: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f97e: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f981: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f984: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f987: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f98a: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f98d: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f990: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f993: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f996: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f999: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f99c: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f99f: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f9a2: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f9a5: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f9a8: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f9ab: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f9ae: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f9b1: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f9b4: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f9b7: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f9ba: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f9bd: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f9c0: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f9c3: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f9c6: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f9c9: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f9cc: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f9cf: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f9d2: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f9d5: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f9d8: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f9db: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f9de: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f9e1: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f9e4: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f9e7: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f9ea: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f9ed: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f9f0: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f9f3: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f9f6: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f9f9: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f9fc: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $f9ff: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fa02: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fa05: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fa08: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fa0b: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fa0e: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fa11: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fa14: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fa17: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fa1a: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fa1d: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fa20: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fa23: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fa26: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fa29: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fa2c: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fa2f: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fa32: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fa35: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fa38: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fa3b: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fa3e: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fa41: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fa44: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fa47: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fa4a: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fa4d: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fa50: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fa53: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fa56: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fa59: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fa5c: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fa5f: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fa62: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fa65: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fa68: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fa6b: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fa6e: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fa71: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fa74: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fa77: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fa7a: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fa7d: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fa80: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fa83: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fa86: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fa89: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fa8c: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fa8f: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fa92: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fa95: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fa98: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fa9b: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fa9e: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $faa1: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $faa4: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $faa7: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $faaa: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $faad: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fab0: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fab3: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fab6: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fab9: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fabc: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fabf: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fac2: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fac5: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fac8: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $facb: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $face: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fad1: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fad4: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fad7: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fada: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fadd: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fae0: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fae3: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fae6: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fae9: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $faec: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $faef: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $faf2: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $faf5: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $faf8: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fafb: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fafe: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fb01: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fb04: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fb07: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fb0a: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fb0d: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fb10: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fb13: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fb16: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fb19: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fb1c: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fb1f: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fb22: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fb25: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fb28: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fb2b: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fb2e: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fb31: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fb34: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fb37: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fb3a: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fb3d: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fb40: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fb43: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fb46: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fb49: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fb4c: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fb4f: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fb52: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fb55: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fb58: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fb5b: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fb5e: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fb61: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fb64: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fb67: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fb6a: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fb6d: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fb70: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fb73: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fb76: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fb79: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fb7c: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fb7f: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fb82: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fb85: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fb88: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fb8b: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fb8e: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fb91: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fb94: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fb97: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fb9a: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fb9d: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fba0: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fba3: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fba6: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fba9: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fbac: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fbaf: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fbb2: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fbb5: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fbb8: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fbbb: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fbbe: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fbc1: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fbc4: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fbc7: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fbca: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fbcd: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fbd0: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fbd3: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fbd6: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fbd9: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fbdc: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fbdf: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fbe2: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fbe5: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fbe8: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fbeb: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fbee: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fbf1: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fbf4: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fbf7: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fbfa: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fbfd: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc00: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc03: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc06: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc09: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc0c: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc0f: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc12: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc15: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc18: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc1b: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc1e: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc21: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc24: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc27: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc2a: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc2d: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc30: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc33: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc36: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc39: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc3c: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc3f: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc42: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc45: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc48: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc4b: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc4e: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc51: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc54: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc57: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc5a: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc5d: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc60: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc63: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc66: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc69: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc6c: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc6f: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc72: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc75: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc78: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc7b: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc7e: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc81: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc84: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc87: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc8a: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc8d: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc90: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc93: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc96: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc99: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc9c: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fc9f: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fca2: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fca5: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fca8: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fcab: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fcae: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fcb1: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fcb4: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fcb7: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fcba: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fcbd: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fcc0: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fcc3: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fcc6: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fcc9: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fccc: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fccf: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fcd2: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fcd5: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fcd8: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fcdb: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fcde: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fce1: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fce4: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fce7: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fcea: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fced: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fcf0: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fcf3: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fcf6: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fcf9: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fcfc: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fcff: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fd02: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fd05: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fd08: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fd0b: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fd0e: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fd11: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fd14: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fd17: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fd1a: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fd1d: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fd20: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fd23: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fd26: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fd29: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fd2c: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fd2f: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fd32: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fd35: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fd38: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fd3b: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fd3e: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fd41: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fd44: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fd47: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fd4a: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fd4d: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fd50: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fd53: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fd56: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fd59: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fd5c: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fd5f: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fd62: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fd65: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fd68: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fd6b: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fd6e: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fd71: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fd74: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fd77: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fd7a: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fd7d: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fd80: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fd83: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fd86: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fd89: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fd8c: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fd8f: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fd92: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fd95: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fd98: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fd9b: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fd9e: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fda1: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fda4: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fda7: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fdaa: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fdad: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fdb0: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fdb3: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fdb6: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fdb9: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fdbc: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fdbf: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fdc2: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fdc5: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fdc8: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fdcb: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fdce: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fdd1: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fdd4: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fdd7: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fdda: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fddd: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fde0: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fde3: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fde6: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fde9: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fDEC: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fdef: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fdf2: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fdf5: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fdf8: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fdfb: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fdfe: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fe01: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fe04: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fe07: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fe0a: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fe0d: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fe10: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fe13: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fe16: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fe19: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fe1c: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fe1f: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fe22: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fe25: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fe28: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fe2b: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fe2e: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fe31: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fe34: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fe37: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fe3a: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fe3d: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fe40: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fe43: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fe46: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fe49: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fe4c: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fe4f: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fe52: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fe55: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fe58: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fe5b: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fe5e: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fe61: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fe64: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fe67: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fe6a: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fe6d: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fe70: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fe73: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fe76: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fe79: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fe7c: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fe7f: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fe82: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fe85: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fe88: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fe8b: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fe8e: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fe91: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fe94: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fe97: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fe9a: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fe9d: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fea0: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fea3: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fea6: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fea9: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $feac: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $feaf: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $feb2: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $feb5: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $feb8: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $febb: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $febe: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fec1: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fec4: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fec7: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $feca: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fecd: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fed0: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fed3: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fed6: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fed9: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fedc: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fedf: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fee2: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fee5: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fee8: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $feeb: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $feee: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fef1: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fef4: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fef7: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fefa: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $fefd: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $ff00: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $ff03: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $ff06: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $ff09: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $ff0c: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $ff0f: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $ff12: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $ff15: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $ff18: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $ff1b: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $ff1e: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $ff21: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $ff24: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $ff27: ff ff ff  Invalid Opcode - ISC $ffff,x
-            .hex ff ff ff      ; $ff2a: ff ff ff  Invalid Opcode - ISC $ffff,x
-__ff2d:     .hex ff ff ff ff   ; $ff2d: ff ff ff ff   Data
-            .hex ff ff ff ff   ; $ff31: ff ff ff ff   Data
-            .hex ff ff ff ff   ; $ff35: ff ff ff ff   Data
-            .hex ff ff ff ff   ; $ff39: ff ff ff ff   Data
-            .hex ff ff         ; $ff3d: ff ff         Data
-__ff3f:     .hex ff ff ff ff   ; $ff3f: ff ff ff ff   Data
-            .hex ff ff ff ff   ; $ff43: ff ff ff ff   Data
-            .hex ff ff ff ff   ; $ff47: ff ff ff ff   Data
-            .hex ff ff ff ff   ; $ff4b: ff ff ff ff   Data
-            .hex ff ff ff ff   ; $ff4f: ff ff ff ff   Data
-            .hex ff ff ff ff   ; $ff53: ff ff ff ff   Data
-            .hex ff ff ff ff   ; $ff57: ff ff ff ff   Data
-            .hex ff ff ff ff   ; $ff5b: ff ff ff ff   Data
-            .hex ff ff ff ff   ; $ff5f: ff ff ff ff   Data
-            .hex ff ff ff ff   ; $ff63: ff ff ff ff   Data
-            .hex ff ff ff ff   ; $ff67: ff ff ff ff   Data
-            .hex ff ff ff ff   ; $ff6b: ff ff ff ff   Data
-            .hex ff ff ff ff   ; $ff6f: ff ff ff ff   Data
-            .hex ff ff ff ff   ; $ff73: ff ff ff ff   Data
-            .hex ff ff ff ff   ; $ff77: ff ff ff ff   Data
-            .hex ff ff ff ff   ; $ff7b: ff ff ff ff   Data
-            .hex ff ff ff ff   ; $ff7f: ff ff ff ff   Data
-            .hex ff ff ff ff   ; $ff83: ff ff ff ff   Data
-            .hex ff ff ff ff   ; $ff87: ff ff ff ff   Data
-            .hex ff ff ff ff   ; $ff8b: ff ff ff ff   Data
-            .hex ff ff ff ff   ; $ff8f: ff ff ff ff   Data
-            .hex ff ff ff ff   ; $ff93: ff ff ff ff   Data
-            .hex ff ff ff ff   ; $ff97: ff ff ff ff   Data
-            .hex ff ff ff ff   ; $ff9b: ff ff ff ff   Data
-            .hex ff ff ff ff   ; $ff9f: ff ff ff ff   Data
-            .hex ff ff ff ff   ; $ffa3: ff ff ff ff   Data
-            .hex ff ff ff ff   ; $ffa7: ff ff ff ff   Data
-            .hex ff ff ff ff   ; $ffab: ff ff ff ff   Data
-            .hex ff ff ff ff   ; $ffaf: ff ff ff ff   Data
-            .hex ff ff ff ff   ; $ffb3: ff ff ff ff   Data
-            .hex ff ff ff ff   ; $ffb7: ff ff ff ff   Data
-            .hex ff ff ff ff   ; $ffbb: ff ff ff ff   Data
-            .hex ff ff ff ff   ; $ffbf: ff ff ff ff   Data
-            .hex ff ff ff ff   ; $ffc3: ff ff ff ff   Data
-            .hex ff ff ff ff   ; $ffc7: ff ff ff ff   Data
-            .hex ff ff ff ff   ; $ffcb: ff ff ff ff   Data
-            .hex ff ff ff ff   ; $ffcf: ff ff ff ff   Data
-            .hex ff ff ff ff   ; $ffd3: ff ff ff ff   Data
-            .hex ff ff ff ff   ; $ffd7: ff ff ff ff   Data
-            .hex ff ff ff ff   ; $ffdb: ff ff ff ff   Data
-            .hex ff ff ff ff   ; $ffdf: ff ff ff ff   Data
-            .hex ff ff ff ff   ; $ffe3: ff ff ff ff   Data
-            .hex ff ff ff ff   ; $ffe7: ff ff ff ff   Data
-            .hex ff ff ff ff   ; $ffeb: ff ff ff ff   Data
-            .hex ff ff ff ff   ; $ffef: ff ff ff ff   Data
-            .hex ff ff ff ff   ; $fff3: ff ff ff ff   Data
-            .hex ff            ; $fff7: ff            Data
-__fff8:     .hex 78            ; $fff8: 78            Data
-__fff9:     .hex ec            ; $fff9: ec            Data
+            .hex 03 f0         ; $f424: 03 f0     Invalid Opcode - SLO ($f0,X)
+            .hex ff ff ff      ; $f426: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f429: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f42c: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f42f: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f432: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f435: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f438: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f43b: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f43e: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f441: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f444: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f447: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f44a: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f44d: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f450: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f453: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f456: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f459: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f45c: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f45f: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f462: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f465: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f468: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f46b: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f46e: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f471: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f474: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f477: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f47a: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f47d: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f480: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f483: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f486: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f489: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f48c: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f48f: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f492: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f495: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f498: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f49b: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f49e: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f4a1: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f4a4: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f4a7: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f4aa: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f4ad: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f4b0: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f4b3: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f4b6: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f4b9: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f4bc: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f4bf: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f4c2: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f4c5: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f4c8: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f4cb: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f4ce: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f4d1: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f4d4: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f4d7: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f4da: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f4dd: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f4e0: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f4e3: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f4e6: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f4e9: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f4ec: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f4ef: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f4f2: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f4f5: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f4f8: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f4fb: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f4fe: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f501: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f504: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f507: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f50a: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f50d: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f510: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f513: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f516: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f519: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f51c: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f51f: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f522: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f525: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f528: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f52b: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f52e: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f531: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f534: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f537: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f53a: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f53d: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f540: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f543: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f546: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f549: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f54c: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f54f: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f552: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f555: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f558: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f55b: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f55e: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f561: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f564: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f567: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f56a: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f56d: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f570: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f573: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f576: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f579: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f57c: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f57f: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f582: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f585: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f588: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f58b: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f58e: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f591: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f594: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f597: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f59a: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f59d: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f5a0: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f5a3: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f5a6: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f5a9: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f5ac: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f5af: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f5b2: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f5b5: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f5b8: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f5bb: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f5be: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f5c1: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f5c4: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f5c7: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f5ca: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f5cd: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f5d0: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f5d3: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f5d6: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f5d9: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f5dc: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f5df: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f5e2: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f5e5: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f5e8: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f5eb: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f5ee: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f5f1: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f5f4: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f5f7: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f5fa: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f5fd: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f600: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f603: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f606: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f609: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f60c: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f60f: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f612: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f615: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f618: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f61b: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f61e: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f621: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f624: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f627: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f62a: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f62d: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f630: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f633: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f636: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f639: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f63c: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f63f: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f642: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f645: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f648: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f64b: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f64e: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f651: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f654: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f657: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f65a: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f65d: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f660: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f663: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f666: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f669: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f66c: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f66f: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f672: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f675: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f678: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f67b: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f67e: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f681: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f684: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f687: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f68a: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f68d: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f690: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f693: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f696: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f699: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f69c: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f69f: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f6a2: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f6a5: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f6a8: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f6ab: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f6ae: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f6b1: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f6b4: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f6b7: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f6ba: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f6bd: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f6c0: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f6c3: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f6c6: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f6c9: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f6cc: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f6cf: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f6d2: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f6d5: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f6d8: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f6db: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f6de: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f6e1: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f6e4: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f6e7: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f6ea: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f6ed: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f6f0: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f6f3: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f6f6: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f6f9: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f6fc: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f6ff: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f702: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f705: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f708: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f70b: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f70e: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f711: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f714: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f717: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f71a: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f71d: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f720: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f723: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f726: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f729: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f72c: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f72f: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f732: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f735: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f738: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f73b: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f73e: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f741: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f744: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f747: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f74a: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f74d: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f750: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f753: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f756: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f759: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f75c: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f75f: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f762: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f765: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f768: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f76b: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f76e: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f771: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f774: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f777: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f77a: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f77d: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f780: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f783: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f786: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f789: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f78c: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f78f: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f792: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f795: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f798: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f79b: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f79e: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f7a1: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f7a4: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f7a7: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f7aa: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f7ad: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f7b0: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f7b3: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f7b6: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f7b9: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f7bc: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f7bf: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f7c2: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f7c5: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f7c8: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f7cb: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f7ce: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f7d1: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f7d4: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f7d7: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f7da: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f7dd: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f7e0: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f7e3: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f7e6: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f7e9: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f7ec: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f7ef: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f7f2: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f7f5: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f7f8: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f7fb: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f7fe: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f801: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f804: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f807: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f80a: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f80d: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f810: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f813: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f816: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f819: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f81c: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f81f: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f822: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f825: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f828: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f82b: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f82e: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f831: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f834: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f837: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f83a: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f83d: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f840: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f843: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f846: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f849: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f84c: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f84f: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f852: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f855: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f858: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f85b: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f85e: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f861: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f864: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f867: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f86a: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f86d: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f870: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f873: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f876: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f879: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f87c: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f87f: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f882: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f885: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f888: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f88b: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f88e: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f891: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f894: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f897: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f89a: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f89d: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f8a0: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f8a3: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f8a6: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f8a9: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f8ac: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f8af: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f8b2: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f8b5: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f8b8: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f8bb: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f8be: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f8c1: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f8c4: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f8c7: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f8ca: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f8cd: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f8d0: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f8d3: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f8d6: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f8d9: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f8dc: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f8df: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f8e2: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f8e5: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f8e8: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f8eb: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f8ee: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f8f1: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f8f4: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f8f7: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f8fa: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f8fd: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f900: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f903: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f906: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f909: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f90c: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f90f: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f912: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f915: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f918: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f91b: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f91e: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f921: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f924: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f927: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f92a: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f92d: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f930: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f933: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f936: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f939: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f93c: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f93f: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f942: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f945: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f948: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f94b: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f94e: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f951: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f954: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f957: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f95a: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f95d: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f960: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f963: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f966: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f969: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f96c: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f96f: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f972: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f975: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f978: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f97b: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f97e: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f981: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f984: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f987: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f98a: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f98d: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f990: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f993: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f996: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f999: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f99c: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f99f: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f9a2: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f9a5: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f9a8: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f9ab: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f9ae: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f9b1: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f9b4: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f9b7: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f9ba: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f9bd: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f9c0: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f9c3: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f9c6: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f9c9: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f9cc: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f9cf: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f9d2: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f9d5: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f9d8: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f9db: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f9de: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f9e1: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f9e4: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f9e7: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f9ea: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f9ed: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f9f0: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f9f3: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f9f6: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f9f9: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f9fc: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $f9ff: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fa02: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fa05: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fa08: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fa0b: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fa0e: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fa11: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fa14: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fa17: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fa1a: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fa1d: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fa20: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fa23: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fa26: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fa29: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fa2c: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fa2f: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fa32: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fa35: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fa38: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fa3b: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fa3e: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fa41: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fa44: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fa47: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fa4a: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fa4d: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fa50: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fa53: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fa56: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fa59: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fa5c: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fa5f: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fa62: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fa65: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fa68: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fa6b: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fa6e: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fa71: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fa74: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fa77: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fa7a: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fa7d: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fa80: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fa83: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fa86: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fa89: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fa8c: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fa8f: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fa92: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fa95: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fa98: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fa9b: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fa9e: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $faa1: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $faa4: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $faa7: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $faaa: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $faad: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fab0: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fab3: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fab6: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fab9: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fabc: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fabf: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fac2: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fac5: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fac8: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $facb: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $face: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fad1: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fad4: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fad7: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fada: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fadd: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fae0: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fae3: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fae6: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fae9: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $faec: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $faef: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $faf2: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $faf5: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $faf8: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fafb: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fafe: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fb01: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fb04: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fb07: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fb0a: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fb0d: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fb10: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fb13: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fb16: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fb19: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fb1c: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fb1f: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fb22: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fb25: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fb28: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fb2b: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fb2e: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fb31: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fb34: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fb37: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fb3a: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fb3d: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fb40: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fb43: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fb46: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fb49: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fb4c: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fb4f: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fb52: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fb55: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fb58: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fb5b: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fb5e: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fb61: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fb64: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fb67: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fb6a: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fb6d: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fb70: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fb73: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fb76: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fb79: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fb7c: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fb7f: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fb82: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fb85: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fb88: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fb8b: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fb8e: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fb91: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fb94: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fb97: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fb9a: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fb9d: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fba0: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fba3: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fba6: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fba9: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fbac: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fbaf: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fbb2: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fbb5: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fbb8: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fbbb: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fbbe: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fbc1: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fbc4: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fbc7: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fbca: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fbcd: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fbd0: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fbd3: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fbd6: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fbd9: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fbdc: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fbdf: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fbe2: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fbe5: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fbe8: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fbeb: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fbee: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fbf1: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fbf4: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fbf7: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fbfa: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fbfd: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc00: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc03: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc06: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc09: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc0c: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc0f: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc12: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc15: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc18: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc1b: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc1e: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc21: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc24: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc27: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc2a: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc2d: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc30: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc33: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc36: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc39: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc3c: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc3f: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc42: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc45: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc48: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc4b: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc4e: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc51: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc54: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc57: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc5a: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc5d: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc60: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc63: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc66: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc69: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc6c: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc6f: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc72: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc75: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc78: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc7b: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc7e: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc81: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc84: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc87: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc8a: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc8d: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc90: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc93: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc96: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc99: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc9c: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fc9f: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fca2: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fca5: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fca8: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fcab: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fcae: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fcb1: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fcb4: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fcb7: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fcba: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fcbd: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fcc0: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fcc3: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fcc6: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fcc9: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fccc: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fccf: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fcd2: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fcd5: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fcd8: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fcdb: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fcde: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fce1: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fce4: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fce7: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fcea: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fced: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fcf0: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fcf3: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fcf6: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fcf9: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fcfc: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fcff: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fd02: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fd05: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fd08: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fd0b: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fd0e: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fd11: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fd14: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fd17: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fd1a: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fd1d: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fd20: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fd23: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fd26: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fd29: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fd2c: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fd2f: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fd32: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fd35: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fd38: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fd3b: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fd3e: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fd41: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fd44: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fd47: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fd4a: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fd4d: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fd50: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fd53: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fd56: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fd59: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fd5c: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fd5f: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fd62: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fd65: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fd68: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fd6b: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fd6e: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fd71: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fd74: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fd77: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fd7a: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fd7d: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fd80: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fd83: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fd86: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fd89: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fd8c: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fd8f: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fd92: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fd95: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fd98: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fd9b: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fd9e: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fda1: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fda4: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fda7: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fdaa: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fdad: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fdb0: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fdb3: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fdb6: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fdb9: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fdbc: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fdbf: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fdc2: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fdc5: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fdc8: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fdcb: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fdce: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fdd1: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fdd4: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fdd7: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fdda: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fddd: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fde0: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fde3: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fde6: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fde9: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fDEC: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fdef: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fdf2: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fdf5: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fdf8: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fdfb: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fdfe: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fe01: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fe04: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fe07: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fe0a: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fe0d: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fe10: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fe13: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fe16: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fe19: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fe1c: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fe1f: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fe22: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fe25: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fe28: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fe2b: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fe2e: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fe31: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fe34: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fe37: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fe3a: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fe3d: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fe40: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fe43: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fe46: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fe49: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fe4c: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fe4f: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fe52: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fe55: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fe58: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fe5b: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fe5e: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fe61: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fe64: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fe67: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fe6a: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fe6d: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fe70: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fe73: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fe76: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fe79: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fe7c: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fe7f: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fe82: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fe85: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fe88: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fe8b: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fe8e: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fe91: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fe94: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fe97: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fe9a: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fe9d: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fea0: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fea3: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fea6: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fea9: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $feac: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $feaf: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $feb2: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $feb5: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $feb8: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $febb: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $febe: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fec1: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fec4: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fec7: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $feca: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fecd: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fed0: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fed3: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fed6: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fed9: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fedc: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fedf: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fee2: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fee5: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fee8: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $feeb: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $feee: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fef1: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fef4: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fef7: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fefa: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $fefd: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $FF00: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $FF03: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $FF06: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $FF09: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $FF0c: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $FF0f: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $FF12: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $FF15: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $FF18: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $FF1b: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $FF1e: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $FF21: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $FF24: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $FF27: ff ff ff  Invalid Opcode - ISC $FFff,X
+            .hex ff ff ff      ; $FF2a: ff ff ff  Invalid Opcode - ISC $FFff,X
+__ff2d:     .hex ff ff ff ff   ; $FF2d: ff ff ff ff   Data
+            .hex ff ff ff ff   ; $FF31: ff ff ff ff   Data
+            .hex ff ff ff ff   ; $FF35: ff ff ff ff   Data
+            .hex ff ff ff ff   ; $FF39: ff ff ff ff   Data
+            .hex ff ff         ; $FF3d: ff ff         Data
+__ff3f:     .hex ff ff ff ff   ; $FF3f: ff ff ff ff   Data
+            .hex ff ff ff ff   ; $FF43: ff ff ff ff   Data
+            .hex ff ff ff ff   ; $FF47: ff ff ff ff   Data
+            .hex ff ff ff ff   ; $FF4b: ff ff ff ff   Data
+            .hex ff ff ff ff   ; $FF4f: ff ff ff ff   Data
+            .hex ff ff ff ff   ; $FF53: ff ff ff ff   Data
+            .hex ff ff ff ff   ; $FF57: ff ff ff ff   Data
+            .hex ff ff ff ff   ; $FF5b: ff ff ff ff   Data
+            .hex ff ff ff ff   ; $FF5f: ff ff ff ff   Data
+            .hex ff ff ff ff   ; $FF63: ff ff ff ff   Data
+            .hex ff ff ff ff   ; $FF67: ff ff ff ff   Data
+            .hex ff ff ff ff   ; $FF6b: ff ff ff ff   Data
+            .hex ff ff ff ff   ; $FF6f: ff ff ff ff   Data
+            .hex ff ff ff ff   ; $FF73: ff ff ff ff   Data
+            .hex ff ff ff ff   ; $FF77: ff ff ff ff   Data
+            .hex ff ff ff ff   ; $FF7b: ff ff ff ff   Data
+            .hex ff ff ff ff   ; $FF7f: ff ff ff ff   Data
+            .hex ff ff ff ff   ; $FF83: ff ff ff ff   Data
+            .hex ff ff ff ff   ; $FF87: ff ff ff ff   Data
+            .hex ff ff ff ff   ; $FF8b: ff ff ff ff   Data
+            .hex ff ff ff ff   ; $FF8f: ff ff ff ff   Data
+            .hex ff ff ff ff   ; $FF93: ff ff ff ff   Data
+            .hex ff ff ff ff   ; $FF97: ff ff ff ff   Data
+            .hex ff ff ff ff   ; $FF9b: ff ff ff ff   Data
+            .hex ff ff ff ff   ; $FF9f: ff ff ff ff   Data
+            .hex ff ff ff ff   ; $FFa3: ff ff ff ff   Data
+            .hex ff ff ff ff   ; $FFa7: ff ff ff ff   Data
+            .hex ff ff ff ff   ; $FFab: ff ff ff ff   Data
+            .hex ff ff ff ff   ; $FFaf: ff ff ff ff   Data
+            .hex ff ff ff ff   ; $FFb3: ff ff ff ff   Data
+            .hex ff ff ff ff   ; $FFb7: ff ff ff ff   Data
+            .hex ff ff ff ff   ; $FFbb: ff ff ff ff   Data
+            .hex ff ff ff ff   ; $FFbf: ff ff ff ff   Data
+            .hex ff ff ff ff   ; $FFc3: ff ff ff ff   Data
+            .hex ff ff ff ff   ; $FFc7: ff ff ff ff   Data
+            .hex ff ff ff ff   ; $FFcb: ff ff ff ff   Data
+            .hex ff ff ff ff   ; $FFcf: ff ff ff ff   Data
+            .hex ff ff ff ff   ; $FFd3: ff ff ff ff   Data
+            .hex ff ff ff ff   ; $FFd7: ff ff ff ff   Data
+            .hex ff ff ff ff   ; $FFdb: ff ff ff ff   Data
+            .hex ff ff ff ff   ; $FFdf: ff ff ff ff   Data
+            .hex ff ff ff ff   ; $FFe3: ff ff ff ff   Data
+            .hex ff ff ff ff   ; $FFe7: ff ff ff ff   Data
+            .hex ff ff ff ff   ; $FFeb: ff ff ff ff   Data
+            .hex ff ff ff ff   ; $FFef: ff ff ff ff   Data
+            .hex ff ff ff ff   ; $FFf3: ff ff ff ff   Data
+            .hex ff            ; $FFf7: ff            Data
+__fff8:     .hex 78            ; $FFf8: 78            Data
+__fff9:     .hex ec            ; $FFf9: ec            Data
 
 ;-------------------------------------------------------------------------------
 ; Vector Table
 ;-------------------------------------------------------------------------------
-vectors:    .dw nmi                        ; $fffa: fa c0     Vector table
-            .dw reset                      ; $fffc: 33 c0     Vector table
-            .dw irq                        ; $fffe: 67 c1     Vector table
+vectors:    .dw nmi                        ; $FFfa: fa c0     Vector table
+            .dw reset                      ; $FFfc: 33 c0     Vector table
+            .dw irq                        ; $FFfe: 67 c1     Vector table
