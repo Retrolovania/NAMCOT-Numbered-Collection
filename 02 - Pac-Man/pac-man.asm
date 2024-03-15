@@ -87,54 +87,56 @@ __c077:
             BNE __c077         ; $c082: d0 f3       Is the Zero Flag (Z) clear? If so, keep going. If not, loop       
             BEQ __c0a0         ; $c084: f0 1a       Is the Zero Flag (Z) set? If so, keep going. If not, branch to __c0a0    
 __c086:     
-            LDA #$00           ; $c086: a9 00     
-            TAY                ; $c088: a8        
+            LDA #$00           ; $c086: a9 00       Clear A
+            TAY                ; $c088: a8          Transfer A to Y
 __c089:     
-            STA $0000,Y        ; $c089: 99 00 00  
-            INY                ; $c08c: c8        
-            BNE __c089         ; $c08d: d0 fa     
-            LDY #$00           ; $c08f: a0 00     
+            STA $0000,Y        ; $c089: 99 00 00    Store A value at ($0000 + Y)
+            INY                ; $c08c: c8          Increment Y by one
+            BNE __c089         ; $c08d: d0 fa       Is the Zero Flag (Z) clear? If so, keep going. If not, loop       
+            LDY #$00           ; $c08f: a0 00       Clear Y
 __c091:     
-            LDA __c0eb,y       ; $c091: b9 eb c0  
-            STA $0052,y        ; $c094: 99 52 00  
-            INY                ; $c097: c8        
-            CPY #$0f           ; $c098: c0 0f     
-            BNE __c091         ; $c09a: d0 f5     
-            LDA #$01           ; $c09c: a9 01     
-            STA $64            ; $c09e: 85 64     
+            LDA __c0eb,Y       ; $c091: b9 eb c0    Load value at (__c0eb + Y) to A
+            STA $0052,Y        ; $c094: 99 52 00    Store A value at ($0052 + Y)    
+            INY                ; $c097: c8          Increment Y by one
+            CPY #$0F           ; $c098: c0 0f       Compare $0F with Y
+            BNE __c091         ; $c09a: d0 f5       Is the Zero Flag (Z) clear? If so, keep going. If not, loop       
+            LDA #$01           ; $c09c: a9 01       Load $01 to A
+            STA $64            ; $c09e: 85 64       Store A value at $64
 __c0a0:     
-            LDY #$00           ; $c0a0: a0 00     
-            STY $3f            ; $c0a2: 84 3f     
-            LDA #$07           ; $c0a4: a9 07     
-            STA $45            ; $c0a6: 85 45     
-            LDA #$01           ; $c0a8: a9 01     
-            CMP $47            ; $c0aa: c5 47     
-            BNE __c0c7         ; $c0ac: d0 19     
-            CMP $46            ; $c0ae: c5 46     
-            BNE __c0c7         ; $c0b0: d0 15     
-__c0b2:     LDA $0077,y        ; $c0b2: b9 77 00  
-            STA $00            ; $c0b5: 85 00     
-            LDA $0067,y        ; $c0b7: b9 67 00  
-            STA $0077,y        ; $c0ba: 99 77 00  
-            LDA $00            ; $c0bd: a5 00     
-            STA $0067,y        ; $c0bf: 99 67 00  
-            INY                ; $c0c2: c8        
-            CPY #$10           ; $c0c3: c0 10     
-            BNE __c0b2         ; $c0c5: d0 eb     
-__c0c7:     LDA #$1f           ; $c0c7: a9 1f     
-            STA $4015          ; $c0c9: 8d 15 40  
-            LDA #$c0           ; $c0cc: a9 c0     
-            STA $4017          ; $c0ce: 8d 17 40  
-            JSR __ee18         ; $c0d1: 20 18 ee  
-            JSR __ee40         ; $c0d4: 20 40 ee  
-            LDA #$88           ; $c0d7: a9 88     
-            STA $43            ; $c0d9: 85 43     
-            STA PPUCTRL          ; $c0db: 8d 00 20  
-            LDA #$ff           ; $c0de: a9 ff     
-            STA $48            ; $c0e0: 85 48     
-            STA $023f          ; $c0e2: 8d 3f 02  
-            STA $024b          ; $c0e5: 8d 4b 02  
-            JMP __c168         ; $c0e8: 4c 68 c1  
+            LDY #$00           ; $c0a0: a0 00       Clear Y
+            STY $3F            ; $c0a2: 84 3f       Store Y value at $3F
+            LDA #$07           ; $c0a4: a9 07       Load $07 to A
+            STA $45            ; $c0a6: 85 45       Store A value at $45
+            LDA #$01           ; $c0a8: a9 01       Load $01 to A
+            CMP $47            ; $c0aa: c5 47       Compare value at $47 with A
+            BNE __c0c7         ; $c0ac: d0 19       Is the Zero Flag (Z) clear? If so, keep going. If not, branch to __c0c7     
+            CMP $46            ; $c0ae: c5 46       Compare value at $46 with A     
+            BNE __c0c7         ; $c0b0: d0 15       Is the Zero Flag (Z) clear? If so, keep going. If not, branch to __c0c7     
+__c0b2:     
+            LDA $0077,Y        ; $c0b2: b9 77 00    Load value at ($0077 + Y) to A  
+            STA $00            ; $c0b5: 85 00       Store A value at $00
+            LDA $0067,Y        ; $c0b7: b9 67 00    Load value at ($0067 + Y) to A  
+            STA $0077,Y        ; $c0ba: 99 77 00    Store A value at ($0077 + Y)  
+            LDA $00            ; $c0bd: a5 00       Load value at $00 to A
+            STA $0067,Y        ; $c0bf: 99 67 00    Store A value at ($0067 + Y)  
+            INY                ; $c0c2: c8          Increment Y by one
+            CPY #$10           ; $c0c3: c0 10       Compare $10 with Y
+            BNE __c0b2         ; $c0c5: d0 eb       Is the Zero Flag (Z) clear? If so, keep going. If not, loop
+__c0c7:     
+            LDA #$1F           ; $c0c7: a9 1f       Load $1F to A
+            STA APUCTRL        ; $c0c9: 8d 15 40    Store A value at APUCTRL
+            LDA #$C0           ; $c0cc: a9 c0       Load $C0 to A
+            STA FrameCtr       ; $c0ce: 8d 17 40    Store A value at FrameCtr
+            JSR __ee18         ; $c0d1: 20 18 ee    Jump to subroutine __ee18
+            JSR __ee40         ; $c0d4: 20 40 ee    Jump to subroutine __ee40  
+            LDA #$88           ; $c0d7: a9 88       Load $88 to A
+            STA $43            ; $c0d9: 85 43       Store A value at $43
+            STA PPUCTRL        ; $c0db: 8d 00 20    Store A value at PPUCTRL  
+            LDA #$FF           ; $c0de: a9 ff       Load $FF to A
+            STA $48            ; $c0e0: 85 48       Store A value at $48
+            STA $023F          ; $c0e2: 8d 3f 02    Store A value at $023F  
+            STA $024B          ; $c0e5: 8d 4b 02    Store A value at $024B  
+            JMP __c168         ; $c0e8: 4c 68 c1    Jump to __c168
 
 ;-------------------------------------------------------------------------------
 __c0eb:     
@@ -147,40 +149,41 @@ __c0eb:
 ; nmi vector
 ;-------------------------------------------------------------------------------
 nmi:        
-            PHA                ; $c0fa: 48        
-            TXA                ; $c0fb: 8a        
-            PHA                ; $c0fc: 48        
-            TYA                ; $c0fd: 98        
-            PHA                ; $c0fe: 48        
-            LDA #$1e           ; $c0ff: a9 1e     
-            STA PPUMASK          ; $c101: 8d 01 20  
-            LDA #$00           ; $c104: a9 00     
-            STA OAMADDR          ; $c106: 8d 03 20  
-            STA $40            ; $c109: 85 40     
-            LDA $45            ; $c10b: a5 45     
-            STA OAMDMA          ; $c10d: 8d 14 40  
-            JSR __dde9         ; $c110: 20 e9 dd  
-            JSR __e21c         ; $c113: 20 1c e2  
-            LDA $41            ; $c116: a5 41     
-            STA PPUSCROLL          ; $c118: 8d 05 20  
-            LDA $42            ; $c11b: a5 42     
-            STA PPUSCROLL          ; $c11d: 8d 05 20  
-            LDA $47            ; $c120: a5 47     
-            AND $46            ; $c122: 25 46     
-            AND #$01           ; $c124: 29 01     
-            ASL                ; $c126: 0a        
-            ORA $43            ; $c127: 05 43     
-            STA PPUCTRL          ; $c129: 8d 00 20  
-            LDA #$01           ; $c12c: a9 01     
-            STA $4016          ; $c12e: 8d 16 40  
-            LDA #$00           ; $c131: a9 00     
-            STA $4016          ; $c133: 8d 16 40  
-            LDX #$08           ; $c136: a2 08     
-__c138:     LDA $4016          ; $c138: ad 16 40  
+            PHA                ; $c0fa: 48          Push A value onto stack        
+            TXA                ; $c0fb: 8a          Transfer X to A
+            PHA                ; $c0fc: 48          Push A value onto stack        
+            TYA                ; $c0fd: 98          Transfer Y to A
+            PHA                ; $c0fe: 48          Push A value onto stack        
+            LDA #$1E           ; $c0ff: a9 1e       Load $1E to A
+            STA PPUMASK        ; $c101: 8d 01 20    Store A value at PPUMASK
+            LDA #$00           ; $c104: a9 00       Clear A
+            STA OAMADDR        ; $c106: 8d 03 20    Store A value at OAMADDR
+            STA $40            ; $c109: 85 40       Store A value at $45
+            LDA $45            ; $c10b: a5 45       Load value at $45 to A
+            STA OAMDMA         ; $c10d: 8d 14 40    Store A value at OAMDMA
+            JSR __dde9         ; $c110: 20 e9 dd    Jump to subroutine __dde9
+            JSR __e21c         ; $c113: 20 1c e2    Jump to subroutine __e21c  
+            LDA $41            ; $c116: a5 41       Load value at $41 to A     
+            STA PPUSCROLL      ; $c118: 8d 05 20    Store A value at PPUSCROLL
+            LDA $42            ; $c11b: a5 42       Load value at $42 to A     
+            STA PPUSCROLL      ; $c11d: 8d 05 20    Store A value at PPUSCROLL  
+            LDA $47            ; $c120: a5 47       Load value at $47 to A     
+            AND $46            ; $c122: 25 46       Logitcally AND value at $46 with A
+            AND #$01           ; $c124: 29 01       Logitcally AND $01 with A     
+            ASL                ; $c126: 0a          Shift value in A left one bit          
+            ORA $43            ; $c127: 05 43       Logically OR value at $43 with A
+            STA PPUCTRL        ; $c129: 8d 00 20    Store A value at PPUCTRL  
+            LDA #$01           ; $c12c: a9 01       Load $01 to A
+            STA JOYSTROBE      ; $c12e: 8d 16 40    Store A value at JOYSTROBE    
+            LDA #$00           ; $c131: a9 00       Clear A
+            STA JOYSTROBE      ; $c133: 8d 16 40    Store A value at PPUCTRL  
+            LDX #$08           ; $c136: a2 08       Load $08 to X
+__c138:     
+            LDA JOYSTROBE      ; $c138: ad 16 40    Load value at JOYSTROBE to A
             AND #$03           ; $c13b: 29 03     
             CMP #$01           ; $c13d: c9 01     
             ROR $4d            ; $c13f: 66 4d     
-            LDA $4017          ; $c141: ad 17 40  
+            LDA FrameCtr       ; $c141: ad 17 40  
             AND #$03           ; $c144: 29 03     
             CMP #$01           ; $c146: c9 01     
             ROR $4e            ; $c148: 66 4e     
@@ -231,7 +234,7 @@ __c180:     STA $0700,x        ; $c180: 9d 00 07
             LDA #$00           ; $c19c: a9 00     
             STA PPUADDR          ; $c19e: 8d 06 20  
             LDY #$00           ; $c1a1: a0 00     
-__c1a3:     LDA __c395,y       ; $c1a3: b9 95 c3  
+__c1a3:     LDA __c395,Y       ; $c1a3: b9 95 c3  
             STA PPUDATA          ; $c1a6: 8d 07 20  
             INY                ; $c1a9: c8        
             CPY #$10           ; $c1aa: c0 10     
@@ -264,9 +267,9 @@ __c1de:     LDA #$01           ; $c1de: a9 01
 __c1e2:     LDA $40            ; $c1e2: a5 40     
             BNE __c1e2         ; $c1e4: d0 fc     
             LDY $3f            ; $c1e6: a4 3f     
-            LDA __c1f5,y       ; $c1e8: b9 f5 c1  
+            LDA __c1f5,Y       ; $c1e8: b9 f5 c1  
             STA $10            ; $c1eb: 85 10     
-            LDA __c1f6,y       ; $c1ed: b9 f6 c1  
+            LDA __c1f6,Y       ; $c1ed: b9 f6 c1  
             STA $11            ; $c1f0: 85 11     
             JMP ($0010)        ; $c1f2: 6c 10 00  
 
@@ -297,7 +300,7 @@ __c22d:     LDA PPUSTATUS          ; $c22d: ad 02 20
             STA PPUADDR          ; $c237: 8d 06 20  
             LDA #$17           ; $c23a: a9 17     
             STA $03            ; $c23c: 85 03     
-__c23e:     LDA __c29f,y       ; $c23e: b9 9f c2  
+__c23e:     LDA __c29f,Y       ; $c23e: b9 9f c2  
             STA PPUDATA          ; $c241: 8d 07 20  
             INY                ; $c244: c8        
             DEC $03            ; $c245: c6 03     
@@ -314,13 +317,13 @@ __c23e:     LDA __c29f,y       ; $c23e: b9 9f c2
             LDA #$06           ; $c25a: a9 06     
 __c25c:     .hex 85 00 a0 00   ; $c25c: 85 00 a0 00   Data
 __c260:     LDA PPUSTATUS          ; $c260: ad 02 20  
-            LDA __c329,y       ; $c263: b9 29 c3  
+            LDA __c329,Y       ; $c263: b9 29 c3  
             STA PPUADDR          ; $c266: 8d 06 20  
             INY                ; $c269: c8        
-            LDA __c329,y       ; $c26a: b9 29 c3  
+            LDA __c329,Y       ; $c26a: b9 29 c3  
             STA PPUADDR          ; $c26d: 8d 06 20  
             INY                ; $c270: c8        
-__c271:     LDA __c329,y       ; $c271: b9 29 c3  
+__c271:     LDA __c329,Y       ; $c271: b9 29 c3  
             CMP #$ff           ; $c274: c9 ff     
             BEQ __c27e         ; $c276: f0 06     
             STA PPUDATA          ; $c278: 8d 07 20  
@@ -338,7 +341,7 @@ __c284:     LDA PPUSTATUS          ; $c284: ad 02 20
             LDA #$c8           ; $c28c: a9 c8     
             STA PPUADDR          ; $c28e: 8d 06 20  
             LDY #$00           ; $c291: a0 00     
-__c293:     LDA __c3a5,y       ; $c293: b9 a5 c3  
+__c293:     LDA __c3a5,Y       ; $c293: b9 a5 c3  
             STA PPUDATA          ; $c296: 8d 07 20  
             INY                ; $c299: c8        
             CPY #$18           ; $c29a: c0 18     
@@ -424,8 +427,8 @@ __c3a5:     .hex 80 a0 a0 a0   ; $c3a5: 80 a0 a0 a0   Data
             ORA $88            ; $c3bf: 05 88     
             BNE __c3dc         ; $c3c1: d0 19     
             LDY #$00           ; $c3c3: a0 00     
-__c3c5:     LDA __c44d,y       ; $c3c5: b9 4d c4  
-            STA $024b,y        ; $c3c8: 99 4b 02  
+__c3c5:     LDA __c44d,Y       ; $c3c5: b9 4d c4  
+            STA $024b,Y        ; $c3c8: 99 4b 02  
             INY                ; $c3cb: c8        
             CMP #$ff           ; $c3cc: c9 ff     
             BNE __c3c5         ; $c3ce: d0 f5     
@@ -512,9 +515,9 @@ __c456:     .hex 20 5c         ; $c456: 20 5c         Data
 
 ;-------------------------------------------------------------------------------
 __c465:     LDY $87            ; $c465: a4 87     
-            LDA __c474,y       ; $c467: b9 74 c4  
+            LDA __c474,Y       ; $c467: b9 74 c4  
             STA $10            ; $c46a: 85 10     
-            LDA __c475,y       ; $c46c: b9 75 c4  
+            LDA __c475,Y       ; $c46c: b9 75 c4  
             STA $11            ; $c46f: 85 11     
             JMP ($0010)        ; $c471: 6c 10 00  
 
@@ -581,17 +584,17 @@ __c4da:     INC $87            ; $c4da: e6 87
 
 ;-------------------------------------------------------------------------------
 __c4ec:     LDY $87            ; $c4ec: a4 87     
-            LDA __c5d3,y       ; $c4ee: b9 d3 c5  
+            LDA __c5d3,Y       ; $c4ee: b9 d3 c5  
             STA $00            ; $c4f1: 85 00     
-            LDA __c5d4,y       ; $c4f3: b9 d4 c5  
+            LDA __c5d4,Y       ; $c4f3: b9 d4 c5  
             STA $01            ; $c4f6: 85 01     
             LDY #$00           ; $c4f8: a0 00     
-__c4fa:     LDA ($00),y        ; $c4fa: b1 00     
-            STA $024b,y        ; $c4fc: 99 4b 02  
+__c4fa:     LDA ($00),Y        ; $c4fa: b1 00     
+            STA $024b,Y        ; $c4fc: 99 4b 02  
             INY                ; $c4ff: c8        
             CMP #$ff           ; $c500: c9 ff     
             BNE __c4fa         ; $c502: d0 f6     
-            LDA ($00),y        ; $c504: b1 00     
+            LDA ($00),Y        ; $c504: b1 00     
             BEQ __c509         ; $c506: f0 01     
             RTS                ; $c508: 60        
 
@@ -603,8 +606,8 @@ __c509:     LDA $87            ; $c509: a5 87
             ASL                ; $c50f: 0a        
             TAY                ; $c510: a8        
             LDX #$10           ; $c511: a2 10     
-__c513:     LDA __c688,y       ; $c513: b9 88 c6  
-            STA $0760,y        ; $c516: 99 60 07  
+__c513:     LDA __c688,Y       ; $c513: b9 88 c6  
+            STA $0760,Y        ; $c516: 99 60 07  
             INY                ; $c519: c8        
             DEX                ; $c51a: ca        
             BNE __c513         ; $c51b: d0 f6     
@@ -663,7 +666,7 @@ __c574:     STA PPUDATA          ; $c574: 8d 07 20
             LDA #$00           ; $c586: a9 00     
             STA PPUADDR          ; $c588: 8d 06 20  
             LDY #$00           ; $c58b: a0 00     
-__c58d:     LDA __c5b3,y       ; $c58d: b9 b3 c5  
+__c58d:     LDA __c5b3,Y       ; $c58d: b9 b3 c5  
             STA PPUDATA          ; $c590: 8d 07 20  
             INY                ; $c593: c8        
             CPY #$20           ; $c594: c0 20     
@@ -949,7 +952,7 @@ __c991:     LDA PPUSTATUS          ; $c991: ad 02 20
             BNE __c9cd         ; $c9b4: d0 17     
 __c9b6:     LDA #$00           ; $c9b6: a9 00     
             TAY                ; $c9b8: a8        
-__c9b9:     STA $0067,y        ; $c9b9: 99 67 00  
+__c9b9:     STA $0067,Y        ; $c9b9: 99 67 00  
             INY                ; $c9bc: c8        
             CPY #$20           ; $c9bd: c0 20     
             BNE __c9b9         ; $c9bf: d0 f8     
@@ -984,9 +987,9 @@ __c9f6:     LDA $4c            ; $c9f6: a5 4c
             DEC $4c            ; $c9fa: c6 4c     
             BNE __c9dd         ; $c9fc: d0 df     
 __c9fe:     LDY $3f            ; $c9fe: a4 3f     
-            LDA __ca0d,y       ; $ca00: b9 0d ca  
+            LDA __ca0d,Y       ; $ca00: b9 0d ca  
             STA $10            ; $ca03: 85 10     
-            LDA __ca0e,y       ; $ca05: b9 0e ca  
+            LDA __ca0e,Y       ; $ca05: b9 0e ca  
             STA $11            ; $ca08: 85 11     
             JMP ($0010)        ; $ca0a: 6c 10 00  
 
@@ -1013,7 +1016,7 @@ __ca41:     .hex 8e 4b 02 a9   ; $ca41: 8e 4b 02 a9   Data
             .hex f0 05 a2 00   ; $ca51: f0 05 a2 00   Data
             .hex 8d 0f 06      ; $ca55: 8d 0f 06      Data
 __ca58:     LDA __ca91,x       ; $ca58: bd 91 ca  
-            STA $024d,y        ; $ca5b: 99 4d 02  
+            STA $024d,Y        ; $ca5b: 99 4d 02  
             INX                ; $ca5e: e8        
             INY                ; $ca5f: c8        
             CPY #$06           ; $ca60: c0 06     
@@ -1110,7 +1113,7 @@ __cb2e:     LDA #$a8           ; $cb2e: a9 a8
             STA $2c            ; $cb4a: 85 2c     
             LDA #$00           ; $cb4c: a9 00     
             TAY                ; $cb4e: a8        
-__cb4f:     STA $0778,y        ; $cb4f: 99 78 07  
+__cb4f:     STA $0778,Y        ; $cb4f: 99 78 07  
             INY                ; $cb52: c8        
             CPY #$24           ; $cb53: c0 24     
             BNE __cb4f         ; $cb55: d0 f8     
@@ -1124,11 +1127,11 @@ __cb5f:     STA $00            ; $cb5f: 85 00
             sbc #$01           ; $cb64: e9 01     
             ASL                ; $cb66: 0a        
             TAY                ; $cb67: a8        
-            LDA __cc07,y       ; $cb68: b9 07 cc  
+            LDA __cc07,Y       ; $cb68: b9 07 cc  
             CLC                ; $cb6b: 18        
             ADC $00            ; $cb6c: 65 00     
             STA $00            ; $cb6e: 85 00     
-            LDA __cc08,y       ; $cb70: b9 08 cc  
+            LDA __cc08,Y       ; $cb70: b9 08 cc  
             STA $01            ; $cb73: 85 01     
             LDA $00            ; $cb75: a5 00     
             STA $024b          ; $cb77: 8d 4b 02  
@@ -1157,7 +1160,7 @@ __cbb2:     LDA $0600          ; $cbb2: ad 00 06
             LDA #$00           ; $cbbe: a9 00     
             STA $69            ; $cbc0: 85 69     
             TAY                ; $cbc2: a8        
-__cbc3:     STA $0760,y        ; $cbc3: 99 60 07  
+__cbc3:     STA $0760,Y        ; $cbc3: 99 60 07  
             INY                ; $cbc6: c8        
             CPY #$a0           ; $cbc7: c0 a0     
             BNE __cbc3         ; $cbc9: d0 f8     
@@ -1295,7 +1298,7 @@ __ccfb:     LDA $4b            ; $ccfb: a5 4b
             LDX #$04           ; $cd09: a2 04     
 __cd0b:     LDY #$03           ; $cd0b: a0 03     
 __cd0d:     LDA __cd59,x       ; $cd0d: bd 59 cd  
-            STA $024b,y        ; $cd10: 99 4b 02  
+            STA $024b,Y        ; $cd10: 99 4b 02  
             INX                ; $cd13: e8        
             DEY                ; $cd14: 88        
             BPL __cd0d         ; $cd15: 10 f6     
@@ -1339,7 +1342,7 @@ __cd59:     .hex ff 11 05 3f   ; $cd59: ff 11 05 3f   Data
 __cd61:     .hex a5 87 f0 03   ; $cd61: a5 87 f0 03   Data
             .hex 4c ec cd      ; $cd65: 4c ec cd      Data
 __cd68:     .hex a0 00 a9 ff   ; $cd68: a0 00 a9 ff   Data
-__cd6c:     STA $0700,y        ; $cd6c: 99 00 07  
+__cd6c:     STA $0700,Y        ; $cd6c: 99 00 07  
             INY                ; $cd6f: c8        
             CPY #$60           ; $cd70: c0 60     
             BNE __cd6c         ; $cd72: d0 f8     
@@ -1390,7 +1393,7 @@ __cDEC:     INC $87            ; $cDEC: e6 87
             BNE __cdfe         ; $cdee: d0 0e     
             LDA #$00           ; $cdf0: a9 00     
             TAY                ; $cdf2: a8        
-__cdf3:     STA $0760,y        ; $cdf3: 99 60 07  
+__cdf3:     STA $0760,Y        ; $cdf3: 99 60 07  
             INY                ; $cdf6: c8        
             CPY #$a0           ; $cdf7: c0 a0     
             BNE __cdf3         ; $cdf9: d0 f8     
@@ -1437,7 +1440,7 @@ __ce53:     STA $0700,x        ; $ce53: 9d 00 07
             LDA #$00           ; $ce61: a9 00     
             STA PPUADDR          ; $ce63: 8d 06 20  
             LDY #$00           ; $ce66: a0 00     
-__ce68:     LDA __d060,y       ; $ce68: b9 60 d0  
+__ce68:     LDA __d060,Y       ; $ce68: b9 60 d0  
             STA PPUDATA          ; $ce6b: 8d 07 20  
             INY                ; $ce6e: c8        
             CPY #$20           ; $ce6f: c0 20     
@@ -1482,7 +1485,7 @@ __cebe:     DEX                ; $cebe: ca
             BNE __cebe         ; $cec3: d0 f9     
 __cec5:     TAY                ; $cec5: a8        
             LDX #$00           ; $cec6: a2 00     
-__cec8:     LDA __ebcc,y       ; $cec8: b9 cc eb  
+__cec8:     LDA __ebcc,Y       ; $cec8: b9 cc eb  
             STA $9f,x          ; $cecb: 95 9f     
             INX                ; $cecd: e8        
             INY                ; $cece: c8        
@@ -1499,7 +1502,7 @@ __cec8:     LDA __ebcc,y       ; $cec8: b9 cc eb
             LDA __ec3a,x       ; $cee0: bd 3a ec  
             STA $cf            ; $cee3: 85 cf     
 __cee5:     LDA __ec3a,x       ; $cee5: bd 3a ec  
-            STA $0097,y        ; $cee8: 99 97 00  
+            STA $0097,Y        ; $cee8: 99 97 00  
             INX                ; $ceeb: e8        
             INY                ; $ceec: c8        
             CPY #$08           ; $ceed: c0 08     
@@ -1524,7 +1527,7 @@ __cee5:     LDA __ec3a,x       ; $cee5: bd 3a ec
             LDX #$0c           ; $cf14: a2 0c     
             LDY #$00           ; $cf16: a0 00     
             LDA __ec68,x       ; $cf18: bd 68 ec  
-            STA $008f,y        ; $cf1b: 99 8f 00  
+            STA $008f,Y        ; $cf1b: 99 8f 00  
             INY                ; $cf1e: c8        
             INX                ; $cf1f: e8        
             LDA #$c0           ; $cf20: a9 c0     
@@ -1534,7 +1537,7 @@ __cee5:     LDA __ec3a,x       ; $cee5: bd 3a ec
 __cf27:     LDA $01            ; $cf27: a5 01     
             CLC                ; $cf29: 18        
             ADC __ec68,x       ; $cf2a: 7d 68 ec  
-            STA $008f,y        ; $cf2d: 99 8f 00  
+            STA $008f,Y        ; $cf2d: 99 8f 00  
             INY                ; $cf30: c8        
             INX                ; $cf31: e8        
             CPY #$04           ; $cf32: c0 04     
@@ -1547,7 +1550,7 @@ __cf38:     LDX $00            ; $cf38: a6 00
             TAX                ; $cf3f: aa        
             LDY #$00           ; $cf40: a0 00     
 __cf42:     LDA __ec68,x       ; $cf42: bd 68 ec  
-            STA $008f,y        ; $cf45: 99 8f 00  
+            STA $008f,Y        ; $cf45: 99 8f 00  
             INX                ; $cf48: e8        
             INY                ; $cf49: c8        
             CPY #$04           ; $cf4a: c0 04     
@@ -1609,24 +1612,24 @@ __cf7a:     LDA $90            ; $cf7a: a5 90
             AND $47            ; $cfb8: 25 47     
             BEQ __cfbe         ; $cfba: f0 02     
             LDY #$09           ; $cfbc: a0 09     
-__cfbe:     LDA __d04e,y       ; $cfbe: b9 4e d0  
+__cfbe:     LDA __d04e,Y       ; $cfbe: b9 4e d0  
             STA $026b,x        ; $cfc1: 9d 6b 02  
             INY                ; $cfc4: c8        
             INX                ; $cfc5: e8        
             CPX #$09           ; $cfc6: e0 09     
             BNE __cfbe         ; $cfc8: d0 f4     
             LDY #$00           ; $cfca: a0 00     
-__cfcc:     LDA __d042,y       ; $cfcc: b9 42 d0  
-            STA $0032,y        ; $cfcf: 99 32 00  
+__cfcc:     LDA __d042,Y       ; $cfcc: b9 42 d0  
+            STA $0032,Y        ; $cfcf: 99 32 00  
             INY                ; $cfd2: c8        
             CPY #$0c           ; $cfd3: c0 0c     
             BNE __cfcc         ; $cfd5: d0 f5     
             LDY #$00           ; $cfd7: a0 00     
-__cfd9:     LDA $006c,y        ; $cfd9: b9 6c 00  
+__cfd9:     LDA $006c,Y        ; $cfd9: b9 6c 00  
             CMP #$02           ; $cfdc: c9 02     
             BNE __cfe5         ; $cfde: d0 05     
             LDA #$01           ; $cfe0: a9 01     
-            STA $006c,y        ; $cfe2: 99 6c 00  
+            STA $006c,Y        ; $cfe2: 99 6c 00  
 __cfe5:     INY                ; $cfe5: c8        
             CPY #$04           ; $cfe6: c0 04     
             BNE __cfd9         ; $cfe8: d0 ef     
@@ -1688,7 +1691,7 @@ __d080:     LDA PPUSTATUS          ; $d080: ad 02 20
             STA PPUADDR          ; $d08a: 8d 06 20  
             LDX #$01           ; $d08d: a2 01     
 __d08f:     LDY #$00           ; $d08f: a0 00     
-__d091:     LDA __d0af,y       ; $d091: b9 af d0  
+__d091:     LDA __d0af,Y       ; $d091: b9 af d0  
             STA PPUDATA          ; $d094: 8d 07 20  
             INY                ; $d097: c8        
             CPY #$40           ; $d098: c0 40     
@@ -1750,14 +1753,14 @@ __d11f:     .hex a5 8a 29 08   ; $d11f: a5 8a 29 08   Data
             .hex d0 02 a2 05   ; $d123: d0 02 a2 05   Data
 __d127:     LDY #$ff           ; $d127: a0 ff     
 __d129:     INY                ; $d129: c8        
-            LDA $024b,y        ; $d12a: b9 4b 02  
+            LDA $024b,Y        ; $d12a: b9 4b 02  
             CMP #$ff           ; $d12d: c9 ff     
             BNE __d129         ; $d12f: d0 f8     
             TYA                ; $d131: 98        
             BNE __d135         ; $d132: d0 01     
             INX                ; $d134: e8        
 __d135:     LDA __d205,x       ; $d135: bd 05 d2  
-            STA $024b,y        ; $d138: 99 4b 02  
+            STA $024b,Y        ; $d138: 99 4b 02  
             INY                ; $d13b: c8        
             INX                ; $d13c: e8        
             CMP #$ff           ; $d13d: c9 ff     
@@ -1895,25 +1898,25 @@ __d222:     LDA $b8,x          ; $d222: b5 b8
             BNE __d25a         ; $d226: d0 32     
             LDY #$00           ; $d228: a0 00     
             LDA $1a            ; $d22a: a5 1a     
-            CMP ($00),y        ; $d22c: d1 00     
+            CMP ($00),Y        ; $d22c: d1 00     
             bcs __d237         ; $d22e: b0 07     
-            LDA ($00),y        ; $d230: b1 00     
+            LDA ($00),Y        ; $d230: b1 00     
             sec                ; $d232: 38        
             sbc $1a            ; $d233: e5 1a     
             bcs __d239         ; $d235: b0 02     
-__d237:     sbc ($00),y        ; $d237: f1 00     
+__d237:     sbc ($00),Y        ; $d237: f1 00     
 __d239:     CMP #$0a           ; $d239: c9 0a     
             bcs __d25a         ; $d23b: b0 1d     
             STA $03            ; $d23d: 85 03     
             LDY #$02           ; $d23f: a0 02     
             LDA $1c            ; $d241: a5 1c     
-            CMP ($00),y        ; $d243: d1 00     
+            CMP ($00),Y        ; $d243: d1 00     
             bcs __d24e         ; $d245: b0 07     
-            LDA ($00),y        ; $d247: b1 00     
+            LDA ($00),Y        ; $d247: b1 00     
             sec                ; $d249: 38        
             sbc $1c            ; $d24a: e5 1c     
             bcs __d250         ; $d24c: b0 02     
-__d24e:     sbc ($00),y        ; $d24e: f1 00     
+__d24e:     sbc ($00),Y        ; $d24e: f1 00     
 __d250:     CMP #$0a           ; $d250: c9 0a     
             bcs __d25a         ; $d252: b0 06     
             ADC $03            ; $d254: 65 03     
@@ -1940,15 +1943,15 @@ __d26a:     CPX #$08           ; $d26a: e0 08
             lsr                ; $d275: 4a        
             STA $03            ; $d276: 85 03     
             LDY $d9            ; $d278: a4 d9     
-            LDA __d2d7,y       ; $d27a: b9 d7 d2  
+            LDA __d2d7,Y       ; $d27a: b9 d7 d2  
             LDY $03            ; $d27d: a4 03     
-            STA $0033,y        ; $d27f: 99 33 00  
+            STA $0033,Y        ; $d27f: 99 33 00  
             LDA #$00           ; $d282: a9 00     
             STA $32            ; $d284: 85 32     
             LDY $d9            ; $d286: a4 d9     
-            LDA __d2e7,y       ; $d288: b9 e7 d2  
+            LDA __d2e7,Y       ; $d288: b9 e7 d2  
             STA $dd            ; $d28b: 85 dd     
-            LDA __d2e3,y       ; $d28d: b9 e3 d2  
+            LDA __d2e3,Y       ; $d28d: b9 e3 d2  
             STA $de            ; $d290: 85 de     
             INC $d9            ; $d292: e6 d9     
             LDA #$08           ; $d294: a9 08     
@@ -1981,11 +1984,11 @@ __d2b8:     STA $d7            ; $d2b8: 85 d7
             STA $8b            ; $d2be: 85 8b     
             STA $0606          ; $d2c0: 8d 06 06  
             LDY $93            ; $d2c3: a4 93     
-            LDA __d2eb,y       ; $d2c5: b9 eb d2  
+            LDA __d2eb,Y       ; $d2c5: b9 eb d2  
             STA $dd            ; $d2c8: 85 dd     
-            LDA __d2f3,y       ; $d2ca: b9 f3 d2  
+            LDA __d2f3,Y       ; $d2ca: b9 f3 d2  
             STA $de            ; $d2cd: 85 de     
-            LDA __d2db,y       ; $d2cf: b9 db d2  
+            LDA __d2db,Y       ; $d2cf: b9 db d2  
             STA $37            ; $d2d2: 85 37     
             JMP __e060         ; $d2d4: 4c 60 e0  
 
@@ -2023,7 +2026,7 @@ __d311:     STA $50            ; $d311: 85 50
             AND #$07           ; $d320: 29 07     
             BNE __d32d         ; $d322: d0 09     
             LDY $50            ; $d324: a4 50     
-            LDA $022b,y        ; $d326: b9 2b 02  
+            LDA $022b,Y        ; $d326: b9 2b 02  
             AND #$f0           ; $d329: 29 f0     
             BNE __d334         ; $d32b: d0 07     
 __d32d:     LDA $50            ; $d32d: a5 50     
@@ -2061,9 +2064,9 @@ __d360:     LDA $9f,x          ; $d360: b5 9f
             LDA $51            ; $d368: a5 51     
             ASL                ; $d36a: 0a        
             TAY                ; $d36b: a8        
-            LDA __d379,y       ; $d36c: b9 79 d3  
+            LDA __d379,Y       ; $d36c: b9 79 d3  
             STA $10            ; $d36f: 85 10     
-            LDA __d37a,y       ; $d371: b9 7a d3  
+            LDA __d37a,Y       ; $d371: b9 7a d3  
             STA $11            ; $d374: 85 11     
             JMP ($0010)        ; $d376: 6c 10 00  
 
@@ -2101,9 +2104,9 @@ __d3af:     DEC $cc            ; $d3af: c6 cc
 __d3b4:     LDA $51            ; $d3b4: a5 51     
             ASL                ; $d3b6: 0a        
             TAY                ; $d3b7: a8        
-            LDA __d3c5,y       ; $d3b8: b9 c5 d3  
+            LDA __d3c5,Y       ; $d3b8: b9 c5 d3  
             STA $10            ; $d3bb: 85 10     
-            LDA __d3c6,y       ; $d3bd: b9 c6 d3  
+            LDA __d3c6,Y       ; $d3bd: b9 c6 d3  
             STA $11            ; $d3c0: 85 11     
             JMP ($0010)        ; $d3c2: 6c 10 00  
 
@@ -2184,9 +2187,9 @@ __d471:     LDY $e4            ; $d471: a4 e4
             INC $e4            ; $d477: e6 e4     
             INC $e4            ; $d479: e6 e4     
             LDY $e4            ; $d47b: a4 e4     
-            LDA __d48a,y       ; $d47d: b9 8a d4  
+            LDA __d48a,Y       ; $d47d: b9 8a d4  
             STA $e3            ; $d480: 85 e3     
-__d482:     LDA __d48b,y       ; $d482: b9 8b d4  
+__d482:     LDA __d48b,Y       ; $d482: b9 8b d4  
             AND #$03           ; $d485: 29 03     
             JMP __d311         ; $d487: 4c 11 d3  
 
@@ -2235,9 +2238,9 @@ __d4dc:     .hex 00 18 69 04   ; $d4dc: 00 18 69 04   Data
             .hex e8 e0 08 d0   ; $d4ec: e8 e0 08 d0   Data
             .hex e7 60         ; $d4f0: e7 60         Data
 __d4f2:     LDY $b8,x          ; $d4f2: b4 b8     
-            LDA __d501,y       ; $d4f4: b9 01 d5  
+            LDA __d501,Y       ; $d4f4: b9 01 d5  
             STA $10            ; $d4f7: 85 10     
-            LDA __d502,y       ; $d4f9: b9 02 d5  
+            LDA __d502,Y       ; $d4f9: b9 02 d5  
             STA $11            ; $d4fc: 85 11     
             JMP ($0010)        ; $d4fe: 6c 10 00  
 
@@ -2276,9 +2279,9 @@ __d556:     DEC $cc            ; $d556: c6 cc
 __d55b:     LDA $b9,x          ; $d55b: b5 b9     
             ASL                ; $d55d: 0a        
             TAY                ; $d55e: a8        
-            LDA __d56c,y       ; $d55f: b9 6c d5  
+            LDA __d56c,Y       ; $d55f: b9 6c d5  
             STA $10            ; $d562: 85 10     
-            LDA __d56d,y       ; $d564: b9 6d d5  
+            LDA __d56d,Y       ; $d564: b9 6d d5  
             STA $11            ; $d567: 85 11     
             JMP ($0010)        ; $d569: 6c 10 00  
 
@@ -2294,21 +2297,21 @@ __d57e:     .hex a0 02 d0 0c   ; $d57e: a0 02 d0 0c   Data
             .hex d0 04 a9 ff   ; $d586: d0 04 a9 ff   Data
             .hex 85 05         ; $d58a: 85 05         Data
 __d58c:     LDY #$00           ; $d58c: a0 00     
-__d58e:     LDA ($02),y        ; $d58e: b1 02     
+__d58e:     LDA ($02),Y        ; $d58e: b1 02     
             CLC                ; $d590: 18        
             ADC $05            ; $d591: 65 05     
-            STA ($02),y        ; $d593: 91 02     
+            STA ($02),Y        ; $d593: 91 02     
             LDY #$00           ; $d595: a0 00     
-            LDA ($02),y        ; $d597: b1 02     
+            LDA ($02),Y        ; $d597: b1 02     
             CMP #$0a           ; $d599: c9 0a     
             BNE __d5a3         ; $d59b: d0 06     
             LDA #$bf           ; $d59d: a9 bf     
-            STA ($02),y        ; $d59f: 91 02     
+            STA ($02),Y        ; $d59f: 91 02     
             BNE __d5b5         ; $d5a1: d0 12     
 __d5a3:     CMP #$c0           ; $d5a3: c9 c0     
             BNE __d5ad         ; $d5a5: d0 06     
             LDA #$0b           ; $d5a7: a9 0b     
-            STA ($02),y        ; $d5a9: 91 02     
+            STA ($02),Y        ; $d5a9: 91 02     
             BNE __d5b5         ; $d5ab: d0 08     
 __d5ad:     CMP #$18           ; $d5ad: c9 18     
             bcc __d5b5         ; $d5af: 90 04     
@@ -2321,7 +2324,7 @@ __d5bb:     STA $05            ; $d5bb: 85 05
             TXA                ; $d5bd: 8a        
             lsr                ; $d5be: 4a        
             TAY                ; $d5bf: a8        
-            LDA $0039,y        ; $d5c0: b9 39 00  
+            LDA $0039,Y        ; $d5c0: b9 39 00  
             AND #$df           ; $d5c3: 29 df     
 __d5c5:     .hex 05 05 99 39   ; $d5c5: 05 05 99 39   Data
             .hex 00 a0 00 b1   ; $d5c9: 00 a0 00 b1   Data
@@ -2329,11 +2332,11 @@ __d5c5:     .hex 05 05 99 39   ; $d5c5: 05 05 99 39   Data
             .hex 02 29 07 f0   ; $d5d1: 02 29 07 f0   Data
             .hex 03 4c 56 d5   ; $d5d5: 03 4c 56 d5   Data
 __d5d9:     LDY #$00           ; $d5d9: a0 00     
-            LDA ($02),y        ; $d5db: b1 02     
+            LDA ($02),Y        ; $d5db: b1 02     
             CMP #$60           ; $d5dd: c9 60     
             BNE __d606         ; $d5df: d0 25     
             LDY #$02           ; $d5e1: a0 02     
-            LDA ($02),y        ; $d5e3: b1 02     
+            LDA ($02),Y        ; $d5e3: b1 02     
             CMP #$70           ; $d5e5: c9 70     
             BNE __d606         ; $d5e7: d0 1d     
             LDA #$02           ; $d5e9: a9 02     
@@ -2347,10 +2350,10 @@ __d5d9:     LDY #$00           ; $d5d9: a0 00
             lsr                ; $d5f7: 4a        
             TAY                ; $d5f8: a8        
             STA $05            ; $d5f9: 85 05     
-            LDA $0039,y        ; $d5fb: b9 39 00  
+            LDA $0039,Y        ; $d5fb: b9 39 00  
             AND #$fc           ; $d5fe: 29 fc     
             ORA $05            ; $d600: 05 05     
-            STA $0039,y        ; $d602: 99 39 00  
+            STA $0039,Y        ; $d602: 99 39 00  
             RTS                ; $d605: 60        
 
 ;-------------------------------------------------------------------------------
@@ -2379,9 +2382,9 @@ __d633:     .hex 08 18 08 a8   ; $d633: 08 18 08 a8   Data
             .hex d0 18 d0      ; $d637: d0 18 d0      Data
 __d63a:     TXA                ; $d63a: 8a        
             TAY                ; $d63b: a8        
-            LDA __d649,y       ; $d63c: b9 49 d6  
+            LDA __d649,Y       ; $d63c: b9 49 d6  
             STA $10            ; $d63f: 85 10     
-            LDA __d64a,y       ; $d641: b9 4a d6  
+            LDA __d64a,Y       ; $d641: b9 4a d6  
             STA $11            ; $d644: 85 11     
             JMP ($0010)        ; $d646: 6c 10 00  
 
@@ -2417,7 +2420,7 @@ __d685:     INC $05            ; $d685: e6 05
             LDA $05            ; $d687: a5 05     
             AND #$03           ; $d689: 29 03     
             TAY                ; $d68b: a8        
-            LDA ($00),y        ; $d68c: b1 00     
+            LDA ($00),Y        ; $d68c: b1 00     
             AND #$f8           ; $d68e: 29 f8     
             BNE __d67d         ; $d690: d0 eb     
             LDA $05            ; $d692: a5 05     
@@ -2440,11 +2443,11 @@ __d6a6:     LDA $1a            ; $d6a6: a5 1a
             LDA $51            ; $d6b0: a5 51     
             ASL                ; $d6b2: 0a        
             TAY                ; $d6b3: a8        
-            LDA __d6c7,y       ; $d6b4: b9 c7 d6  
+            LDA __d6c7,Y       ; $d6b4: b9 c7 d6  
             CLC                ; $d6b7: 18        
             ADC $1a            ; $d6b8: 65 1a     
             STA $cd            ; $d6ba: 85 cd     
-            LDA __d6c8,y       ; $d6bc: b9 c8 d6  
+            LDA __d6c8,Y       ; $d6bc: b9 c8 d6  
             CLC                ; $d6bf: 18        
             ADC $1c            ; $d6c0: 65 1c     
             STA $ce            ; $d6c2: 85 ce     
@@ -2463,9 +2466,9 @@ __d6e3:     LDA $b8,x          ; $d6e3: b5 b8
             sec                ; $d6e5: 38        
             sbc #$04           ; $d6e6: e9 04     
             TAY                ; $d6e8: a8        
-            LDA __d7ec,y       ; $d6e9: b9 ec d7  
+            LDA __d7ec,Y       ; $d6e9: b9 ec d7  
             STA $0a            ; $d6ec: 85 0a     
-            LDA __d7ed,y       ; $d6ee: b9 ed d7  
+            LDA __d7ed,Y       ; $d6ee: b9 ed d7  
             STA $0b            ; $d6f1: 85 0b     
             JSR __e42b         ; $d6f3: 20 2b e4  
             LDA $0c            ; $d6f6: a5 0c     
@@ -2485,7 +2488,7 @@ __d70b:     LDY #$00           ; $d70b: a0 00
             STY $05            ; $d70d: 84 05     
             LDA $cd            ; $d70f: a5 cd     
             sec                ; $d711: 38        
-            sbc ($02),y        ; $d712: f1 02     
+            sbc ($02),Y        ; $d712: f1 02     
             bcs __d725         ; $d714: b0 0f     
             STA $08            ; $d716: 85 08     
             LDA #$00           ; $d718: a9 00     
@@ -2499,7 +2502,7 @@ __d725:     STA $06            ; $d725: 85 06
             LDA $ce            ; $d727: a5 ce     
             LDY #$02           ; $d729: a0 02     
             sec                ; $d72b: 38        
-            sbc ($02),y        ; $d72c: f1 02     
+            sbc ($02),Y        ; $d72c: f1 02     
             bcs __d73b         ; $d72e: b0 0b     
             STA $08            ; $d730: 85 08     
             LDA #$00           ; $d732: a9 00     
@@ -2518,9 +2521,9 @@ __d745:     LDA $05            ; $d745: a5 05
             LDA #$02           ; $d74a: a9 02     
             STA $06            ; $d74c: 85 06     
 __d74e:     LDY $05            ; $d74e: a4 05     
-            LDA __d7dc,y       ; $d750: b9 dc d7  
+            LDA __d7dc,Y       ; $d750: b9 dc d7  
             LDY #$00           ; $d753: a0 00     
-__d755:     CMP $000c,y        ; $d755: d9 0c 00  
+__d755:     CMP $000c,Y        ; $d755: d9 0c 00  
             BEQ __d708         ; $d758: f0 ae     
             INY                ; $d75a: c8        
             CPY #$04           ; $d75b: c0 04     
@@ -2533,7 +2536,7 @@ __d755:     CMP $000c,y        ; $d755: d9 0c 00
             sbc #$01           ; $d768: e9 01     
             AND #$03           ; $d76a: 29 03     
             LDY #$00           ; $d76c: a0 00     
-__d76e:     CMP $000c,y        ; $d76e: d9 0c 00  
+__d76e:     CMP $000c,Y        ; $d76e: d9 0c 00  
             BEQ __d708         ; $d771: f0 95     
             INY                ; $d773: c8        
             CPY #$04           ; $d774: c0 04     
@@ -2543,7 +2546,7 @@ __d76e:     CMP $000c,y        ; $d76e: d9 0c 00
             ADC #$01           ; $d77b: 69 01     
             AND #$03           ; $d77d: 29 03     
             LDY #$00           ; $d77f: a0 00     
-__d781:     CMP $000c,y        ; $d781: d9 0c 00  
+__d781:     CMP $000c,Y        ; $d781: d9 0c 00  
             BEQ __d708         ; $d784: f0 82     
             INY                ; $d786: c8        
             CPY #$04           ; $d787: c0 04     
@@ -2635,9 +2638,9 @@ __d837:     LDA #$01           ; $d837: a9 01
             LDA #$80           ; $d844: a9 80     
             STA $06            ; $d846: 85 06     
             LDY $b9,x          ; $d848: b4 b9     
-            LDA __d857,y       ; $d84a: b9 57 d8  
+            LDA __d857,Y       ; $d84a: b9 57 d8  
             STA $10            ; $d84d: 85 10     
-            LDA __d858,y       ; $d84f: b9 58 d8  
+            LDA __d858,Y       ; $d84f: b9 58 d8  
             STA $11            ; $d852: 85 11     
             JMP ($0010)        ; $d854: 6c 10 00  
 
@@ -2681,9 +2684,9 @@ __d895:     JSR __d8af         ; $d895: 20 af d8
 
 ;-------------------------------------------------------------------------------
 __d8af:     LDY $b8,x          ; $d8af: b4 b8     
-            LDA __d8be,y       ; $d8b1: b9 be d8  
+            LDA __d8be,Y       ; $d8b1: b9 be d8  
             STA $10            ; $d8b4: 85 10     
-            LDA __d8bf,y       ; $d8b6: b9 bf d8  
+            LDA __d8bf,Y       ; $d8b6: b9 bf d8  
             STA $11            ; $d8b9: 85 11     
             JMP ($0010)        ; $d8bb: 6c 10 00  
 
@@ -2720,7 +2723,7 @@ __d8e5:     LDY #$00           ; $d8e5: a0 00
             bcs __d8f3         ; $d8f0: b0 01     
             INY                ; $d8f2: c8        
 __d8f3:     LDA #$01           ; $d8f3: a9 01     
-            STA $060a,y        ; $d8f5: 99 0a 06  
+            STA $060a,Y        ; $d8f5: 99 0a 06  
             RTS                ; $d8f8: 60        
 
 ;-------------------------------------------------------------------------------
@@ -2734,7 +2737,7 @@ __d8f9:     LDA $51            ; $d8f9: a5 51
             AND #$07           ; $d905: 29 07     
             BNE __d919         ; $d907: d0 10     
             LDY $51            ; $d909: a4 51     
-            LDA $022b,y        ; $d90b: b9 2b 02  
+            LDA $022b,Y        ; $d90b: b9 2b 02  
             AND #$f0           ; $d90e: 29 f0     
             BEQ __d919         ; $d910: f0 07     
             LDA $b7            ; $d912: a5 b7     
@@ -2750,7 +2753,7 @@ __d91d:     AND #$07           ; $d91d: 29 07
             LDA #$01           ; $d923: a9 01     
             BNE __d92e         ; $d925: d0 07     
 __d927:     TAY                ; $d927: a8        
-            LDA __d931,y       ; $d928: b9 31 d9  
+            LDA __d931,Y       ; $d928: b9 31 d9  
             CLC                ; $d92b: 18        
             ADC $00            ; $d92c: 65 00     
 __d92e:     STA $32            ; $d92e: 85 32     
@@ -2777,9 +2780,9 @@ __d94a:     JSR __d956         ; $d94a: 20 56 d9
             BNE __d94a         ; $d953: d0 f5     
 __d955:     .hex 60            ; $d955: 60            Data
 __d956:     LDY $b8,x          ; $d956: b4 b8     
-            LDA __d965,y       ; $d958: b9 65 d9  
+            LDA __d965,Y       ; $d958: b9 65 d9  
             STA $10            ; $d95b: 85 10     
-            LDA __d966,y       ; $d95d: b9 66 d9  
+            LDA __d966,Y       ; $d95d: b9 66 d9  
             STA $11            ; $d960: 85 11     
             JMP ($0010)        ; $d962: 6c 10 00  
 
@@ -2802,7 +2805,7 @@ __d983:     TXA                ; $d983: 8a
             lsr                ; $d984: 4a        
             TAY                ; $d985: a8        
             LDA $02            ; $d986: a5 02     
-            STA $0033,y        ; $d988: 99 33 00  
+            STA $0033,Y        ; $d988: 99 33 00  
             RTS                ; $d98b: 60        
 
 ;-------------------------------------------------------------------------------
@@ -2836,25 +2839,25 @@ __d9c5:     LDA $03            ; $d9c5: a5 03
             BNE __da46         ; $d9c9: d0 7b     
             LDY #$00           ; $d9cb: a0 00     
             LDA $0274          ; $d9cd: ad 74 02  
-            CMP ($00),y        ; $d9d0: d1 00     
+            CMP ($00),Y        ; $d9d0: d1 00     
             bcs __d9dc         ; $d9d2: b0 08     
-            LDA ($00),y        ; $d9d4: b1 00     
+            LDA ($00),Y        ; $d9d4: b1 00     
             sec                ; $d9d6: 38        
             sbc $0274          ; $d9d7: ed 74 02  
             bcs __d9de         ; $d9da: b0 02     
-__d9dc:     sbc ($00),y        ; $d9dc: f1 00     
+__d9dc:     sbc ($00),Y        ; $d9dc: f1 00     
 __d9de:     CMP #$19           ; $d9de: c9 19     
             bcs __da46         ; $d9e0: b0 64     
             STA $04            ; $d9e2: 85 04     
             LDY #$02           ; $d9e4: a0 02     
             LDA $0276          ; $d9e6: ad 76 02  
-            CMP ($00),y        ; $d9e9: d1 00     
+            CMP ($00),Y        ; $d9e9: d1 00     
             bcs __d9f5         ; $d9eb: b0 08     
-            LDA ($00),y        ; $d9ed: b1 00     
+            LDA ($00),Y        ; $d9ed: b1 00     
             sec                ; $d9ef: 38        
             sbc $0276          ; $d9f0: ed 76 02  
             bcs __d9f7         ; $d9f3: b0 02     
-__d9f5:     sbc ($00),y        ; $d9f5: f1 00     
+__d9f5:     sbc ($00),Y        ; $d9f5: f1 00     
 __d9f7:     CMP #$19           ; $d9f7: c9 19     
             bcs __da46         ; $d9f9: b0 4b     
             ADC $04            ; $d9fb: 65 04     
@@ -2869,15 +2872,15 @@ __d9f7:     CMP #$19           ; $d9f7: c9 19
             LDA $0292          ; $da10: ad 92 02  
             STA $06            ; $da13: 85 06     
             LDY #$00           ; $da15: a0 00     
-            LDA ($00),y        ; $da17: b1 00     
+            LDA ($00),Y        ; $da17: b1 00     
             STA $0274          ; $da19: 8d 74 02  
             LDA $03            ; $da1c: a5 03     
-            STA ($00),y        ; $da1e: 91 00     
+            STA ($00),Y        ; $da1e: 91 00     
             LDY #$02           ; $da20: a0 02     
-            LDA ($00),y        ; $da22: b1 00     
+            LDA ($00),Y        ; $da22: b1 00     
             STA $0276          ; $da24: 8d 76 02  
             LDA $04            ; $da27: a5 04     
-            STA ($00),y        ; $da29: 91 00     
+            STA ($00),Y        ; $da29: 91 00     
             LDX $02            ; $da2b: a6 02     
             LDA $028d,x        ; $da2d: bd 8d 02  
             STA $028c          ; $da30: 8d 8c 02  
@@ -2918,16 +2921,16 @@ __da70:     LDA #$00           ; $da70: a9 00
             STA $05            ; $da72: 85 05     
             TAX                ; $da74: aa        
 __da75:     LDY #$02           ; $da75: a0 02     
-            LDA ($00),y        ; $da77: b1 00     
+            LDA ($00),Y        ; $da77: b1 00     
             BNE __da7f         ; $da79: d0 04     
             LDA #$ff           ; $da7b: a9 ff     
             BNE __da83         ; $da7d: d0 04     
 __da7f:     CLC                ; $da7f: 18        
             ADC __ddc1,x       ; $da80: 7d c1 dd  
 __da83:     LDY #$00           ; $da83: a0 00     
-            STA ($02),y        ; $da85: 91 02     
+            STA ($02),Y        ; $da85: 91 02     
             LDY $04            ; $da87: a4 04     
-            LDA $028c,y        ; $da89: b9 8c 02  
+            LDA $028c,Y        ; $da89: b9 8c 02  
             ASL                ; $da8c: 0a        
             rol                ; $da8d: 2a        
             rol                ; $da8e: 2a        
@@ -2936,88 +2939,88 @@ __da83:     LDY #$00           ; $da83: a0 00
             CMP #$02           ; $da93: c9 02     
             BEQ __db02         ; $da95: f0 6b     
             bcc __dadf         ; $da97: 90 46     
-            LDA $028c,y        ; $da99: b9 8c 02  
+            LDA $028c,Y        ; $da99: b9 8c 02  
             ASL                ; $da9c: 0a        
             ASL                ; $da9d: 0a        
             CLC                ; $da9e: 18        
             ADC $05            ; $da9f: 65 05     
             TAY                ; $daa1: a8        
             STA $06            ; $daa2: 85 06     
-            LDA __dc8d,y       ; $daa4: b9 8d dc  
+            LDA __dc8d,Y       ; $daa4: b9 8d dc  
             LDY #$01           ; $daa7: a0 01     
-            STA ($02),y        ; $daa9: 91 02     
+            STA ($02),Y        ; $daa9: 91 02     
             LDY $04            ; $daab: a4 04     
-            LDA $0292,y        ; $daad: b9 92 02  
+            LDA $0292,Y        ; $daad: b9 92 02  
             LDY $06            ; $dab0: a4 06     
-            ORA __ddc1,y       ; $dab2: 19 c1 dd  
+            ORA __ddc1,Y       ; $dab2: 19 c1 dd  
             LDY #$02           ; $dab5: a0 02     
-            STA ($02),y        ; $dab7: 91 02     
+            STA ($02),Y        ; $dab7: 91 02     
             JMP __db22         ; $dab9: 4c 22 db  
 
 ;-------------------------------------------------------------------------------
-__dabc:     LDA $028c,y        ; $dabc: b9 8c 02  
+__dabc:     LDA $028c,Y        ; $dabc: b9 8c 02  
             ASL                ; $dabf: 0a        
             ASL                ; $dac0: 0a        
             CLC                ; $dac1: 18        
             ADC $05            ; $dac2: 65 05     
             TAY                ; $dac4: a8        
             STA $06            ; $dac5: 85 06     
-            LDA __db59,y       ; $dac7: b9 59 db  
+            LDA __db59,Y       ; $dac7: b9 59 db  
             LDY #$01           ; $daca: a0 01     
-            STA ($02),y        ; $dacc: 91 02     
+            STA ($02),Y        ; $dacc: 91 02     
             LDY $04            ; $dace: a4 04     
-            LDA $0292,y        ; $dad0: b9 92 02  
+            LDA $0292,Y        ; $dad0: b9 92 02  
             LDY $06            ; $dad3: a4 06     
-            ORA __dc8d,y       ; $dad5: 19 8d dc  
+            ORA __dc8d,Y       ; $dad5: 19 8d dc  
             LDY #$02           ; $dad8: a0 02     
-            STA ($02),y        ; $dada: 91 02     
+            STA ($02),Y        ; $dada: 91 02     
             JMP __db22         ; $dADC: 4c 22 db  
 
 ;-------------------------------------------------------------------------------
-__dadf:     LDA $028c,y        ; $dadf: b9 8c 02  
+__dadf:     LDA $028c,Y        ; $dadf: b9 8c 02  
             ASL                ; $dae2: 0a        
             ASL                ; $dae3: 0a        
             CLC                ; $dae4: 18        
             ADC $05            ; $dae5: 65 05     
             TAY                ; $dae7: a8        
             STA $06            ; $dae8: 85 06     
-            LDA __dc59,y       ; $daea: b9 59 dc  
+            LDA __dc59,Y       ; $daea: b9 59 dc  
             LDY #$01           ; $daed: a0 01     
-            STA ($02),y        ; $daef: 91 02     
+            STA ($02),Y        ; $daef: 91 02     
             LDY $04            ; $daf1: a4 04     
-            LDA $0292,y        ; $daf3: b9 92 02  
+            LDA $0292,Y        ; $daf3: b9 92 02  
             LDY $06            ; $daf6: a4 06     
-            ORA __dd8d,y       ; $daf8: 19 8d dd  
+            ORA __dd8d,Y       ; $daf8: 19 8d dd  
             LDY #$02           ; $dafb: a0 02     
-            STA ($02),y        ; $dafd: 91 02     
+            STA ($02),Y        ; $dafd: 91 02     
             JMP __db22         ; $daff: 4c 22 db  
 
 ;-------------------------------------------------------------------------------
-__db02:     LDA $028c,y        ; $db02: b9 8c 02  
+__db02:     LDA $028c,Y        ; $db02: b9 8c 02  
             ASL                ; $db05: 0a        
             ASL                ; $db06: 0a        
             CLC                ; $db07: 18        
             ADC $05            ; $db08: 65 05     
             TAY                ; $db0a: a8        
             STA $06            ; $db0b: 85 06     
-            LDA __dc8d,y       ; $db0d: b9 8d dc  
+            LDA __dc8d,Y       ; $db0d: b9 8d dc  
             LDY #$01           ; $db10: a0 01     
-            STA ($02),y        ; $db12: 91 02     
+            STA ($02),Y        ; $db12: 91 02     
             LDY $04            ; $db14: a4 04     
-            LDA $0292,y        ; $db16: b9 92 02  
+            LDA $0292,Y        ; $db16: b9 92 02  
             LDY $06            ; $db19: a4 06     
-            ORA __ddc1,y       ; $db1b: 19 c1 dd  
+            ORA __ddc1,Y       ; $db1b: 19 c1 dd  
             LDY #$02           ; $db1e: a0 02     
-            STA ($02),y        ; $db20: 91 02     
+            STA ($02),Y        ; $db20: 91 02     
 __db22:     LDY #$00           ; $db22: a0 00     
-            LDA ($00),y        ; $db24: b1 00     
+            LDA ($00),Y        ; $db24: b1 00     
             BNE __db2c         ; $db26: d0 04     
             LDA #$ff           ; $db28: a9 ff     
             BNE __db30         ; $db2a: d0 04     
 __db2c:     CLC                ; $db2c: 18        
             ADC __ddc2,x       ; $db2d: 7d c2 dd  
 __db30:     LDY #$03           ; $db30: a0 03     
-            STA ($02),y        ; $db32: 91 02     
+            STA ($02),Y        ; $db32: 91 02     
             LDA $02            ; $db34: a5 02     
             CLC                ; $db36: 18        
             ADC #$04           ; $db37: 69 04     
@@ -3238,7 +3241,7 @@ __ddf0:     LDA $023f          ; $ddf0: ad 3f 02
             LDA $026c          ; $de00: ad 6c 02  
             STA PPUADDR          ; $de03: 8d 06 20  
             LDY #$00           ; $de06: a0 00     
-__de08:     LDA $023f,y        ; $de08: b9 3f 02  
+__de08:     LDA $023f,Y        ; $de08: b9 3f 02  
             STA PPUDATA          ; $de0b: 8d 07 20  
             INY                ; $de0e: c8        
             CPY #$06           ; $de0f: c0 06     
@@ -3256,7 +3259,7 @@ __de08:     LDA $023f,y        ; $de08: b9 3f 02
             LDA $0273          ; $de2d: ad 73 02  
             STA PPUADDR          ; $de30: 8d 06 20  
             LDY #$00           ; $de33: a0 00     
-__de35:     LDA $0245,y        ; $de35: b9 45 02  
+__de35:     LDA $0245,Y        ; $de35: b9 45 02  
             STA PPUDATA          ; $de38: 8d 07 20  
             INY                ; $de3b: c8        
             CPY #$06           ; $de3c: c0 06     
@@ -3295,9 +3298,9 @@ __de7e:     LDY #$00           ; $de7e: a0 00
             BEQ __de8a         ; $de86: f0 02     
             LDY #$08           ; $de88: a0 08     
 __de8a:     LDA PPUSTATUS          ; $de8a: ad 02 20  
-            LDA __DECf,y       ; $de8d: b9 cf de  
+            LDA __DECf,Y       ; $de8d: b9 cf de  
             STA PPUADDR          ; $de90: 8d 06 20  
-            LDA __ded0,y       ; $de93: b9 d0 de  
+            LDA __ded0,Y       ; $de93: b9 d0 de  
             STA PPUADDR          ; $de96: 8d 06 20  
             LDA $6c,x          ; $de99: b5 6c     
             STA PPUDATA          ; $de9b: 8d 07 20  
@@ -3309,15 +3312,15 @@ __de8a:     LDA PPUSTATUS          ; $de8a: ad 02 20
             LDA PPUSTATUS          ; $dea5: ad 02 20  
             LDY #$ff           ; $dea8: a0 ff     
 __deaa:     INY                ; $deaa: c8        
-            LDA $024b,y        ; $deab: b9 4b 02  
+            LDA $024b,Y        ; $deab: b9 4b 02  
             CMP #$ff           ; $deae: c9 ff     
             BEQ __DECb         ; $deb0: f0 19     
             STA PPUADDR          ; $deb2: 8d 06 20  
             INY                ; $deb5: c8        
-            LDA $024b,y        ; $deb6: b9 4b 02  
+            LDA $024b,Y        ; $deb6: b9 4b 02  
             STA PPUADDR          ; $deb9: 8d 06 20  
 __debc:     INY                ; $debc: c8        
-            LDA $024b,y        ; $debd: b9 4b 02  
+            LDA $024b,Y        ; $debd: b9 4b 02  
             BEQ __deaa         ; $DEC0: f0 e8     
             CMP #$ff           ; $DEC2: c9 ff     
             BEQ __DECb         ; $DEC4: f0 05     
@@ -3377,25 +3380,25 @@ __df1e:     LDA #$00           ; $df1e: a9 00
             JSR __e1dd         ; $df2c: 20 dd e1  
             LDY #$ff           ; $df2f: a0 ff     
 __df31:     INY                ; $df31: c8        
-            LDA $024b,y        ; $df32: b9 4b 02  
+            LDA $024b,Y        ; $df32: b9 4b 02  
             CMP #$ff           ; $df35: c9 ff     
             BNE __df31         ; $df37: d0 f8     
             TYA                ; $df39: 98        
             BEQ __df42         ; $df3a: f0 06     
             LDA #$00           ; $df3c: a9 00     
-            STA $024b,y        ; $df3e: 99 4b 02  
+            STA $024b,Y        ; $df3e: 99 4b 02  
             INY                ; $df41: c8        
 __df42:     LDA $03            ; $df42: a5 03     
-            STA $024b,y        ; $df44: 99 4b 02  
+            STA $024b,Y        ; $df44: 99 4b 02  
             INY                ; $df47: c8        
             LDA $02            ; $df48: a5 02     
-            STA $024b,y        ; $df4a: 99 4b 02  
+            STA $024b,Y        ; $df4a: 99 4b 02  
             INY                ; $df4d: c8        
             LDA __dfa6,x       ; $df4e: bd a6 df  
-            STA $024b,y        ; $df51: 99 4b 02  
+            STA $024b,Y        ; $df51: 99 4b 02  
             INY                ; $df54: c8        
             LDA #$ff           ; $df55: a9 ff     
-            STA $024b,y        ; $df57: 99 4b 02  
+            STA $024b,Y        ; $df57: 99 4b 02  
             LDA #$07           ; $df5a: a9 07     
             STA $022a          ; $df5c: 8d 2a 02  
             LDA __dfa7,x       ; $df5f: bd a7 df  
@@ -3418,7 +3421,7 @@ __df7e:     LDA #$0a           ; $df7e: a9 0a
             LDA #$3c           ; $df82: a9 3c     
             STA $d8            ; $df84: 85 d8     
             LDY $93            ; $df86: a4 93     
-            LDA __dfbe,y       ; $df88: b9 be df  
+            LDA __dfbe,Y       ; $df88: b9 be df  
             STA $37            ; $df8b: 85 37     
             LDA #$03           ; $df8d: a9 03     
             STA $3d            ; $df8f: 85 3d     
@@ -3430,7 +3433,7 @@ __df99:     LDA $6a            ; $df99: a5 6a
             AND #$01           ; $df9b: 29 01     
             TAY                ; $df9d: a8        
             LDA #$01           ; $df9e: a9 01     
-            STA $0604,y        ; $dfa0: 99 04 06  
+            STA $0604,Y        ; $dfa0: 99 04 06  
             JMP __e060         ; $dfa3: 4c 60 e0  
 
 ;-------------------------------------------------------------------------------
@@ -3470,7 +3473,7 @@ __dfd8:     LDA $39,x          ; $dfd8: b5 39
             BPL __dfd8         ; $dfe1: 10 f5     
             LDY #$ff           ; $dfe3: a0 ff     
 __dfe5:     INY                ; $dfe5: c8        
-            LDA $024b,y        ; $dfe6: b9 4b 02  
+            LDA $024b,Y        ; $dfe6: b9 4b 02  
             CMP #$ff           ; $dfe9: c9 ff     
             BNE __dfe5         ; $dfeb: d0 f8     
             LDX #$00           ; $dfed: a2 00     
@@ -3478,7 +3481,7 @@ __dfe5:     INY                ; $dfe5: c8
             BNE __dff3         ; $dff0: d0 01     
             INX                ; $dff2: e8        
 __dff3:     LDA __e05b,x       ; $dff3: bd 5b e0  
-            STA $024b,y        ; $dff6: 99 4b 02  
+            STA $024b,Y        ; $dff6: 99 4b 02  
             INY                ; $dff9: c8        
             INX                ; $dffa: e8        
             CMP #$ff           ; $dffb: c9 ff     
@@ -3508,13 +3511,13 @@ __e01f:     LDA $b8,x          ; $e01f: b5 b8
             AND #$03           ; $e02a: 29 03     
             STA $04            ; $e02c: 85 04     
             LDY #$00           ; $e02e: a0 00     
-            LDA ($02),y        ; $e030: b1 02     
+            LDA ($02),Y        ; $e030: b1 02     
             LDY #$02           ; $e032: a0 02     
-            ORA ($02),y        ; $e034: 11 02     
+            ORA ($02),Y        ; $e034: 11 02     
             AND #$07           ; $e036: 29 07     
             BNE __e042         ; $e038: d0 08     
             LDY $04            ; $e03a: a4 04     
-            LDA ($00),y        ; $e03c: b1 00     
+            LDA ($00),Y        ; $e03c: b1 00     
             AND #$f8           ; $e03e: 29 f8     
             BNE __e046         ; $e040: d0 04     
 __e042:     LDA $04            ; $e042: a5 04     
@@ -3545,22 +3548,22 @@ __e065:     LDY #$00           ; $e065: a0 00
             LDA #$06           ; $e067: a9 06     
             STA $00            ; $e069: 85 00     
             CLC                ; $e06b: 18        
-__e06c:     LDA $0070,y        ; $e06c: b9 70 00  
-            ADC $00dc,y        ; $e06f: 79 dc 00  
-            STA $0070,y        ; $e072: 99 70 00  
+__e06c:     LDA $0070,Y        ; $e06c: b9 70 00  
+            ADC $00dc,Y        ; $e06f: 79 dc 00  
+            STA $0070,Y        ; $e072: 99 70 00  
             CMP #$0a           ; $e075: c9 0a     
             bcc __e07f         ; $e077: 90 06     
             sbc #$0a           ; $e079: e9 0a     
-            STA $0070,y        ; $e07b: 99 70 00  
+            STA $0070,Y        ; $e07b: 99 70 00  
             sec                ; $e07e: 38        
 __e07f:     LDA #$00           ; $e07f: a9 00     
-            STA $00dc,y        ; $e081: 99 dc 00  
+            STA $00dc,Y        ; $e081: 99 dc 00  
             INY                ; $e084: c8        
             DEC $00            ; $e085: c6 00     
             BNE __e06c         ; $e087: d0 e3     
             LDX #$00           ; $e089: a2 00     
             DEY                ; $e08b: 88        
-__e08c:     LDA $0070,y        ; $e08c: b9 70 00  
+__e08c:     LDA $0070,Y        ; $e08c: b9 70 00  
             JSR __e148         ; $e08f: 20 48 e1  
             CMP #$30           ; $e092: c9 30     
             BNE __e0a5         ; $e094: d0 0f     
@@ -3569,7 +3572,7 @@ __e08c:     LDA $0070,y        ; $e08c: b9 70 00
             INX                ; $e09b: e8        
             DEY                ; $e09c: 88        
             BNE __e08c         ; $e09d: d0 ed     
-__e09f:     LDA $0070,y        ; $e09f: b9 70 00  
+__e09f:     LDA $0070,Y        ; $e09f: b9 70 00  
             JSR __e148         ; $e0a2: 20 48 e1  
 __e0a5:     STA $023f,x        ; $e0a5: 9d 3f 02  
             INX                ; $e0a8: e8        
@@ -3591,13 +3594,13 @@ __e0a5:     STA $023f,x        ; $e0a5: 9d 3f 02
             STA $00            ; $e0c5: 85 00     
             LDY #$ff           ; $e0c7: a0 ff     
 __e0c9:     INY                ; $e0c9: c8        
-            LDA $024b,y        ; $e0ca: b9 4b 02  
+            LDA $024b,Y        ; $e0ca: b9 4b 02  
             CMP #$ff           ; $e0cd: c9 ff     
             BNE __e0c9         ; $e0cf: d0 f8     
             TYA                ; $e0d1: 98        
             BEQ __e0da         ; $e0d2: f0 06     
             LDA #$00           ; $e0d4: a9 00     
-            STA $024b,y        ; $e0d6: 99 4b 02  
+            STA $024b,Y        ; $e0d6: 99 4b 02  
             INY                ; $e0d9: c8        
 __e0da:     LDA $46            ; $e0da: a5 46     
             AND $47            ; $e0dc: 25 47     
@@ -3607,19 +3610,19 @@ __e0e2:     .hex 85 01 a2 00   ; $e0e2: 85 01 a2 00   Data
 __e0e6:     LDA __e13a,x       ; $e0e6: bd 3a e1  
             CLC                ; $e0e9: 18        
             ADC $01            ; $e0ea: 65 01     
-            STA $024b,y        ; $e0ec: 99 4b 02  
+            STA $024b,Y        ; $e0ec: 99 4b 02  
             INY                ; $e0ef: c8        
             INX                ; $e0f0: e8        
             LDA __e13a,x       ; $e0f1: bd 3a e1  
             CLC                ; $e0f4: 18        
             ADC $00            ; $e0f5: 65 00     
-            STA $024b,y        ; $e0f7: 99 4b 02  
+            STA $024b,Y        ; $e0f7: 99 4b 02  
             LDA #$03           ; $e0fa: a9 03     
             STA $02            ; $e0fc: 85 02     
 __e0fe:     INY                ; $e0fe: c8        
             INX                ; $e0ff: e8        
             LDA __e13a,x       ; $e100: bd 3a e1  
-            STA $024b,y        ; $e103: 99 4b 02  
+            STA $024b,Y        ; $e103: 99 4b 02  
             DEC $02            ; $e106: c6 02     
             BNE __e0fe         ; $e108: d0 f4     
             INY                ; $e10a: c8        
@@ -3627,8 +3630,8 @@ __e0fe:     INY                ; $e0fe: c8
             CPX #$0a           ; $e10c: e0 0a     
             BNE __e0e6         ; $e10e: d0 d6     
 __e110:     LDY #$05           ; $e110: a0 05     
-__e112:     LDA $0061,y        ; $e112: b9 61 00  
-            CMP $0070,y        ; $e115: d9 70 00  
+__e112:     LDA $0061,Y        ; $e112: b9 61 00  
+            CMP $0070,Y        ; $e115: d9 70 00  
             BEQ __e11d         ; $e118: f0 03     
             bcc __e121         ; $e11a: 90 05     
             RTS                ; $e11c: 60        
@@ -3695,18 +3698,18 @@ __e16d:     LDA $1a,x          ; $e16d: b5 1a
             STA $13            ; $e186: 85 13     
             JSR __e24e         ; $e188: 20 4e e2  
             LDA $13            ; $e18b: a5 13     
-            STA $0202,y        ; $e18d: 99 02 02  
+            STA $0202,Y        ; $e18d: 99 02 02  
             LDA $12            ; $e190: a5 12     
             INY                ; $e192: c8        
-            STA $0202,y        ; $e193: 99 02 02  
+            STA $0202,Y        ; $e193: 99 02 02  
             LDA $03            ; $e196: a5 03     
             INY                ; $e198: c8        
-            STA $0202,y        ; $e199: 99 02 02  
+            STA $0202,Y        ; $e199: 99 02 02  
             LDA $02            ; $e19c: a5 02     
             sec                ; $e19e: 38        
             sbc #$01           ; $e19f: e9 01     
             INY                ; $e1a1: c8        
-            STA $0202,y        ; $e1a2: 99 02 02  
+            STA $0202,Y        ; $e1a2: 99 02 02  
             LDA #$20           ; $e1a5: a9 20     
             STA $14            ; $e1a7: 85 14     
             LDA #$00           ; $e1a9: a9 00     
@@ -3718,18 +3721,18 @@ __e16d:     LDA $1a,x          ; $e16d: b5 1a
             JSR __e240         ; $e1b5: 20 40 e2  
             LDA $13            ; $e1b8: a5 13     
             INY                ; $e1ba: c8        
-            STA $0202,y        ; $e1bb: 99 02 02  
+            STA $0202,Y        ; $e1bb: 99 02 02  
             LDA $12            ; $e1be: a5 12     
             INY                ; $e1c0: c8        
-            STA $0202,y        ; $e1c1: 99 02 02  
+            STA $0202,Y        ; $e1c1: 99 02 02  
             LDA $03            ; $e1c4: a5 03     
             INY                ; $e1c6: c8        
-            STA $0202,y        ; $e1c7: 99 02 02  
+            STA $0202,Y        ; $e1c7: 99 02 02  
             LDA $02            ; $e1ca: a5 02     
             CLC                ; $e1cc: 18        
             ADC #$01           ; $e1cd: 69 01     
             INY                ; $e1cf: c8        
-            STA $0202,y        ; $e1d0: 99 02 02  
+            STA $0202,Y        ; $e1d0: 99 02 02  
             INX                ; $e1d3: e8        
             INX                ; $e1d4: e8        
             INX                ; $e1d5: e8        
@@ -3792,7 +3795,7 @@ __e223:     LDA $0200,x        ; $e223: bd 00 02
             STA PPUADDR          ; $e22d: 8d 06 20  
             LDA PPUDATA          ; $e230: ad 07 20  
             LDA PPUDATA          ; $e233: ad 07 20  
-            STA $022a,y        ; $e236: 99 2a 02  
+            STA $022a,Y        ; $e236: 99 2a 02  
             INX                ; $e239: e8        
             INY                ; $e23a: c8        
             CPX #$2a           ; $e23b: e0 2a     
@@ -3844,12 +3847,12 @@ __e27c:     LDA PPUSTATUS          ; $e27c: ad 02 20
             STA $04            ; $e28b: 85 04     
 __e28d:     LDA #$00           ; $e28d: a9 00     
             STA $05            ; $e28f: 85 05     
-            LDA ($00),y        ; $e291: b1 00     
+            LDA ($00),Y        ; $e291: b1 00     
             ASL                ; $e293: 0a        
             rol $05            ; $e294: 26 05     
             ASL                ; $e296: 0a        
             rol $05            ; $e297: 26 05     
-            LDA ($00),y        ; $e299: b1 00     
+            LDA ($00),Y        ; $e299: b1 00     
             AND #$3f           ; $e29b: 29 3f     
 __e29d:     STA PPUDATA          ; $e29d: 8d 07 20  
             DEC $04            ; $e2a0: c6 04     
@@ -3885,7 +3888,7 @@ __e2d3:     LDX #$07           ; $e2d3: a2 07
             STA PPUADDR          ; $e2da: 8d 06 20  
             LDA $01            ; $e2dd: a5 01     
             STA PPUADDR          ; $e2df: 8d 06 20  
-            LDA __e2fc,y       ; $e2e2: b9 fc e2  
+            LDA __e2fc,Y       ; $e2e2: b9 fc e2  
 __e2e5:     STA PPUDATA          ; $e2e5: 8d 07 20  
             DEX                ; $e2e8: ca        
             BPL __e2e5         ; $e2e9: 10 fa     
@@ -4023,7 +4026,7 @@ __e3ed:     RTS                ; $e3ed: 60
 
 ;-------------------------------------------------------------------------------
 __e3ee:     LDY #$05           ; $e3ee: a0 05     
-__e3f0:     LDA ($02),y        ; $e3f0: b1 02     
+__e3f0:     LDA ($02),Y        ; $e3f0: b1 02     
             AND #$0f           ; $e3f2: 29 0f     
             BNE __e402         ; $e3f4: d0 0c     
             LDA #$20           ; $e3f6: a9 20     
@@ -4031,12 +4034,12 @@ __e3f0:     LDA ($02),y        ; $e3f0: b1 02
             DEY                ; $e3fb: 88        
             BNE __e3f0         ; $e3fc: d0 f2     
             BEQ __e40b         ; $e3fe: f0 0b     
-__e400:     LDA ($02),y        ; $e400: b1 02     
+__e400:     LDA ($02),Y        ; $e400: b1 02     
 __e402:     JSR __e148         ; $e402: 20 48 e1  
             STA PPUDATA          ; $e405: 8d 07 20  
             DEY                ; $e408: 88        
             BNE __e400         ; $e409: d0 f5     
-__e40b:     LDA ($02),y        ; $e40b: b1 02     
+__e40b:     LDA ($02),Y        ; $e40b: b1 02     
             JSR __e148         ; $e40d: 20 48 e1  
             STA PPUDATA          ; $e410: 8d 07 20  
             LDA #$30           ; $e413: a9 30     
@@ -4056,7 +4059,7 @@ __e42b:     LDY #$ff           ; $e42b: a0 ff
             STY $0e            ; $e431: 84 0e     
             STY $0f            ; $e433: 84 0f     
             INY                ; $e435: c8        
-__e436:     LDA ($00),y        ; $e436: b1 00     
+__e436:     LDA ($00),Y        ; $e436: b1 00     
             CMP $0a            ; $e438: c5 0a     
             BEQ __e444         ; $e43a: f0 08     
             AND #$f8           ; $e43c: 29 f8     
@@ -4064,7 +4067,7 @@ __e436:     LDA ($00),y        ; $e436: b1 00
             CMP $0b            ; $e440: c5 0b     
             BNE __e448         ; $e442: d0 04     
 __e444:     TYA                ; $e444: 98        
-            STA $000c,y        ; $e445: 99 0c 00  
+            STA $000c,Y        ; $e445: 99 0c 00  
 __e448:     INY                ; $e448: c8        
             CPY #$04           ; $e449: c0 04     
             BNE __e436         ; $e44b: d0 e9     
@@ -4074,17 +4077,17 @@ __e448:     INY                ; $e448: c8
             AND #$03           ; $e452: 29 03     
             TAY                ; $e454: a8        
             LDA #$ff           ; $e455: a9 ff     
-            STA $000c,y        ; $e457: 99 0c 00  
+            STA $000c,Y        ; $e457: 99 0c 00  
             LDA #$03           ; $e45a: a9 03     
             STA $0b            ; $e45c: 85 0b     
 __e45e:     LDY #$00           ; $e45e: a0 00     
-__e460:     LDA $000c,y        ; $e460: b9 0c 00  
+__e460:     LDA $000c,Y        ; $e460: b9 0c 00  
             CMP #$ff           ; $e463: c9 ff     
             BNE __e472         ; $e465: d0 0b     
-            LDA $000d,y        ; $e467: b9 0d 00  
-            STA $000c,y        ; $e46a: 99 0c 00  
+            LDA $000d,Y        ; $e467: b9 0d 00  
+            STA $000c,Y        ; $e46a: 99 0c 00  
             LDA #$ff           ; $e46d: a9 ff     
-            STA $000d,y        ; $e46f: 99 0d 00  
+            STA $000d,Y        ; $e46f: 99 0d 00  
 __e472:     INY                ; $e472: c8        
             CPY #$03           ; $e473: c0 03     
             BNE __e460         ; $e475: d0 e9     
@@ -4095,19 +4098,19 @@ __e472:     INY                ; $e472: c8
 ;-------------------------------------------------------------------------------
 __e47c:     LDX #$01           ; $e47c: a2 01     
 __e47e:     LDY #$00           ; $e47e: a0 00     
-__e480:     LDA __e4b6,y       ; $e480: b9 b6 e4  
+__e480:     LDA __e4b6,Y       ; $e480: b9 b6 e4  
             CPX #$00           ; $e483: e0 00     
             BNE __e489         ; $e485: d0 02     
             ADC #$07           ; $e487: 69 07     
 __e489:     STA PPUADDR          ; $e489: 8d 06 20  
             INY                ; $e48c: c8        
-            LDA __e4b6,y       ; $e48d: b9 b6 e4  
+            LDA __e4b6,Y       ; $e48d: b9 b6 e4  
             STA PPUADDR          ; $e490: 8d 06 20  
             INY                ; $e493: c8        
-            LDA __e4b6,y       ; $e494: b9 b6 e4  
+            LDA __e4b6,Y       ; $e494: b9 b6 e4  
             STA $00            ; $e497: 85 00     
 __e499:     INY                ; $e499: c8        
-            LDA __e4b6,y       ; $e49a: b9 b6 e4  
+            LDA __e4b6,Y       ; $e49a: b9 b6 e4  
             STA PPUDATA          ; $e49d: 8d 07 20  
             DEC $00            ; $e4a0: c6 00     
             BNE __e499         ; $e4a2: d0 f5     
@@ -4229,20 +4232,20 @@ __e58d:     LDA __e619,x       ; $e58d: bd 19 e6
             TAY                ; $e596: a8        
             JSR __e514         ; $e597: 20 14 e5  
             LDY $03            ; $e59a: a4 03     
-            LDA __e62d,y       ; $e59c: b9 2d e6  
+            LDA __e62d,Y       ; $e59c: b9 2d e6  
             STA $06            ; $e59f: 85 06     
-            LDA __e62e,y       ; $e5a1: b9 2e e6  
+            LDA __e62e,Y       ; $e5a1: b9 2e e6  
             STA $07            ; $e5a4: 85 07     
             LDY $05            ; $e5a6: a4 05     
-            LDA __e63d,y       ; $e5a8: b9 3d e6  
+            LDA __e63d,Y       ; $e5a8: b9 3d e6  
 __e5ab:     DEC $07            ; $e5ab: c6 07     
             BMI __e5b3         ; $e5ad: 30 04     
             ASL                ; $e5af: 0a        
             ASL                ; $e5b0: 0a        
             bcc __e5ab         ; $e5b1: 90 f8     
 __e5b3:     LDY $06            ; $e5b3: a4 06     
-            ORA $000a,y        ; $e5b5: 19 0a 00  
-            STA $000a,y        ; $e5b8: 99 0a 00  
+            ORA $000a,Y        ; $e5b5: 19 0a 00  
+            STA $000a,Y        ; $e5b8: 99 0a 00  
             LDA $01            ; $e5bb: a5 01     
             CLC                ; $e5bd: 18        
             ADC #$02           ; $e5be: 69 02     
@@ -4285,7 +4288,7 @@ __e5ff:     LDA #$3f           ; $e5ff: a9 3f
             bcc __e611         ; $e60d: 90 02     
             LDA #$0f           ; $e60f: a9 0f     
 __e611:     TAY                ; $e611: a8        
-            LDA __e645,y       ; $e612: b9 45 e6  
+            LDA __e645,Y       ; $e612: b9 45 e6  
             STA PPUDATA          ; $e615: 8d 07 20  
             RTS                ; $e618: 60        
 
@@ -4336,7 +4339,7 @@ __e65c:     LDA PPUSTATUS          ; $e65c: ad 02 20
             LDA #$10           ; $e699: a9 10     
             STA PPUADDR          ; $e69b: 8d 06 20  
             LDY #$00           ; $e69e: a0 00     
-__e6a0:     LDA __e73b,y       ; $e6a0: b9 3b e7  
+__e6a0:     LDA __e73b,Y       ; $e6a0: b9 3b e7  
             STA PPUDATA          ; $e6a3: 8d 07 20  
             INY                ; $e6a6: c8        
             CPY #$10           ; $e6a7: c0 10     
@@ -4491,9 +4494,9 @@ __e84c:     LDA #$40           ; $e84c: a9 40
 
 ;-------------------------------------------------------------------------------
             LDY $88            ; $e853: a4 88     
-            LDA __e862,y       ; $e855: b9 62 e8  
+            LDA __e862,Y       ; $e855: b9 62 e8  
             STA $10            ; $e858: 85 10     
-            LDA __e863,y       ; $e85a: b9 63 e8  
+            LDA __e863,Y       ; $e85a: b9 63 e8  
             STA $11            ; $e85d: 85 11     
             JMP ($0010)        ; $e85f: 6c 10 00  
 
@@ -4551,9 +4554,9 @@ __e8f0:     LDA #$47           ; $e8f0: a9 47
 
 ;-------------------------------------------------------------------------------
             LDY $88            ; $e8fa: a4 88     
-            LDA __e909,y       ; $e8fc: b9 09 e9  
+            LDA __e909,Y       ; $e8fc: b9 09 e9  
             STA $10            ; $e8ff: 85 10     
-            LDA __e90a,y       ; $e901: b9 0a e9  
+            LDA __e90a,Y       ; $e901: b9 0a e9  
             STA $11            ; $e904: 85 11     
             JMP ($0010)        ; $e906: 6c 10 00  
 
@@ -4614,17 +4617,17 @@ __e9a0:     LDA #$00           ; $e9a0: a9 00
             STA $03            ; $e9b3: 85 03     
             LDX #$00           ; $e9b5: a2 00     
 __e9b7:     LDY #$00           ; $e9b7: a0 00     
-            LDA ($02),y        ; $e9b9: b1 02     
+            LDA ($02),Y        ; $e9b9: b1 02     
             BEQ __ea00         ; $e9bb: f0 43     
             INY                ; $e9bd: c8        
-            LDA ($00),y        ; $e9be: b1 00     
+            LDA ($00),Y        ; $e9be: b1 00     
             CLC                ; $e9c0: 18        
-            ADC ($02),y        ; $e9c1: 71 02     
-            STA ($02),y        ; $e9c3: 91 02     
+            ADC ($02),Y        ; $e9c1: 71 02     
+            STA ($02),Y        ; $e9c3: 91 02     
             DEY                ; $e9c5: 88        
-            LDA ($00),y        ; $e9c6: b1 00     
-            ADC ($02),y        ; $e9c8: 71 02     
-            STA ($02),y        ; $e9ca: 91 02     
+            LDA ($00),Y        ; $e9c6: b1 00     
+            ADC ($02),Y        ; $e9c8: 71 02     
+            STA ($02),Y        ; $e9ca: 91 02     
             CMP #$c0           ; $e9cc: c9 c0     
             bcc __e9da         ; $e9ce: 90 0a     
 __e9d0:     LDA #$20           ; $e9d0: a9 20     
@@ -4637,16 +4640,16 @@ __e9da:     CMP #$40           ; $e9da: c9 40
             AND $0292,x        ; $e9e0: 3d 92 02  
             STA $0292,x        ; $e9e3: 9d 92 02  
 __e9e6:     LDY #$00           ; $e9e6: a0 00     
-            LDA ($02),y        ; $e9e8: b1 02     
+            LDA ($02),Y        ; $e9e8: b1 02     
             CMP #$fc           ; $e9ea: c9 fc     
             bcc __e9fc         ; $e9ec: 90 0e     
 __e9ee:     LDA #$00           ; $e9ee: a9 00     
-            STA ($02),y        ; $e9f0: 91 02     
-            STA ($00),y        ; $e9f2: 91 00     
+            STA ($02),Y        ; $e9f0: 91 02     
+            STA ($00),Y        ; $e9f2: 91 00     
             INY                ; $e9f4: c8        
-            STA ($00),y        ; $e9f5: 91 00     
+            STA ($00),Y        ; $e9f5: 91 00     
             INY                ; $e9f7: c8        
-            STA ($02),y        ; $e9f8: 91 02     
+            STA ($02),Y        ; $e9f8: 91 02     
             BNE __ea00         ; $e9fa: d0 04     
 __e9fc:     CMP #$04           ; $e9fc: c9 04     
             bcc __e9ee         ; $e9fe: 90 ee     
@@ -4671,9 +4674,9 @@ __ea00:     LDA $00            ; $ea00: a5 00
 
 ;-------------------------------------------------------------------------------
             LDY $87            ; $ea20: a4 87     
-            LDA __ea2f,y       ; $ea22: b9 2f ea  
+            LDA __ea2f,Y       ; $ea22: b9 2f ea  
             STA $10            ; $ea25: 85 10     
-            LDA __ea30,y       ; $ea27: b9 30 ea  
+            LDA __ea30,Y       ; $ea27: b9 30 ea  
             STA $11            ; $ea2a: 85 11     
             JMP ($0010)        ; $ea2c: 6c 10 00  
 
@@ -4718,15 +4721,15 @@ __ea8c:     STA $028c          ; $ea8c: 8d 8c 02
             LDA $b7            ; $ea92: a5 b7     
             AND #$07           ; $ea94: 29 07     
             TAY                ; $ea96: a8        
-            LDA __eab5,y       ; $ea97: b9 b5 ea  
+            LDA __eab5,Y       ; $ea97: b9 b5 ea  
             TAY                ; $ea9a: a8        
-            LDA __eabd,y       ; $ea9b: b9 bd ea  
+            LDA __eabd,Y       ; $ea9b: b9 bd ea  
             STA $028d          ; $ea9e: 8d 8d 02  
-            LDA __eabe,y       ; $eaa1: b9 be ea  
+            LDA __eabe,Y       ; $eaa1: b9 be ea  
             STA $028e          ; $eaa4: 8d 8e 02  
-            LDA __eabf,y       ; $eaa7: b9 bf ea  
+            LDA __eabf,Y       ; $eaa7: b9 bf ea  
             STA $028f          ; $eaaa: 8d 8f 02  
-            LDA __eac0,y       ; $eaad: b9 c0 ea  
+            LDA __eac0,Y       ; $eaad: b9 c0 ea  
             STA $0290          ; $eab0: 8d 90 02  
             BNE __ea79         ; $eab3: d0 c4     
 __eab5:     .hex 00 00 00 04   ; $eab5: 00 00 00 04   Data
@@ -4924,42 +4927,42 @@ __ecf2:     .hex 03 11         ; $ecf2: 03 11     Invalid Opcode - SLO ($11,x)
             .hex 03 1e         ; $ecfc: 03 1e     Invalid Opcode - SLO ($1e,x)
             BPL __ed1c         ; $ecfe: 10 1c     
             .hex 03            ; $ed00: 03        Suspected data
-__ed01:     ORA ($2d),y        ; $ed01: 11 2d     
-            ORA ($c3),y        ; $ed03: 11 c3     
+__ed01:     ORA ($2d),Y        ; $ed01: 11 2d     
+            ORA ($c3),Y        ; $ed03: 11 c3     
             .hex 03 11         ; $ed05: 03 11     Invalid Opcode - SLO ($11,x)
 __ed07:     .hex 83 11         ; $ed07: 83 11     Invalid Opcode - SAX ($11,x)
             .hex 83 11         ; $ed09: 83 11     Invalid Opcode - SAX ($11,x)
 __ed0b:     .hex c3 03         ; $ed0b: c3 03     Invalid Opcode - DCP ($03,x)
-            ORA ($2d),y        ; $ed0d: 11 2d     
+            ORA ($2d),Y        ; $ed0d: 11 2d     
             ASL $1d90,x        ; $ed0f: 1e 90 1d  
             .hex 03 15         ; $ed12: 03 15     Invalid Opcode - SLO ($15,x)
             BPL __ed2e         ; $ed14: 10 18     
 __ed16:     PHP                ; $ed16: 08        
             .hex 1a            ; $ed17: 1a        Invalid Opcode - NOP 
             PHP                ; $ed18: 08        
-            ORA $1410,y        ; $ed19: 19 10 14  
+            ORA $1410,Y        ; $ed19: 19 10 14  
 __ed1c:     .hex 03 1f         ; $ed1c: 03 1f     Invalid Opcode - SLO ($1f,x)
             bcc __ed3c         ; $ed1e: 90 1c     
             AND $11e0          ; $ed20: 2d e0 11  
             .hex 03 11         ; $ed23: 03 11     Invalid Opcode - SLO ($11,x)
             CPY #$80           ; $ed25: c0 80     
-            ORA ($03),y        ; $ed27: 11 03     
-            ORA ($e0),y        ; $ed29: 11 e0     
+            ORA ($03),Y        ; $ed27: 11 03     
+            ORA ($e0),Y        ; $ed29: 11 e0     
             AND $11e0          ; $ed2b: 2d e0 11  
 __ed2e:     .hex 03 11         ; $ed2e: 03 11     Invalid Opcode - SLO ($11,x)
             brk                ; $ed30: 00        
             .hex 1f 17 2c      ; $ed31: 1f 17 2c  Invalid Opcode - SLO $2c17,x
             ASL $1d,x          ; $ed34: 16 1d     
             brk                ; $ed36: 00        
-            ORA ($03),y        ; $ed37: 11 03     
-            ORA ($e0),y        ; $ed39: 11 e0     
+            ORA ($03),Y        ; $ed37: 11 03     
+            ORA ($e0),Y        ; $ed39: 11 e0     
             .hex 2d            ; $ed3b: 2d        Suspected data
 __ed3c:     .hex 22            ; $ed3c: 22        Invalid Opcode - KIL 
             bcc __ed5b         ; $ed3d: 90 1c     
             .hex 03 1a         ; $ed3f: 03 1a     Invalid Opcode - SLO ($1a,x)
             brk                ; $ed41: 00        
-            ORA ($80),y        ; $ed42: 11 80     
-            ORA ($00),y        ; $ed44: 11 00     
+            ORA ($80),Y        ; $ed42: 11 80     
+            ORA ($00),Y        ; $ed44: 11 00     
             .hex 1a            ; $ed46: 1a        Invalid Opcode - NOP 
             .hex 03 1e         ; $ed47: 03 1e     Invalid Opcode - SLO ($1e,x)
             bcc __ed6c         ; $ed49: 90 21     
@@ -4968,8 +4971,8 @@ __ed3c:     .hex 22            ; $ed3c: 22        Invalid Opcode - KIL
             rti                ; $ed4f: 40        
 
 ;-------------------------------------------------------------------------------
-            ORA ($80),y        ; $ed50: 11 80     
-            ORA ($40),y        ; $ed52: 11 40     
+            ORA ($80),Y        ; $ed50: 11 80     
+            ORA ($40),Y        ; $ed52: 11 40     
             .hex 03 c0         ; $ed54: 03 c0     Invalid Opcode - SLO ($c0,x)
             ORA $2d            ; $ed56: 05 2d     
             .hex 22            ; $ed58: 22        Invalid Opcode - KIL 
@@ -4978,20 +4981,20 @@ __ed5b:     .hex 03 1b         ; $ed5b: 03 1b     Invalid Opcode - SLO ($1b,x)
             brk                ; $ed5d: 00        
             ASL $1c90,x        ; $ed5e: 1e 90 1c  
             brk                ; $ed61: 00        
-            .hex 1b 03 1f      ; $ed62: 1b 03 1f  Invalid Opcode - SLO $1f03,y
+            .hex 1b 03 1f      ; $ed62: 1b 03 1f  Invalid Opcode - SLO $1f03,Y
             bcc __ed88         ; $ed65: 90 21     
             AND $11e0          ; $ed67: 2d e0 11  
             .hex 03 11         ; $ed6a: 03 11     Invalid Opcode - SLO ($11,x)
 __ed6c:     CPY #$80           ; $ed6c: c0 80     
-            ORA ($03),y        ; $ed6e: 11 03     
-            ORA ($e0),y        ; $ed70: 11 e0     
+            ORA ($03),Y        ; $ed6e: 11 03     
+            ORA ($e0),Y        ; $ed70: 11 e0     
             AND $11e0          ; $ed72: 2d e0 11  
             .hex 03 11         ; $ed75: 03 11     Invalid Opcode - SLO ($11,x)
             brk                ; $ed77: 00        
 __ed78:     .hex 1f 90 1d      ; $ed78: 1f 90 1d  Invalid Opcode - SLO $1d90,x
             brk                ; $ed7b: 00        
-            ORA ($03),y        ; $ed7c: 11 03     
-            ORA ($e0),y        ; $ed7e: 11 e0     
+            ORA ($03),Y        ; $ed7c: 11 03     
+            ORA ($e0),Y        ; $ed7e: 11 e0     
             AND $901f          ; $ed80: 2d 1f 90  
             .hex 1c 03 1a      ; $ed83: 1c 03 1a  Invalid Opcode - NOP $1a03,x
             brk                ; $ed86: 00        
@@ -5004,11 +5007,11 @@ __ed88:     BPL __ed9d         ; $ed88: 10 13
             bcc __edaf         ; $ed90: 90 1d     
             AND __c311         ; $ed92: 2d 11 c3  
             .hex c3 03         ; $ed95: c3 03     Invalid Opcode - DCP ($03,x)
-            ORA ($c3),y        ; $ed97: 11 c3     
+            ORA ($c3),Y        ; $ed97: 11 c3     
             .hex c3 03         ; $ed99: c3 03     Invalid Opcode - DCP ($03,x)
-            ORA ($2d),y        ; $ed9b: 11 2d     
-__ed9d:     ORA ($03),y        ; $ed9d: 11 03     
-            ORA $1d10,y        ; $ed9f: 19 10 1d  
+            ORA ($2d),Y        ; $ed9b: 11 2d     
+__ed9d:     ORA ($03),Y        ; $ed9d: 11 03     
+            ORA $1d10,Y        ; $ed9f: 19 10 1d  
             .hex 03 19         ; $eda2: 03 19     Invalid Opcode - SLO ($19,x)
             BPL __edbe         ; $eda4: 10 18     
             ORA #$1a           ; $eda6: 09 1a     
@@ -5023,7 +5026,7 @@ __edaf:     CLC                ; $edaf: 18
             .hex c3 03         ; $edb7: c3 03     Invalid Opcode - DCP ($03,x)
             brk                ; $edb9: 00        
             .hex c3 03         ; $edba: c3 03     Invalid Opcode - DCP ($03,x)
-            ORA ($43),y        ; $edbc: 11 43     
+            ORA ($43),Y        ; $edbc: 11 43     
 __edbe:     ORA ($11,x)        ; $edbe: 01 11     
             AND $1015          ; $edc0: 2d 15 10  
             .hex 1d            ; $edc3: 1d        Suspected data
@@ -5046,14 +5049,14 @@ __edc4:     .hex 03 11         ; $edc4: 03 11     Invalid Opcode - SLO ($11,x)
 __ede6:     .hex 03 1e         ; $ede6: 03 1e     Invalid Opcode - SLO ($1e,x)
 __ede8:     .hex 10            ; $ede8: 10        Suspected data
 __ede9:     .hex 14 2d         ; $ede9: 14 2d     Invalid Opcode - NOP $2d,x
-            ORA ($c3),y        ; $edeb: 11 c3     
+            ORA ($c3),Y        ; $edeb: 11 c3     
             .hex 03 11         ; $eded: 03 11     Invalid Opcode - SLO ($11,x)
             .hex 83 11         ; $edef: 83 11     Invalid Opcode - SAX ($11,x)
             .hex 83 11         ; $edf1: 83 11     Invalid Opcode - SAX ($11,x)
 __edf3:     .hex c3 03         ; $edf3: c3 03     Invalid Opcode - DCP ($03,x)
-            ORA ($2d),y        ; $edf5: 11 2d     
-            ORA ($03),y        ; $edf7: 11 03     
-            ORA $1290,y        ; $edf9: 19 90 12  
+            ORA ($2d),Y        ; $edf5: 11 2d     
+            ORA ($03),Y        ; $edf7: 11 03     
+            ORA $1290,Y        ; $edf9: 19 90 12  
             BPL __ee16         ; $edfc: 10 18     
 __edfe:     .hex 03 1a         ; $edfe: 03 1a     Invalid Opcode - SLO ($1a,x)
             .hex 03 19         ; $ee00: 03 19     Invalid Opcode - SLO ($19,x)
@@ -5063,7 +5066,7 @@ __edfe:     .hex 03 1a         ; $edfe: 03 1a     Invalid Opcode - SLO ($1a,x)
             AND __c311         ; $ee08: 2d 11 c3  
             .hex c3 c3         ; $ee0b: c3 c3     Invalid Opcode - DCP ($c3,x)
             .hex c3 83         ; $ee0d: c3 83     Invalid Opcode - DCP ($83,x)
-            ORA ($2d),y        ; $ee0f: 11 2d     
+            ORA ($2d),Y        ; $ee0f: 11 2d     
             ASL __d0d0,x       ; $ee11: 1e d0 d0  
             BNE __ede6         ; $ee14: d0 d0     
 __ee16:     bcc __ee34         ; $ee16: 90 1c     
@@ -5082,19 +5085,19 @@ __ee1e:     STA $f1            ; $ee1e: 85 f1
             LDA #$40           ; $ee32: a9 40     
 __ee34:     STA $f7            ; $ee34: 85 f7     
             LDA #$1f           ; $ee36: a9 1f     
-            STA $4015          ; $ee38: 8d 15 40  
+            STA APUCTRL          ; $ee38: 8d 15 40  
             LDA #$c0           ; $ee3b: a9 c0     
-            STA $4017          ; $ee3d: 8d 17 40  
+            STA FrameCtr          ; $ee3d: 8d 17 40  
 __ee40:     LDY #$00           ; $ee40: a0 00     
             LDA #$00           ; $ee42: a9 00     
-__ee44:     STA ($f0),y        ; $ee44: 91 f0     
+__ee44:     STA ($f0),Y        ; $ee44: 91 f0     
             INY                ; $ee46: c8        
             CPY #$10           ; $ee47: c0 10     
             BNE __ee44         ; $ee49: d0 f9     
             LDY #$00           ; $ee4b: a0 00     
             LDX #$10           ; $ee4d: a2 10     
 __ee4f:     LDA #$00           ; $ee4f: a9 00     
-            STA ($f2),y        ; $ee51: 91 f2     
+            STA ($f2),Y        ; $ee51: 91 f2     
             TYA                ; $ee53: 98        
             CLC                ; $ee54: 18        
             ADC #$08           ; $ee55: 69 08     
@@ -5114,7 +5117,7 @@ __ee5c:     LDA #$00           ; $ee5c: a9 00
             LDA #$f8           ; $ee6a: a9 f8     
             STA $fe            ; $ee6c: 85 fe     
 __ee6e:     LDY $fd            ; $ee6e: a4 fd     
-            LDA ($f2),y        ; $ee70: b1 f2     
+            LDA ($f2),Y        ; $ee70: b1 f2     
             BEQ __eeae         ; $ee72: f0 3a     
             CMP #$05           ; $ee74: c9 05     
             bcc __ee83         ; $ee76: 90 0b     
@@ -5122,22 +5125,22 @@ __ee6e:     LDY $fd            ; $ee6e: a4 fd
             sbc #$05           ; $ee79: e9 05     
             TAY                ; $ee7b: a8        
             LDA #$01           ; $ee7c: a9 01     
-            STA ($fe),y        ; $ee7e: 91 fe     
+            STA ($fe),Y        ; $ee7e: 91 fe     
             JMP __eeae         ; $ee80: 4c ae ee  
 
 ;-------------------------------------------------------------------------------
 __ee83:     sec                ; $ee83: 38        
             sbc #$01           ; $ee84: e9 01     
             TAY                ; $ee86: a8        
-            LDA ($fe),y        ; $ee87: b1 fe     
+            LDA ($fe),Y        ; $ee87: b1 fe     
             BNE __eeae         ; $ee89: d0 23     
             LDA #$01           ; $ee8b: a9 01     
-            STA ($fe),y        ; $ee8d: 91 fe     
+            STA ($fe),Y        ; $ee8d: 91 fe     
             TYA                ; $ee8f: 98        
             TAX                ; $ee90: aa        
             ADC #$04           ; $ee91: 69 04     
             LDY $fd            ; $ee93: a4 fd     
-            STA ($f2),y        ; $ee95: 91 f2     
+            STA ($f2),Y        ; $ee95: 91 f2     
             TXA                ; $ee97: 8a        
             ASL                ; $ee98: 0a        
             ASL                ; $ee99: 0a        
@@ -5146,7 +5149,7 @@ __ee83:     sec                ; $ee83: 38
             LDA #$04           ; $ee9e: a9 04     
 __eea0:     PHA                ; $eea0: 48        
             INY                ; $eea1: c8        
-            LDA ($f2),y        ; $eea2: b1 f2     
+            LDA ($f2),Y        ; $eea2: b1 f2     
             STA ($f6,x)        ; $eea4: 81 f6     
             INC $f6            ; $eea6: e6 f6     
             PLA                ; $eea8: 68        
@@ -5163,38 +5166,38 @@ __eeae:     LDA $fd            ; $eeae: a5 fd
             STY $fc            ; $eebb: 84 fc     
             STY $fd            ; $eebd: 84 fd     
 __eebf:     LDY $fc            ; $eebf: a4 fc     
-            LDA ($f0),y        ; $eec1: b1 f0     
+            LDA ($f0),Y        ; $eec1: b1 f0     
             BNE __eec8         ; $eec3: d0 03     
             JMP __ef84         ; $eec5: 4c 84 ef  
 
 ;-------------------------------------------------------------------------------
 __eec8:     LDY $fd            ; $eec8: a4 fd     
-            LDA ($f2),y        ; $eeca: b1 f2     
+            LDA ($f2),Y        ; $eeca: b1 f2     
             BNE __ef1f         ; $eecc: d0 51     
             LDA $fc            ; $eece: a5 fc     
             ASL                ; $eed0: 0a        
             TAY                ; $eed1: a8        
-            LDA ($f4),y        ; $eed2: b1 f4     
+            LDA ($f4),Y        ; $eed2: b1 f4     
             PHA                ; $eed4: 48        
             LDA $fd            ; $eed5: a5 fd     
             ADC #$05           ; $eed7: 69 05     
             TAY                ; $eed9: a8        
             PLA                ; $eeda: 68        
-            STA ($f2),y        ; $eedb: 91 f2     
+            STA ($f2),Y        ; $eedb: 91 f2     
             LDA $fc            ; $eedd: a5 fc     
             ASL                ; $eedf: 0a        
             ADC #$01           ; $eee0: 69 01     
             TAY                ; $eee2: a8        
-            LDA ($f4),y        ; $eee3: b1 f4     
+            LDA ($f4),Y        ; $eee3: b1 f4     
             PHA                ; $eee5: 48        
             LDA $fd            ; $eee6: a5 fd     
             ADC #$06           ; $eee8: 69 06     
             TAY                ; $eeea: a8        
             PLA                ; $eeeb: 68        
-            STA ($f2),y        ; $eeec: 91 f2     
+            STA ($f2),Y        ; $eeec: 91 f2     
             JSR __f04f         ; $eeee: 20 4f f0  
             LDY $fd            ; $eef1: a4 fd     
-            STA ($f2),y        ; $eef3: 91 f2     
+            STA ($f2),Y        ; $eef3: 91 f2     
             JSR __f04f         ; $eef5: 20 4f f0  
             TAX                ; $eef8: aa        
             LDA $fd            ; $eef9: a5 fd     
@@ -5202,7 +5205,7 @@ __eec8:     LDY $fd            ; $eec8: a4 fd
             ADC #$01           ; $eefc: 69 01     
             TAY                ; $eefe: a8        
             TXA                ; $eeff: 8a        
-            STA ($f2),y        ; $ef00: 91 f2     
+            STA ($f2),Y        ; $ef00: 91 f2     
             JSR __f04f         ; $ef02: 20 4f f0  
             TAX                ; $ef05: aa        
             LDA $fd            ; $ef06: a5 fd     
@@ -5210,7 +5213,7 @@ __eec8:     LDY $fd            ; $eec8: a4 fd
             ADC #$02           ; $ef09: 69 02     
             TAY                ; $ef0b: a8        
             TXA                ; $ef0c: 8a        
-            STA ($f2),y        ; $ef0d: 91 f2     
+            STA ($f2),Y        ; $ef0d: 91 f2     
             JSR __f04f         ; $ef0f: 20 4f f0  
             TAX                ; $ef12: aa        
             LDA $fd            ; $ef13: a5 fd     
@@ -5218,7 +5221,7 @@ __eec8:     LDY $fd            ; $eec8: a4 fd
             ADC #$04           ; $ef16: 69 04     
             TAY                ; $ef18: a8        
             TXA                ; $ef19: 8a        
-            STA ($f2),y        ; $ef1a: 91 f2     
+            STA ($f2),Y        ; $ef1a: 91 f2     
             JMP __ef2e         ; $ef1c: 4c 2e ef  
 
 ;-------------------------------------------------------------------------------
@@ -5226,10 +5229,10 @@ __ef1f:     LDA $fd            ; $ef1f: a5 fd
             CLC                ; $ef21: 18        
             ADC #$07           ; $ef22: 69 07     
             TAY                ; $ef24: a8        
-            LDA ($f2),y        ; $ef25: b1 f2     
+            LDA ($f2),Y        ; $ef25: b1 f2     
             sec                ; $ef27: 38        
             sbc #$01           ; $ef28: e9 01     
-            STA ($f2),y        ; $ef2a: 91 f2     
+            STA ($f2),Y        ; $ef2a: 91 f2     
             BNE __ef84         ; $ef2c: d0 56     
 __ef2e:     JSR __f04f         ; $ef2e: 20 4f f0  
             CMP #$f0           ; $ef31: c9 f0     
@@ -5258,20 +5261,20 @@ __ef57:     LDA $fd            ; $ef57: a5 fd
             CLC                ; $ef59: 18        
             ADC #$04           ; $ef5a: 69 04     
             TAY                ; $ef5c: a8        
-            LDA ($f2),y        ; $ef5d: b1 f2     
+            LDA ($f2),Y        ; $ef5d: b1 f2     
             AND #$f8           ; $ef5f: 29 f8     
             ORA $fe            ; $ef61: 05 fe     
-            STA ($f2),y        ; $ef63: 91 f2     
+            STA ($f2),Y        ; $ef63: 91 f2     
             LDA $ff            ; $ef65: a5 ff     
             DEY                ; $ef67: 88        
-            STA ($f2),y        ; $ef68: 91 f2     
+            STA ($f2),Y        ; $ef68: 91 f2     
             LDY $fd            ; $ef6a: a4 fd     
-            LDA ($f2),y        ; $ef6c: b1 f2     
+            LDA ($f2),Y        ; $ef6c: b1 f2     
             CMP #$05           ; $ef6e: c9 05     
             bcc __ef77         ; $ef70: 90 05     
             sec                ; $ef72: 38        
             sbc #$04           ; $ef73: e9 04     
-            STA ($f2),y        ; $ef75: 91 f2     
+            STA ($f2),Y        ; $ef75: 91 f2     
 __ef77:     JSR __f04f         ; $ef77: 20 4f f0  
             PHA                ; $ef7a: 48        
             LDA $fd            ; $ef7b: a5 fd     
@@ -5279,7 +5282,7 @@ __ef77:     JSR __f04f         ; $ef77: 20 4f f0
             ADC #$07           ; $ef7e: 69 07     
             TAY                ; $ef80: a8        
             PLA                ; $ef81: 68        
-            STA ($f2),y        ; $ef82: 91 f2     
+            STA ($f2),Y        ; $ef82: 91 f2     
 __ef84:     LDA $fd            ; $ef84: a5 fd     
             CLC                ; $ef86: 18        
             ADC #$08           ; $ef87: 69 08     
@@ -5351,10 +5354,10 @@ __f04f:     LDA $fd            ; $f04f: a5 fd
             CLC                ; $f051: 18        
             ADC #$05           ; $f052: 69 05     
             TAY                ; $f054: a8        
-            LDA ($f2),y        ; $f055: b1 f2     
+            LDA ($f2),Y        ; $f055: b1 f2     
             STA $fe            ; $f057: 85 fe     
             INY                ; $f059: c8        
-            LDA ($f2),y        ; $f05a: b1 f2     
+            LDA ($f2),Y        ; $f05a: b1 f2     
             STA $ff            ; $f05c: 85 ff     
             LDX #$00           ; $f05e: a2 00     
             LDA ($fe,x)        ; $f060: a1 fe     
@@ -5363,11 +5366,11 @@ __f04f:     LDA $fd            ; $f04f: a5 fd
             DEY                ; $f065: 88        
             CLC                ; $f066: 18        
             ADC #$01           ; $f067: 69 01     
-            STA ($f2),y        ; $f069: 91 f2     
+            STA ($f2),Y        ; $f069: 91 f2     
             LDA $ff            ; $f06b: a5 ff     
             ADC #$00           ; $f06d: 69 00     
             INY                ; $f06f: c8        
-            STA ($f2),y        ; $f070: 91 f2     
+            STA ($f2),Y        ; $f070: 91 f2     
             PLA                ; $f072: 68        
             RTS                ; $f073: 60        
 
@@ -5445,7 +5448,7 @@ __f0c7:     .hex 33 01 23 01   ; $f0c7: 33 01 23 01   Data
             .hex 01 02 01 22   ; $f183: 01 02 01 22   Data
             .hex 01 32 01 52   ; $f187: 01 32 01 52   Data
             .hex 01 f5 18      ; $f18b: 01 f5 18      Data
-__f18e:     .hex 73 01         ; $f18e: 73 01     Invalid Opcode - RRA ($01),y
+__f18e:     .hex 73 01         ; $f18e: 73 01     Invalid Opcode - RRA ($01),Y
             CPY #$08           ; $f190: c0 08     
             BEQ __f195         ; $f192: f0 01     
             .hex 03            ; $f194: 03        Suspected data
@@ -5510,11 +5513,11 @@ __f195:     .hex 7f 08 72      ; $f195: 7f 08 72  Invalid Opcode - RRA $7208,x
             .hex b2            ; $f1e7: b2        Invalid Opcode - KIL 
             PHP                ; $f1e8: 08        
             .hex 03 02         ; $f1e9: 03 02     Invalid Opcode - SLO ($02,x)
-            .hex 13 0a         ; $f1eb: 13 0a     Invalid Opcode - SLO ($0a),y
-            .hex 13 02         ; $f1ed: 13 02     Invalid Opcode - SLO ($02),y
+            .hex 13 0a         ; $f1eb: 13 0a     Invalid Opcode - SLO ($0a),Y
+            .hex 13 02         ; $f1ed: 13 02     Invalid Opcode - SLO ($02),Y
             .hex 23 0c         ; $f1ef: 23 0c     Invalid Opcode - RLA ($0c,x)
             .hex 03 02         ; $f1f1: 03 02     Invalid Opcode - SLO ($02,x)
-            .hex 13 08         ; $f1f3: 13 08     Invalid Opcode - SLO ($08),y
+            .hex 13 08         ; $f1f3: 13 08     Invalid Opcode - SLO ($08),Y
             LDX #$02           ; $f1f5: a2 02     
             .hex b2            ; $f1f7: b2        Invalid Opcode - KIL 
             PHP                ; $f1f8: 08        
@@ -5545,11 +5548,11 @@ __f209:     rti                ; $f209: 40
             CPY #$02           ; $f220: c0 02     
             ORA ($04,x)        ; $f222: 01 04     
             CPY #$01           ; $f224: c0 01     
-            ORA ($04),y        ; $f226: 11 04     
+            ORA ($04),Y        ; $f226: 11 04     
             CPY #$01           ; $f228: c0 01     
             AND ($04,x)        ; $f22a: 21 04     
             CPY #$01           ; $f22c: c0 01     
-            AND ($04),y        ; $f22e: 31 04     
+            AND ($04),Y        ; $f22e: 31 04     
             CPY #$01           ; $f230: c0 01     
             .hex 80 08         ; $f232: 80 08     Invalid Opcode - NOP #$08
             CPY #$06           ; $f234: c0 06     
@@ -5565,11 +5568,11 @@ __f209:     rti                ; $f209: 40
             CPY #$02           ; $f248: c0 02     
             ORA ($04,x)        ; $f24a: 01 04     
             CPY #$01           ; $f24c: c0 01     
-            ORA ($04),y        ; $f24e: 11 04     
+            ORA ($04),Y        ; $f24e: 11 04     
             CPY #$01           ; $f250: c0 01     
             AND ($04,x)        ; $f252: 21 04     
             CPY #$01           ; $f254: c0 01     
-            AND ($04),y        ; $f256: 31 04     
+            AND ($04),Y        ; $f256: 31 04     
             CPY #$01           ; $f258: c0 01     
             .hex 80 08         ; $f25a: 80 08     Invalid Opcode - NOP #$08
             CPY #$06           ; $f25c: c0 06     
@@ -5585,18 +5588,18 @@ __f209:     rti                ; $f209: 40
             CPY #$02           ; $f270: c0 02     
             ORA ($04,x)        ; $f272: 01 04     
             CPY #$01           ; $f274: c0 01     
-            ORA ($04),y        ; $f276: 11 04     
+            ORA ($04),Y        ; $f276: 11 04     
             CPY #$01           ; $f278: c0 01     
             AND ($04,x)        ; $f27a: 21 04     
             CPY #$01           ; $f27c: c0 01     
-            AND ($04),y        ; $f27e: 31 04     
+            AND ($04),Y        ; $f27e: 31 04     
             CPY #$01           ; $f280: c0 01     
             STA ($0a,x)        ; $f282: 81 0a     
-            AND ($04),y        ; $f284: 31 04     
+            AND ($04),Y        ; $f284: 31 04     
             CPY #$01           ; $f286: c0 01     
             AND ($04,x)        ; $f288: 21 04     
             CPY #$01           ; $f28a: c0 01     
-            ORA ($04),y        ; $f28c: 11 04     
+            ORA ($04),Y        ; $f28c: 11 04     
             CPY #$01           ; $f28e: c0 01     
             bcs __f296         ; $f290: b0 04     
             CPY #$01           ; $f292: c0 01     
@@ -5617,9 +5620,9 @@ __f29e:     CPY #$02           ; $f29e: c0 02
 __f2aa:     TYA                ; $f2aa: 98        
             .hex 7f            ; $f2ab: 7f        Suspected data
 __f2ac:     plp                ; $f2ac: 28        
-            .hex 33 01         ; $f2ad: 33 01     Invalid Opcode - RLA ($01),y
+            .hex 33 01         ; $f2ad: 33 01     Invalid Opcode - RLA ($01),Y
             .hex 23 01         ; $f2af: 23 01     Invalid Opcode - RLA ($01,x)
-            .hex 13 01         ; $f2b1: 13 01     Invalid Opcode - SLO ($01),y
+            .hex 13 01         ; $f2b1: 13 01     Invalid Opcode - SLO ($01),Y
             .hex 03 01         ; $f2b3: 03 01     Invalid Opcode - SLO ($01,x)
             LDX #$01           ; $f2b5: a2 01     
             .hex 82 01         ; $f2b7: 82 01     Invalid Opcode - NOP #$01
@@ -5634,32 +5637,32 @@ __f2ac:     plp                ; $f2ac: 28
             ORA ($42,x)        ; $f2c8: 01 42     
             .hex 7f 38 23      ; $f2ca: 7f 38 23  Invalid Opcode - RRA $2338,x
             .hex 02            ; $f2cd: 02        Invalid Opcode - KIL 
-            .hex 33 02         ; $f2ce: 33 02     Invalid Opcode - RLA ($02),y
+            .hex 33 02         ; $f2ce: 33 02     Invalid Opcode - RLA ($02),Y
             .hex 43 02         ; $f2d0: 43 02     Invalid Opcode - SRE ($02,x)
-            .hex 53 02         ; $f2d2: 53 02     Invalid Opcode - SRE ($02),y
+            .hex 53 02         ; $f2d2: 53 02     Invalid Opcode - SRE ($02),Y
             .hex 43 02         ; $f2d4: 43 02     Invalid Opcode - SRE ($02,x)
-            .hex 33 02         ; $f2d6: 33 02     Invalid Opcode - RLA ($02),y
+            .hex 33 02         ; $f2d6: 33 02     Invalid Opcode - RLA ($02),Y
             .hex 23 02         ; $f2d8: 23 02     Invalid Opcode - RLA ($02,x)
-            .hex 13 02         ; $f2da: 13 02     Invalid Opcode - SLO ($02),y
+            .hex 13 02         ; $f2da: 13 02     Invalid Opcode - SLO ($02),Y
             .hex 23 02         ; $f2dc: 23 02     Invalid Opcode - RLA ($02,x)
-            .hex 33 02         ; $f2de: 33 02     Invalid Opcode - RLA ($02),y
+            .hex 33 02         ; $f2de: 33 02     Invalid Opcode - RLA ($02),Y
             .hex 43 02         ; $f2e0: 43 02     Invalid Opcode - SRE ($02,x)
-            .hex 33 02         ; $f2e2: 33 02     Invalid Opcode - RLA ($02),y
+            .hex 33 02         ; $f2e2: 33 02     Invalid Opcode - RLA ($02),Y
             .hex 23 02         ; $f2e4: 23 02     Invalid Opcode - RLA ($02,x)
-            .hex 13 02         ; $f2e6: 13 02     Invalid Opcode - SLO ($02),y
+            .hex 13 02         ; $f2e6: 13 02     Invalid Opcode - SLO ($02),Y
             .hex 03 02         ; $f2e8: 03 02     Invalid Opcode - SLO ($02,x)
-            .hex 13 02         ; $f2ea: 13 02     Invalid Opcode - SLO ($02),y
+            .hex 13 02         ; $f2ea: 13 02     Invalid Opcode - SLO ($02),Y
             .hex 23 02         ; $f2ec: 23 02     Invalid Opcode - RLA ($02,x)
-            .hex 33 02         ; $f2ee: 33 02     Invalid Opcode - RLA ($02),y
+            .hex 33 02         ; $f2ee: 33 02     Invalid Opcode - RLA ($02),Y
             .hex 23 02         ; $f2f0: 23 02     Invalid Opcode - RLA ($02,x)
-            .hex 13 02         ; $f2f2: 13 02     Invalid Opcode - SLO ($02),y
+            .hex 13 02         ; $f2f2: 13 02     Invalid Opcode - SLO ($02),Y
             .hex 03 02         ; $f2f4: 03 02     Invalid Opcode - SLO ($02,x)
             .hex b2            ; $f2f6: b2        Invalid Opcode - KIL 
             .hex 02            ; $f2f7: 02        Invalid Opcode - KIL 
             .hex 03 02         ; $f2f8: 03 02     Invalid Opcode - SLO ($02,x)
-            .hex 13 02         ; $f2fa: 13 02     Invalid Opcode - SLO ($02),y
+            .hex 13 02         ; $f2fa: 13 02     Invalid Opcode - SLO ($02),Y
             .hex 23 02         ; $f2fc: 23 02     Invalid Opcode - RLA ($02,x)
-            .hex 13 02         ; $f2fe: 13 02     Invalid Opcode - SLO ($02),y
+            .hex 13 02         ; $f2fe: 13 02     Invalid Opcode - SLO ($02),Y
             .hex 03 02         ; $f300: 03 02     Invalid Opcode - SLO ($02,x)
             .hex b2            ; $f302: b2        Invalid Opcode - KIL 
             .hex 02            ; $f303: 02        Invalid Opcode - KIL 
@@ -5694,11 +5697,11 @@ __f2ac:     plp                ; $f2ac: 28
             .hex 82 02         ; $f32c: 82 02     Invalid Opcode - NOP #$02
             .hex f2            ; $f32e: f2        Invalid Opcode - KIL 
             brk                ; $f32f: 00        
-            .hex f3 00         ; $f330: f3 00     Invalid Opcode - ISC ($00),y
+            .hex f3 00         ; $f330: f3 00     Invalid Opcode - ISC ($00),Y
             sbc $18,x          ; $f332: f5 18     
-            AND ($01),y        ; $f334: 31 01     
-            ADC ($01),y        ; $f336: 71 01     
-            LDA ($01),y        ; $f338: b1 01     
+            AND ($01),Y        ; $f334: 31 01     
+            ADC ($01),Y        ; $f336: 71 01     
+            LDA ($01),Y        ; $f338: b1 01     
             .hex 32            ; $f33a: 32        Invalid Opcode - KIL 
             ORA ($72,x)        ; $f33b: 01 72     
             ORA ($b2,x)        ; $f33d: 01 b2     
@@ -5706,9 +5709,9 @@ __f2ac:     plp                ; $f2ac: 28
             ORA ($73,x)        ; $f341: 01 73     
             ORA ($c0,x)        ; $f343: 01 c0     
             .hex 02            ; $f345: 02        Invalid Opcode - KIL 
-            AND ($01),y        ; $f346: 31 01     
-            ADC ($01),y        ; $f348: 71 01     
-            LDA ($01),y        ; $f34a: b1 01     
+            AND ($01),Y        ; $f346: 31 01     
+            ADC ($01),Y        ; $f348: 71 01     
+            LDA ($01),Y        ; $f34a: b1 01     
             .hex 32            ; $f34c: 32        Invalid Opcode - KIL 
             ORA ($72,x)        ; $f34d: 01 72     
             ORA ($b2,x)        ; $f34f: 01 b2     
@@ -5721,7 +5724,7 @@ __f2ac:     plp                ; $f2ac: 28
             .hex 32            ; $f35d: 32        Invalid Opcode - KIL 
             PHP                ; $f35e: 08        
             LDA ($08,x)        ; $f35f: a1 08     
-            ADC ($08),y        ; $f361: 71 08     
+            ADC ($08),Y        ; $f361: 71 08     
             .hex 32            ; $f363: 32        Invalid Opcode - KIL 
             .hex 07 a1         ; $f364: 07 a1     Invalid Opcode - SLO $a1
             .hex 07 71         ; $f366: 07 71     Invalid Opcode - SLO $71
@@ -5729,29 +5732,29 @@ __f2ac:     plp                ; $f2ac: 28
             EOR ($08,x)        ; $f36b: 41 08     
             .hex 42            ; $f36d: 42        Invalid Opcode - KIL 
             PHP                ; $f36e: 08        
-            LDA ($08),y        ; $f36f: b1 08     
+            LDA ($08),Y        ; $f36f: b1 08     
             STA ($08,x)        ; $f371: 81 08     
             .hex 42            ; $f373: 42        Invalid Opcode - KIL 
             .hex 07 b1         ; $f374: 07 b1     Invalid Opcode - SLO $b1
             .hex 07 81         ; $f376: 07 81     Invalid Opcode - SLO $81
             .hex 0c c0 06      ; $f378: 0c c0 06  Invalid Opcode - NOP $06c0
-            AND ($08),y        ; $f37b: 31 08     
+            AND ($08),Y        ; $f37b: 31 08     
             .hex 32            ; $f37d: 32        Invalid Opcode - KIL 
             PHP                ; $f37e: 08        
             LDA ($08,x)        ; $f37f: a1 08     
-            ADC ($08),y        ; $f381: 71 08     
+            ADC ($08),Y        ; $f381: 71 08     
             .hex 32            ; $f383: 32        Invalid Opcode - KIL 
             .hex 07 a1         ; $f384: 07 a1     Invalid Opcode - SLO $a1
             .hex 07 71         ; $f386: 07 71     Invalid Opcode - SLO $71
             .hex 0c c0 06      ; $f388: 0c c0 06  Invalid Opcode - NOP $06c0
             ADC ($05,x)        ; $f38b: 61 05     
-            ADC ($05),y        ; $f38d: 71 05     
+            ADC ($05),Y        ; $f38d: 71 05     
             STA ($05,x)        ; $f38f: 81 05     
             STA ($05,x)        ; $f391: 81 05     
-            STA ($05),y        ; $f393: 91 05     
+            STA ($05),Y        ; $f393: 91 05     
             LDA ($05,x)        ; $f395: a1 05     
             LDA ($05,x)        ; $f397: a1 05     
-            LDA ($05),y        ; $f399: b1 05     
+            LDA ($05),Y        ; $f399: b1 05     
             .hex 02            ; $f39b: 02        Invalid Opcode - KIL 
             ORA $32            ; $f39c: 05 32     
             .hex 0c f0 02      ; $f39e: 0c f0 02  Invalid Opcode - NOP $02f0
@@ -5782,7 +5785,7 @@ __f3be:     LDY #$0c           ; $f3be: a0 0c
             LDY #$0f           ; $f3c2: a0 0f     
             ORA ($0f,x)        ; $f3c4: 01 0f     
             AND ($0f,x)        ; $f3c6: 21 0f     
-            AND ($0c),y        ; $f3c8: 31 0c     
+            AND ($0c),Y        ; $f3c8: 31 0c     
             BEQ __f3cd         ; $f3ca: f0 01     
 __f3cc:     .hex 9f            ; $f3cc: 9f        Suspected data
 __f3cd:     .hex 7f 28 01      ; $f3cd: 7f 28 01  Invalid Opcode - RRA $0128,x
@@ -5809,10 +5812,10 @@ __f3ef:     .hex 7f 28 52      ; $f3ef: 7f 28 52  Invalid Opcode - RRA $5228,x
             ORA ($33,x)        ; $f3f6: 01 33     
             ORA ($f5,x)        ; $f3f8: 01 f5     
             CLC                ; $f3fa: 18        
-            .hex 53 03         ; $f3fb: 53 03     Invalid Opcode - SRE ($03),y
+            .hex 53 03         ; $f3fb: 53 03     Invalid Opcode - SRE ($03),Y
             sbc $28,x          ; $f3fd: f5 28     
-            .hex 53 01         ; $f3ff: 53 01     Invalid Opcode - SRE ($01),y
-            .hex 33 01         ; $f401: 33 01     Invalid Opcode - RLA ($01),y
+            .hex 53 01         ; $f3ff: 53 01     Invalid Opcode - SRE ($01),Y
+            .hex 33 01         ; $f401: 33 01     Invalid Opcode - RLA ($01),Y
             .hex 03 01         ; $f403: 03 01     Invalid Opcode - SLO ($01,x)
             .hex 92            ; $f405: 92        Invalid Opcode - KIL 
             ORA ($f5,x)        ; $f406: 01 f5     
@@ -5824,12 +5827,12 @@ __f3ef:     .hex 7f 28 52      ; $f3ef: 7f 28 52  Invalid Opcode - RRA $5228,x
             ORA ($73,x)        ; $f410: 01 73     
             ORA ($f5,x)        ; $f412: 01 f5     
             CLC                ; $f414: 18        
-            .hex 93 0a         ; $f415: 93 0a     Invalid Opcode - AHX ($0a),y
+            .hex 93 0a         ; $f415: 93 0a     Invalid Opcode - AHX ($0a),Y
             sbc $28,x          ; $f417: f5 28     
-            .hex 93 01         ; $f419: 93 01     Invalid Opcode - AHX ($01),y
-            .hex 73 01         ; $f41b: 73 01     Invalid Opcode - RRA ($01),y
+            .hex 93 01         ; $f419: 93 01     Invalid Opcode - AHX ($01),Y
+            .hex 73 01         ; $f41b: 73 01     Invalid Opcode - RRA ($01),Y
             .hex 43 01         ; $f41d: 43 01     Invalid Opcode - SRE ($01,x)
-            .hex 13 01         ; $f41f: 13 01     Invalid Opcode - SLO ($01),y
+            .hex 13 01         ; $f41f: 13 01     Invalid Opcode - SLO ($01),Y
             sbc $18,x          ; $f421: f5 18     
             .hex 92            ; $f423: 92        Invalid Opcode - KIL 
             .hex 03 f0         ; $f424: 03 f0     Invalid Opcode - SLO ($f0,x)
