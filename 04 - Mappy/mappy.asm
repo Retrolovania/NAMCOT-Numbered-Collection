@@ -12,7 +12,7 @@
             .db "NES", $1A     ; Header
             .db 1              ; 1 x 16k PRG banks
             .db 1              ; 1 x 8k CHR banks
-            .db %00000001      ; Mirroring: VeRTIcal
+            .db %00000001      ; Mirroring: Vertical
                                ; SRAM: Not used
                                ; 512k Trainer: Not used
                                ; 4 Screen VRAM: Not used
@@ -322,7 +322,7 @@ __c1c9:     LDX #$01           ; $c1c9: a2 01       Load value $01 to X
             LSR                ; $c201: 4a          Shift A one bit right        
             TAX                ; $c202: aa          Transfer A value to X
             LDA __c258,X       ; $c203: bd 58 c2    Load value at (__c258 + X) to A   
-            LDX #$00           ; $c206: a2 00       Load $00 to X (clears it)
+            LDX #$00           ; $c206: a2 00       Clear X
             CMP $26            ; $c208: c5 26       Compare value at $26 with value in A.
             BEQ __c20d         ; $c20a: f0 01       Is the Zero Flag (Z) set? If so, keep going. If not, branch to __c20d
             INX                ; $c20c: e8          Increment X by one
@@ -350,7 +350,7 @@ __c233:
 
 ;-------------------------------------------------------------------------------
 __c234:     
-            LDA #$00           ; $c234: a9 00       Load $00 to A (clears it)   
+            LDA #$00           ; $c234: a9 00       Clear A   
             STA $23            ; $c236: 85 23       Store A value at address $23   
             RTS                ; $c238: 60          Return        
 
@@ -363,7 +363,7 @@ Enable_Render:
 
 ;-------------------------------------------------------------------------------
 Disable_Render:     
-            LDX #$00           ; $c241: a2 00       Load $00 to X
+            LDX #$00           ; $c241: a2 00       Clear X
             STX PPUMASK        ; $c243: 8e 01 20    Store X value in PPUMASK (clears it and disables everything)  
             STX $2D            ; $c246: 86 2d       Store X value in address $2D     
             RTS                ; $c248: 60          Return        
@@ -468,7 +468,7 @@ __c2d9:
 ;-------------------------------------------------------------------------------
 __c2e5:     
             LDX #$20           ; $c2e5: a2 20       Load $20 to X     
-            LDA #$00           ; $c2e7: a9 00       Load $00 to A (clears it)
+            LDA #$00           ; $c2e7: a9 00       Clear A
 __c2e9:     
             STA $00,X          ; $c2e9: 95 00       Store A value at address ($00 + X)     
             INX                ; $c2eb: e8        
@@ -496,21 +496,21 @@ Reverse_NMI:
             TAX                ; $c301: aa          Transfer A value to X        
             PLA                ; $c302: 68          Pull A value from stack        
             PLP                ; $c303: 28          Pull processor's status flags from stack
-; IRQ/brk vector
+; IRQ/BRK vector
 ;-------------------------------------------------------------------------------
 IRQ:        RTI                ; $c304: 40          Pull processor's status flags and program counter from stack, then continue execution from the address in PC
 
 ;-------------------------------------------------------------------------------
 __c305:     LDA $2C            ; $c305: a5 2c       Load value at $2C to A     
             PHA                ; $c307: 48          Push A value onto stack        
-            LDY #$00           ; $c308: a0 00       Load $00 to Y     
+            LDY #$00           ; $c308: a0 00       Clear Y     
             STY $11            ; $c30a: 84 11       Store Y value at address $11 (clears it)
-            LDA ($1E),Y        ; $c30c: b1 1e       Load ((Value from address $1E) + Y) to A
+            LDA ($1E),Y        ; $c30c: b1 1e       Load $1F1E to A
             INY                ; $c30e: c8          Increment Y by one
             SEC                ; $c30f: 38          Set carry flag to 1
             SBC $28            ; $c310: e5 28       Subtract value at address $28 from A, updating flags & storing result in A
             STA $10            ; $c312: 85 10       Store A value at address $10
-            LDA ($1E),Y        ; $c314: b1 1e       Load ((Value from address $1E) + Y) to A     
+            LDA ($1E),Y        ; $c314: b1 1e       Load value at $(value at $1F + carry)(value at $1E + Y) to A     
             INY                ; $c316: c8          Increment Y by one        
             SBC $29            ; $c317: e5 29       Subtract value at address $29 from A, updating flags & storing result in A     
             ASL $10            ; $c319: 06 10       Shift the value in address $10 left one bit.     
@@ -523,10 +523,10 @@ __c305:     LDA $2C            ; $c305: a5 2c       Load value at $2C to A
             DEC $11            ; $c324: c6 11       Decrement value at $11 by one       
 __c326:     
             STA $10            ; $c326: 85 10       Store A value at address $10
-            LDA ($1E),Y        ; $c328: b1 1e       Load ((Value from address $1E) + Y) to A     
+            LDA ($1E),Y        ; $c328: b1 1e       Load value at $(value at $1F + carry)(value at $1E + Y) to A     
             INY                ; $c32a: c8          Increment Y by one        
             STA $16            ; $c32b: 85 16       Store A value at address $16     
-            LDA ($1E),Y        ; $c32d: b1 1e       Load ((Value from address $1E) + Y) to A     
+            LDA ($1E),Y        ; $c32d: b1 1e       Load value at $(value at $1F + carry)(value at $1E + Y) to A     
             INY                ; $c32f: c8          Increment Y by one        
             ASL $16            ; $c330: 06 16       Shift the value in address $16 left one bit.     
             ROL                ; $c332: 2a          Rotate A value one bit left.        
@@ -542,7 +542,7 @@ __c326:
 
 ;-------------------------------------------------------------------------------
 __c342:     
-            LDA ($1E),Y        ; $c342: b1 1e       Load ((Value from address $1E) + Y) to A      
+            LDA ($1E),Y        ; $c342: b1 1e       Load value at $(value at $1F + carry)(value at $1E + Y) to A      
             STA $15            ; $c344: 85 15       Store A value at address $15     
             AND #$FE           ; $c346: 29 fe       Logically AND $FE with value in A.
             TAX                ; $c348: aa          Transfer A value to X 
@@ -584,7 +584,7 @@ __c357:
 ;-------------------------------------------------------------------------------
 __c3b4:     
             LDY #$05           ; $c3b4: a0 05     
-            LDA ($1E),Y        ; $c3b6: b1 1e       Load ((Value from address $1E) + Y) to A      
+            LDA ($1E),Y        ; $c3b6: b1 1e       Load value at $(value at $1F + carry)(value at $1E + Y) to A      
             TAX                ; $c3b8: aa          Transfer A value to X        
             LDA __c47c,X       ; $c3b9: bd 7c c4    Load value at (__c47c + X) to A  
             STA $13            ; $c3bc: 85 13       Store A value at address $13     
@@ -597,7 +597,7 @@ __c3b4:
             ASL                ; $c3c4: 0a          Shift value in A left one bit        
             STA $12            ; $c3c5: 85 12       Store A value at address $12     
             LDY #$07           ; $c3c7: a0 07       Load $07 to Y
-            LDA ($1E),Y        ; $c3c9: b1 1e       Load ((Value from address $1E) + Y) to A
+            LDA ($1E),Y        ; $c3c9: b1 1e       Load value at $(value at $1F + carry)(value at $1E + Y) to A
             LSR                ; $c3cb: 4a          Shift A one bit right        
             LSR                ; $c3cc: 4a          Shift A one bit right        
             AND #$03           ; $c3cd: 29 03       Logically AND $03 with value in A.     
@@ -608,7 +608,7 @@ __c3d1:
             STA $12            ; $c3d5: 85 12       Store A value at address $12
 __c3d7:     
             LDY #$06           ; $c3d7: a0 06       Load $06 to Y     
-            LDA ($1E),Y        ; $c3d9: b1 1e       Load ((Value from address $1E) + Y) to A     
+            LDA ($1E),Y        ; $c3d9: b1 1e       Load value at $(value at $1F + carry)(value at $1E + Y) to A     
             BMI __c3e3         ; $c3db: 30 06       Is the Negative register set? If not, then continue. If so, branch to __c3e3
             LDA $13            ; $c3dd: a5 13       Load value at $13 to A       
             EOR #$40           ; $c3df: 49 40       Logically EOR $40 with A   
@@ -736,7 +736,7 @@ __c480:
             ADC #$14           ; $c4b5: 69 14       Add $14 to A, updating flags and storing result in A     
             STA $12            ; $c4b7: 85 12       Store A value at address $12     
             LDY #$07           ; $c4b9: a0 07       Load $07 into Y
-            LDA ($1E),Y        ; $c4bb: b1 1e       Load ((Value from address $1E) + Y) to A     
+            LDA ($1E),Y        ; $c4bb: b1 1e       Load value at $(value at $1F + carry)(value at $1E + Y) to A     
             AND #$0C           ; $c4bd: 29 0c       Logically AND $0C with value in A      
             LSR                ; $c4bf: 4a          Shift A one bit right        
             LSR                ; $c4c0: 4a          Shift A one bit right        
@@ -751,7 +751,7 @@ __c480:
             LDA #$50           ; $c4cd: a9 50       Load $50 to A
             STA $12            ; $c4cf: 85 12       Store A value at address $12
             LDY #$06           ; $c4d1: a0 06       Load $06 to Y
-            LDA ($1E),Y        ; $c4d3: b1 1e       Load ((Value from address $1E) + Y) to A     
+            LDA ($1E),Y        ; $c4d3: b1 1e       Load value at $(value at $1F + carry)(value at $1E + Y) to A     
             BMI __c4dd         ; $c4d5: 30 06       Is the Negative register set? If not, then continue. If so, branch to __c4dd     
             LDA $13            ; $c4d7: a5 13       Load value at $13 to A     
             ORA #$40           ; $c4d9: 09 40       Logically OR $40 with A
@@ -775,7 +775,7 @@ __c4eb:
             LDA #$3C           ; $c4f5: a9 3c       Load $3C to A     
             STA $12            ; $c4f7: 85 12       Store A value at address $12     
             LDY #$05           ; $c4f9: a0 05       Load $05 to Y
-            LDA ($1E),Y        ; $c4fb: b1 1e       Load ((Value from address $1E) + Y) to A     
+            LDA ($1E),Y        ; $c4fb: b1 1e       Load value at $(value at $1F + carry)(value at $1E + Y) to A     
             CMP #$01           ; $c4fd: c9 01       Compare value $01 with value in A      
             BNE __c509         ; $c4ff: d0 08       Is the Zero Flag (Z) set? If so, keep going. If not, branch to __c509     
             LDY #$41           ; $c501: a0 41       Load $41 to Y     
@@ -790,7 +790,7 @@ __c50b:
 
 ;-------------------------------------------------------------------------------
             LDY #$07           ; $c510: a0 07       Load $07 to Y     
-            LDA ($1E),Y        ; $c512: b1 1e       Load ((Value from address $1E) + Y) to A      
+            LDA ($1E),Y        ; $c512: b1 1e       Load value at $(value at $1F + carry)(value at $1E + Y) to A      
             AND #$08           ; $c514: 29 08       Logically AND $08 with value in A     
             BNE __c520         ; $c516: d0 08       Is the Zero Flag (Z) set? If so, keep going. If not, branch to __c520     
             JSR __c3b4         ; $c518: 20 b4 c3    Jump to subroutine __c3b4  
@@ -806,10 +806,10 @@ __c520:
             LSR                ; $c523: 4a          Shift A one bit right        
             AND #$03           ; $c524: 29 03       Logically AND $03 with value in A     
             STA $13            ; $c526: 85 13       Store A value at address $13     
-            LDA #$00           ; $c528: a9 00       Load $00 to A (clears it)    
+            LDA #$00           ; $c528: a9 00       Clear A    
             STA $14            ; $c52a: 85 14       Store A value at address $14     
             LDY #$07           ; $c52c: a0 07       Load $07 to Y     
-            LDA ($1E),Y        ; $c52e: b1 1e       Load ((Value from address $1E) + Y) to A     
+            LDA ($1E),Y        ; $c52e: b1 1e       Load value at $(value at $1F + carry)(value at $1E + Y) to A     
             PHP                ; $c530: 08          Push processor's status flags onto stack        
             ASL                ; $c531: 0a          Shift value in A left one bit        
             TAX                ; $c532: aa          Transfer A to X
@@ -873,7 +873,7 @@ __c573:
             STA $13            ; $c5a5: 85 13       Store A value at address $13     
             LDA #$70           ; $c5a7: a9 70       Load $70 to A     
             STA $12            ; $c5a9: 85 12       Store A value at address $12     
-            LDA #$00           ; $c5ab: a9 00       Load $00 to A    
+            LDA #$00           ; $c5ab: a9 00       Clear A    
             STA $14            ; $c5ad: 85 14       Store A value at address $14     
             JMP __c3ec         ; $c5af: 4c ec c3    Jump to __c3ec  
 
@@ -881,7 +881,7 @@ __c573:
 __c5b2:                                             ;This code is triggered when enemies are pushed off the screen by microwaves, and lasts until the score is tallied up and is scrolled across the screen
             LDA #$02           ; $c5b2: a9 02       Load $02 to A     
             STA $13            ; $c5b4: 85 13       Store A value at address $13      
-            LDA #$00           ; $c5b6: a9 00       Load $00 to A     
+            LDA #$00           ; $c5b6: a9 00       Clear A     
             STA $14            ; $c5b8: 85 14       Store A value at address $14     
             LDA #$69           ; $c5ba: a9 69       Load $69 to A     
             STA $12            ; $c5bc: 85 12       Store A value at address $12     
@@ -919,16 +919,16 @@ __c5f3:
             JMP __c3ec         ; $c5f3: 4c ec c3    Jump to __c3ec  
 
 ;-------------------------------------------------------------------------------
-            LDA #$00           ; $c5f6: a9 00       Load $00 to A     
+            LDA #$00           ; $c5f6: a9 00       Clear A     
             STA $13            ; $c5f8: 85 13       Store A value at address $13     
             LDY #$07           ; $c5fa: a0 07       Load $07 to Y     
-            LDA ($1E),Y        ; $c5fc: b1 1e       Load ((Value from address $1E) + Y) to A
+            LDA ($1E),Y        ; $c5fc: b1 1e       Load value at $(value at $1F + carry)(value at $1E + Y) to A
             ASL                ; $c5fe: 0a          Shift value in A left one bit        
             BMI Mappy_Death_2  ; $c5ff: 30 13       Is the Negative register set? If not, then continue. If so, branch to Mappy_Death_2     
             AND #$0C           ; $c601: 29 0c       Logically AND $0C with value in A     
             ORA #$80           ; $c603: 09 80       Logically OR $80 with A      
             STA $12            ; $c605: 85 12       Store A value at address $12     
-            LDA ($1E),Y        ; $c607: b1 1e       Load ((Value from address $1E) + Y) to A 
+            LDA ($1E),Y        ; $c607: b1 1e       Load value at $(value at $1F + carry)(value at $1E + Y) to A 
             AND #$08           ; $c609: 29 08       Logically AND $08 with value in A
             BEQ __c611         ; $c60b: f0 04       Is the Zero Flag (Z) clear? If so, keep going. If not, branch to __c611     
             LDA #$C0           ; $c60d: a9 c0       Load $C0 to A     
@@ -947,7 +947,7 @@ Mappy_Death_2:
 ;-------------------------------------------------------------------------------
             LDA #$02           ; $c61e: a9 02       Load $02 to A     
             STA $13            ; $c620: 85 13       Store A value at address $13     
-            LDA #$00           ; $c622: a9 00       Load $00 to A     
+            LDA #$00           ; $c622: a9 00       Clear A     
             STA $14            ; $c624: 85 14       Store A value at address $14     
             LDA $21            ; $c626: a5 21       Load value at $21 to A      
             AND #$20           ; $c628: 29 20       Logically AND $20 with value in A     
@@ -1014,7 +1014,7 @@ __c67f:
 ;-------------------------------------------------------------------------------
             LDA #$02           ; $c687: a9 02       Load $02 to A      
             STA $13            ; $c689: 85 13       Store A value at address $13    
-            LDA #$00           ; $c68b: a9 00       Load $00 to A     
+            LDA #$00           ; $c68b: a9 00       Clear A     
             STA $14            ; $c68d: 85 14       Store A value at address $14     
             LDA #$F4           ; $c68f: a9 f4       Load $F4 to A    
             STA $12            ; $c691: 85 12       Store A value at address $12     
@@ -1036,14 +1036,14 @@ __c6a5:
 
 ;-------------------------------------------------------------------------------
             LDY #$07           ; $c6ac: a0 07       Load $07 to Y     
-            LDA ($1E),Y        ; $c6ae: b1 1e       Load ((Value from address $1E) + Y) to A     
+            LDA ($1E),Y        ; $c6ae: b1 1e       Load value at $(value at $1F + carry)(value at $1E + Y) to A     
             CMP #$08           ; $c6b0: c9 08       Compare value $08 with value in A     
             LDA #$98           ; $c6b2: a9 98       Load $98 to A     
             BCC __c6b8         ; $c6b4: 90 02       Is the carry flag clear? If not, keep going. If so, branch to __c6b8     
             LDA #$9C           ; $c6b6: a9 9c       Load $9C to A     
 __c6b8:     
             STA $12            ; $c6b8: 85 12       Store A value at address $12     
-            LDA #$00           ; $c6ba: a9 00       Load $00 to A     
+            LDA #$00           ; $c6ba: a9 00       Clear A     
             STA $13            ; $c6bc: 85 13       Store A value at address $13     
             JMP __c3d7         ; $c6be: 4c d7 c3    Jump to __c3d7  
 
@@ -1084,9 +1084,9 @@ __c6d7:
 
 ;-------------------------------------------------------------------------------
 __c6fb:     
-            LDY #$00           ; $c6fb: a0 00       Load $00 to Y     
+            LDY #$00           ; $c6fb: a0 00       Clear Y     
 __c6fd:     
-            LDA ($12),Y        ; $c6fd: b1 12       Load ((Value from address $12) + Y) to A     
+            LDA ($12),Y        ; $c6fd: b1 12       Load $1312 to A     
             BNE __c717         ; $c6ff: d0 16       Is the Zero Flag (Z) set? If so, keep going. If not, branch to __c717     
             INY                ; $c701: c8          Increment Y by one
 __c702:     
@@ -1218,7 +1218,7 @@ VRAM_Update:
             RTS                ; $c7c8: 60          Return
 
 ;-------------------------------------------------------------------------------
-__c7c9:     LDA #$00           ; $c7c9: a9 00       Load $00 to A
+__c7c9:     LDA #$00           ; $c7c9: a9 00       Clear A
             STA $12            ; $c7cb: 85 12       Store A value at address $12
             STA $13            ; $c7cd: 85 13       Store A value at address $13    
             LDA #$C0           ; $c7cf: a9 c0       Load $C0 to A     
@@ -1298,7 +1298,7 @@ __c83c:     LDA $11            ; $c83c: a5 11       Load value at $11 to A
 
 ;-------------------------------------------------------------------------------
 __c84f:     
-            LDA #$00           ; $c84f: a9 00       Load $00 to A     
+            LDA #$00           ; $c84f: a9 00       Clear A     
             STA $42            ; $c851: 85 42       Store A value at address $42     
             JSR __f4bf         ; $c853: 20 bf f4    Jump to subroutine __f4bf
             LDA $41            ; $c856: a5 41       Load value at $41 to A     
@@ -1315,7 +1315,7 @@ __c85d:
             LDA #$03           ; $c86b: a9 03       Load $03 to A      
             STA $70            ; $c86d: 85 70       Store A value at address $70     
             LDX #$20           ; $c86f: a2 20       Load $20 to X      
-            LDA #$00           ; $c871: a9 00       Load $00 to A     
+            LDA #$00           ; $c871: a9 00       Clear A     
 __c873:     
             STA $70,X          ; $c873: 95 70       Store A value at address ($70 + X)     
             INX                ; $c875: e8          Increment X by one
@@ -1324,7 +1324,7 @@ __c873:
             JSR Disable_Render ; $c87a: 20 41 c2    Jump to subroutine Disable_Render  
             JSR __cbb1         ; $c87d: 20 b1 cb    Jump to subroutine __cbb1  
             JSR Enable_Render  ; $c880: 20 39 c2    Jump to subroutine Enable_Render  
-            LDA #$00           ; $c883: a9 00       Load $00 to A     
+            LDA #$00           ; $c883: a9 00       Clear A     
             STA $28            ; $c885: 85 28       Store A value at address $28     
             STA $29            ; $c887: 85 29       Store A value at address $29     
             JSR __cd2b         ; $c889: 20 2b cd    Jump to subroutine __cd2b  
@@ -1351,7 +1351,7 @@ __c8ab:
             STA $42            ; $c8ad: 85 42       Store A value at address $42     
             LDA $4A            ; $c8af: a5 4a       Load value at $4A to A     
             STA $40            ; $c8b1: 85 40       Store A value at address $40     
-            LDA #$00           ; $c8b3: a9 00       Load $00 to A     
+            LDA #$00           ; $c8b3: a9 00       Clear A     
             STA $41            ; $c8b5: 85 41       Store A value at address $41     
             STA $71            ; $c8b7: 85 71       Store A value at address $71     
             STA $72            ; $c8b9: 85 72       Store A value at address $72     
@@ -1361,7 +1361,7 @@ __c8ab:
             STA $7D            ; $c8c1: 85 7d       Store A value at address $7D     
             LDA #$01           ; $c8c3: a9 01       Load $01 to A     
             STA $77            ; $c8c5: 85 77       Store A value at address $77     
-            LDX #$00           ; $c8c7: a2 00       Load $00 to X
+            LDX #$00           ; $c8c7: a2 00       Clear X
 Game_Init:     
             LDA $70,X          ; $c8c9: b5 70       Load value at ($70 + X) to A
             STA $B0,X          ; $c8cb: 95 b0       Store A value at address ($B0 + X)     
@@ -1377,7 +1377,7 @@ Game_Init:
             JSR __e862         ; $c8e3: 20 62 e8    Jump to subroutine __e862 
             JSR __f001         ; $c8e6: 20 01 f0    Jump to subroutine __f001 
             JSR Enable_Render  ; $c8e9: 20 39 c2    Jump to subroutine Enable_Render 
-            LDX #$00           ; $c8ec: a2 00       Load $00 to X
+            LDX #$00           ; $c8ec: a2 00       Clear X
 __c8ee:     
             LDA $0200,X        ; $c8ee: bd 00 02    Load value at ($0200 + X) to A  
             STA $0300,X        ; $c8f1: 9d 00 03    Store A value at address ($0300 + X)   
@@ -1394,7 +1394,7 @@ __c902:
             JSR __f3c1         ; $c902: 20 c1 f3    Jump to subroutine __f3c1  
             JSR __d7f1         ; $c905: 20 f1 d7    Jump to subroutine __d7f1  
             JSR __d846         ; $c908: 20 46 d8    Jump to subroutine __d846  
-            LDA #$00           ; $c90b: a9 00       Load $00 to A
+            LDA #$00           ; $c90b: a9 00       Clear A
             STA $4B            ; $c90d: 85 4b       Store A value at address $4B
             STA $4F            ; $c90f: 85 4f       Store A value at address $4F     
             STA $31            ; $c911: 85 31       Store A value at address $31    
@@ -1447,265 +1447,301 @@ __c961:
             JMP __ca28         ; $c96f: 4c 28 ca    Jump to __ca28
 
 ;-------------------------------------------------------------------------------
-__c972:     
-            JSR __c141         ; $c972: 20 41 c1  
-            JSR __cb60         ; $c975: 20 60 cb  
-            LDA $04a5          ; $c978: ad a5 04  
-            ORA $04ad          ; $c97b: 0d ad 04  
-            BNE __c972         ; $c97e: d0 f2     
-            LDA #$b4           ; $c980: a9 b4     
-            STA $0f            ; $c982: 85 0f     
-__c984:     JSR __c141         ; $c984: 20 41 c1  
-            LDA $0f            ; $c987: a5 0f     
-            CMP #$78           ; $c989: c9 78     
-            BNE __c995         ; $c98b: d0 08     
-            LDA #$01           ; $c98d: a9 01     
-            STA $0611          ; $c98f: 8d 11 06  
-            STA $0612          ; $c992: 8d 12 06  
-__c995:     JSR __cb60         ; $c995: 20 60 cb  
-            DEC $0f            ; $c998: c6 0f     
-            BNE __c984         ; $c99a: d0 e8     
-            JSR __f4bf         ; $c99c: 20 bf f4  
-__c99f:     JSR __d6e8         ; $c99f: 20 e8 d6  
-            JSR __caa7         ; $c9a2: 20 a7 ca  
-            LDX #$20           ; $c9a5: a2 20     
-            LDA #$00           ; $c9a7: a9 00     
-__c9a9:     STA $70,x          ; $c9a9: 95 70     
-            INX                ; $c9ab: e8        
-            CPX #$40           ; $c9ac: e0 40     
-            BNE __c9a9         ; $c9ae: d0 f9     
-            JSR Disable_Render         ; $c9b0: 20 41 c2  
-            JSR __cd49         ; $c9b3: 20 49 cd  
-            JSR __e35b         ; $c9b6: 20 5b e3  
-            LDA $7c            ; $c9b9: a5 7c     
-            BNE __c9cf         ; $c9bb: d0 12     
-            JSR __e5c5         ; $c9bd: 20 c5 e5  
-            JSR __e862         ; $c9c0: 20 62 e8  
-            JSR __f001         ; $c9c3: 20 01 f0  
-            JSR __ef17         ; $c9c6: 20 17 ef  
-            JSR Enable_Render         ; $c9c9: 20 39 c2  
-            JMP __c902         ; $c9cc: 4c 02 c9  
+__c972:     ; These functions trigger when Mappy collects the last item.
+            JSR __c141         ; $c972: 20 41 c1    Jump to subroutine __c141  
+            JSR __cb60         ; $c975: 20 60 cb    Jump to subroutine __cb60   
+            LDA $04A5          ; $c978: ad a5 04    Load value at $04A5 to A
+            ORA $04AD          ; $c97b: 0d ad 04    Logically OR value at $04AD with A
+            BNE __c972         ; $c97e: d0 f2       Is the Zero Flag (Z) set? If so, keep going. If not, loop       
+            LDA #$B4           ; $c980: a9 b4       Load $B4 to A
+            STA $0F            ; $c982: 85 0f       Store A value at $0F
+__c984:     
+            JSR __c141         ; $c984: 20 41 c1    Jump to subroutine __c141  
+            LDA $0F            ; $c987: a5 0f       Load $0F to A
+            CMP #$78           ; $c989: c9 78       Compare $78 with A
+            BNE __c995         ; $c98b: d0 08       Is the Zero Flag (Z) set? If so, keep going. If not, branch to __c995       
+            LDA #$01           ; $c98d: a9 01       Load $01 to A
+            STA $0611          ; $c98f: 8d 11 06    Store A value at $0611
+            STA $0612          ; $c992: 8d 12 06    Store A value at $0612
+__c995:     
+            JSR __cb60         ; $c995: 20 60 cb    Jump to subroutine __cb60   
+            DEC $0F            ; $c998: c6 0f       Decrement value at $0F by one
+            BNE __c984         ; $c99a: d0 e8       Is the Zero Flag (Z) set? If so, keep going. If not, branch to __c984       
+            JSR __f4bf         ; $c99c: 20 bf f4    Jump to subroutine __f4bf
+__c99f:     
+            JSR __d6e8         ; $c99f: 20 e8 d6    Jump to subroutine __d6e8    
+            JSR __caa7         ; $c9a2: 20 a7 ca    Jump to subroutine __caa7
+            LDX #$20           ; $c9a5: a2 20       Load $20 to X
+            LDA #$00           ; $c9a7: a9 00       Clear A
+Load_NRound:     
+            STA $70,X          ; $c9a9: 95 70       Store A value at address ($70 + X)       
+            INX                ; $c9ab: e8          Increment X by one
+            CPX #$40           ; $c9ac: e0 40       Compare $40 with X
+            BNE Load_NRound    ; $c9ae: d0 f9       Is the Zero Flag (Z) set? If so, keep going. If not, loop        
+            JSR Disable_Render ; $c9b0: 20 41 c2    Jump to subroutine Disable_Render
+            JSR __cd49         ; $c9b3: 20 49 cd    Jump to subroutine __cd49  
+            JSR __e35b         ; $c9b6: 20 5b e3    __e35b  
+            LDA $7C            ; $c9b9: a5 7c       Load value at $7C to A     
+            BNE __c9cf         ; $c9bb: d0 12       Is the Zero Flag (Z) set? If so, keep going. If not, branch to __c9cf     
+            JSR __e5c5         ; $c9bd: 20 c5 e5    Jump to subroutine __e5c5  
+            JSR __e862         ; $c9c0: 20 62 e8    Jump to subroutine __e862  
+            JSR __f001         ; $c9c3: 20 01 f0    Jump to subroutine __f001  
+            JSR __ef17         ; $c9c6: 20 17 ef    Jump to subroutine __ef17 
+            JSR Enable_Render  ; $c9c9: 20 39 c2    Jump to subroutine Enable_Render  
+            JMP __c902         ; $c9cc: 4c 02 c9    Jump to __c902
 
 ;-------------------------------------------------------------------------------
-__c9cf:     JSR __f3c1         ; $c9cf: 20 c1 f3  
-            JSR __f13a         ; $c9d2: 20 3a f1  
-            JSR Enable_Render         ; $c9d5: 20 39 c2  
-            JSR __d80b         ; $c9d8: 20 0b d8  
-            JSR __d8c0         ; $c9db: 20 c0 d8  
-            LDA #$00           ; $c9de: a9 00     
-            STA $4b            ; $c9e0: 85 4b     
-            STA $4f            ; $c9e2: 85 4f     
-            LDA #$ac           ; $c9e4: a9 ac     
-            STA $0f            ; $c9e6: 85 0f     
-            LDA #$08           ; $c9e8: a9 08     
-            STA $0e            ; $c9ea: 85 0e     
-__c9ec:     JSR __c141         ; $c9ec: 20 41 c1  
-            JSR __cb7b         ; $c9ef: 20 7b cb  
-            LDA $4b            ; $c9f2: a5 4b     
-            BEQ __c9fe         ; $c9f4: f0 08     
-            LDA $042f          ; $c9f6: ad 2f 04  
-            ORA $043f          ; $c9f9: 0d 3f 04  
-            BEQ __ca11         ; $c9fc: f0 13     
-__c9fe:     LDA $4f            ; $c9fe: a5 4f     
-            BNE __ca11         ; $ca00: d0 0f     
-            LDA $0f            ; $ca02: a5 0f     
-            SEC                ; $ca04: 38        
-            SBC #$01           ; $ca05: e9 01     
-            STA $0f            ; $ca07: 85 0f     
-            BCS __ca0d         ; $ca09: b0 02     
-            DEC $0e            ; $ca0b: c6 0e     
-__ca0d:     ORA $0e            ; $ca0d: 05 0e     
-            BNE __c9ec         ; $ca0f: d0 db     
-__ca11:     LDA #$1e           ; $ca11: a9 1e     
-            STA $0f            ; $ca13: 85 0f     
-__ca15:     JSR __c141         ; $ca15: 20 41 c1  
-            JSR __d71c         ; $ca18: 20 1c d7  
-            DEC $0f            ; $ca1b: c6 0f     
-            BNE __ca15         ; $ca1d: d0 f6     
-            JSR __f4bf         ; $ca1f: 20 bf f4  
-            JSR __ce1a         ; $ca22: 20 1a ce  
-            JMP __c99f         ; $ca25: 4c 9f c9  
+__c9cf:     
+            JSR __f3c1         ; $c9cf: 20 c1 f3    Jump to subroutine __f3c1  
+            JSR __f13a         ; $c9d2: 20 3a f1    Jump to subroutine __f13a  
+            JSR Enable_Render  ; $c9d5: 20 39 c2    Jump to subroutine Enable_Render  
+            JSR __d80b         ; $c9d8: 20 0b d8    Jump to subroutine __d80b  
+            JSR __d8c0         ; $c9db: 20 c0 d8    Jump to subroutine __d8c0  
+            LDA #$00           ; $c9de: a9 00       Clear A
+            STA $4B            ; $c9e0: 85 4b       Store A value at $4B
+            STA $4F            ; $c9e2: 85 4f       Store A value at $4F
+            LDA #$AC           ; $c9e4: a9 ac       Load $AC to A
+            STA $0F            ; $c9e6: 85 0f       Store A value at $0F
+            LDA #$08           ; $c9e8: a9 08       Load $08 to A
+            STA $0E            ; $c9ea: 85 0e       Store A value at $0E
+__c9ec:     
+            JSR __c141         ; $c9ec: 20 41 c1    Jump to subroutine __c141
+            JSR __cb7b         ; $c9ef: 20 7b cb    Jump to subroutine __cb7b  
+            LDA $4B            ; $c9f2: a5 4b       Load $4B to A
+            BEQ __c9fe         ; $c9f4: f0 08       Is the Zero Flag (Z) clear? If so, keep going. If not, branch to __c9fe     
+            LDA $042F          ; $c9f6: ad 2f 04    Load value at $042F to A
+            ORA $043F          ; $c9f9: 0d 3f 04    Logically OR value at $043F with A
+            BEQ __ca11         ; $c9fc: f0 13       Is the Zero Flag (Z) clear? If so, keep going. If not, branch to __ca11      
+__c9fe:     
+            LDA $4F            ; $c9fe: a5 4f       Load value at $4F to A
+            BNE __ca11         ; $ca00: d0 0f       Is the Zero Flag (Z) set? If so, keep going. If not, branch to __ca11      
+            LDA $0F            ; $ca02: a5 0f       Load value at $0F to A     
+            SEC                ; $ca04: 38          Set carry flag to 1          
+            SBC #$01           ; $ca05: e9 01       Subtract $01 from A, updating flags & storing result in A     
+            STA $0F            ; $ca07: 85 0f       Store A value at $0F    
+            BCS __ca0d         ; $ca09: b0 02       Is the carry flag set? If not, then continue. If so, branch to __ca0d       
+            DEC $0E            ; $ca0b: c6 0e       Decrement value at $0E by one
+__ca0d:     
+            ORA $0E            ; $ca0d: 05 0e       Logically OR value at $0E with A
+            BNE __c9ec         ; $ca0f: d0 db       Is the Zero Flag (Z) set? If so, keep going. If not, branch to __c9ec      
+__ca11:     
+            LDA #$1E           ; $ca11: a9 1e       Load $1E to A
+            STA $0F            ; $ca13: 85 0f       Store A value at $0F
+__ca15:     
+            JSR __c141         ; $ca15: 20 41 c1    Jump to subroutine __c141 
+            JSR __d71c         ; $ca18: 20 1c d7    Jump to subroutine __d71c  
+            DEC $0F            ; $ca1b: c6 0f       Decrement value at $0F by one
+            BNE __ca15         ; $ca1d: d0 f6b      Is the Zero Flag (Z) set? If so, keep going. If not, loop       
+            JSR __f4bf         ; $ca1f: 20 bf f4    Jump to subroutine __f4bf  
+            JSR __ce1a         ; $ca22: 20 1a ce    Jump to subroutine __ce1a
+            JMP __c99f         ; $ca25: 4c 9f c9    Jump to __c99f
 
 ;-------------------------------------------------------------------------------
-__ca28:     JSR __c141         ; $ca28: 20 41 c1  
-            JSR __cb60         ; $ca2b: 20 60 cb  
-            LDA $040f          ; $ca2e: ad 0f 04  
-            BNE __ca28         ; $ca31: d0 f5     
-            LDA $40            ; $ca33: a5 40     
-            BNE __ca41         ; $ca35: d0 0a     
-            LDA $70            ; $ca37: a5 70     
-            BNE __ca67         ; $ca39: d0 2c     
-            JSR __cac3         ; $ca3b: 20 c3 ca  
-            JMP __c84f         ; $ca3e: 4c 4f c8  
+__ca28:     
+            JSR __c141         ; $ca28: 20 41 c1    Jump to subroutine __c141  
+            JSR __cb60         ; $ca2b: 20 60 cb    Jump to subroutine __cb60  
+            LDA $040F          ; $ca2e: ad 0f 04    Load value at $040F to A  
+            BNE __ca28         ; $ca31: d0 f5       Is the Zero Flag (Z) set? If so, keep going. If not, loop     
+            LDA $40            ; $ca33: a5 40       Load value at $40 to A     
+            BNE __ca41         ; $ca35: d0 0a       Is the Zero Flag (Z) set? If so, keep going. If not, branch to __ca41     
+            LDA $70            ; $ca37: a5 70       Load value at $70 to A     
+            BNE Death_Reset    ; $ca39: d0 2c       Is the Zero Flag (Z) set? If so, keep going. If not, branch to Death_Reset     
+            JSR __cac3         ; $ca3b: 20 c3 ca    Jump to subroutine __cac3
+            JMP __c84f         ; $ca3e: 4c 4f c8    Jump to __c84f
 
 ;-------------------------------------------------------------------------------
-__ca41:     LDA $70            ; $ca41: a5 70     
-            BNE __ca60         ; $ca43: d0 1b     
-            JSR __cab4         ; $ca45: 20 b4 ca  
-            LDA $b0            ; $ca48: a5 b0     
-            BNE __ca64         ; $ca4a: d0 18     
-            LDA #$3c           ; $ca4c: a9 3c     
-            STA $0f            ; $ca4e: 85 0f     
-__ca50:     JSR __c141         ; $ca50: 20 41 c1  
-            JSR __cb31         ; $ca53: 20 31 cb  
-            JSR __d71c         ; $ca56: 20 1c d7  
-            DEC $0f            ; $ca59: c6 0f     
-            BNE __ca50         ; $ca5b: d0 f3     
-            JMP __c84f         ; $ca5d: 4c 4f c8  
+__ca41:     
+            LDA $70            ; $ca41: a5 70       Load value at $70 to A     
+            BNE __ca60         ; $ca43: d0 1b       Is the Zero Flag (Z) set? If so, keep going. If not, branch to __ca60     
+            JSR __cab4         ; $ca45: 20 b4 ca    Jump to subroutine __cab4  
+            LDA $B0            ; $ca48: a5 b0       Load value at $B0 to A     
+            BNE __ca64         ; $ca4a: d0 18       Is the Zero Flag (Z) set? If so, keep going. If not, branch to __ca64     
+            LDA #$3C           ; $ca4c: a9 3c       Load value at $3C to A     
+            STA $0F            ; $ca4e: 85 0f       Store A value at $0F
+__ca50:     
+            JSR __c141         ; $ca50: 20 41 c1    Jump to subroutine __c141  
+            JSR __cb31         ; $ca53: 20 31 cb    Jump to subroutine __cb31
+            JSR __d71c         ; $ca56: 20 1c d7    Jump to subroutine __d71c  
+            DEC $0F            ; $ca59: c6 0f       Decrement value at $0F by one
+            BNE __ca50         ; $ca5b: d0 f3       Is the Zero Flag (Z) set? If so, keep going. If not, loop
+            JMP __c84f         ; $ca5d: 4c 4f c8    Jump to __c84f
 
 ;-------------------------------------------------------------------------------
-__ca60:     LDA $b0            ; $ca60: a5 b0     
-            BEQ __ca67         ; $ca62: f0 03     
-__ca64:     JSR __ca81         ; $ca64: 20 81 ca  
-__ca67:     DEC $70            ; $ca67: c6 70     
-            JSR __caa7         ; $ca69: 20 a7 ca  
-            JSR Disable_Render         ; $ca6c: 20 41 c2  
-            JSR __cd49         ; $ca6f: 20 49 cd  
-            JSR __e35b         ; $ca72: 20 5b e3  
-            JSR __e614         ; $ca75: 20 14 e6  
-            JSR __e8b2         ; $ca78: 20 b2 e8  
-            JSR Enable_Render         ; $ca7b: 20 39 c2  
-            JMP __c902         ; $ca7e: 4c 02 c9  
+__ca60:     
+            LDA $B0            ; $ca60: a5 b0       Load value at $B0 to A
+            BEQ Death_Reset    ; $ca62: f0 03       Is the Zero Flag (Z) clear? If so, keep going. If not, branch to Death_Reset     
+__ca64:     
+            JSR __ca81         ; $ca64: 20 81 ca  
+Death_Reset:     
+            DEC $70            ; $ca67: c6 70       Decrement value at $70 by one     
+            JSR __caa7         ; $ca69: 20 a7 ca    Jump to subroutine __caa7  
+            JSR Disable_Render ; $ca6c: 20 41 c2    Jump to subroutine Disable_Render  
+            JSR __cd49         ; $ca6f: 20 49 cd    Jump to subroutine __cd49
+            JSR __e35b         ; $ca72: 20 5b e3    Jump to subroutine __e35b    
+            JSR __e614         ; $ca75: 20 14 e6    Jump to subroutine __e614  
+            JSR __e8b2         ; $ca78: 20 b2 e8    Jump to subroutine __e8b2
+            JSR Enable_Render  ; $ca7b: 20 39 c2    Jump to subroutine Enable_Render
+            JMP __c902         ; $ca7e: 4c 02 c9    Jump to __c902  
 
 ;-------------------------------------------------------------------------------
-__ca81:     LDA $41            ; $ca81: a5 41     
-            EOR #$01           ; $ca83: 49 01     
-            STA $41            ; $ca85: 85 41     
-            LDX #$00           ; $ca87: a2 00     
-__ca89:     LDA $0200,x        ; $ca89: bd 00 02  
-            LDY $0300,x        ; $ca8c: bc 00 03  
-            STA $0300,x        ; $ca8f: 9d 00 03  
-            TYA                ; $ca92: 98        
-            STA $0200,x        ; $ca93: 9d 00 02  
-            INX                ; $ca96: e8        
-            BNE __ca89         ; $ca97: d0 f0     
-__ca99:     LDA $70,x          ; $ca99: b5 70     
-            LDY $b0,x          ; $ca9b: b4 b0     
-            STA $b0,x          ; $ca9d: 95 b0     
-            STY $70,x          ; $ca9f: 94 70     
-            INX                ; $caa1: e8        
-            CPX #$40           ; $caa2: e0 40     
-            BNE __ca99         ; $caa4: d0 f3     
-            RTS                ; $caa6: 60        
+__ca81:     
+            LDA $41            ; $ca81: a5 41       Load value at $41 to A     
+            EOR #$01           ; $ca83: 49 01       Logically EOR $01 with A
+            STA $41            ; $ca85: 85 41       Store A value at $41
+            LDX #$00           ; $ca87: a2 00       Clear X
+__ca89:     
+            LDA $0200,X        ; $ca89: bd 00 02    Load value at ($0200 + X) to A   
+            LDY $0300,X        ; $ca8c: bc 00 03    Load value at ($0300 + X) to Y   
+            STA $0300,X        ; $ca8f: 9d 00 03    Store A value at address ($0300 + X)  
+            TYA                ; $ca92: 98          Transfer Y to A
+            STA $0200,X        ; $ca93: 9d 00 02    Store A value at address ($0200 + X)  
+            INX                ; $ca96: e8          Increment X by one
+            BNE __ca89         ; $ca97: d0 f0       Is the Zero Flag (Z) set? If so, keep going. If not, loop     
+__ca99:     
+            LDA $70,X          ; $ca99: b5 70       Load value at ($70 + X) to A       
+            LDY $B0,X          ; $ca9b: b4 b0       Load value at ($B0 + X) to Y     
+            STA $B0,X          ; $ca9d: 95 b0       Store A value at address ($B0 + X)     
+            STY $70,X          ; $ca9f: 94 70       Store Y value at address ($70 + X)     
+            INX                ; $caa1: e8          Increment X by one
+            CPX #$40           ; $caa2: e0 40       Compare $40 with X
+            BNE __ca99         ; $caa4: d0 f3       Is the Zero Flag (Z) set? If so, keep going. If not, loop     
+            RTS                ; $caa6: 60          Return
 
 ;-------------------------------------------------------------------------------
-__caa7:     LDA #$00           ; $caa7: a9 00     
-            LDX #$00           ; $caa9: a2 00     
-__caab:     STA $0400,x        ; $caab: 9d 00 04  
-            INX                ; $caae: e8        
-            CPX #$c0           ; $caaf: e0 c0     
-            BNE __caab         ; $cab1: d0 f8     
-            RTS                ; $cab3: 60        
+__caa7:     
+            LDA #$00           ; $caa7: a9 00       Clear A
+            LDX #$00           ; $caa9: a2 00       Clear X
+__caab:     
+            STA $0400,X        ; $caab: 9d 00 04    Store A value at address ($0400 + X)  
+            INX                ; $caae: e8          Increment X by one
+            CPX #$C0           ; $caaf: e0 c0       Compare $C0 with X
+            BNE __caab         ; $cab1: d0 f8       Is the Zero Flag (Z) set? If so, keep going. If not, loop     
+            RTS                ; $cab3: 60          Return
 
 ;-------------------------------------------------------------------------------
-__cab4:     LDA $b0            ; $cab4: a5 b0     
-            BEQ __cac3         ; $cab6: f0 0b     
-            LDA #$78           ; $cab8: a9 78     
-            STA $0f            ; $caba: 85 0f     
-            LDA #$00           ; $cabc: a9 00     
-            STA $0e            ; $cabe: 85 0e     
-            JMP __cada         ; $cac0: 4c da ca  
+__cab4:     
+            LDA $B0            ; $cab4: a5 b0       Load value at $B0 to A 
+            BEQ __cac3         ; $cab6: f0 0b       Is the Zero Flag (Z) clear? If so, keep going. If not, branch to __cac3     
+            LDA #$78           ; $cab8: a9 78       Load $78 to A
+            STA $0F            ; $caba: 85 0f       Store A value at $0F
+            LDA #$00           ; $cabc: a9 00       Clear A     
+            STA $0E            ; $cabe: 85 0e       Store A value at $0E
+            JMP __cada         ; $cac0: 4c da ca    Jump to __cada
 
 ;-------------------------------------------------------------------------------
-__cac3:     LDA #$01           ; $cac3: a9 01     
-            STA $0615          ; $cac5: 8d 15 06  
-            STA $0616          ; $cac8: 8d 16 06  
-            STA $0617          ; $cacb: 8d 17 06  
-            LDA #$00           ; $cace: a9 00     
-            STA $42            ; $cad0: 85 42     
-            LDA #$a4           ; $cad2: a9 a4     
-            STA $0f            ; $cad4: 85 0f     
-            LDA #$01           ; $cad6: a9 01     
-            STA $0e            ; $cad8: 85 0e     
-__cada:     JSR __c141         ; $cada: 20 41 c1  
-            LDA $40            ; $cadd: a5 40     
-            BEQ __cae4         ; $cadf: f0 03     
-            JSR __cb02         ; $cae1: 20 02 cb  
-__cae4:     JSR __cb31         ; $cae4: 20 31 cb  
-            JSR __d71c         ; $cae7: 20 1c d7  
-            LDA $25            ; $caea: a5 25     
-            AND #$03           ; $caec: 29 03     
-            CMP #$01           ; $caee: c9 01     
-            BEQ __cb01         ; $caf0: f0 0f     
-            LDA $0f            ; $caf2: a5 0f     
-            SEC                ; $caf4: 38        
-            SBC #$01           ; $caf5: e9 01     
-            STA $0f            ; $caf7: 85 0f     
-            BCS __cafd         ; $caf9: b0 02     
-            DEC $0e            ; $cafb: c6 0e     
-__cafd:     ORA $0e            ; $cafd: 05 0e     
-            BNE __cada         ; $caff: d0 d9     
-__cb01:     RTS                ; $cb01: 60        
+__cac3:     ; This code is triggered when you run out of lives.
+            LDA #$01           ; $cac3: a9 01       Load $01 to A
+            STA $0615          ; $cac5: 8d 15 06    Store A value at $0615
+            STA $0616          ; $cac8: 8d 16 06    Store A value at $0616  
+            STA $0617          ; $cacb: 8d 17 06    Store A value at $0617  
+            LDA #$00           ; $cace: a9 00       Clear A
+            STA $42            ; $cad0: 85 42       Store A value at $42
+            LDA #$A4           ; $cad2: a9 a4       Load $A4 to A
+            STA $0F            ; $cad4: 85 0f       Store A value at $0F
+            LDA #$01           ; $cad6: a9 01       Load $01 to A
+            STA $0E            ; $cad8: 85 0e       Store A value at $0E
+__cada:     
+            JSR __c141         ; $cada: 20 41 c1    Jump to subroutine __c141 
+            LDA $40            ; $cadd: a5 40       Load value at $40 to A
+            BEQ __cae4         ; $cadf: f0 03       Is the Zero Flag (Z) clear? If so, keep going. If not, branch to __cae4     
+            JSR __cb02         ; $cae1: 20 02 cb    Jump to subroutine __cb02  
+__cae4:     
+            JSR __cb31         ; $cae4: 20 31 cb    Jump to subroutine __cb31  
+            JSR __d71c         ; $cae7: 20 1c d7    Jump to subroutine __d71c  
+            LDA $25            ; $caea: a5 25       Load value at $25 to A
+            AND #$03           ; $caec: 29 03       Logically AND $03 with A
+            CMP #$01           ; $caee: c9 01       Compare $01 to A
+            BEQ __cb01         ; $caf0: f0 0f       Is the Zero Flag (Z) clear? If so, keep going. If not, branch to __cb01     
+            LDA $0F            ; $caf2: a5 0f       Load value at $0F to A       
+            SEC                ; $caf4: 38          Set carry flag to 1        
+            SBC #$01           ; $caf5: e9 01       Subtract $01 from A, updating flags & storing result in A      
+            STA $0F            ; $caf7: 85 0f       Store A value at $0F     
+            BCS __cafd         ; $caf9: b0 02       Is the carry flag set? If not, then continue. If so, branch to __cafd       
+            DEC $0E            ; $cafb: c6 0e       Decrement value at $0E by one
+__cafd:     
+            ORA $0E            ; $cafd: 05 0e       Logically OR value at $0E with A
+            BNE __cada         ; $caff: d0 d9       Is the Zero Flag (Z) set? If so, keep going. If not, branch to __cada      
+__cb01:     
+            RTS                ; $cb01: 60          Return
 
 ;-------------------------------------------------------------------------------
-__cb02:     LDA __cb8a         ; $cb02: ad 8a cb  
-            STA $1e            ; $cb05: 85 1e     
-            LDA __cb8b         ; $cb07: ad 8b cb  
-            STA $1f            ; $cb0a: 85 1f     
-            JSR __cb3b         ; $cb0c: 20 3b cb  
-            LDA $41            ; $cb0f: a5 41     
-            CLC                ; $cb11: 18        
-            ADC #$d6           ; $cb12: 69 d6     
-__cb14:     BEQ __cb25         ; $cb14: f0 0f     
-            STA $12            ; $cb16: 85 12     
-            LDA #$02           ; $cb18: a9 02     
-            STA $13            ; $cb1a: 85 13     
-            LDA #$00           ; $cb1c: a9 00     
-            STA $14            ; $cb1e: 85 14     
-            STA $15            ; $cb20: 85 15     
-            JSR __c415         ; $cb22: 20 15 c4  
-__cb25:     LDA $10            ; $cb25: a5 10     
-            CLC                ; $cb27: 18        
-            ADC #$08           ; $cb28: 69 08     
-            STA $10            ; $cb2a: 85 10     
-            BNE __cb30         ; $cb2c: d0 02     
-            INC $11            ; $cb2e: e6 11     
-__cb30:     RTS                ; $cb30: 60        
+__cb02:     
+            LDA __cb8a         ; $cb02: ad 8a cb    Load value at __cb8a to A  
+            STA $1E            ; $cb05: 85 1e       Store A value at $1E
+            LDA __cb8b         ; $cb07: ad 8b cb    Load value at __cb8b to A  
+            STA $1F            ; $cb0a: 85 1f       Store A value at $1F
+            JSR __cb3b         ; $cb0c: 20 3b cb    Jump to subroutine __cb3b  
+            LDA $41            ; $cb0f: a5 41       Load value at $41 to A     
+            CLC                ; $cb11: 18          Clear carry flag        
+            ADC #$D6           ; $cb12: 69 d6       Add $D6 to A, updating flags and storing result in A     
+__cb14:     
+            BEQ __cb25         ; $cb14: f0 0f       Is the Zero Flag (Z) clear? If so, keep going. If not, branch to __cb25     
+            STA $12            ; $cb16: 85 12       Store A value at $12     
+            LDA #$02           ; $cb18: a9 02       Load $02 to A
+            STA $13            ; $cb1a: 85 13       Store A value at $13     
+            LDA #$00           ; $cb1c: a9 00       Clear A
+            STA $14            ; $cb1e: 85 14       Store A value at $14
+            STA $15            ; $cb20: 85 15       Store A value at $15     
+            JSR __c415         ; $cb22: 20 15 c4    Jump to subroutine __c415
+__cb25:     
+            LDA $10            ; $cb25: a5 10       Load value at $10 to A      
+            CLC                ; $cb27: 18          Clear carry flag        
+            ADC #$08           ; $cb28: 69 08       Add $08 to A, updating flags and storing result in A     
+            STA $10            ; $cb2a: 85 10       Store A value at $10     
+            BNE __cb30         ; $cb2c: d0 02       Is the Zero Flag (Z) set? If so, keep going. If not, branch to __cb30     
+            INC $11            ; $cb2e: e6 11       Increment value at $11 by one
+__cb30:     
+            RTS                ; $cb30: 60          Return
 
 ;-------------------------------------------------------------------------------
-__cb31:     LDA __cb97         ; $cb31: ad 97 cb  
-            STA $1e            ; $cb34: 85 1e     
-            LDA __cb98         ; $cb36: ad 98 cb  
-            STA $1f            ; $cb39: 85 1f     
-__cb3b:     LDY #$00           ; $cb3b: a0 00     
-            LDA ($1e),y        ; $cb3d: b1 1e     
-            INY                ; $cb3f: c8        
-            STA $10            ; $cb40: 85 10     
-            LDA ($1e),y        ; $cb42: b1 1e     
-            INY                ; $cb44: c8        
-            STA $11            ; $cb45: 85 11     
-            LDA ($1e),y        ; $cb47: b1 1e     
-            INY                ; $cb49: c8        
-            STA $16            ; $cb4a: 85 16     
-            LDA ($1e),y        ; $cb4c: b1 1e     
-            INY                ; $cb4e: c8        
-            STA $18            ; $cb4f: 85 18     
-__cb51:     LDA ($1e),y        ; $cb51: b1 1e     
-            STY $17            ; $cb53: 84 17     
-            JSR __cb14         ; $cb55: 20 14 cb  
-            LDY $17            ; $cb58: a4 17     
-            INY                ; $cb5a: c8        
-            DEC $18            ; $cb5b: c6 18     
-            BNE __cb51         ; $cb5d: d0 f2     
-            RTS                ; $cb5f: 60        
+__cb31:     
+            LDA __cb97         ; $cb31: ad 97 cb    Load value at __cb97 to A   
+            STA $1E            ; $cb34: 85 1e       Store A value at $1E    
+            LDA __cb98         ; $cb36: ad 98 cb    Load value at __cb98 to A  
+            STA $1F            ; $cb39: 85 1f       Store A value at $1F     
+__cb3b:     
+            LDY #$00           ; $cb3b: a0 00       Clear Y
+            LDA ($1E),Y        ; $cb3d: b1 1e       Load value at $(value at $1F + carry)(value at $1E + Y) to A
+            INY                ; $cb3f: c8          Increment Y by one
+            STA $10            ; $cb40: 85 10       Store A value at $10
+            LDA ($1E),Y        ; $cb42: b1 1e       Load value at $(value at $1F + carry)(value at $1E + Y) to A       
+            INY                ; $cb44: c8          Increment Y by one        
+            STA $11            ; $cb45: 85 11       Store A value at $11     
+            LDA ($1E),Y        ; $cb47: b1 1e       Load value at $(value at $1F + carry)(value at $1E + Y) to A     
+            INY                ; $cb49: c8          Increment Y by one        
+            STA $16            ; $cb4a: 85 16       Store A value at $16     
+            LDA ($1E),Y        ; $cb4c: b1 1e       Load value at $(value at $1F + carry)(value at $1E + Y) to A     
+            INY                ; $cb4e: c8          Increment Y by one        
+            STA $18            ; $cb4f: 85 18       Store A value at $18    
+__cb51:     
+            LDA ($1E),Y        ; $cb51: b1 1e       Load value at $(value at $1F + carry)(value at $1E + Y) to A     
+            STY $17            ; $cb53: 84 17       Store Y value at $17
+            JSR __cb14         ; $cb55: 20 14 cb    Jump to subroutine __cb14  
+            LDY $17            ; $cb58: a4 17       Load value at $17 to Y
+            INY                ; $cb5a: c8          Increment Y by one
+            DEC $18            ; $cb5b: c6 18       Decrement value at $18 by one
+            BNE __cb51         ; $cb5d: d0 f2       Is the Zero Flag (Z) set? If so, keep going. If not, loop       
+            RTS                ; $cb5f: 60          Return
 
 ;-------------------------------------------------------------------------------
-__cb60:     JSR __e3fe         ; $cb60: 20 fe e3  
-            JSR __d8d8         ; $cb63: 20 d8 d8  
-            JSR __ed4e         ; $cb66: 20 4e ed  
-            JSR __ef3f         ; $cb69: 20 3f ef  
-            JSR __e634         ; $cb6c: 20 34 e6  
-            JSR __e8cc         ; $cb6f: 20 cc e8  
-            JSR __f04d         ; $cb72: 20 4d f0  
-            JSR __d71c         ; $cb75: 20 1c d7  
-            JMP __d5ab         ; $cb78: 4c ab d5  
+__cb60:     
+            JSR __e3fe         ; $cb60: 20 fe e3    Jump to subroutine __e3fe
+            JSR __d8d8         ; $cb63: 20 d8 d8    Jump to subroutine __d8d8 
+            JSR __ed4e         ; $cb66: 20 4e ed    Jump to subroutine __ed4e  
+            JSR __ef3f         ; $cb69: 20 3f ef    Jump to subroutine __ef3f  
+            JSR __e634         ; $cb6c: 20 34 e6    Jump to subroutine __e634  
+            JSR __e8cc         ; $cb6f: 20 cc e8    Jump to subroutine __e8cc  
+            JSR __f04d         ; $cb72: 20 4d f0    Jump to subroutine __f04d
+            JSR __d71c         ; $cb75: 20 1c d7    Jump to subroutine __d71c  
+            JMP __d5ab         ; $cb78: 4c ab d5    Jump to __d5ab
 
 ;-------------------------------------------------------------------------------
-__cb7b:     JSR __e3fe         ; $cb7b: 20 fe e3  
-            JSR __d8d8         ; $cb7e: 20 d8 d8  
-            JSR __f18f         ; $cb81: 20 8f f1  
-            JSR __d71c         ; $cb84: 20 1c d7  
-            JMP __d5ab         ; $cb87: 4c ab d5  
+__cb7b:     
+            JSR __e3fe         ; $cb7b: 20 fe e3    Jump to subroutine __e3fe  
+            JSR __d8d8         ; $cb7e: 20 d8 d8    Jump to subroutine __d8d8  
+            JSR __f18f         ; $cb81: 20 8f f1    Jump to subroutine __f18f  
+            JSR __d71c         ; $cb84: 20 1c d7    Jump to subroutine __d71c  
+            JMP __d5ab         ; $cb87: 4c ab d5    Jump to __d5ab  
 
 ;-------------------------------------------------------------------------------
 __cb8a:     
@@ -1728,84 +1764,95 @@ __cba7:
             .hex 05 d5 d4 d2   ; $cbab: 05 d5 d4 d2   Data
             .hex ca d3         ; $cbaf: ca d3         Data
 __cbb1:     
-            JSR __cbf5         ; $cbb1: 20 f5 cb  
-            LDY #$02           ; $cbb4: a0 02     
-            JSR __cc15         ; $cbb6: 20 15 cc  
-            LDY #$00           ; $cbb9: a0 00     
-            JSR __d5d9         ; $cbbb: 20 d9 d5  
-            LDY #$04           ; $cbbe: a0 04     
-            JSR __d5d9         ; $cbc0: 20 d9 d5  
-            LDY #$08           ; $cbc3: a0 08     
-            JSR __d5d9         ; $cbc5: 20 d9 d5  
-            LDA #$b0           ; $cbc8: a9 b0     
-            STA $10            ; $cbca: 85 10     
-            LDY #$00           ; $cBCC: a0 00     
-__cbce:     LDX #$14           ; $cbce: a2 14     
-            LDA __cbee,y       ; $cbd0: b9 ee cb  
-            STA PPUADDR          ; $cbd3: 8d 06 20  
-            LDA __cbed,y       ; $cbd6: b9 ed cb  
-            STA PPUADDR          ; $cbd9: 8d 06 20  
-__cbdc:     LDA $10            ; $cbdc: a5 10     
-            STA PPUDATA          ; $cbde: 8d 07 20  
-            INC $10            ; $cbe1: e6 10     
-            DEX                ; $cbe3: ca        
-            BNE __cbdc         ; $cbe4: d0 f6     
-            INY                ; $cbe6: c8        
-            INY                ; $cbe7: c8        
-            CPY #$08           ; $cbe8: c0 08     
-            BNE __cbce         ; $cbea: d0 e2     
-            RTS                ; $cbec: 60        
+            JSR __cbf5         ; $cbb1: 20 f5 cb    Jump to subroutine __cbf5  
+            LDY #$02           ; $cbb4: a0 02       Load $02 to Y     
+            JSR __cc15         ; $cbb6: 20 15 cc    Jump to subroutine __cc15  
+            LDY #$00           ; $cbb9: a0 00       Clear Y
+            JSR __d5d9         ; $cbbb: 20 d9 d5    Jump to subroutine __d5d9 
+            LDY #$04           ; $cbbe: a0 04       Load $04 to Y      
+            JSR __d5d9         ; $cbc0: 20 d9 d5    Jump to subroutine __d5d9  
+            LDY #$08           ; $cbc3: a0 08       Load $08 to Y     
+            JSR __d5d9         ; $cbc5: 20 d9 d5    Jump to subroutine __d5d9  
+            LDA #$B0           ; $cbc8: a9 b0       Load $B0 to A     
+            STA $10            ; $cbca: 85 10       Store A value at $10
+            LDY #$00           ; $cBCC: a0 00       Clear Y
+__cbce:     
+            LDX #$14           ; $cbce: a2 14       Load $14 to X     
+            LDA __cbee,Y       ; $cbd0: b9 ee cb    Load value at (__cbee + Y)  
+            STA PPUADDR        ; $cbd3: 8d 06 20    Store A value at PPUADDR
+            LDA __cbed,Y       ; $cbd6: b9 ed cb    Load value at (__cbed + Y)   
+            STA PPUADDR        ; $cbd9: 8d 06 20    Store A value at PPUADDR  
+__cbdc:     
+            LDA $10            ; $cbdc: a5 10       Load value at $10 to A
+            STA PPUDATA        ; $cbde: 8d 07 20    Store A value at PPUDAPPUDATA        TA
+            INC $10            ; $cbe1: e6 10       Increment value at $10 by one
+            DEX                ; $cbe3: ca          Decrement X by one
+            BNE __cbdc         ; $cbe4: d0 f6       Is the Zero Flag (Z) set? If so, keep going. If not, loop       
+            INY                ; $cbe6: c8          Increment Y by one        
+            INY                ; $cbe7: c8          Increment Y by one
+            CPY #$08           ; $cbe8: c0 08       Compare $08 with Y
+            BNE __cbce         ; $cbea: d0 e2       Is the Zero Flag (Z) set? If so, keep going. If not, branch to __cbec     
+            RTS                ; $cbec: 60          Return
 
 ;-------------------------------------------------------------------------------
-__cbed:     .hex 07            ; $cbed: 07            Data
-__cbee:     .hex 21 27 21 47   ; $cbee: 21 27 21 47   Data
+__cbed:     
+            .hex 07            ; $cbed: 07            Data
+__cbee:     
+            .hex 21 27 21 47   ; $cbee: 21 27 21 47   Data
             .hex 21 67 21      ; $cbf2: 21 67 21      Data
 
 ;-------------------------------------------------------------------------------
-__cbf5:     LDA #$00           ; $cbf5: a9 00     
-            STA $2a            ; $cbf7: 85 2a     
-            STA $2b            ; $cbf9: 85 2b     
-            LDA #$20           ; $cbfb: a9 20     
-            STA PPUADDR          ; $cbfd: 8d 06 20  
-            LDA #$00           ; $cc00: a9 00     
-            STA PPUADDR          ; $cc02: 8d 06 20  
-            LDA #$00           ; $cc05: a9 00     
-            LDY #$08           ; $cc07: a0 08     
-            LDX #$00           ; $cc09: a2 00     
-__cc0b:     STA PPUDATA          ; $cc0b: 8d 07 20  
-            DEX                ; $cc0e: ca        
-            BNE __cc0b         ; $cc0f: d0 fa     
-            DEY                ; $cc11: 88        
-            BNE __cc0b         ; $cc12: d0 f7     
-__cc14:     RTS                ; $cc14: 60        
+__cbf5:     
+            LDA #$00           ; $cbf5: a9 00       Clear A     
+            STA $2A            ; $cbf7: 85 2a       Store A value at $2A
+            STA $2B            ; $cbf9: 85 2b       Store A value at $2B     
+            LDA #$20           ; $cbfb: a9 20       Load $20 to A
+            STA PPUADDR        ; $cbfd: 8d 06 20    Store A value at PPUADDR
+            LDA #$00           ; $cc00: a9 00       Clear A
+            STA PPUADDR        ; $cc02: 8d 06 20    Store A value at PPUADDR 
+            LDA #$00           ; $cc05: a9 00       Clear A
+            LDY #$08           ; $cc07: a0 08       Load $08 to Y
+            LDX #$00           ; $cc09: a2 00       Clear X
+__cc0b:     
+            STA PPUDATA        ; $cc0b: 8d 07 20    Store A value at PPUDATA  
+            DEX                ; $cc0e: ca          Decrement X by one
+            BNE __cc0b         ; $cc0f: d0 fa       Is the Zero Flag (Z) set? If so, keep going. If not, loop 
+            DEY                ; $cc11: 88          Decrement Y by one
+            BNE __cc0b         ; $cc12: d0 f7       Is the Zero Flag (Z) set? If so, keep going. If not, loop 
+__cc14:     
+            RTS                ; $cc14: 60          Return
 
 ;-------------------------------------------------------------------------------
-__cc15:     LDA __cc41,y       ; $cc15: b9 41 cc  
-            STA $10            ; $cc18: 85 10     
-            LDA __cc42,y       ; $cc1a: b9 42 cc  
-            STA $11            ; $cc1d: 85 11     
-            LDY #$00           ; $cc1f: a0 00     
-__cc21:     LDA ($10),y        ; $cc21: b1 10     
-            BEQ __cc14         ; $cc23: f0 ef     
-            INY                ; $cc25: c8        
-            STA $12            ; $cc26: 85 12     
-            LDA ($10),y        ; $cc28: b1 10     
-            INY                ; $cc2a: c8        
-            TAX                ; $cc2b: aa        
-            LDA ($10),y        ; $cc2c: b1 10     
-            INY                ; $cc2e: c8        
-            STA PPUADDR          ; $cc2f: 8d 06 20  
-            STX PPUADDR          ; $cc32: 8e 06 20  
-__cc35:     LDA ($10),y        ; $cc35: b1 10     
-            INY                ; $cc37: c8        
-            STA PPUDATA          ; $cc38: 8d 07 20  
-            DEC $12            ; $cc3b: c6 12     
-            BNE __cc35         ; $cc3d: d0 f6     
-            BEQ __cc21         ; $cc3f: f0 e0     
+__cc15:     LDA __cc41,Y       ; $cc15: b9 41 cc    Load value at (__cc41 + Y)
+            STA $10            ; $cc18: 85 10       Store A value at $10    
+            LDA __cc42,Y       ; $cc1a: b9 42 cc    Load value at (__cc42 + Y)  
+            STA $11            ; $cc1d: 85 11       Store A value at $11
+            LDY #$00           ; $cc1f: a0 00       Clear Y
+__cc21:     
+            LDA ($10),Y        ; $cc21: b1 10       Load value at $(value at $11 + carry)(value at $10 + Y) to A      
+            BEQ __cc14         ; $cc23: f0 ef       Is the Zero Flag (Z) clear? If so, keep going. If not, branch to __cc14     
+            INY                ; $cc25: c8          Increment Y by one
+            STA $12            ; $cc26: 85 12       Store A value at $12
+            LDA ($10),Y        ; $cc28: b1 10       Load value at $(value at $11 + carry)(value at $10 + Y) to A
+            INY                ; $cc2a: c8          Increment Y by one
+            TAX                ; $cc2b: aa          Transfer A to X
+            LDA ($10),Y        ; $cc2c: b1 10       Load value at $(value at $11 + carry)(value at $10 + Y) to A 
+            INY                ; $cc2e: c8          Increment Y by one
+            STA PPUADDR        ; $cc2f: 8d 06 20    Store A value at PPUADDR
+            STX PPUADDR        ; $cc32: 8e 06 20    Store X value at PPUADDR  
+__cc35:     
+            LDA ($10),Y        ; $cc35: b1 10       Load value at $(value at $11 + carry)(value at $10 + Y) to A     
+            INY                ; $cc37: c8          Increment Y by one
+            STA PPUDATA        ; $cc38: 8d 07 20    Store A value at PPUDATA
+            DEC $12            ; $cc3b: c6 12       Decrement value at $12 by one
+            BNE __cc35         ; $cc3d: d0 f6       Is the Zero Flag (Z) set? If so, keep going. If not, loop       
+            BEQ __cc21         ; $cc3f: f0 e0       Is the Zero Flag (Z) clear? If so, keep going. If not, branch to __cc21     
 
 ;-------------------------------------------------------------------------------
-__cc41:     .hex 4b            ; $cc41: 4b            Data
-__cc42:     .hex cc 60 cc ef   ; $cc42: cc 60 cc ef   Data
+__cc41:     
+            .hex 4b            ; $cc41: 4b            Data
+__cc42:     
+            .hex cc 60 cc ef   ; $cc42: cc 60 cc ef   Data
             .hex cc 03 cd 17   ; $cc46: cc 03 cd 17   Data
             .hex cd 11 4b 20   ; $cc4a: cd 11 4b 20   Data
             .hex a0 a1 a2 a3   ; $cc4e: a0 a1 a2 a3   Data
@@ -1864,18 +1911,22 @@ __cc42:     .hex cc 60 cc ef   ; $cc42: cc 60 cc ef   Data
             .hex 0f 19 11 36   ; $cd22: 0f 19 11 36   Data
             .hex 0f 29 19 13   ; $cd26: 0f 29 19 13   Data
             .hex 00            ; $cd2a: 00            Data
-__cd2b:     LDX #$00           ; $cd2b: a2 00     
-__cd2d:     LDA __cd39,x       ; $cd2d: bd 39 cd  
-            STA $0490,x        ; $cd30: 9d 90 04  
-            INX                ; $cd33: e8        
-            CPX #$05           ; $cd34: e0 05     
-            BNE __cd2d         ; $cd36: d0 f5     
-            RTS                ; $cd38: 60        
+__cd2b:     
+            LDX #$00           ; $cd2b: a2 00       Clear X     
+__cd2d:     
+            LDA __cd39,X       ; $cd2d: bd 39 cd    Load value at (__cd39 + Y)  
+            STA $0490,X        ; $cd30: 9d 90 04    Store A value at ($0490 + X)
+            INX                ; $cd33: e8          Increment X by one
+            CPX #$05           ; $cd34: e0 05       Compare $05 with X
+            BNE __cd2d         ; $cd36: d0 f5       Is the Zero Flag (Z) set? If so, keep going. If not, loop        
+            RTS                ; $cd38: 60          Return
 
 ;-------------------------------------------------------------------------------
-__cd39:     .hex 00 0c 00 14   ; $cd39: 00 0c 00 14   Data
+__cd39:     
+            .hex 00 0c 00 14   ; $cd39: 00 0c 00 14   Data
             .hex 1c            ; $cd3d: 1c            Data
-__cd3e:     LDA #$90           ; $cd3e: a9 90     
+__cd3e:     
+            LDA #$90           ; $cd3e: a9 90     
             STA $1e            ; $cd40: 85 1e     
             LDA #$04           ; $cd42: a9 04     
             STA $1f            ; $cd44: 85 1f     
@@ -2131,8 +2182,8 @@ __cf75:     LDA ($10),y        ; $cf75: b1 10
             TAX                ; $cf7f: aa        
             LDA ($10),y        ; $cf80: b1 10     
             INY                ; $cf82: c8        
-            STA PPUADDR          ; $cf83: 8d 06 20  
-            STX PPUADDR          ; $cf86: 8e 06 20  
+            STA PPUADDR        ; $cf83: 8d 06 20  
+            STX PPUADDR        ; $cf86: 8e 06 20  
             STY $16            ; $cf89: 84 16     
 __cf8b:     LDA ($10),y        ; $cf8b: b1 10     
             BEQ __cf9c         ; $cf8d: f0 0d     
@@ -2140,7 +2191,7 @@ __cf8b:     LDA ($10),y        ; $cf8b: b1 10
             TAX                ; $cf90: aa        
             LDA ($10),y        ; $cf91: b1 10     
             INY                ; $cf93: c8        
-__cf94:     STA PPUDATA          ; $cf94: 8d 07 20  
+__cf94:     STA PPUDATA        ; $cf94: 8d 07 20  
             DEX                ; $cf97: ca        
             BNE __cf94         ; $cf98: d0 fa     
             BEQ __cf8b         ; $cf9a: f0 ef     
@@ -2275,15 +2326,15 @@ __d143:     LDA ($10),y        ; $d143: b1 10
             STY $16            ; $d14d: 84 16     
             LDY #$00           ; $d14f: a0 00     
 __d151:     LDA $15            ; $d151: a5 15     
-            STA PPUADDR          ; $d153: 8d 06 20  
+            STA PPUADDR        ; $d153: 8d 06 20  
             LDA $14            ; $d156: a5 14     
-            STA PPUADDR          ; $d158: 8d 06 20  
+            STA PPUADDR        ; $d158: 8d 06 20  
             LDA ($12),y        ; $d15b: b1 12     
             INY                ; $d15d: c8        
             TAX                ; $d15e: aa        
 __d15f:     LDA ($12),y        ; $d15f: b1 12     
             INY                ; $d161: c8        
-            STA PPUDATA          ; $d162: 8d 07 20  
+            STA PPUDATA        ; $d162: 8d 07 20  
             DEX                ; $d165: ca        
             BNE __d15f         ; $d166: d0 f7     
             LDA ($12),y        ; $d168: b1 12     
@@ -2916,31 +2967,31 @@ __d7ae:     .hex d7 c7 d7 cd   ; $d7ae: d7 c7 d7 cd   Data
 ;-------------------------------------------------------------------------------
 __d7f1:     JSR __d825         ; $d7f1: 20 25 d8  
 __d7f4:     LDA __d838,y       ; $d7f4: b9 38 d8  
-            STA ($1e),y        ; $d7f7: 91 1e     
+            STA ($1E),Y        ; $d7f7: 91 1e     
             INY                ; $d7f9: c8        
             CPY #$07           ; $d7fa: c0 07     
             BNE __d7f4         ; $d7fc: d0 f6     
             LDA #$4b           ; $d7fe: a9 4b     
             LDY #$08           ; $d800: a0 08     
-            STA ($1e),y        ; $d802: 91 1e     
+            STA ($1E),Y        ; $d802: 91 1e     
             LDA #$00           ; $d804: a9 00     
             LDY #$0f           ; $d806: a0 0f     
-            STA ($1e),y        ; $d808: 91 1e     
+            STA ($1E),Y        ; $d808: 91 1e     
             RTS                ; $d80a: 60        
 
 ;-------------------------------------------------------------------------------
 __d80b:     JSR __d825         ; $d80b: 20 25 d8  
 __d80e:     LDA __d83f,y       ; $d80e: b9 3f d8  
-            STA ($1e),y        ; $d811: 91 1e     
+            STA ($1E),Y        ; $d811: 91 1e     
             INY                ; $d813: c8        
             CPY #$07           ; $d814: c0 07     
             BNE __d80e         ; $d816: d0 f6     
             LDA #$00           ; $d818: a9 00     
             LDY #$08           ; $d81a: a0 08     
-            STA ($1e),y        ; $d81c: 91 1e     
+            STA ($1E),Y        ; $d81c: 91 1e     
             LDA #$02           ; $d81e: a9 02     
             LDY #$0f           ; $d820: a0 0f     
-            STA ($1e),y        ; $d822: 91 1e     
+            STA ($1E),Y        ; $d822: 91 1e     
             RTS                ; $d824: 60        
 
 ;-------------------------------------------------------------------------------
@@ -2977,7 +3028,7 @@ __d85c:     LDA #$03           ; $d85c: a9 03
             JSR __d894         ; $d85e: 20 94 d8  
             LDA #$01           ; $d861: a9 01     
             LDY #$06           ; $d863: a0 06     
-            STA ($1e),y        ; $d865: 91 1e     
+            STA ($1E),Y        ; $d865: 91 1e     
             TXA                ; $d867: 8a        
             CLC                ; $d868: 18        
             ADC #$08           ; $d869: 69 08     
@@ -3003,28 +3054,28 @@ __d85c:     LDA #$03           ; $d85c: a9 03
             LDX #$00           ; $d890: a2 00     
             LDA #$02           ; $d892: a9 02     
 __d894:     LDY #$05           ; $d894: a0 05     
-            STA ($1e),y        ; $d896: 91 1e     
+            STA ($1E),Y        ; $d896: 91 1e     
             TXA                ; $d898: 8a        
             ASL                ; $d899: 0a        
             ASL                ; $d89a: 0a        
             ADC #$20           ; $d89b: 69 20     
             LDY #$00           ; $d89d: a0 00     
-            STA ($1e),y        ; $d89f: 91 1e     
+            STA ($1E),Y        ; $d89f: 91 1e     
             INY                ; $d8a1: c8        
             LDA $0264,x        ; $d8a2: bd 64 02  
-            STA ($1e),y        ; $d8a5: 91 1e     
+            STA ($1E),Y        ; $d8a5: 91 1e     
             LDA $0265,x        ; $d8a7: bd 65 02  
             LDY #$03           ; $d8aa: a0 03     
-            STA ($1e),y        ; $d8ac: 91 1e     
+            STA ($1E),Y        ; $d8ac: 91 1e     
             INY                ; $d8ae: c8        
             LDA #$02           ; $d8af: a9 02     
-            STA ($1e),y        ; $d8b1: 91 1e     
+            STA ($1E),Y        ; $d8b1: 91 1e     
             LDA #$00           ; $d8b3: a9 00     
             LDY #$0f           ; $d8b5: a0 0f     
-            STA ($1e),y        ; $d8b7: 91 1e     
+            STA ($1E),Y        ; $d8b7: 91 1e     
             LDA #$4b           ; $d8b9: a9 4b     
             LDY #$08           ; $d8bb: a0 08     
-            STA ($1e),y        ; $d8bd: 91 1e     
+            STA ($1E),Y        ; $d8bd: 91 1e     
             RTS                ; $d8bf: 60        
 
 ;-------------------------------------------------------------------------------
@@ -3094,13 +3145,13 @@ __d939:     LDY #$0d           ; $d939: a0 0d
             LDA $1e            ; $d93b: a5 1e     
             BEQ __d98a         ; $d93d: f0 4b     
             LDA #$00           ; $d93f: a9 00     
-            STA ($1e),y        ; $d941: 91 1e     
+            STA ($1E),Y        ; $d941: 91 1e     
             LDA $1e            ; $d943: a5 1e     
             CMP #$20           ; $d945: c9 20     
             BCC __d94b         ; $d947: 90 02     
             BEQ __d998         ; $d949: f0 4d     
 __d94b:     LDY #$0f           ; $d94b: a0 0f     
-            LDA ($1e),y        ; $d94d: b1 1e     
+            LDA ($1E),Y        ; $d94d: b1 1e     
             CMP #$02           ; $d94f: c9 02     
             BEQ __d997         ; $d951: f0 44     
             CMP #$0c           ; $d953: c9 0c     
@@ -3109,23 +3160,23 @@ __d94b:     LDY #$0f           ; $d94b: a0 0f
             CMP #$0c           ; $d95a: c9 0c     
             BNE __d970         ; $d95c: d0 12     
             LDY #$00           ; $d95e: a0 00     
-            LDA ($1e),y        ; $d960: b1 1e     
+            LDA ($1E),Y        ; $d960: b1 1e     
             SEC                ; $d962: 38        
             SBC $0400          ; $d963: ed 00 04  
             INY                ; $d966: c8        
-            LDA ($1e),y        ; $d967: b1 1e     
+            LDA ($1E),Y        ; $d967: b1 1e     
             SBC $0401          ; $d969: ed 01 04  
             CMP #$02           ; $d96c: c9 02     
             BCC __d997         ; $d96e: 90 27     
 __d970:     LDY #$0a           ; $d970: a0 0a     
-            LDA ($1e),y        ; $d972: b1 1e     
+            LDA ($1E),Y        ; $d972: b1 1e     
             AND #$fc           ; $d974: 29 fc     
             ORA #$01           ; $d976: 09 01     
             LDY #$03           ; $d978: a0 03     
-            CMP ($1e),y        ; $d97a: d1 1e     
+            CMP ($1E),Y        ; $d97a: d1 1e     
             BNE __d997         ; $d97c: d0 19     
             LDY #$0a           ; $d97e: a0 0a     
-            LDA ($1e),y        ; $d980: b1 1e     
+            LDA ($1E),Y        ; $d980: b1 1e     
             LSR                ; $d982: 4a        
             LDY #$0d           ; $d983: a0 0d     
             BCS __d9b5         ; $d985: b0 2e     
@@ -3135,10 +3186,10 @@ __d970:     LDY #$0a           ; $d970: a0 0a
 __d98a:     LDA $42            ; $d98a: a5 42     
             BEQ __d9c7         ; $d98c: f0 39     
             LDA $26            ; $d98e: a5 26     
-            STA ($1e),y        ; $d990: 91 1e     
+            STA ($1E),Y        ; $d990: 91 1e     
             LDA $22            ; $d992: a5 22     
             INY                ; $d994: c8        
-            STA ($1e),y        ; $d995: 91 1e     
+            STA ($1E),Y        ; $d995: 91 1e     
 __d997:     RTS                ; $d997: 60        
 
 ;-------------------------------------------------------------------------------
@@ -3156,18 +3207,18 @@ __d998:     LDA $042f          ; $d998: ad 2f 04
             CMP #$34           ; $d9b1: c9 34     
             BCC __d9c1         ; $d9b3: 90 0c     
 __d9b5:     LDA #$ff           ; $d9b5: a9 ff     
-            STA ($1e),y        ; $d9b7: 91 1e     
+            STA ($1E),Y        ; $d9b7: 91 1e     
             RTS                ; $d9b9: 60        
 
 ;-------------------------------------------------------------------------------
 __d9ba:     BMI __d9b5         ; $d9ba: 30 f9     
 __d9bc:     LDA #$01           ; $d9bc: a9 01     
-            STA ($1e),y        ; $d9be: 91 1e     
+            STA ($1E),Y        ; $d9be: 91 1e     
             RTS                ; $d9c0: 60        
 
 ;-------------------------------------------------------------------------------
 __d9c1:     LDA $0426          ; $d9c1: ad 26 04  
-            STA ($1e),y        ; $d9c4: 91 1e     
+            STA ($1E),Y        ; $d9c4: 91 1e     
             RTS                ; $d9c6: 60        
 
 ;-------------------------------------------------------------------------------
@@ -3191,7 +3242,7 @@ __d9d1:     LDX $3d            ; $d9d1: a6 3d
             BCS __d9ba         ; $d9e3: b0 d5     
             BMI __d9ec         ; $d9e5: 30 05     
 __d9e7:     LDA #$00           ; $d9e7: a9 00     
-            STA ($1e),y        ; $d9e9: 91 1e     
+            STA ($1E),Y        ; $d9e9: 91 1e     
             RTS                ; $d9eb: 60        
 
 ;-------------------------------------------------------------------------------
@@ -3237,7 +3288,7 @@ __da1f:     LDA __e17a,x       ; $da1f: bd 7a e1
 
 ;-------------------------------------------------------------------------------
 __da2c:     LDY #$0f           ; $da2c: a0 0f     
-            LDA ($1e),y        ; $da2e: b1 1e     
+            LDA ($1E),Y        ; $da2e: b1 1e     
             TAX                ; $da30: aa        
             LDA $7c            ; $da31: a5 7c     
             BNE __da1f         ; $da33: d0 ea     
@@ -3279,7 +3330,7 @@ __da7e:     JSR __e0b7         ; $da7e: 20 b7 e0
 
 ;-------------------------------------------------------------------------------
 __da91:     LDY #$08           ; $da91: a0 08     
-            LDA ($1e),y        ; $da93: b1 1e     
+            LDA ($1E),Y        ; $da93: b1 1e     
             SEC                ; $da95: 38        
             SBC #$49           ; $da96: e9 49     
             CMP #$09           ; $da98: c9 09     
@@ -3294,26 +3345,26 @@ __daa2:     LDA $1e            ; $daa2: a5 1e
             JSR __dea6         ; $daa8: 20 a6 de  
 __daab:     LDA #$0b           ; $daab: a9 0b     
             LDY #$07           ; $daad: a0 07     
-            STA ($1e),y        ; $daaf: 91 1e     
+            STA ($1E),Y        ; $daaf: 91 1e     
             LDA #$d0           ; $dab1: a9 d0     
 __dab3:     LDY #$0b           ; $dab3: a0 0b     
-            STA ($1e),y        ; $dab5: 91 1e     
+            STA ($1E),Y        ; $dab5: 91 1e     
             LDA #$09           ; $dab7: a9 09     
             INY                ; $dab9: c8        
-            STA ($1e),y        ; $daba: 91 1e     
+            STA ($1E),Y        ; $daba: 91 1e     
             LDA #$04           ; $dabc: a9 04     
             LDY #$0f           ; $dabe: a0 0f     
-            STA ($1e),y        ; $dac0: 91 1e     
+            STA ($1E),Y        ; $dac0: 91 1e     
             LDY #$04           ; $dac2: a0 04     
-            STA ($1e),y        ; $dac4: 91 1e     
+            STA ($1E),Y        ; $dac4: 91 1e     
             RTS                ; $dac6: 60        
 
 ;-------------------------------------------------------------------------------
             LDY #$07           ; $dac7: a0 07     
-            LDA ($1e),y        ; $dac9: b1 1e     
+            LDA ($1E),Y        ; $dac9: b1 1e     
             SEC                ; $dacb: 38        
             SBC #$01           ; $dacc: e9 01     
-            STA ($1e),y        ; $dace: 91 1e     
+            STA ($1E),Y        ; $dace: 91 1e     
             BNE __dad5         ; $dad0: d0 03     
             JMP __db83         ; $dad2: 4c 83 db  
 
@@ -3352,22 +3403,22 @@ __db07:     TXA                ; $db07: 8a
 ;-------------------------------------------------------------------------------
 __db11:     LDA #$20           ; $db11: a9 20     
             LDY #$04           ; $db13: a0 04     
-            STA ($1e),y        ; $db15: 91 1e     
+            STA ($1E),Y        ; $db15: 91 1e     
             LDA #$22           ; $db17: a9 22     
             LDY #$0f           ; $db19: a0 0f     
-            STA ($1e),y        ; $db1b: 91 1e     
+            STA ($1E),Y        ; $db1b: 91 1e     
             LDY #$05           ; $db1d: a0 05     
-            LDA ($1e),y        ; $db1f: b1 1e     
+            LDA ($1E),Y        ; $db1f: b1 1e     
             TAX                ; $db21: aa        
             LDA #$78           ; $db22: a9 78     
             CPX #$03           ; $db24: e0 03     
             BNE __db2a         ; $db26: d0 02     
             LDA $65            ; $db28: a5 65     
 __db2a:     LDY #$07           ; $db2a: a0 07     
-            STA ($1e),y        ; $db2c: 91 1e     
+            STA ($1E),Y        ; $db2c: 91 1e     
             LDY __db33,x       ; $db2e: bc 33 db  
-            .hex 4c ca         ; $db31: 4c ca     Suspected data
-__db33:     .hex d4 44 44 08   ; $db33: d4 44 44 08   Data
+            .hex 4c ca         ; $db31: 4c ca d4    Suspected data
+__db33:     .hex d4 44 44 08   ; $db33: 44 44 08   Data
             .hex a0 07 b1 1e   ; $db37: a0 07 b1 1e   Data
             .hex 38 e9 01 91   ; $db3b: 38 e9 01 91   Data
             .hex 1e d0 12 4c   ; $db3f: 1e d0 12 4c   Data
@@ -3407,19 +3458,19 @@ __db7a:     RTS                ; $db7a: 60
 ;-------------------------------------------------------------------------------
 __db83:     LDA #$00           ; $db83: a9 00     
             LDY #$08           ; $db85: a0 08     
-            STA ($1e),y        ; $db87: 91 1e     
+            STA ($1E),Y        ; $db87: 91 1e     
             LDA #$06           ; $db89: a9 06     
             LDY #$0f           ; $db8b: a0 0f     
-            STA ($1e),y        ; $db8d: 91 1e     
+            STA ($1E),Y        ; $db8d: 91 1e     
             LDY #$04           ; $db8f: a0 04     
-            STA ($1e),y        ; $db91: 91 1e     
+            STA ($1E),Y        ; $db91: 91 1e     
 __db93:     RTS                ; $db93: 60        
 
 ;-------------------------------------------------------------------------------
             JSR __e102         ; $db94: 20 02 e1  
             BEQ __dba4         ; $db97: f0 0b     
             LDY #$08           ; $db99: a0 08     
-            LDA ($1e),y        ; $db9b: b1 1e     
+            LDA ($1E),Y        ; $db9b: b1 1e     
             SEC                ; $db9d: 38        
             SBC #$49           ; $db9e: e9 49     
             CMP #$07           ; $dba0: c9 07     
@@ -3430,7 +3481,7 @@ __dba4:     JMP __dad8         ; $dba4: 4c d8 da
 
 ;-------------------------------------------------------------------------------
 __dba7:     LDY #$03           ; $dba7: a0 03     
-            LDA ($1e),y        ; $dba9: b1 1e     
+            LDA ($1E),Y        ; $dba9: b1 1e     
             CMP #$1c           ; $dbab: c9 1c     
             BCC __dbb2         ; $dbad: 90 03     
             JMP __dad8         ; $dbaf: 4c d8 da  
@@ -3440,7 +3491,7 @@ __dbb2:     JSR __e06a         ; $dbb2: 20 6a e0
             JSR __e469         ; $dbb5: 20 69 e4  
             BCS __db93         ; $dbb8: b0 d9     
 __dbba:     LDY #$05           ; $dbba: a0 05     
-            LDA ($1e),y        ; $dbbc: b1 1e     
+            LDA ($1E),Y        ; $dbbc: b1 1e     
             BNE __dbe3         ; $dbbe: d0 23     
             STX $18            ; $dbc0: 86 18     
             LDA $42            ; $dbc2: a5 42     
@@ -3468,15 +3519,15 @@ __dbed:     TYA                ; $dbed: 98
             STA $0200,x        ; $dbee: 9d 00 02  
             TXA                ; $dbf1: 8a        
             LDY #$0b           ; $dbf2: a0 0b     
-            STA ($1e),y        ; $dbf4: 91 1e     
+            STA ($1E),Y        ; $dbf4: 91 1e     
             LDA #$00           ; $dbf6: a9 00     
             LDY #$07           ; $dbf8: a0 07     
-            STA ($1e),y        ; $dbfa: 91 1e     
+            STA ($1E),Y        ; $dbfa: 91 1e     
             LDA #$0a           ; $dbfc: a9 0a     
             LDY #$0f           ; $dbfe: a0 0f     
-            STA ($1e),y        ; $dc00: 91 1e     
+            STA ($1E),Y        ; $dc00: 91 1e     
             LDY #$0b           ; $dc02: a0 0b     
-            LDA ($1e),y        ; $dc04: b1 1e     
+            LDA ($1E),Y        ; $dc04: b1 1e     
             TAX                ; $dc06: aa        
             JSR __e4a4         ; $dc07: 20 a4 e4  
             LDA $0202,x        ; $dc0a: bd 02 02  
@@ -3488,36 +3539,36 @@ __dc12:     LDA $0201,x        ; $dc12: bd 01 02
             CMP #$07           ; $dc15: c9 07     
             BNE __dc58         ; $dc17: d0 3f     
             LDY #$05           ; $dc19: a0 05     
-            LDA ($1e),y        ; $dc1b: b1 1e     
+            LDA ($1E),Y        ; $dc1b: b1 1e     
             BNE __dc22         ; $dc1d: d0 03     
             DEC $0202,x        ; $dc1f: de 02 02  
 __dc22:     LDA #$00           ; $dc22: a9 00     
             LDY #$08           ; $dc24: a0 08     
-            STA ($1e),y        ; $dc26: 91 1e     
+            STA ($1E),Y        ; $dc26: 91 1e     
             LDA #$0c           ; $dc28: a9 0c     
             LDY #$0f           ; $dc2a: a0 0f     
-            STA ($1e),y        ; $dc2c: 91 1e     
+            STA ($1E),Y        ; $dc2c: 91 1e     
             LDA #$06           ; $dc2e: a9 06     
             LDY #$04           ; $dc30: a0 04     
-            STA ($1e),y        ; $dc32: 91 1e     
+            STA ($1E),Y        ; $dc32: 91 1e     
             LDA $1e            ; $dc34: a5 1e     
             CMP #$20           ; $dc36: c9 20     
             BEQ __dc59         ; $dc38: f0 1f     
             LDY #$0a           ; $dc3a: a0 0a     
-            LDA ($1e),y        ; $dc3c: b1 1e     
+            LDA ($1E),Y        ; $dc3c: b1 1e     
             AND #$fc           ; $dc3e: 29 fc     
             ORA #$01           ; $dc40: 09 01     
             LDY #$03           ; $dc42: a0 03     
-            CMP ($1e),y        ; $dc44: d1 1e     
+            CMP ($1E),Y        ; $dc44: d1 1e     
             BCC __dc58         ; $dc46: 90 10     
-            LDA ($1e),y        ; $dc48: b1 1e     
+            LDA ($1E),Y        ; $dc48: b1 1e     
             AND #$fc           ; $dc4a: 29 fc     
             STA $10            ; $dc4c: 85 10     
             LDY #$0a           ; $dc4e: a0 0a     
-            LDA ($1e),y        ; $dc50: b1 1e     
+            LDA ($1E),Y        ; $dc50: b1 1e     
             AND #$01           ; $dc52: 29 01     
             ORA $10            ; $dc54: 05 10     
-            STA ($1e),y        ; $dc56: 91 1e     
+            STA ($1E),Y        ; $dc56: 91 1e     
 __dc58:     RTS                ; $dc58: 60        
 
 ;-------------------------------------------------------------------------------
@@ -3530,17 +3581,17 @@ __dc59:     JMP __d9f0         ; $dc59: 4c f0 d9
 
 ;-------------------------------------------------------------------------------
 __dc64:     LDY #$03           ; $dc64: a0 03     
-            LDA ($1e),y        ; $dc66: b1 1e     
+            LDA ($1E),Y        ; $dc66: b1 1e     
             AND #$03           ; $dc68: 29 03     
             SEC                ; $dc6a: 38        
             SBC #$01           ; $dc6b: e9 01     
             CMP #$02           ; $dc6d: c9 02     
             BCS __dc77         ; $dc6f: b0 06     
             LDY #$0d           ; $dc71: a0 0d     
-            LDA ($1e),y        ; $dc73: b1 1e     
+            LDA ($1E),Y        ; $dc73: b1 1e     
             BNE __dccd         ; $dc75: d0 56     
 __dc77:     LDY #$08           ; $dc77: a0 08     
-            LDA ($1e),y        ; $dc79: b1 1e     
+            LDA ($1E),Y        ; $dc79: b1 1e     
             CMP #$59           ; $dc7b: c9 59     
             BEQ __dc91         ; $dc7d: f0 12     
             SEC                ; $dc7f: 38        
@@ -3548,34 +3599,34 @@ __dc77:     LDY #$08           ; $dc77: a0 08
             CMP #$20           ; $dc82: c9 20     
             BCC __dc91         ; $dc84: 90 0b     
             LDY #$03           ; $dc86: a0 03     
-            LDA ($1e),y        ; $dc88: b1 1e     
+            LDA ($1E),Y        ; $dc88: b1 1e     
             CMP #$06           ; $dc8a: c9 06     
             BCC __dc91         ; $dc8c: 90 03     
             JMP __e084         ; $dc8e: 4c 84 e0  
 
 ;-------------------------------------------------------------------------------
 __dc91:     LDY #$03           ; $dc91: a0 03     
-            LDA ($1e),y        ; $dc93: b1 1e     
+            LDA ($1E),Y        ; $dc93: b1 1e     
             AND #$fc           ; $dc95: 29 fc     
             STA $10            ; $dc97: 85 10     
             LDA $1e            ; $dc99: a5 1e     
             CMP #$20           ; $dc9b: c9 20     
             BEQ __dcbd         ; $dc9d: f0 1e     
             LDY #$0a           ; $dc9f: a0 0a     
-            LDA ($1e),y        ; $dca1: b1 1e     
+            LDA ($1E),Y        ; $dca1: b1 1e     
             AND #$fc           ; $dca3: 29 fc     
             CMP $10            ; $dca5: c5 10     
             BEQ __dcb4         ; $dca7: f0 0b     
-            LDA ($1e),y        ; $dca9: b1 1e     
+            LDA ($1E),Y        ; $dca9: b1 1e     
             AND #$03           ; $dcab: 29 03     
             ORA $10            ; $dcad: 05 10     
-            STA ($1e),y        ; $dcaf: 91 1e     
+            STA ($1E),Y        ; $dcaf: 91 1e     
             JMP __db83         ; $dcb1: 4c 83 db  
 
 ;-------------------------------------------------------------------------------
-__dcb4:     LDA ($1e),y        ; $dcb4: b1 1e     
+__dcb4:     LDA ($1E),Y        ; $dcb4: b1 1e     
             EOR #$01           ; $dcb6: 49 01     
-            STA ($1e),y        ; $dcb8: 91 1e     
+            STA ($1E),Y        ; $dcb8: 91 1e     
             JMP __db83         ; $dcba: 4c 83 db  
 
 ;-------------------------------------------------------------------------------
@@ -3590,68 +3641,68 @@ __dcbd:     LDA $10            ; $dcbd: a5 10
 
 ;-------------------------------------------------------------------------------
 __dccd:     LDY #$06           ; $dccd: a0 06     
-            STA ($1e),y        ; $dccf: 91 1e     
+            STA ($1E),Y        ; $dccf: 91 1e     
             LDY #$03           ; $dcd1: a0 03     
-            LDA ($1e),y        ; $dcd3: b1 1e     
+            LDA ($1E),Y        ; $dcd3: b1 1e     
             AND #$fe           ; $dcd5: 29 fe     
             ORA #$02           ; $dcd7: 09 02     
-            STA ($1e),y        ; $dcd9: 91 1e     
+            STA ($1E),Y        ; $dcd9: 91 1e     
             DEY                ; $dcdb: 88        
             LDA #$00           ; $dcdc: a9 00     
-            STA ($1e),y        ; $dcde: 91 1e     
+            STA ($1E),Y        ; $dcde: 91 1e     
             LDA #$10           ; $dce0: a9 10     
             LDY #$07           ; $dce2: a0 07     
-            STA ($1e),y        ; $dce4: 91 1e     
+            STA ($1E),Y        ; $dce4: 91 1e     
             LDA #$e0           ; $dce6: a9 e0     
             LDY #$0b           ; $dce8: a0 0b     
-            STA ($1e),y        ; $dcea: 91 1e     
+            STA ($1E),Y        ; $dcea: 91 1e     
             LDA #$04           ; $dcec: a9 04     
             INY                ; $dcee: c8        
-            STA ($1e),y        ; $dcef: 91 1e     
+            STA ($1E),Y        ; $dcef: 91 1e     
             LDA #$0e           ; $dcf1: a9 0e     
             LDY #$0f           ; $dcf3: a0 0f     
-            STA ($1e),y        ; $dcf5: 91 1e     
+            STA ($1E),Y        ; $dcf5: 91 1e     
             LDA #$04           ; $dcf7: a9 04     
             LDY #$04           ; $dcf9: a0 04     
-            STA ($1e),y        ; $dcfb: 91 1e     
+            STA ($1E),Y        ; $dcfb: 91 1e     
             RTS                ; $dcfd: 60        
 
 ;-------------------------------------------------------------------------------
             LDY #$08           ; $dcfe: a0 08     
-            LDA ($1e),y        ; $dd00: b1 1e     
+            LDA ($1E),Y        ; $dd00: b1 1e     
             SEC                ; $dd02: 38        
             SBC #$49           ; $dd03: e9 49     
             CMP #$10           ; $dd05: c9 10     
             BCC __dd40         ; $dd07: 90 37     
             LDY #$07           ; $dd09: a0 07     
-            LDA ($1e),y        ; $dd0b: b1 1e     
+            LDA ($1E),Y        ; $dd0b: b1 1e     
             SEC                ; $dd0d: 38        
             SBC #$01           ; $dd0e: e9 01     
-            STA ($1e),y        ; $dd10: 91 1e     
+            STA ($1E),Y        ; $dd10: 91 1e     
             BEQ __dd17         ; $dd12: f0 03     
             JMP __e03d         ; $dd14: 4c 3d e0  
 
 ;-------------------------------------------------------------------------------
 __dd17:     LDA #$00           ; $dd17: a9 00     
             LDY #$02           ; $dd19: a0 02     
-            STA ($1e),y        ; $dd1b: 91 1e     
+            STA ($1E),Y        ; $dd1b: 91 1e     
             INY                ; $dd1d: c8        
-            LDA ($1e),y        ; $dd1e: b1 1e     
+            LDA ($1E),Y        ; $dd1e: b1 1e     
             AND #$fc           ; $dd20: 29 fc     
             ORA #$02           ; $dd22: 09 02     
-            STA ($1e),y        ; $dd24: 91 1e     
+            STA ($1E),Y        ; $dd24: 91 1e     
             LDA #$4b           ; $dd26: a9 4b     
             LDY #$08           ; $dd28: a0 08     
-            STA ($1e),y        ; $dd2a: 91 1e     
+            STA ($1E),Y        ; $dd2a: 91 1e     
             LDY #$05           ; $dd2c: a0 05     
-            LDA ($1e),y        ; $dd2e: b1 1e     
+            LDA ($1E),Y        ; $dd2e: b1 1e     
             BNE __dd35         ; $dd30: d0 03     
             JSR __e3de         ; $dd32: 20 de e3  
 __dd35:     LDA #$02           ; $dd35: a9 02     
             LDY #$0f           ; $dd37: a0 0f     
-            STA ($1e),y        ; $dd39: 91 1e     
+            STA ($1E),Y        ; $dd39: 91 1e     
             LDY #$04           ; $dd3b: a0 04     
-            STA ($1e),y        ; $dd3d: 91 1e     
+            STA ($1E),Y        ; $dd3d: 91 1e     
             RTS                ; $dd3f: 60        
 
 ;-------------------------------------------------------------------------------
@@ -3668,11 +3719,11 @@ __dd4c:     JSR __da02         ; $dd4c: 20 02 da
 __dd4f:     LDA #$00           ; $dd4f: a9 00     
             SEC                ; $dd51: 38        
             LDY #$06           ; $dd52: a0 06     
-            SBC ($1e),y        ; $dd54: f1 1e     
-            STA ($1e),y        ; $dd56: 91 1e     
+            SBC ($1E),Y        ; $dd54: f1 1e     
+            STA ($1E),Y        ; $dd56: 91 1e     
             LDA #$06           ; $dd58: a9 06     
             INY                ; $dd5a: c8        
-            STA ($1e),y        ; $dd5b: 91 1e     
+            STA ($1E),Y        ; $dd5b: 91 1e     
             LDA #$00           ; $dd5d: a9 00     
             JMP __dab3         ; $dd5f: 4c b3 da  
 
@@ -3681,7 +3732,7 @@ __dd4f:     LDA #$00           ; $dd4f: a9 00
             JSR __f0e7         ; $dd65: 20 e7 f0  
             BEQ __dda2         ; $dd68: f0 38     
             LDY #$08           ; $dd6a: a0 08     
-            LDA ($1e),y        ; $dd6c: b1 1e     
+            LDA ($1E),Y        ; $dd6c: b1 1e     
             SEC                ; $dd6e: 38        
             SBC #$49           ; $dd6f: e9 49     
             CMP #$09           ; $dd71: c9 09     
@@ -3692,23 +3743,23 @@ __dd4f:     LDA #$00           ; $dd4f: a9 00
 __dd7c:     LDA #$80           ; $dd7c: a9 80     
             JSR __df09         ; $dd7e: 20 09 df  
             LDY #$07           ; $dd81: a0 07     
-            LDA ($1e),y        ; $dd83: b1 1e     
+            LDA ($1E),Y        ; $dd83: b1 1e     
             SEC                ; $dd85: 38        
             SBC #$01           ; $dd86: e9 01     
-            STA ($1e),y        ; $dd88: 91 1e     
+            STA ($1E),Y        ; $dd88: 91 1e     
             BNE __dda1         ; $dd8a: d0 15     
             LDY #$05           ; $dd8c: a0 05     
-            LDA ($1e),y        ; $dd8e: b1 1e     
+            LDA ($1E),Y        ; $dd8e: b1 1e     
             BNE __dd95         ; $dd90: d0 03     
             JMP __dd17         ; $dd92: 4c 17 dd  
 
 ;-------------------------------------------------------------------------------
 __dd95:     LDA $65            ; $dd95: a5 65     
             LDY #$07           ; $dd97: a0 07     
-            STA ($1e),y        ; $dd99: 91 1e     
+            STA ($1E),Y        ; $dd99: 91 1e     
             LDA #$12           ; $dd9b: a9 12     
             LDY #$0f           ; $dd9d: a0 0f     
-            STA ($1e),y        ; $dd9f: 91 1e     
+            STA ($1E),Y        ; $dd9f: 91 1e     
 __dda1:     RTS                ; $dda1: 60        
 
 ;-------------------------------------------------------------------------------
@@ -3719,38 +3770,38 @@ __dda5:     JMP __daa2         ; $dda5: 4c a2 da
 
 ;-------------------------------------------------------------------------------
             LDY #$07           ; $dda8: a0 07     
-            LDA ($1e),y        ; $ddaa: b1 1e     
+            LDA ($1E),Y        ; $ddaa: b1 1e     
             SEC                ; $ddac: 38        
             SBC #$01           ; $ddad: e9 01     
-            STA ($1e),y        ; $ddaf: 91 1e     
+            STA ($1E),Y        ; $ddaf: 91 1e     
             BNE __dda1         ; $ddb1: d0 ee     
             LDA #$40           ; $ddb3: a9 40     
             LDY #$07           ; $ddb5: a0 07     
-            STA ($1e),y        ; $ddb7: 91 1e     
+            STA ($1E),Y        ; $ddb7: 91 1e     
             LDA #$0e           ; $ddb9: a9 0e     
             LDY #$04           ; $ddbb: a0 04     
-            STA ($1e),y        ; $ddbd: 91 1e     
+            STA ($1E),Y        ; $ddbd: 91 1e     
             LDA #$14           ; $ddbf: a9 14     
             LDY #$0f           ; $ddc1: a0 0f     
-            STA ($1e),y        ; $ddc3: 91 1e     
+            STA ($1E),Y        ; $ddc3: 91 1e     
 __ddc5:     RTS                ; $ddc5: 60        
 
 ;-------------------------------------------------------------------------------
             LDY #$07           ; $ddc6: a0 07     
-            LDA ($1e),y        ; $ddc8: b1 1e     
+            LDA ($1E),Y        ; $ddc8: b1 1e     
             SEC                ; $ddca: 38        
             SBC #$01           ; $ddcb: e9 01     
-            STA ($1e),y        ; $ddcd: 91 1e     
+            STA ($1E),Y        ; $ddcd: 91 1e     
             BNE __ddc5         ; $ddcf: d0 f4     
             JMP __dd17         ; $ddd1: 4c 17 dd  
 
 ;-------------------------------------------------------------------------------
             LDY #$07           ; $ddd4: a0 07     
-            LDA ($1e),y        ; $ddd6: b1 1e     
+            LDA ($1E),Y        ; $ddd6: b1 1e     
             BEQ __dddf         ; $ddd8: f0 05     
             SEC                ; $ddda: 38        
             SBC #$01           ; $dddb: e9 01     
-            STA ($1e),y        ; $dddd: 91 1e     
+            STA ($1E),Y        ; $dddd: 91 1e     
 __dddf:     RTS                ; $dddf: 60        
 
 ;-------------------------------------------------------------------------------
@@ -3758,13 +3809,13 @@ __dddf:     RTS                ; $dddf: 60
             ORA $4f            ; $dde2: 05 4f     
             BNE __de24         ; $dde4: d0 3e     
             LDY #$08           ; $dde6: a0 08     
-            LDA ($1e),y        ; $dde8: b1 1e     
+            LDA ($1E),Y        ; $dde8: b1 1e     
             SEC                ; $ddea: 38        
             SBC #$49           ; $ddeb: e9 49     
             CMP #$07           ; $dded: c9 07     
             BCC __de07         ; $ddef: 90 16     
             LDY #$03           ; $ddf1: a0 03     
-            LDA ($1e),y        ; $ddf3: b1 1e     
+            LDA ($1E),Y        ; $ddf3: b1 1e     
             CMP #$1c           ; $ddf5: c9 1c     
             BCS __de04         ; $ddf7: b0 0b     
             JSR __e06a         ; $ddf9: 20 6a e0  
@@ -3832,57 +3883,57 @@ __de59:     LDA #$10           ; $de59: a9 10
 ;-------------------------------------------------------------------------------
 __de6f:     LDA #$00           ; $de6f: a9 00     
             LDY #$0f           ; $de71: a0 0f     
-            STA ($1e),y        ; $de73: 91 1e     
+            STA ($1E),Y        ; $de73: 91 1e     
             LDY #$04           ; $de75: a0 04     
-            STA ($1e),y        ; $de77: 91 1e     
+            STA ($1E),Y        ; $de77: 91 1e     
 __de79:     RTS                ; $de79: 60        
 
 ;-------------------------------------------------------------------------------
             LDY #$07           ; $de7a: a0 07     
-            LDA ($1e),y        ; $de7c: b1 1e     
+            LDA ($1E),Y        ; $de7c: b1 1e     
             SEC                ; $de7e: 38        
             SBC #$01           ; $de7f: e9 01     
-            STA ($1e),y        ; $de81: 91 1e     
+            STA ($1E),Y        ; $de81: 91 1e     
             BNE __de97         ; $de83: d0 12     
             LDA #$28           ; $de85: a9 28     
             LDY #$0f           ; $de87: a0 0f     
-            STA ($1e),y        ; $de89: 91 1e     
+            STA ($1E),Y        ; $de89: 91 1e     
             LDA #$24           ; $de8b: a9 24     
             LDY #$04           ; $de8d: a0 04     
-            STA ($1e),y        ; $de8f: 91 1e     
+            STA ($1E),Y        ; $de8f: 91 1e     
             LDA #$40           ; $de91: a9 40     
             LDY #$07           ; $de93: a0 07     
-            STA ($1e),y        ; $de95: 91 1e     
+            STA ($1E),Y        ; $de95: 91 1e     
 __de97:     RTS                ; $de97: 60        
 
 ;-------------------------------------------------------------------------------
             LDY #$07           ; $de98: a0 07     
-            LDA ($1e),y        ; $de9a: b1 1e     
+            LDA ($1E),Y        ; $de9a: b1 1e     
             SEC                ; $de9c: 38        
             SBC #$01           ; $de9d: e9 01     
-            STA ($1e),y        ; $de9f: 91 1e     
+            STA ($1E),Y        ; $de9f: 91 1e     
             BNE __de97         ; $dea1: d0 f4     
             JMP __db83         ; $dea3: 4c 83 db  
 
 ;-------------------------------------------------------------------------------
 __dea6:     LDY #$06           ; $dea6: a0 06     
-            LDA ($1e),y        ; $dea8: b1 1e     
+            LDA ($1E),Y        ; $dea8: b1 1e     
             AND #$01           ; $deaa: 29 01     
             EOR #$01           ; $deac: 49 01     
             STA $10            ; $deae: 85 10     
             LDY #$03           ; $deb0: a0 03     
-            LDA ($1e),y        ; $deb2: b1 1e     
+            LDA ($1E),Y        ; $deb2: b1 1e     
             AND #$fc           ; $deb4: 29 fc     
             ORA $10            ; $deb6: 05 10     
             STA $10            ; $deb8: 85 10     
             LDY #$01           ; $deba: a0 01     
-            LDA ($1e),y        ; $debc: b1 1e     
+            LDA ($1E),Y        ; $debc: b1 1e     
             CMP $0401          ; $debe: cd 01 04  
             LDA $0403          ; $DEC1: ad 03 04  
             AND #$fc           ; $DEC4: 29 fc     
             ADC #$00           ; $DEC6: 69 00     
             LDY #$0a           ; $DEC8: a0 0a     
-            STA ($1e),y        ; $DECa: 91 1e     
+            STA ($1E),Y        ; $DECa: 91 1e     
             CMP $10            ; $DECc: c5 10     
             BNE __dee1         ; $DECe: d0 11     
             LDX $21            ; $ded0: a6 21     
@@ -3892,53 +3943,53 @@ __dea6:     LDY #$06           ; $dea6: a0 06
             BCC __dedc         ; $ded8: 90 02     
             LDA #$fc           ; $deda: a9 fc     
 __dedc:     CLC                ; $dedc: 18        
-            ADC ($1e),y        ; $dedd: 71 1e     
-            STA ($1e),y        ; $dedf: 91 1e     
+            ADC ($1E),Y        ; $dedd: 71 1e     
+            STA ($1E),Y        ; $dedf: 91 1e     
 __dee1:     RTS                ; $dee1: 60        
 
 ;-------------------------------------------------------------------------------
 __dee2:     LDA #$00           ; $dee2: a9 00     
             LDY #$07           ; $dee4: a0 07     
-            STA ($1e),y        ; $dee6: 91 1e     
+            STA ($1E),Y        ; $dee6: 91 1e     
 __dee8:     RTS                ; $dee8: 60        
 
 ;-------------------------------------------------------------------------------
 __dee9:     LDA $1e            ; $dee9: a5 1e     
             BNE __def7         ; $deeb: d0 0a     
             LDY #$0d           ; $deed: a0 0d     
-            LDA ($1e),y        ; $deef: b1 1e     
+            LDA ($1E),Y        ; $deef: b1 1e     
             BEQ __dee2         ; $def1: f0 ef     
             LDY #$06           ; $def3: a0 06     
-            STA ($1e),y        ; $def5: 91 1e     
+            STA ($1E),Y        ; $def5: 91 1e     
 __def7:     LDY #$07           ; $def7: a0 07     
-            LDA ($1e),y        ; $def9: b1 1e     
+            LDA ($1E),Y        ; $def9: b1 1e     
             CLC                ; $defb: 18        
             ADC #$01           ; $defc: 69 01     
-            STA ($1e),y        ; $defe: 91 1e     
+            STA ($1E),Y        ; $defe: 91 1e     
             LDY #$09           ; $df00: a0 09     
-            LDA ($1e),y        ; $df02: b1 1e     
+            LDA ($1E),Y        ; $df02: b1 1e     
             BNE __dee8         ; $df04: d0 e2     
             JSR __e018         ; $df06: 20 18 e0  
 __df09:     LDX #$04           ; $df09: a2 04     
 __df0b:     STA $10            ; $df0b: 85 10     
             JSR __df8a         ; $df0d: 20 8a df  
             LDY #$06           ; $df10: a0 06     
-            LDA ($1e),y        ; $df12: b1 1e     
+            LDA ($1E),Y        ; $df12: b1 1e     
             BMI __df53         ; $df14: 30 3d     
             LDY #$01           ; $df16: a0 01     
-            LDA ($1e),y        ; $df18: b1 1e     
+            LDA ($1E),Y        ; $df18: b1 1e     
             CMP #$38           ; $df1a: c9 38     
             BEQ __df36         ; $df1c: f0 18     
             DEY                ; $df1e: 88        
-            LDA ($1e),y        ; $df1f: b1 1e     
+            LDA ($1E),Y        ; $df1f: b1 1e     
             CLC                ; $df21: 18        
             ADC $10            ; $df22: 65 10     
-            STA ($1e),y        ; $df24: 91 1e     
+            STA ($1E),Y        ; $df24: 91 1e     
             BCC __df52         ; $df26: 90 2a     
             INY                ; $df28: c8        
-            LDA ($1e),y        ; $df29: b1 1e     
+            LDA ($1E),Y        ; $df29: b1 1e     
             ADC #$00           ; $df2b: 69 00     
-            STA ($1e),y        ; $df2d: 91 1e     
+            STA ($1E),Y        ; $df2d: 91 1e     
             CMP #$38           ; $df2f: c9 38     
             BCS __df36         ; $df31: b0 03     
             JMP __dfcd         ; $df33: 4c cd df  
@@ -3946,10 +3997,10 @@ __df0b:     STA $10            ; $df0b: 85 10
 ;-------------------------------------------------------------------------------
 __df36:     DEY                ; $df36: 88        
             LDA #$00           ; $df37: a9 00     
-            STA ($1e),y        ; $df39: 91 1e     
+            STA ($1E),Y        ; $df39: 91 1e     
             LDA #$4d           ; $df3b: a9 4d     
             LDY #$08           ; $df3d: a0 08     
-            STA ($1e),y        ; $df3f: 91 1e     
+            STA ($1E),Y        ; $df3f: 91 1e     
             LDA $1e            ; $df41: a5 1e     
             BEQ __df52         ; $df43: f0 0d     
             CMP #$20           ; $df45: c9 20     
@@ -3957,30 +4008,30 @@ __df36:     DEY                ; $df36: 88
             JSR __d9f0         ; $df49: 20 f0 d9  
 __df4c:     LDA #$ff           ; $df4c: a9 ff     
             LDY #$06           ; $df4e: a0 06     
-            STA ($1e),y        ; $df50: 91 1e     
+            STA ($1E),Y        ; $df50: 91 1e     
 __df52:     RTS                ; $df52: 60        
 
 ;-------------------------------------------------------------------------------
 __df53:     LDY #$00           ; $df53: a0 00     
-            LDA ($1e),y        ; $df55: b1 1e     
+            LDA ($1E),Y        ; $df55: b1 1e     
             SEC                ; $df57: 38        
             SBC $10            ; $df58: e5 10     
-            STA ($1e),y        ; $df5a: 91 1e     
+            STA ($1E),Y        ; $df5a: 91 1e     
             BCS __df89         ; $df5c: b0 2b     
             INY                ; $df5e: c8        
-            LDA ($1e),y        ; $df5f: b1 1e     
+            LDA ($1E),Y        ; $df5f: b1 1e     
             SBC #$00           ; $df61: e9 00     
-            STA ($1e),y        ; $df63: 91 1e     
+            STA ($1E),Y        ; $df63: 91 1e     
             CMP #$02           ; $df65: c9 02     
             BCS __dfc9         ; $df67: b0 60     
             LDA #$02           ; $df69: a9 02     
-            STA ($1e),y        ; $df6b: 91 1e     
+            STA ($1E),Y        ; $df6b: 91 1e     
             DEY                ; $df6d: 88        
             LDA #$00           ; $df6e: a9 00     
-            STA ($1e),y        ; $df70: 91 1e     
+            STA ($1E),Y        ; $df70: 91 1e     
             LDA #$4c           ; $df72: a9 4c     
             LDY #$08           ; $df74: a0 08     
-            STA ($1e),y        ; $df76: 91 1e     
+            STA ($1E),Y        ; $df76: 91 1e     
             LDA $1e            ; $df78: a5 1e     
             BEQ __df89         ; $df7a: f0 0d     
             CMP #$20           ; $df7c: c9 20     
@@ -3988,12 +4039,12 @@ __df53:     LDY #$00           ; $df53: a0 00
             JSR __d9f0         ; $df80: 20 f0 d9  
 __df83:     LDA #$01           ; $df83: a9 01     
             LDY #$06           ; $df85: a0 06     
-            STA ($1e),y        ; $df87: 91 1e     
+            STA ($1E),Y        ; $df87: 91 1e     
 __df89:     RTS                ; $df89: 60        
 
 ;-------------------------------------------------------------------------------
 __df8a:     LDY #$05           ; $df8a: a0 05     
-            LDA ($1e),y        ; $df8c: b1 1e     
+            LDA ($1E),Y        ; $df8c: b1 1e     
             BNE __dfb4         ; $df8e: d0 24     
             LDA $0401          ; $df90: ad 01 04  
             SEC                ; $df93: 38        
@@ -4033,7 +4084,7 @@ __dfc9:     TXA                ; $dfc9: 8a
             ORA #$04           ; $dfca: 09 04     
             TAX                ; $dfcc: aa        
 __dfcd:     LDY #$01           ; $dfcd: a0 01     
-            LDA ($1e),y        ; $dfcf: b1 1e     
+            LDA ($1E),Y        ; $dfcf: b1 1e     
             CLC                ; $dfd1: 18        
             ADC __e010,x       ; $dfd2: 7d 10 e0  
             ASL                ; $dfd5: 0a        
@@ -4041,7 +4092,7 @@ __dfcd:     LDY #$01           ; $dfcd: a0 01
             ASL                ; $dfd7: 0a        
             STA $10            ; $dfd8: 85 10     
             LDY #$03           ; $dfda: a0 03     
-            LDA ($1e),y        ; $dfdc: b1 1e     
+            LDA ($1E),Y        ; $dfdc: b1 1e     
             BCC __dfe2         ; $dfde: 90 02     
             ORA #$20           ; $dfe0: 09 20     
 __dfe2:     CLC                ; $dfe2: 18        
@@ -4082,7 +4133,7 @@ __e018:     LDY #$00           ; $e018: a0 00
             LDY #$04           ; $e01e: a0 04     
 __e020:     STY $10            ; $e020: 84 10     
             LDY #$05           ; $e022: a0 05     
-            LDA ($1e),y        ; $e024: b1 1e     
+            LDA ($1E),Y        ; $e024: b1 1e     
             BEQ __e032         ; $e026: f0 0a     
             CMP #$03           ; $e028: c9 03     
             BCC __e035         ; $e02a: 90 09     
@@ -4104,28 +4155,28 @@ __e035:     LDA $64            ; $e035: a5 64
 
 ;-------------------------------------------------------------------------------
 __e03d:     LDY #$0c           ; $e03d: a0 0c     
-            LDA ($1e),y        ; $e03f: b1 1e     
+            LDA ($1E),Y        ; $e03f: b1 1e     
             DEY                ; $e041: 88        
             CLC                ; $e042: 18        
-            ADC ($1e),y        ; $e043: 71 1e     
-            STA ($1e),y        ; $e045: 91 1e     
+            ADC ($1E),Y        ; $e043: 71 1e     
+            STA ($1E),Y        ; $e045: 91 1e     
             ASL                ; $e047: 0a        
             BCC __e055         ; $e048: 90 0b     
             PHA                ; $e04a: 48        
             LDY #$03           ; $e04b: a0 03     
-            LDA ($1e),y        ; $e04d: b1 1e     
+            LDA ($1E),Y        ; $e04d: b1 1e     
             SEC                ; $e04f: 38        
             SBC #$01           ; $e050: e9 01     
-            STA ($1e),y        ; $e052: 91 1e     
+            STA ($1E),Y        ; $e052: 91 1e     
             PLA                ; $e054: 68        
 __e055:     LDY #$02           ; $e055: a0 02     
             CLC                ; $e057: 18        
-            ADC ($1e),y        ; $e058: 71 1e     
-            STA ($1e),y        ; $e05a: 91 1e     
+            ADC ($1E),Y        ; $e058: 71 1e     
+            STA ($1E),Y        ; $e05a: 91 1e     
             INY                ; $e05c: c8        
-            LDA ($1e),y        ; $e05d: b1 1e     
+            LDA ($1E),Y        ; $e05d: b1 1e     
             ADC #$00           ; $e05f: 69 00     
-            STA ($1e),y        ; $e061: 91 1e     
+            STA ($1E),Y        ; $e061: 91 1e     
             LDA #$30           ; $e063: a9 30     
             LDX #$02           ; $e065: a2 02     
             JMP __df0b         ; $e067: 4c 0b df  
@@ -4135,13 +4186,13 @@ __e06a:     JSR __e018         ; $e06a: 20 18 e0
             CLC                ; $e06d: 18        
             ADC #$20           ; $e06e: 69 20     
             LDY #$02           ; $e070: a0 02     
-            ADC ($1e),y        ; $e072: 71 1e     
-            STA ($1e),y        ; $e074: 91 1e     
+            ADC ($1E),Y        ; $e072: 71 1e     
+            STA ($1E),Y        ; $e074: 91 1e     
             BCC __e0a3         ; $e076: 90 2b     
             INY                ; $e078: c8        
-            LDA ($1e),y        ; $e079: b1 1e     
+            LDA ($1E),Y        ; $e079: b1 1e     
             ADC #$00           ; $e07b: 69 00     
-            STA ($1e),y        ; $e07d: 91 1e     
+            STA ($1E),Y        ; $e07d: 91 1e     
             LDX #$04           ; $e07f: a2 04     
             JMP __e0a0         ; $e081: 4c a0 e0  
 
@@ -4151,27 +4202,27 @@ __e084:     JSR __e018         ; $e084: 20 18 e0
             ADC #$20           ; $e088: 69 20     
 __e08a:     STA $10            ; $e08a: 85 10     
             LDY #$02           ; $e08c: a0 02     
-            LDA ($1e),y        ; $e08e: b1 1e     
+            LDA ($1E),Y        ; $e08e: b1 1e     
             SEC                ; $e090: 38        
             SBC $10            ; $e091: e5 10     
-            STA ($1e),y        ; $e093: 91 1e     
+            STA ($1E),Y        ; $e093: 91 1e     
             BCS __e0a3         ; $e095: b0 0c     
             INY                ; $e097: c8        
-            LDA ($1e),y        ; $e098: b1 1e     
+            LDA ($1E),Y        ; $e098: b1 1e     
             SBC #$00           ; $e09a: e9 00     
-            STA ($1e),y        ; $e09c: 91 1e     
+            STA ($1E),Y        ; $e09c: 91 1e     
             LDX #$00           ; $e09e: a2 00     
 __e0a0:     JSR __dfcd         ; $e0a0: 20 cd df  
 __e0a3:     LDY #$0d           ; $e0a3: a0 0d     
-            LDA ($1e),y        ; $e0a5: b1 1e     
+            LDA ($1E),Y        ; $e0a5: b1 1e     
             BEQ __e0ad         ; $e0a7: f0 04     
             LDY #$06           ; $e0a9: a0 06     
-            STA ($1e),y        ; $e0ab: 91 1e     
+            STA ($1E),Y        ; $e0ab: 91 1e     
 __e0ad:     LDY #$07           ; $e0ad: a0 07     
-            LDA ($1e),y        ; $e0af: b1 1e     
+            LDA ($1E),Y        ; $e0af: b1 1e     
             CLC                ; $e0b1: 18        
             ADC #$01           ; $e0b2: 69 01     
-            STA ($1e),y        ; $e0b4: 91 1e     
+            STA ($1E),Y        ; $e0b4: 91 1e     
             RTS                ; $e0b6: 60        
 
 ;-------------------------------------------------------------------------------
@@ -4293,20 +4344,20 @@ __e18e:     LDA #$00           ; $e18e: a9 00
 
 ;-------------------------------------------------------------------------------
             LDY #$08           ; $e19d: a0 08     
-            LDA ($1e),y        ; $e19f: b1 1e     
+            LDA ($1E),Y        ; $e19f: b1 1e     
             SEC                ; $e1a1: 38        
             SBC #$49           ; $e1a2: e9 49     
             CMP #$07           ; $e1a4: c9 07     
             BCC __e18e         ; $e1a6: 90 e6     
             LDY #$03           ; $e1a8: a0 03     
-            LDA ($1e),y        ; $e1aa: b1 1e     
+            LDA ($1E),Y        ; $e1aa: b1 1e     
             CMP #$1c           ; $e1ac: c9 1c     
             BCS __e18e         ; $e1ae: b0 de     
             JSR __e06a         ; $e1b0: 20 6a e0  
             JSR __e469         ; $e1b3: 20 69 e4  
             BCS __e1e0         ; $e1b6: b0 28     
             LDY #$05           ; $e1b8: a0 05     
-            LDA ($1e),y        ; $e1ba: b1 1e     
+            LDA ($1E),Y        ; $e1ba: b1 1e     
             BNE __e1e1         ; $e1bc: d0 23     
             STX $18            ; $e1be: 86 18     
             LDA #$01           ; $e1c0: a9 01     
@@ -4334,15 +4385,15 @@ __e1eb:     TYA                ; $e1eb: 98
             STA $0200,x        ; $e1ec: 9d 00 02  
             TXA                ; $e1ef: 8a        
             LDY #$0b           ; $e1f0: a0 0b     
-            STA ($1e),y        ; $e1f2: 91 1e     
+            STA ($1E),Y        ; $e1f2: 91 1e     
             LDA #$00           ; $e1f4: a9 00     
             LDY #$07           ; $e1f6: a0 07     
-            STA ($1e),y        ; $e1f8: 91 1e     
+            STA ($1E),Y        ; $e1f8: 91 1e     
             LDA #$06           ; $e1fa: a9 06     
             LDY #$0f           ; $e1fc: a0 0f     
-            STA ($1e),y        ; $e1fe: 91 1e     
+            STA ($1E),Y        ; $e1fe: 91 1e     
             LDY #$0b           ; $e200: a0 0b     
-            LDA ($1e),y        ; $e202: b1 1e     
+            LDA ($1E),Y        ; $e202: b1 1e     
             TAX                ; $e204: aa        
             JSR __e4a4         ; $e205: 20 a4 e4  
             LDA $0202,x        ; $e208: bd 02 02  
@@ -4351,23 +4402,23 @@ __e1eb:     TYA                ; $e1eb: 98
             CMP #$07           ; $e210: c9 07     
             BNE __e22f         ; $e212: d0 1b     
             LDY #$05           ; $e214: a0 05     
-            LDA ($1e),y        ; $e216: b1 1e     
+            LDA ($1E),Y        ; $e216: b1 1e     
             BNE __e21d         ; $e218: d0 03     
             DEC $0202,x        ; $e21a: de 02 02  
 __e21d:     LDA #$00           ; $e21d: a9 00     
             LDY #$08           ; $e21f: a0 08     
-            STA ($1e),y        ; $e221: 91 1e     
+            STA ($1E),Y        ; $e221: 91 1e     
             LDA #$08           ; $e223: a9 08     
             LDY #$0f           ; $e225: a0 0f     
-            STA ($1e),y        ; $e227: 91 1e     
+            STA ($1E),Y        ; $e227: 91 1e     
             LDA #$06           ; $e229: a9 06     
             LDY #$04           ; $e22b: a0 04     
-            STA ($1e),y        ; $e22d: 91 1e     
+            STA ($1E),Y        ; $e22d: 91 1e     
 __e22f:     RTS                ; $e22f: 60        
 
 ;-------------------------------------------------------------------------------
             LDY #$03           ; $e230: a0 03     
-            LDA ($1e),y        ; $e232: b1 1e     
+            LDA ($1E),Y        ; $e232: b1 1e     
             CMP #$08           ; $e234: c9 08     
             BCC __e247         ; $e236: 90 0f     
             AND #$03           ; $e238: 29 03     
@@ -4376,16 +4427,16 @@ __e22f:     RTS                ; $e22f: 60
             CMP #$02           ; $e23d: c9 02     
             BCS __e247         ; $e23f: b0 06     
             LDY #$0d           ; $e241: a0 0d     
-            LDA ($1e),y        ; $e243: b1 1e     
+            LDA ($1E),Y        ; $e243: b1 1e     
             BNE __e270         ; $e245: d0 29     
 __e247:     LDY #$08           ; $e247: a0 08     
-            LDA ($1e),y        ; $e249: b1 1e     
+            LDA ($1E),Y        ; $e249: b1 1e     
             SEC                ; $e24b: 38        
             SBC #$30           ; $e24c: e9 30     
             CMP #$20           ; $e24e: c9 20     
             BCC __e25d         ; $e250: 90 0b     
             LDY #$03           ; $e252: a0 03     
-            LDA ($1e),y        ; $e254: b1 1e     
+            LDA ($1E),Y        ; $e254: b1 1e     
             CMP #$06           ; $e256: c9 06     
             BCC __e25d         ; $e258: 90 03     
             JMP __e084         ; $e25a: 4c 84 e0  
@@ -4393,55 +4444,55 @@ __e247:     LDY #$08           ; $e247: a0 08
 ;-------------------------------------------------------------------------------
 __e25d:     LDA #$00           ; $e25d: a9 00     
             LDY #$08           ; $e25f: a0 08     
-            STA ($1e),y        ; $e261: 91 1e     
+            STA ($1E),Y        ; $e261: 91 1e     
             LDA #$02           ; $e263: a9 02     
             LDY #$0f           ; $e265: a0 0f     
-            STA ($1e),y        ; $e267: 91 1e     
+            STA ($1E),Y        ; $e267: 91 1e     
             LDA #$06           ; $e269: a9 06     
             LDY #$04           ; $e26b: a0 04     
-            STA ($1e),y        ; $e26d: 91 1e     
+            STA ($1E),Y        ; $e26d: 91 1e     
             RTS                ; $e26f: 60        
 
 ;-------------------------------------------------------------------------------
 __e270:     LDY #$06           ; $e270: a0 06     
-            STA ($1e),y        ; $e272: 91 1e     
+            STA ($1E),Y        ; $e272: 91 1e     
             LDY #$03           ; $e274: a0 03     
-            LDA ($1e),y        ; $e276: b1 1e     
+            LDA ($1E),Y        ; $e276: b1 1e     
             AND #$fe           ; $e278: 29 fe     
             ORA #$02           ; $e27a: 09 02     
-            STA ($1e),y        ; $e27c: 91 1e     
+            STA ($1E),Y        ; $e27c: 91 1e     
             DEY                ; $e27e: 88        
             LDA #$00           ; $e27f: a9 00     
-            STA ($1e),y        ; $e281: 91 1e     
+            STA ($1E),Y        ; $e281: 91 1e     
             LDA #$21           ; $e283: a9 21     
             LDY #$07           ; $e285: a0 07     
-            STA ($1e),y        ; $e287: 91 1e     
+            STA ($1E),Y        ; $e287: 91 1e     
             LDA #$e0           ; $e289: a9 e0     
             LDY #$0b           ; $e28b: a0 0b     
-            STA ($1e),y        ; $e28d: 91 1e     
+            STA ($1E),Y        ; $e28d: 91 1e     
             LDA #$02           ; $e28f: a9 02     
             INY                ; $e291: c8        
-            STA ($1e),y        ; $e292: 91 1e     
+            STA ($1E),Y        ; $e292: 91 1e     
             LDA #$0a           ; $e294: a9 0a     
             LDY #$0f           ; $e296: a0 0f     
-            STA ($1e),y        ; $e298: 91 1e     
+            STA ($1E),Y        ; $e298: 91 1e     
             LDA #$04           ; $e29a: a9 04     
             LDY #$04           ; $e29c: a0 04     
-            STA ($1e),y        ; $e29e: 91 1e     
+            STA ($1E),Y        ; $e29e: 91 1e     
             RTS                ; $e2a0: 60        
 
 ;-------------------------------------------------------------------------------
             LDY #$08           ; $e2a1: a0 08     
-            LDA ($1e),y        ; $e2a3: b1 1e     
+            LDA ($1E),Y        ; $e2a3: b1 1e     
             SEC                ; $e2a5: 38        
             SBC #$49           ; $e2a6: e9 49     
             CMP #$10           ; $e2a8: c9 10     
             BCC __e2ba         ; $e2aa: 90 0e     
             LDY #$07           ; $e2ac: a0 07     
-            LDA ($1e),y        ; $e2ae: b1 1e     
+            LDA ($1E),Y        ; $e2ae: b1 1e     
             SEC                ; $e2b0: 38        
             SBC #$01           ; $e2b1: e9 01     
-            STA ($1e),y        ; $e2b3: 91 1e     
+            STA ($1E),Y        ; $e2b3: 91 1e     
             BEQ __e25d         ; $e2b5: f0 a6     
             JMP __e03d         ; $e2b7: 4c 3d e0  
 
@@ -4449,23 +4500,23 @@ __e270:     LDY #$06           ; $e270: a0 06
 __e2ba:     LDA #$00           ; $e2ba: a9 00     
             SEC                ; $e2bc: 38        
             LDY #$06           ; $e2bd: a0 06     
-            SBC ($1e),y        ; $e2bf: f1 1e     
-            STA ($1e),y        ; $e2c1: 91 1e     
+            SBC ($1E),Y        ; $e2bf: f1 1e     
+            STA ($1E),Y        ; $e2c1: 91 1e     
             LDA #$06           ; $e2c3: a9 06     
             INY                ; $e2c5: c8        
-            STA ($1e),y        ; $e2c6: 91 1e     
+            STA ($1E),Y        ; $e2c6: 91 1e     
             LDA #$00           ; $e2c8: a9 00     
             LDY #$0b           ; $e2ca: a0 0b     
-            STA ($1e),y        ; $e2cc: 91 1e     
+            STA ($1E),Y        ; $e2cc: 91 1e     
             LDA #$09           ; $e2ce: a9 09     
             INY                ; $e2d0: c8        
-            STA ($1e),y        ; $e2d1: 91 1e     
+            STA ($1E),Y        ; $e2d1: 91 1e     
             LDA #$0c           ; $e2d3: a9 0c     
             LDY #$0f           ; $e2d5: a0 0f     
-            STA ($1e),y        ; $e2d7: 91 1e     
+            STA ($1E),Y        ; $e2d7: 91 1e     
             LDA #$04           ; $e2d9: a9 04     
             LDY #$04           ; $e2db: a0 04     
-            STA ($1e),y        ; $e2dd: 91 1e     
+            STA ($1E),Y        ; $e2dd: 91 1e     
             RTS                ; $e2df: 60        
 
 ;-------------------------------------------------------------------------------
@@ -4666,7 +4717,7 @@ __e469:     LDX #$00           ; $e469: a2 00
 __e46b:     LDA $0202,x        ; $e46b: bd 02 02  
             BMI __e497         ; $e46e: 30 27     
             LDY #$01           ; $e470: a0 01     
-            LDA ($1e),y        ; $e472: b1 1e     
+            LDA ($1E),Y        ; $e472: b1 1e     
             SEC                ; $e474: 38        
             SBC $0204,x        ; $e475: fd 04 02  
             CLC                ; $e478: 18        
@@ -4678,11 +4729,11 @@ __e46b:     LDA $0202,x        ; $e46b: bd 02 02
             ADC __e4ce         ; $e483: 6d ce e4  
             STA $11            ; $e486: 85 11     
             LDY #$02           ; $e488: a0 02     
-            LDA ($1e),y        ; $e48a: b1 1e     
+            LDA ($1E),Y        ; $e48a: b1 1e     
             CLC                ; $e48c: 18        
             SBC __e4cd         ; $e48d: ed cd e4  
             INY                ; $e490: c8        
-            LDA ($1e),y        ; $e491: b1 1e     
+            LDA ($1E),Y        ; $e491: b1 1e     
             SBC $11            ; $e493: e5 11     
             BEQ __e4a2         ; $e495: f0 0b     
 __e497:     TXA                ; $e497: 8a        
@@ -4701,26 +4752,26 @@ __e4a2:     CLC                ; $e4a2: 18
 ;-------------------------------------------------------------------------------
 __e4a4:     LDA #$06           ; $e4a4: a9 06     
             LDY #$04           ; $e4a6: a0 04     
-            STA ($1e),y        ; $e4a8: 91 1e     
+            STA ($1E),Y        ; $e4a8: 91 1e     
             LDY #$07           ; $e4aa: a0 07     
-            LDA ($1e),y        ; $e4ac: b1 1e     
+            LDA ($1E),Y        ; $e4ac: b1 1e     
             ASL                ; $e4ae: 0a        
             TAY                ; $e4af: a8        
             LDA __e4ce,y       ; $e4b0: b9 ce e4  
             PHA                ; $e4b3: 48        
             LDA __e4cd,y       ; $e4b4: b9 cd e4  
             LDY #$02           ; $e4b7: a0 02     
-            STA ($1e),y        ; $e4b9: 91 1e     
+            STA ($1E),Y        ; $e4b9: 91 1e     
             INY                ; $e4bb: c8        
             PLA                ; $e4bc: 68        
             CLC                ; $e4bd: 18        
             ADC $0205,x        ; $e4be: 7d 05 02  
-            STA ($1e),y        ; $e4c1: 91 1e     
+            STA ($1E),Y        ; $e4c1: 91 1e     
             LDY #$07           ; $e4c3: a0 07     
-            LDA ($1e),y        ; $e4c5: b1 1e     
+            LDA ($1E),Y        ; $e4c5: b1 1e     
             CLC                ; $e4c7: 18        
             ADC #$01           ; $e4c8: 69 01     
-            STA ($1e),y        ; $e4ca: 91 1e     
+            STA ($1E),Y        ; $e4ca: 91 1e     
             RTS                ; $e4cc: 60        
 
 ;-------------------------------------------------------------------------------
@@ -5026,19 +5077,19 @@ __e787:     RTS                ; $e787: 60
 ;-------------------------------------------------------------------------------
             .hex 02            ; $e788: 02        Invalid Opcode - KIL 
             .hex 02            ; $e789: 02        Invalid Opcode - KIL 
-            brk                ; $e78a: 00        
+            BRK                ; $e78a: 00        
             .hex 02            ; $e78b: 02        Invalid Opcode - KIL 
             .hex 02            ; $e78c: 02        Invalid Opcode - KIL 
             .hex 02            ; $e78d: 02        Invalid Opcode - KIL 
-            brk                ; $e78e: 00        
+            BRK                ; $e78e: 00        
             .hex 02            ; $e78f: 02        Invalid Opcode - KIL 
             .hex 02            ; $e790: 02        Invalid Opcode - KIL 
             .hex 02            ; $e791: 02        Invalid Opcode - KIL 
-            brk                ; $e792: 00        
+            BRK                ; $e792: 00        
             .hex 02            ; $e793: 02        Invalid Opcode - KIL 
             .hex 02            ; $e794: 02        Invalid Opcode - KIL 
             .hex 02            ; $e795: 02        Invalid Opcode - KIL 
-            brk                ; $e796: 00        
+            BRK                ; $e796: 00        
             .hex 02            ; $e797: 02        Invalid Opcode - KIL 
 __e798:     
             .hex 9a            ; $e798: 9a            Data
@@ -5289,7 +5340,7 @@ __e971:     RTS                ; $e971: 60
 __e972:     LDA $83            ; $e972: a5 83     
             BEQ __e971         ; $e974: f0 fb     
             LDY #$0e           ; $e976: a0 0e     
-            LDA ($1e),y        ; $e978: b1 1e     
+            LDA ($1E),Y        ; $e978: b1 1e     
             AND #$03           ; $e97a: 29 03     
             CMP #$01           ; $e97c: c9 01     
             BNE __e971         ; $e97e: d0 f1     
@@ -5333,18 +5384,18 @@ __e9b8:     STY $11            ; $e9b8: 84 11
             CMP #$21           ; $e9c7: c9 21     
             BCS __e9eb         ; $e9c9: b0 20     
 __e9cb:     LDY #$03           ; $e9cb: a0 03     
-            LDA ($1e),y        ; $e9cd: b1 1e     
+            LDA ($1E),Y        ; $e9cd: b1 1e     
             SEC                ; $e9cf: 38        
             SBC $02b5,x        ; $e9d0: fd b5 02  
             CMP #$02           ; $e9d3: c9 02     
             BCS __e9eb         ; $e9d5: b0 14     
             LDY #$01           ; $e9d7: a0 01     
-            LDA ($1e),y        ; $e9d9: b1 1e     
+            LDA ($1E),Y        ; $e9d9: b1 1e     
             SEC                ; $e9db: 38        
             SBC $02b4,x        ; $e9dc: fd b4 02  
             STA $10            ; $e9df: 85 10     
             LDY #$06           ; $e9e1: a0 06     
-            LDA ($1e),y        ; $e9e3: b1 1e     
+            LDA ($1E),Y        ; $e9e3: b1 1e     
             BMI __e9ee         ; $e9e5: 30 07     
             INC $10            ; $e9e7: e6 10     
             BMI __e9f2         ; $e9e9: 30 07     
@@ -5436,7 +5487,7 @@ __ea8f:     RTS                ; $ea8f: 60
 ;-------------------------------------------------------------------------------
 __ea90:     LDA #$00           ; $ea90: a9 00     
             LDY #$09           ; $ea92: a0 09     
-            STA ($1e),y        ; $ea94: 91 1e     
+            STA ($1E),Y        ; $ea94: 91 1e     
             LDX #$00           ; $ea96: a2 00     
 __ea98:     LDA $02b0,x        ; $ea98: bd b0 02  
             BNE __eae8         ; $ea9b: d0 4b     
@@ -5444,18 +5495,18 @@ __ea98:     LDA $02b0,x        ; $ea98: bd b0 02
             AND #$02           ; $eaa0: 29 02     
             BNE __eae8         ; $eaa2: d0 44     
             LDY #$03           ; $eaa4: a0 03     
-            LDA ($1e),y        ; $eaa6: b1 1e     
+            LDA ($1E),Y        ; $eaa6: b1 1e     
             SEC                ; $eaa8: 38        
             SBC $02b5,x        ; $eaa9: fd b5 02  
             CMP #$02           ; $eaac: c9 02     
             BCS __eae8         ; $eaae: b0 38     
             LDY #$06           ; $eab0: a0 06     
-            LDA ($1e),y        ; $eab2: b1 1e     
+            LDA ($1E),Y        ; $eab2: b1 1e     
             BMI __eade         ; $eab4: 30 28     
             LDA $02b4,x        ; $eab6: bd b4 02  
             SEC                ; $eab9: 38        
             LDY #$01           ; $eaba: a0 01     
-            SBC ($1e),y        ; $eabc: f1 1e     
+            SBC ($1E),Y        ; $eabc: f1 1e     
             CMP #$02           ; $eabe: c9 02     
             BNE __eae8         ; $eac0: d0 26     
 __eac2:     LDA $1e            ; $eac2: a5 1e     
@@ -5469,14 +5520,14 @@ __eac2:     LDA $1e            ; $eac2: a5 1e
 __ead4:     JSR __e9a4         ; $ead4: 20 a4 e9  
 __ead7:     LDA #$01           ; $ead7: a9 01     
             LDY #$09           ; $ead9: a0 09     
-            STA ($1e),y        ; $eadb: 91 1e     
+            STA ($1E),Y        ; $eadb: 91 1e     
             RTS                ; $eadd: 60        
 
 ;-------------------------------------------------------------------------------
 __eade:     LDA $02b4,x        ; $eade: bd b4 02  
             SEC                ; $eae1: 38        
             LDY #$01           ; $eae2: a0 01     
-            CMP ($1e),y        ; $eae4: d1 1e     
+            CMP ($1E),Y        ; $eae4: d1 1e     
             BEQ __eac2         ; $eae6: f0 da     
 __eae8:     TXA                ; $eae8: 8a        
             CLC                ; $eae9: 18        
@@ -5490,8 +5541,8 @@ __eae8:     TXA                ; $eae8: 8a
 __eaf2:     LDY #$06           ; $eaf2: a0 06     
             SEC                ; $eaf4: 38        
             LDA #$00           ; $eaf5: a9 00     
-            SBC ($1e),y        ; $eaf7: f1 1e     
-            STA ($1e),y        ; $eaf9: 91 1e     
+            SBC ($1E),Y        ; $eaf7: f1 1e     
+            STA ($1E),Y        ; $eaf9: 91 1e     
             RTS                ; $eafb: 60        
 
 ;-------------------------------------------------------------------------------
@@ -5645,9 +5696,9 @@ __ed1c:     LDA #$30           ; $ed1c: a9 30
             STA $4c            ; $ed1e: 85 4c     
             LDA #$00           ; $ed20: a9 00     
             LDY #$05           ; $ed22: a0 05     
-            STA ($1e),y        ; $ed24: 91 1e     
+            STA ($1E),Y        ; $ed24: 91 1e     
             LDY #$04           ; $ed26: a0 04     
-            STA ($1e),y        ; $ed28: 91 1e     
+            STA ($1E),Y        ; $ed28: 91 1e     
             LDX #$20           ; $ed2a: a2 20     
 __ed2c:     LDA $040b,x        ; $ed2c: bd 0b 04  
             CMP $1e            ; $ed2f: c5 1e     
@@ -5683,7 +5734,7 @@ __ed56:     JSR __ed65         ; $ed56: 20 65 ed
 
 ;-------------------------------------------------------------------------------
 __ed65:     LDY #$05           ; $ed65: a0 05     
-            LDA ($1e),y        ; $ed67: b1 1e     
+            LDA ($1E),Y        ; $ed67: b1 1e     
             BEQ __ed4d         ; $ed69: f0 e2     
             CMP #$02           ; $ed6b: c9 02     
             BCS __ed12         ; $ed6d: b0 a3     
@@ -5693,7 +5744,7 @@ __ed65:     LDY #$05           ; $ed65: a0 05
             JSR __eec9         ; $ed77: 20 c9 ee  
             LDA #$08           ; $ed7a: a9 08     
             LDY #$04           ; $ed7c: a0 04     
-            STA ($1e),y        ; $ed7e: 91 1e     
+            STA ($1E),Y        ; $ed7e: 91 1e     
             LDA $63            ; $ed80: a5 63     
             CLC                ; $ed82: 18        
             ADC #$08           ; $ed83: 69 08     
@@ -5721,25 +5772,25 @@ __eda3:     LDX #$fd           ; $eda3: a2 fd
             BMI __edad         ; $eda9: 30 02     
             LDX #$ff           ; $edab: a2 ff     
 __edad:     LDY #$07           ; $edad: a0 07     
-            STA ($1e),y        ; $edaf: 91 1e     
+            STA ($1E),Y        ; $edaf: 91 1e     
             LDA #$02           ; $edb1: a9 02     
             LDY #$05           ; $edb3: a0 05     
-            STA ($1e),y        ; $edb5: 91 1e     
+            STA ($1E),Y        ; $edb5: 91 1e     
             LDA #$10           ; $edb7: a9 10     
             LDY #$04           ; $edb9: a0 04     
-            STA ($1e),y        ; $edbb: 91 1e     
+            STA ($1E),Y        ; $edbb: 91 1e     
             LDA #$00           ; $edbd: a9 00     
             LDY #$06           ; $edbf: a0 06     
             SEC                ; $edc1: 38        
-            SBC ($1e),y        ; $edc2: f1 1e     
-            STA ($1e),y        ; $edc4: 91 1e     
+            SBC ($1E),Y        ; $edc2: f1 1e     
+            STA ($1E),Y        ; $edc4: 91 1e     
             BPL __edca         ; $edc6: 10 02     
             LDX #$fe           ; $edc8: a2 fe     
 __edca:     LDY #$01           ; $edca: a0 01     
             TXA                ; $edcc: 8a        
             CLC                ; $edcd: 18        
-            ADC ($1e),y        ; $edce: 71 1e     
-            STA ($1e),y        ; $edd0: 91 1e     
+            ADC ($1E),Y        ; $edce: 71 1e     
+            STA ($1E),Y        ; $edd0: 91 1e     
             LDA #$01           ; $edd2: a9 01     
             STA $18            ; $edd4: 85 18     
             PLA                ; $edd6: 68        
@@ -5812,29 +5863,29 @@ __ee41:     LDA #$01           ; $ee41: a9 01
 ;-------------------------------------------------------------------------------
 __ee4d:     STA $10            ; $ee4d: 85 10     
             LDY #$06           ; $ee4f: a0 06     
-            LDA ($1e),y        ; $ee51: b1 1e     
+            LDA ($1E),Y        ; $ee51: b1 1e     
             BMI __ee66         ; $ee53: 30 11     
             LDY #$00           ; $ee55: a0 00     
-            LDA ($1e),y        ; $ee57: b1 1e     
+            LDA ($1E),Y        ; $ee57: b1 1e     
             CLC                ; $ee59: 18        
             ADC $10            ; $ee5a: 65 10     
-            STA ($1e),y        ; $ee5c: 91 1e     
+            STA ($1E),Y        ; $ee5c: 91 1e     
             INY                ; $ee5e: c8        
-            LDA ($1e),y        ; $ee5f: b1 1e     
+            LDA ($1E),Y        ; $ee5f: b1 1e     
             ADC #$00           ; $ee61: 69 00     
-            STA ($1e),y        ; $ee63: 91 1e     
+            STA ($1E),Y        ; $ee63: 91 1e     
             RTS                ; $ee65: 60        
 
 ;-------------------------------------------------------------------------------
 __ee66:     LDY #$00           ; $ee66: a0 00     
-            LDA ($1e),y        ; $ee68: b1 1e     
+            LDA ($1E),Y        ; $ee68: b1 1e     
             SEC                ; $ee6a: 38        
             SBC $10            ; $ee6b: e5 10     
-            STA ($1e),y        ; $ee6d: 91 1e     
+            STA ($1E),Y        ; $ee6d: 91 1e     
             INY                ; $ee6f: c8        
-            LDA ($1e),y        ; $ee70: b1 1e     
+            LDA ($1E),Y        ; $ee70: b1 1e     
             SBC #$00           ; $ee72: e9 00     
-            STA ($1e),y        ; $ee74: 91 1e     
+            STA ($1E),Y        ; $ee74: 91 1e     
             RTS                ; $ee76: 60        
 
 ;-------------------------------------------------------------------------------
@@ -5849,7 +5900,7 @@ __ee79:     LDA $0404,x        ; $ee79: bd 04 04
             LDA $0403,x        ; $ee88: bd 03 04  
             LDY #$03           ; $ee8b: a0 03     
             SEC                ; $ee8d: 38        
-            SBC ($1e),y        ; $ee8e: f1 1e     
+            SBC ($1E),Y        ; $ee8e: f1 1e     
             CLC                ; $ee90: 18        
             ADC #$01           ; $ee91: 69 01     
             CMP #$04           ; $ee93: c9 04     
@@ -5857,10 +5908,10 @@ __ee79:     LDA $0404,x        ; $ee79: bd 04 04
             LDA $0401,x        ; $ee97: bd 01 04  
             LDY #$01           ; $ee9a: a0 01     
             SEC                ; $ee9c: 38        
-            SBC ($1e),y        ; $ee9d: f1 1e     
+            SBC ($1E),Y        ; $ee9d: f1 1e     
             PHA                ; $ee9f: 48        
             LDY #$06           ; $eea0: a0 06     
-            LDA ($1e),y        ; $eea2: b1 1e     
+            LDA ($1E),Y        ; $eea2: b1 1e     
             BPL __eeab         ; $eea4: 10 05     
             PLA                ; $eea6: 68        
             CLC                ; $eea7: 18        
@@ -5906,7 +5957,7 @@ __eee1:     TXA                ; $eee1: 8a
 ;-------------------------------------------------------------------------------
 __eeeb:     STA $10            ; $eeeb: 85 10     
             LDY #$06           ; $eeed: a0 06     
-            LDA ($1e),y        ; $eeef: b1 1e     
+            LDA ($1E),Y        ; $eeef: b1 1e     
             BMI __ef05         ; $eef1: 30 12     
             LDA $0400,x        ; $eef3: bd 00 04  
             CLC                ; $eef6: 18        
@@ -5957,34 +6008,34 @@ __ef3f:     LDA #$a0           ; $ef3f: a9 a0
             LDA #$a8           ; $ef4a: a9 a8     
             STA $1e            ; $ef4c: 85 1e     
 __ef4e:     LDY #$05           ; $ef4e: a0 05     
-            LDA ($1e),y        ; $ef50: b1 1e     
+            LDA ($1E),Y        ; $ef50: b1 1e     
             BEQ __ef2e         ; $ef52: f0 da     
             CMP #$02           ; $ef54: c9 02     
             BCC __ef78         ; $ef56: 90 20     
             JSR __ef9b         ; $ef58: 20 9b ef  
             LDY #$02           ; $ef5b: a0 02     
-            LDA ($1e),y        ; $ef5d: b1 1e     
+            LDA ($1E),Y        ; $ef5d: b1 1e     
             CLC                ; $ef5f: 18        
             ADC #$80           ; $ef60: 69 80     
-            STA ($1e),y        ; $ef62: 91 1e     
+            STA ($1E),Y        ; $ef62: 91 1e     
             INY                ; $ef64: c8        
-            LDA ($1e),y        ; $ef65: b1 1e     
+            LDA ($1E),Y        ; $ef65: b1 1e     
             ADC #$00           ; $ef67: 69 00     
-            STA ($1e),y        ; $ef69: 91 1e     
+            STA ($1E),Y        ; $ef69: 91 1e     
             CMP #$1c           ; $ef6b: c9 1c     
             BCC __ef75         ; $ef6d: 90 06     
             LDA #$00           ; $ef6f: a9 00     
             LDY #$05           ; $ef71: a0 05     
-            STA ($1e),y        ; $ef73: 91 1e     
+            STA ($1E),Y        ; $ef73: 91 1e     
 __ef75:     JMP __c305         ; $ef75: 4c 05 c3  
 
 ;-------------------------------------------------------------------------------
 __ef78:     LDY #$03           ; $ef78: a0 03     
-            LDA ($1e),y        ; $ef7a: b1 1e     
+            LDA ($1E),Y        ; $ef7a: b1 1e     
             CMP $0403          ; $ef7c: cd 03 04  
             BNE __ef98         ; $ef7f: d0 17     
             LDY #$01           ; $ef81: a0 01     
-            LDA ($1e),y        ; $ef83: b1 1e     
+            LDA ($1E),Y        ; $ef83: b1 1e     
             SEC                ; $ef85: 38        
             SBC $0401          ; $ef86: ed 01 04  
             CMP #$02           ; $ef89: c9 02     
@@ -5993,7 +6044,7 @@ __ef78:     LDY #$03           ; $ef78: a0 03
             STA $0607          ; $ef8f: 8d 07 06  
             LDA #$02           ; $ef92: a9 02     
             LDY #$05           ; $ef94: a0 05     
-            STA ($1e),y        ; $ef96: 91 1e     
+            STA ($1E),Y        ; $ef96: 91 1e     
 __ef98:     JMP __c305         ; $ef98: 4c 05 c3  
 
 ;-------------------------------------------------------------------------------
@@ -6002,22 +6053,22 @@ __ef9d:     LDA $040f,x        ; $ef9d: bd 0f 04
             CMP #$16           ; $efa0: c9 16     
             BCS __eff7         ; $efa2: b0 53     
             LDY #$00           ; $efa4: a0 00     
-            LDA ($1e),y        ; $efa6: b1 1e     
+            LDA ($1E),Y        ; $efa6: b1 1e     
             SEC                ; $efa8: 38        
             SBC $0400,x        ; $efa9: fd 00 04  
             INY                ; $efac: c8        
-            LDA ($1e),y        ; $efad: b1 1e     
+            LDA ($1E),Y        ; $efad: b1 1e     
             SBC $0401,x        ; $efaf: fd 01 04  
             CLC                ; $efb2: 18        
             ADC #$01           ; $efb3: 69 01     
             CMP #$02           ; $efb5: c9 02     
             BCS __eff7         ; $efb7: b0 3e     
             INY                ; $efb9: c8        
-            LDA ($1e),y        ; $efba: b1 1e     
+            LDA ($1E),Y        ; $efba: b1 1e     
             SEC                ; $efbc: 38        
             SBC $0402,x        ; $efbd: fd 02 04  
             INY                ; $efc0: c8        
-            LDA ($1e),y        ; $efc1: b1 1e     
+            LDA ($1E),Y        ; $efc1: b1 1e     
             SBC $0403,x        ; $efc3: fd 03 04  
             CLC                ; $efc6: 18        
             ADC #$01           ; $efc7: 69 01     
@@ -6175,23 +6226,23 @@ __f0f0:     LDA $90,x          ; $f0f0: b5 90
             LDA $95,x          ; $f0f6: b5 95     
             SEC                ; $f0f8: 38        
             LDY #$03           ; $f0f9: a0 03     
-            SBC ($1e),y        ; $f0fb: f1 1e     
+            SBC ($1E),Y        ; $f0fb: f1 1e     
             CMP #$02           ; $f0fd: c9 02     
             BNE __f0e4         ; $f0ff: d0 e3     
             LDA $94,x          ; $f101: b5 94     
             SEC                ; $f103: 38        
             LDY #$01           ; $f104: a0 01     
-            SBC ($1e),y        ; $f106: f1 1e     
+            SBC ($1E),Y        ; $f106: f1 1e     
             BEQ __f118         ; $f108: f0 0e     
             CMP #$01           ; $f10a: c9 01     
             BNE __f127         ; $f10c: d0 19     
             LDY #$00           ; $f10e: a0 00     
-            LDA ($1e),y        ; $f110: b1 1e     
+            LDA ($1E),Y        ; $f110: b1 1e     
             CMP #$c0           ; $f112: c9 c0     
             BCC __f0e4         ; $f114: 90 ce     
             BCS __f120         ; $f116: b0 08     
 __f118:     LDY #$00           ; $f118: a0 00     
-            LDA ($1e),y        ; $f11a: b1 1e     
+            LDA ($1E),Y        ; $f11a: b1 1e     
             CMP #$40           ; $f11c: c9 40     
             BCS __f0e4         ; $f11e: b0 c4     
 __f120:     LDA #$01           ; $f120: a9 01     
@@ -6497,8 +6548,7 @@ __f3b2:     LDA $0490          ; $f3b2: ad 90 04
             SBC #$02           ; $f3b6: e9 02     
             STA $0490          ; $f3b8: 8d 90 04  
             BCS __f3c0         ; $f3bb: b0 03     
-            .hex ce 91         ; $f3bd: ce 91     Suspected data
-__f3bf:     .hex 04            ; $f3bf: 04            Data
+            DEC $0491          ; $f3bd: ce 91 04
 __f3c0:     RTS                ; $f3c0: 60        
 
 ;-------------------------------------------------------------------------------
@@ -6588,9 +6638,9 @@ __f49f:     ASL                ; $f49f: 0a
 
 ;-------------------------------------------------------------------------------
 __f4b5:     LDA #$0f           ; $f4b5: a9 0f     
-            STA $4015          ; $f4b7: 8d 15 40  
+            STA APUCTRL        ; $f4b7: 8d 15 40  
             LDA #$c0           ; $f4ba: a9 c0     
-            STA $4017          ; $f4bc: 8d 17 40  
+            STA FrameCtr       ; $f4bc: 8d 17 40  
 __f4bf:     LDA #$19           ; $f4bf: a9 19     
             STA $f0            ; $f4c1: 85 f0     
             LDA #$06           ; $f4c3: a9 06     
@@ -6627,9 +6677,9 @@ __f4f1:     LDA $23            ; $f4f1: a5 23
 __f4fb:     LDA #$01           ; $f4fb: a9 01     
             STA $f5            ; $f4fd: 85 f5     
             LDA #$10           ; $f4ff: a9 10     
-            STA $4004          ; $f501: 8d 04 40  
+            STA Sq1_Duty       ; $f501: 8d 04 40  
             LDA #$00           ; $f504: a9 00     
-            STA $4008          ; $f506: 8d 08 40  
+            STA Tri_Linear     ; $f506: 8d 08 40  
 __f509:     LDA #$00           ; $f509: a9 00     
             STA $fc            ; $f50b: 85 fc     
             STA $fd            ; $f50d: 85 fd     
@@ -6674,7 +6724,7 @@ __f534:     TAX                ; $f534: aa
             STA $f6            ; $f54d: 85 f6     
 __f54f:     INY                ; $f54f: c8        
             LDA ($f0),y        ; $f550: b1 f0     
-            STA $4000,x        ; $f552: 9d 00 40  This is actually writing to $4005 as well for the sweep contROL.
+            STA $4000,x        ; $f552: 9d 00 40  This is actually writing to $4005 as well for the sweep control.
             INX                ; $f555: e8        
             DEC $f6            ; $f556: c6 f6     
             BNE __f54f         ; $f558: d0 f5     
