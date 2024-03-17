@@ -124,7 +124,7 @@ __c0bf:
             LDY #$00           ; $c0c2: a0 00       Load value $00 into Y register.       
             JSR __c146         ; $c0c4: 20 46 c1    Jump to subroutine __c146
 __c0c7:     
-            INC $21            ; $c0c7: e6 21       Increment value in address $21 by one
+            INC Frame_Ctr      ; $c0c7: e6 21       Increment value in address Frame_Ctr by one
             LDA #$00           ; $c0c9: a9 00       Load value $00 into A.  
             STA $20            ; $c0cb: 85 20       Store A value at address $20.     
             JMP __c06d         ; $c0cd: 4c 6d c0    Jump to __c06d
@@ -142,7 +142,7 @@ __c0d0:
             LDA #$68           ; $c0de: a9 68       Load value $00 into A.      
             STA $10            ; $c0e0: 85 10       Store A value in address $10
             LDY #$67           ; $c0e2: a0 67       Load value $67 into Y register.         
-            LDA $21            ; $c0e4: a5 21       Load value at $21 to A       
+            LDA Frame_Ctr      ; $c0e4: a5 21       Load value at Frame_Ctr to A       
             AND #$10           ; $c0e6: 29 10       Logically AND $10 with value in A.
             BNE __c0ec         ; $c0e8: d0 02       Is the Zero Flag (Z) clear? If so, keep going. If not, branch to __c0ec     
             LDY #$F7           ; $c0ea: a0 f7       Load value $F7 into Y register.       
@@ -656,7 +656,7 @@ __c415:
             LDX $2C            ; $c41f: a6 2c       Load value at $2C to X      
             CPX #$34           ; $c421: e0 34       Compare value $34 with value in X     
             BCC __c433         ; $c423: 90 0e       Is the carry flag clear? If not, keep going. If so, branch to __c433     
-            LDA $21            ; $c425: a5 21       Load value at $21 to A     
+            LDA Frame_Ctr      ; $c425: a5 21       Load value at Frame_Ctr to A     
             AND #$0F           ; $c427: 29 0f       Logically AND $0F with value in A     
             TAY                ; $c429: a8          Transfer A to Y
             TXA                ; $c42a: 8a          Transfer X to A
@@ -744,7 +744,7 @@ __c480:
             JMP __c3d1         ; $c4c3: 4c d1 c3    Jump to __c3d1
 
 ;-------------------------------------------------------------------------------
-            LDA $21            ; $c4c6: a5 21       Load value at $21 to A     
+            LDA Frame_Ctr      ; $c4c6: a5 21       Load value at Frame_Ctr to A     
             LSR                ; $c4c8: 4a          Shift A one bit right        
             AND #$03           ; $c4c9: 29 03       Logically AND $03 with value in A     
             STA $13            ; $c4cb: 85 13       Store A value at address $13     
@@ -779,7 +779,7 @@ __c4eb:
             CMP #$01           ; $c4fd: c9 01       Compare value $01 with value in A      
             BNE __c509         ; $c4ff: d0 08       Is the Zero Flag (Z) set? If so, keep going. If not, branch to __c509     
             LDY #$41           ; $c501: a0 41       Load $41 to Y     
-            LDA $21            ; $c503: a5 21       Load value at $21 to A     
+            LDA Frame_Ctr      ; $c503: a5 21       Load value at Frame_Ctr to A     
             AND #$10           ; $c505: 29 10       Logically AND $10 with value in A     
             BNE __c50b         ; $c507: d0 02       Is the Zero Flag (Z) set? If so, keep going. If not, branch to __c50b
 __c509:     
@@ -802,7 +802,7 @@ __c520:
             RTS                ; $c520: 60          Return        
 
 ;-------------------------------------------------------------------------------
-            LDA $21            ; $c521: a5 21       Load value at $21 to A     
+            LDA Frame_Ctr      ; $c521: a5 21       Load value at Frame_Ctr to A     
             LSR                ; $c523: 4a          Shift A one bit right        
             AND #$03           ; $c524: 29 03       Logically AND $03 with value in A     
             STA $13            ; $c526: 85 13       Store A value at address $13     
@@ -949,7 +949,7 @@ Mappy_Death_2:
             STA $13            ; $c620: 85 13       Store A value at address $13     
             LDA #$00           ; $c622: a9 00       Clear A     
             STA $14            ; $c624: 85 14       Store A value at address $14     
-            LDA $21            ; $c626: a5 21       Load value at $21 to A      
+            LDA Frame_Ctr      ; $c626: a5 21       Load value at Frame_Ctr to A      
             AND #$20           ; $c628: 29 20       Logically AND $20 with value in A     
             BEQ Render_Bonus_1 ; $c62a: f0 11       Is the Zero Flag (Z) clear? If so, keep going. If not, branch to Render_Bonus_1     
             LDA #$E8           ; $c62c: a9 e8       Load $E8 to A     
@@ -2857,10 +2857,10 @@ __d703:     LDY #$00           ; $d703: a0 00
 ;-------------------------------------------------------------------------------
 __d71c:     LDA $42            ; $d71c: a5 42     
             BEQ __d735         ; $d71e: f0 15     
-            LDA $21            ; $d720: a5 21     
+            LDA Frame_Ctr      ; $d720: a5 21     
             AND #$0F           ; $d722: 29 0f     
             BNE __d734         ; $d724: d0 0e     
-            LDA $21            ; $d726: a5 21     
+            LDA Frame_Ctr      ; $d726: a5 21     
             LSR                ; $d728: 4a        
             LSR                ; $d729: 4a        
             LSR                ; $d72a: 4a        
@@ -3936,7 +3936,7 @@ __dea6:     LDY #$06           ; $dea6: a0 06
             STA ($1E),Y        ; $DECa: 91 1e     
             CMP $10            ; $DECc: c5 10     
             BNE __dee1         ; $DECe: d0 11     
-            LDX $21            ; $ded0: a6 21     
+            LDX Frame_Ctr      ; $ded0: a6 21     
             LDA __c000,x       ; $ded2: bd 00 c0  
             LSR                ; $ded5: 4a        
             LDA #$04           ; $ded6: a9 04     
@@ -4464,7 +4464,7 @@ __e270:     LDY #$06           ; $e270: a0 06
             DEY                ; $e27e: 88        
             LDA #$00           ; $e27f: a9 00     
             STA ($1E),Y        ; $e281: 91 1e     
-            LDA #$21           ; $e283: a9 21     
+            LDA #Frame_Ctr           ; $e283: a9 21     
             LDY #$07           ; $e285: a0 07     
             STA ($1E),Y        ; $e287: 91 1e     
             LDA #$e0           ; $e289: a9 e0     
@@ -5025,11 +5025,11 @@ __e70a:     LDY #$0A           ; $e70a: a0 0a
 __e71d:     RTS                ; $e71d: 60        
 
 ;-------------------------------------------------------------------------------
-__e71e:     LDA $21            ; $e71e: a5 21     
+__e71e:     LDA Frame_Ctr      ; $e71e: a5 21     
             AND #$03           ; $e720: 29 03     
             EOR #$01           ; $e722: 49 01     
             BNE __e71d         ; $e724: d0 f7     
-            LDA $21            ; $e726: a5 21     
+            LDA Frame_Ctr      ; $e726: a5 21     
             AND #$04           ; $e728: 29 04     
             BEQ __e70a         ; $e72a: f0 de     
 __e72c:     LDA $0261,x        ; $e72c: bd 61 02  
@@ -5252,7 +5252,7 @@ __e8d2:     STX $1B            ; $e8d2: 86 1b
             TAX                ; $e8dc: aa        
             CPX $83            ; $e8dd: e4 83     
             BNE __e8d2         ; $e8df: d0 f1     
-            LDA $21            ; $e8e1: a5 21     
+            LDA Frame_Ctr      ; $e8e1: a5 21     
             AND #$03           ; $e8e3: 29 03     
             ASL                ; $e8e5: 0a        
             ASL                ; $e8e6: 0a        
@@ -5265,7 +5265,7 @@ __e8d2:     STX $1B            ; $e8d2: 86 1b
             EOR #$08           ; $e8f3: 49 08     
             BNE __e8cb         ; $e8f5: d0 d4     
             LDY #$10           ; $e8f7: a0 10     
-            LDA $21            ; $e8f9: a5 21     
+            LDA Frame_Ctr      ; $e8f9: a5 21     
             AND #$04           ; $e8fb: 29 04     
             BEQ __e902         ; $e8fd: f0 03     
 __e8ff:     LDY $02b1,x        ; $e8ff: bc b1 02  
@@ -5381,7 +5381,7 @@ __e9b8:     STY $11            ; $e9b8: 84 11
             LDA $02b4,x        ; $e9c1: bd b4 02  
             SEC                ; $e9c4: 38        
             SBC $29            ; $e9c5: e5 29     
-            CMP #$21           ; $e9c7: c9 21     
+            CMP #Frame_Ctr           ; $e9c7: c9 21     
             BCS __e9eb         ; $e9c9: b0 20     
 __e9cb:     LDY #$03           ; $e9cb: a0 03     
             LDA ($1E),Y        ; $e9cd: b1 1e     
@@ -6146,11 +6146,11 @@ __f054:     LDA $0090,y        ; $f054: b9 90 00
             CMP #$02           ; $f059: c9 02     
             BCC __f09c         ; $f05b: 90 3f     
             BNE __f088         ; $f05d: d0 29     
-            LDA $21            ; $f05f: a5 21     
+            LDA Frame_Ctr      ; $f05f: a5 21     
             AND #$03           ; $f061: 29 03     
             CMP #$02           ; $f063: c9 02     
             BNE __f040         ; $f065: d0 d9     
-            LDA $21            ; $f067: a5 21     
+            LDA Frame_Ctr      ; $f067: a5 21     
             AND #$04           ; $f069: 29 04     
             LSR                ; $f06b: 4a        
             TAX                ; $f06c: aa        
@@ -6378,10 +6378,10 @@ __f214:     RTS                ; $f214: 60
             LSR                ; $f235: 4a        
             LSR                ; $f236: 4a        
             LSR                ; $f237: 4a        
-            EOR $21            ; $f238: 45 21     
+            EOR Frame_Ctr      ; $f238: 45 21     
             AND #$0F           ; $f23a: 29 0f     
             BNE __f214         ; $f23c: d0 d6     
-            LDA $21            ; $f23e: a5 21     
+            LDA Frame_Ctr      ; $f23e: a5 21     
             AND #$10           ; $f240: 29 10     
             LSR                ; $f242: 4a        
             LSR                ; $f243: 4a        
@@ -6525,7 +6525,7 @@ __f385:     LDA $0490,x        ; $f385: bd 90 04
             INX                ; $f38a: e8        
             CPX #$08           ; $f38b: e0 08     
             BNE __f385         ; $f38d: d0 f6     
-            LDA $21            ; $f38f: a5 21     
+            LDA Frame_Ctr      ; $f38f: a5 21     
             AND #$03           ; $f391: 29 03     
             STA $13            ; $f393: 85 13     
 __f395:     JSR __c415         ; $f395: 20 15 c4  
