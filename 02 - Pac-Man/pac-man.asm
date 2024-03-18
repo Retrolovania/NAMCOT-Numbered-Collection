@@ -40,7 +40,7 @@
 ; ROM Start
 ;------------------------------------------------------------------------------
 ; Namco's copyright information. It reads: "COPY RIGHT 1984 1980 NAMCO LTD. ALL RIGHTS RESERVED"
-
+__c000:
             .hex 43 4f 50 59   ; $c000: 43 4f 50 59   Data
             .hex 20 52 49 47   ; $c004: 20 52 49 47   Data
             .hex 48 54 20 31   ; $c008: 48 54 20 31   Data
