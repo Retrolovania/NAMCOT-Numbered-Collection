@@ -8,11 +8,14 @@
 ;-------------------------------------------------------------------------------
             ;$4B = Frame_Ctr
             ;$89 = Scared_Timer
+            ;$8A = Scared_Ctr
             ;$4D & $4F = Button_Pressed
             ;$50 & $51 = Pac_Direction
             ;$70-$75 = Active_Score
             ;$80-$85 = Inactive_Score
             ;$61-66 = Hi_Score
+            ;$6A = Dot_Number
+            ;$68 = Current_Level
 ;-------------------------------------------------------------------------------
 ; iNES Header
 ;-------------------------------------------------------------------------------
@@ -35,7 +38,9 @@
 
 ;-------------------------------------------------------------------------------
 ; ROM Start
-;-------------------------------------------------------------------------------
+;------------------------------------------------------------------------------
+; Namco's copyright information. It reads: "COPY RIGHT 1984 1980 NAMCO LTD. ALL RIGHTS RESERVED"
+
             .hex 43 4f 50 59   ; $c000: 43 4f 50 59   Data
             .hex 20 52 49 47   ; $c004: 20 52 49 47   Data
             .hex 48 54 20 31   ; $c008: 48 54 20 31   Data
@@ -57,8 +62,9 @@ reset:
             SEI                ; $c033: 78        
             CLD                ; $c034: d8        
 __c035:     
-            .hex a9 00 8d 00   ; $c035: a9 00 8d 00   Data
-            .hex 20 8d 01 20   ; $c039: 20 8d 01 20   Data
+            LDA #$00           ; $c035  a9 00
+            STA PPUCTRL       ; $c035: 8d 00 20  
+            STA PPUMASK       ; $c039: 8d 01 20 
 Wait_VBlank:     
             LDA PPUSTATUS      ; $c03d: ad 02 20    Load value in PPUSTATUS to A  
             BPL Wait_VBlank    ; $c040: 10 fb       If PPUSTATUS is greater than or equal to zero (most significant bit of A isn't set), loop. If not, then continue.     
@@ -380,7 +386,7 @@ __c293:
             RTS                ; $c29e: 60          Return
 
 ;-------------------------------------------------------------------------------
-__c29f:     
+__c29f:     ; Title screen text and padding is here
             .hex e4 e8 e8 e8   ; $c29f: e4 e8 e8 e8   Data
             .hex e8 e8 e8 e8   ; $c2a3: e8 e8 e8 e8   Data
             .hex e8 e8 e8 e8   ; $c2a7: e8 e8 e8 e8   Data
@@ -417,7 +423,6 @@ __c311:
             .hex ea ea ea ea   ; $c31d: ea ea ea ea   Data
             .hex ea ea ea ea   ; $c321: ea ea ea ea   Data
             .hex ea ea ea e6   ; $c325: ea ea ea e6   Data
-__c329:     
             .hex 20 65 b0 b3   ; $c329: 20 65 b0 b3   Data
             .hex b2 20 20 20   ; $c32d: b2 20 20 20   Data
             .hex 20 b4 b5 b6   ; $c331: 20 b4 b5 b6   Data
@@ -445,12 +450,10 @@ __c329:
             .hex 54 53 20 52   ; $c389: 54 53 20 52   Data
             .hex 45 53 45 52   ; $c38d: 45 53 45 52   Data
             .hex 56 45 44 ff   ; $c391: 56 45 44 ff   Data
-__c395:     
             .hex 0f 20 0f 06   ; $c395: 0f 20 0f 06   Data
             .hex 0f 26 20 27   ; $c399: 0f 26 20 27   Data
             .hex 0f 06 0f 26   ; $c39d: 0f 06 0f 26   Data
             .hex 0f 06 20 26   ; $c3a1: 0f 06 20 26   Data
-__c3a5:     
             .hex 80 a0 a0 a0   ; $c3a5: 80 a0 a0 a0   Data
             .hex a0 a0 a0 00   ; $c3a9: a0 a0 a0 00   Data
             .hex 00 66 55 55   ; $c3ad: 00 66 55 55   Data
@@ -748,7 +751,8 @@ __c58d:     LDA __c5b3,Y       ; $c58d: b9 b3 c5
             RTS                ; $c5b2: 60        
 
 ;-------------------------------------------------------------------------------
-__c5b3:     .hex 0f 20 0f 06   ; $c5b3: 0f 20 0f 06   Data
+__c5b3:     ; Demo screen text is here
+            .hex 0f 20 0f 06   ; $c5b3: 0f 20 0f 06   Data
             .hex 0f 06 0f 33   ; $c5b7: 0f 06 0f 33   Data
             .hex 0f 33 0f 27   ; $c5bb: 0f 33 0f 27   Data
             .hex 0f 17 0f 21   ; $c5bf: 0f 17 0f 21   Data
@@ -756,8 +760,10 @@ __c5b3:     .hex 0f 20 0f 06   ; $c5b3: 0f 20 0f 06   Data
             .hex 0f 11 20 33   ; $c5c7: 0f 11 20 33   Data
             .hex 0f 20 20 21   ; $c5cb: 0f 20 20 21   Data
             .hex 0f 09 20 17   ; $c5cf: 0f 09 20 17   Data
-__c5d3:     .hex e7            ; $c5d3: e7            Data
-__c5d4:     .hex c5 ff c5 0e   ; $c5d4: c5 ff c5 0e   Data
+__c5d3:     
+            .hex e7            ; $c5d3: e7            Data
+__c5d4:     
+            .hex c5 ff c5 0e   ; $c5d4: c5 ff c5 0e   Data
             .hex c6 19 c6 28   ; $c5d8: c6 19 c6 28   Data
             .hex c6 32 c6 41   ; $c5dc: c6 32 c6 41   Data
             .hex c6 4c c6 5b   ; $c5e0: c6 4c c6 5b   Data
@@ -1026,7 +1032,7 @@ __c9b9:     STA $0067,Y        ; $c9b9: 99 67 00
             STA $0600          ; $c9c7: 8d 00 06  
             STA $0601          ; $c9ca: 8d 01 06  
 __c9cd:     LDA #$FF           ; $c9cd: a9 ff     
-            STA $68            ; $c9cf: 85 68     
+            STA Current_Level  ; $c9cf: 85 68     
             STA $78            ; $c9d1: 85 78     
             STA $0245          ; $c9d3: 8d 45 02  
             LDA #$88           ; $c9d6: a9 88     
@@ -1104,7 +1110,8 @@ __ca70:     JSR __d0ef         ; $ca70: 20 ef d0
             JMP __c9dd         ; $ca8e: 4c dd c9  
 
 ;-------------------------------------------------------------------------------
-__ca91:     .hex 50 41 55 53   ; $ca91: 50 41 55 53   Data
+__ca91:     ; Pretty sure the pause text is here?
+            .hex 50 41 55 53   ; $ca91: 50 41 55 53   Data
             .hex 45 ff 2d 2d   ; $ca95: 45 ff 2d 2d   Data
             .hex 2d 2d 2d ff   ; $ca99: 2d 2d 2d ff   Data
             .hex a5 87 f0 03   ; $ca9d: a5 87 f0 03   Data
@@ -1374,7 +1381,7 @@ __cd0d:     LDA __cd59,X       ; $cd0d: bd 59 cd
             STA $1A            ; $cd21: 85 1a     
             STA $1C            ; $cd23: 85 1c     
             STA $87            ; $cd25: 85 87     
-            LDA $68            ; $cd27: a5 68     
+            LDA Current_Level  ; $cd27: a5 68     
             CMP #$01           ; $cd29: c9 01     
             BEQ __cd45         ; $cd2b: f0 18     
             INC $87            ; $cd2d: e6 87     
@@ -1521,10 +1528,10 @@ __ce68:     LDA __d060,Y       ; $ce68: b9 60 d0
             STA $6F            ; $ce85: 85 6f     
             LDA #$c0           ; $ce87: a9 c0     
             STA $6A            ; $ce89: 85 6a     
-            LDA $68            ; $ce8b: a5 68     
+            LDA Current_Level  ; $ce8b: a5 68     
             CMP #$16           ; $ce8d: c9 16     
             BEQ __ce93         ; $ce8f: f0 02     
-            INC $68            ; $ce91: e6 68     
+            INC Current_Level  ; $ce91: e6 68     
 __ce93:     JSR __d080         ; $ce93: 20 80 d0  
             JSR __e25c         ; $ce96: 20 5c e2  
 __ce99:     JSR __e379         ; $ce99: 20 79 e3  
@@ -2799,13 +2806,13 @@ __d8f9:     LDA $51            ; $d8f9: a5 51
             LDA $022b,Y        ; $d90b: b9 2b 02  
             AND #$f0           ; $d90e: 29 f0     
             BEQ __d919         ; $d910: f0 07     
-            LDA $b7            ; $d912: a5 b7     
+            LDA $B7            ; $d912: a5 b7     
             AND #$03           ; $d914: 29 03     
             JMP __d91d         ; $d916: 4c 1d d9  
 
 ;-------------------------------------------------------------------------------
-__d919:     INC $b7            ; $d919: e6 b7     
-            LDA $b7            ; $d91b: a5 b7     
+__d919:     INC $B7            ; $d919: e6 b7     
+            LDA $B7            ; $d91b: a5 b7     
 __d91d:     AND #$07           ; $d91d: 29 07     
             CMP #$06           ; $d91f: c9 06     
             bcc __d927         ; $d921: 90 04     
@@ -4342,7 +4349,7 @@ __e5ff:     LDA #$3F           ; $e5ff: a9 3f
             STA PPUADDR        ; $e601: 8d 06 20  
             LDA #$1D           ; $e604: a9 1d     
             STA PPUADDR        ; $e606: 8d 06 20  
-            LDA $68            ; $e609: a5 68     
+            LDA Current_Level  ; $e609: a5 68     
             CMP #$10           ; $e60b: c9 10     
             bcc __e611         ; $e60d: 90 02     
             LDA #$0F           ; $e60f: a9 0f     
@@ -4776,8 +4783,8 @@ __ea8c:     STA $028c          ; $ea8c: 8d 8c 02
             RTS                ; $ea8f: 60        
 
 ;-------------------------------------------------------------------------------
-            INC $b7            ; $ea90: e6 b7     
-            LDA $b7            ; $ea92: a5 b7     
+            INC $B7            ; $ea90: e6 b7     
+            LDA $B7            ; $ea92: a5 b7     
             AND #$07           ; $ea94: 29 07     
             TAY                ; $ea96: a8        
             LDA __eab5,Y       ; $ea97: b9 b5 ea  
