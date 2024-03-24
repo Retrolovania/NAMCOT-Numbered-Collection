@@ -6,7 +6,9 @@
 ;-------------------------------------------------------------------------------
 ; Some known addresses
 ;-------------------------------------------------------------------------------
+            ;$3F = Pac_State
             ;$4B = Frame_Ctr
+            ;$67 = Pac_Lives
             ;$89 = Scared_Timer
             ;$8A = Scared_Ctr
             ;$4D & $4F = Button_Pressed
@@ -808,7 +810,8 @@ __c5d4:
             .hex 23 4c 23 24   ; $c67c: 23 4c 23 24   Data
             .hex 25 26 27 28   ; $c680: 25 26 27 28   Data
             .hex 29 2a 2b ff   ; $c684: 29 2a 2b ff   Data
-__c688:     .hex 48 1c 40 26   ; $c688: 48 1c 40 26   Data
+__c688:     
+            .hex 48 1c 40 26   ; $c688: 48 1c 40 26   Data
             .hex 48 1b 40 2e   ; $c68c: 48 1b 40 2e   Data
             .hex 50 1f 40 26   ; $c690: 50 1f 40 26   Data
             .hex 50 1d 40 2e   ; $c694: 50 1d 40 2e   Data
@@ -1001,10 +1004,12 @@ __c688:     .hex 48 1c 40 26   ; $c688: 48 1c 40 26   Data
             .hex 08 08 08 09   ; $c980: 08 08 08 09   Data
             .hex 09 08 01 01   ; $c984: 09 08 01 01   Data
             .hex 1e 1f         ; $c988: 1e 1f         Data
-__c98a:     LDA #$08           ; $c98a: a9 08     
+__c98a:     
+            LDA #$08           ; $c98a: a9 08     
             STA PPUCTRL        ; $c98c: 8d 00 20  
             STA $43            ; $c98f: 85 43     
-__c991:     LDA PPUSTATUS      ; $c991: ad 02 20  
+__c991:     
+            LDA PPUSTATUS      ; $c991: ad 02 20  
             BPL __c991         ; $c994: 10 fb     
             LDA #$00           ; $c996: a9 00     
             STA PPUMASK        ; $c998: 8d 01 20  
@@ -1020,9 +1025,11 @@ __c991:     LDA PPUSTATUS      ; $c991: ad 02 20
             LDA #$01           ; $c9b0: a9 01     
             STA $67            ; $c9b2: 85 67     
             BNE __c9cd         ; $c9b4: d0 17     
-__c9b6:     LDA #$00           ; $c9b6: a9 00     
+__c9b6:     
+            LDA #$00           ; $c9b6: a9 00     
             TAY                ; $c9b8: a8        
-__c9b9:     STA $0067,Y        ; $c9b9: 99 67 00  
+__c9b9:     
+            STA $0067,Y        ; $c9b9: 99 67 00  
             INY                ; $c9bc: c8        
             CPY #$20           ; $c9bd: c0 20     
             BNE __c9b9         ; $c9bf: d0 f8     
@@ -1031,16 +1038,19 @@ __c9b9:     STA $0067,Y        ; $c9b9: 99 67 00
             STA $77            ; $c9c5: 85 77     
             STA $0600          ; $c9c7: 8d 00 06  
             STA $0601          ; $c9ca: 8d 01 06  
-__c9cd:     LDA #$FF           ; $c9cd: a9 ff     
+__c9cd:     
+            LDA #$FF           ; $c9cd: a9 ff     
             STA Current_Level  ; $c9cf: 85 68     
             STA $78            ; $c9d1: 85 78     
             STA $0245          ; $c9d3: 8d 45 02  
             LDA #$88           ; $c9d6: a9 88     
             STA $43            ; $c9d8: 85 43     
             STA PPUCTRL        ; $c9da: 8d 00 20  
-__c9dd:     LDA #$01           ; $c9dd: a9 01     
+__c9dd:     
+            LDA #$01           ; $c9dd: a9 01     
             STA $40            ; $c9df: 85 40     
-__c9e1:     LDA $40            ; $c9e1: a5 40     
+__c9e1:     
+            LDA $40            ; $c9e1: a5 40     
             BNE __c9e1         ; $c9e3: d0 fc     
             LDA $48            ; $c9e5: a5 48     
             BEQ __c9f6         ; $c9e7: f0 0d     
