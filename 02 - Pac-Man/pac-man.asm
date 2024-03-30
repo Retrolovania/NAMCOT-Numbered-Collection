@@ -4,7 +4,7 @@
 
 ; Still very much a work in progress!
 ;-------------------------------------------------------------------------------
-; Some known addresses
+; Some known zeropage addresses
 ;-------------------------------------------------------------------------------
             ;$3F = Pac_State
             ;$4B = Frame_Ctr
@@ -764,7 +764,7 @@ __c5b3:     ; Demo screen text is here
             .hex 0f 09 20 17   ; $c5cf: 0f 09 20 17   Data
 __c5d3:     
             .hex e7            ; $c5d3: e7            Data
-__c5d4:     
+__c5d4:
             .hex c5 ff c5 0e   ; $c5d4: c5 ff c5 0e   Data
             .hex c6 19 c6 28   ; $c5d8: c6 19 c6 28   Data
             .hex c6 32 c6 41   ; $c5dc: c6 32 c6 41   Data
@@ -1028,11 +1028,11 @@ __c991:
 __c9b6:     
             LDA #$00           ; $c9b6: a9 00     
             TAY                ; $c9b8: a8        
-__c9b9:     
+Write_Level:     
             STA $0067,Y        ; $c9b9: 99 67 00  
             INY                ; $c9bc: c8        
             CPY #$20           ; $c9bd: c0 20     
-            BNE __c9b9         ; $c9bf: d0 f8     
+            BNE Write_Level    ; $c9bf: d0 f8     
             LDA #$03           ; $c9c1: a9 03     
             STA $67            ; $c9c3: 85 67     
             STA $77            ; $c9c5: 85 77     
@@ -1177,7 +1177,8 @@ __cb23:     INC $87            ; $cb23: e6 87
             JMP __cbcf         ; $cb2b: 4c cf cb  
 
 ;-------------------------------------------------------------------------------
-__cb2e:     LDA #$a8           ; $cb2e: a9 a8     
+__cb2e:     
+            LDA #$A8           ; $cb2e: a9 a8
             STA $1C            ; $cb30: 85 1c     
             LDA #$60           ; $cb32: a9 60     
             STA $1A            ; $cb34: 85 1a     
@@ -3479,7 +3480,7 @@ __df42:     LDA $03            ; $df42: a5 03
             STA $022a          ; $df5c: 8d 2a 02  
             LDA __dfa7,X       ; $df5f: bd a7 df  
             STA $DC            ; $df62: 85 dc     
-            DEC $6A            ; $df64: c6 6a     
+            DEC $6A            ; $df64: c6 6a    ; Decrement number of dots on maze 
             BNE __df74         ; $df66: d0 0c     
             LDA #$0C           ; $df68: a9 0c     
             STA $3F            ; $df6a: 85 3f     
@@ -3537,11 +3538,13 @@ __dfc6:     LDA $8C            ; $dfc6: a5 8c
             LDA #$1E           ; $dfca: a9 1e     
             STA $8A            ; $dfcc: 85 8a     
             LDA #$00           ; $dfce: a9 00     
-__dfd0:     STA $89            ; $dfd0: 85 89     
+__dfd0:     
+            STA $89            ; $dfd0: 85 89     
             LDA #$0F           ; $dfd2: a9 0f     
             STA $88            ; $dfd4: 85 88     
             LDX #$03           ; $dfd6: a2 03     
-__dfd8:     LDA $39,X          ; $dfd8: b5 39     
+__dfd8:     
+            LDA $39,X          ; $dfd8: b5 39     
             AND #$FC           ; $dfda: 29 fc     
             ORA #$01           ; $dfdc: 09 01     
             STA $39,X          ; $dfde: 95 39     
@@ -3725,11 +3728,12 @@ __e123:     LDA $023f,X        ; $e123: bd 3f 02
             CPX #$06           ; $e12a: e0 06     
             BNE __e123         ; $e12c: d0 f5     
             LDX #$00           ; $e12e: a2 00     
-__e130:     LDA $70,X          ; $e130: b5 70     
+Score_Update:     
+            LDA $70,X          ; $e130: b5 70     
             STA $61,X          ; $e132: 95 61     
             INX                ; $e134: e8        
             CPX #$06           ; $e135: e0 06     
-            BNE __e130         ; $e137: d0 f7     
+            BNE Score_Update   ; $e137: d0 f7     
             RTS                ; $e139: 60        
 
 ;-------------------------------------------------------------------------------
