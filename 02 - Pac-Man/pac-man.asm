@@ -88,13 +88,17 @@ __c054:
             INC $01            ; $c059: e6 01       Increent value at $01 by one.
             CPX $01            ; $c05b: e4 01       Compare value at $01 with X
 __c05d:     
-            .hex d0 f5 a9 06   ; $c05d: d0 f5 a9 06   Data
-            .hex 8d 01 20 a9   ; $c061: 8d 01 20 a9   Data
-            .hex 00 8d 05 20   ; $c065: 00 8d 05 20   Data
-            .hex 8d 05 20 85   ; $c069: 8d 05 20 85   Data
-            .hex 41 85 42 8d   ; $c06d: 41 85 42 8d   Data
-            .hex 00 20 8d 01   ; $c071: 00 20 8d 01   Data
-            .hex 20 a8         ; $c075: 20 a8         Data
+            BNE __c054         ; $c05d: d0 f5
+            LDA #$06           ; $c05f: a9 06
+            STA $2001          ; $c061: 8d 01 20 
+            LDA #$00           ; $c064: a9 00
+            STA $2005          ; $c066: 8d 05 20 
+            STA $2005          ; $c069: 8d 05 20
+            STA $41            ; $c06c: 85 41
+            STA $42            ; $c06e: 85 42
+            STA $2001          ; $c070: 8d 00 20
+            STA $2001          ; $c073: 8d 01 20   
+            TAY                ; $c076: a8
 __c077:     
             LDA Hiroki,Y       ; $c077: b9 eb c0    Load value at (Hiroki + Y) to A
             CMP $0052,Y        ; $c07a: d9 52 00    Compare value at ($0052 + Y) to A
@@ -1423,8 +1427,11 @@ __cd59:     .hex ff 11 05 3f   ; $cd59: ff 11 05 3f   Data
             .hex ff 20 05 3f   ; $cd5d: ff 20 05 3f   Data
 __cd61:     .hex a5 87 f0 03   ; $cd61: a5 87 f0 03   Data
             .hex 4c ec cd      ; $cd65: 4c ec cd      Data
-__cd68:     .hex a0 00 a9 ff   ; $cd68: a0 00 a9 ff   Data
-__cd6c:     STA $0700,Y        ; $cd6c: 99 00 07  
+__cd68:     
+            LDY #$00           ; $cd68: a0 00 
+            LDA #$FF           ; $cd6a: a9 ff
+__cd6c:     
+            STA $0700,Y        ; $cd6c: 99 00 07  
             INY                ; $cd6f: c8        
             CPY #$60           ; $cd70: c0 60     
             BNE __cd6c         ; $cd72: d0 f8     
@@ -1438,7 +1445,8 @@ __cd6c:     STA $0700,Y        ; $cd6c: 99 00 07
             STY $05            ; $cd82: 84 05     
             STY $06            ; $cd84: 84 06     
             STY $07            ; $cd86: 84 07     
-__cd88:     LDX $06            ; $cd88: a6 06     
+__cd88:     
+            LDX $06            ; $cd88: a6 06     
             LDA __ce29,X       ; $cd8a: bd 29 ce  
             STA $02            ; $cd8d: 85 02     
             LDA __ce2a,X       ; $cd8f: bd 2a ce  
@@ -1446,16 +1454,27 @@ __cd88:     LDX $06            ; $cd88: a6 06
             LDX $07            ; $cd94: a6 07     
             LDA __ce31,X       ; $cd96: bd 31 ce  
             STA $08            ; $cd99: 85 08     
-__cd9b:     .hex a5 03 91 00   ; $cd9b: a5 03 91 00   Data
-            .hex a6 05 bd 01   ; $cd9f: a6 05 bd 01   Data
-            .hex ce c8 91 00   ; $cda3: ce c8 91 00   Data
-            .hex bd 15 ce c8   ; $cda7: bd 15 ce c8   Data
-            .hex 91 00 a5 02   ; $cdab: 91 00 a5 02   Data
-            .hex c8 91 00 a5   ; $cdaf: c8 91 00 a5   Data
-            .hex 02 18 69 08   ; $cdb3: 02 18 69 08   Data
-            .hex 85 02 c8 e6   ; $cdb7: 85 02 c8 e6   Data
-            .hex 05            ; $cdbb: 05            Data
-__cdbc:     .hex c6 08 d0 db   ; $cdbc: c6 08 d0 db   Data
+__cd9b:     
+            LDA $03            ; $cd9b: a5 03 
+            STA ($00),Y        ; $cd9d: 91 00
+            LDX $05            ; $cd9f: a6 05 
+            LDA $CE01,X        ; $cda1: bd 01 ce 
+            INY                ; $cda4: c8 
+            STA ($00),Y        ; $cda5: 91 00 
+            LDA $CE15,X        ; $cda7: bd 15 ce 
+            INY                ; $cdaa: c8
+            STA ($00),Y        ; $cdab: 91 00
+            LDA $02            ; $cdad: a5 02
+            INY                ; $cdaf: c8
+            STA ($00),Y        ; $cdb0: 91 00
+            LDA $02            ; $cdb2: a5 02 
+            CLC                ; $cdb4: 18 
+            ADC #$08           ; $cdb5: 69 08
+            STA $02            ; $cdb7: 85 02 
+            INY                ; $cdb9: c8
+            INC $05            ; $cdba: e6 05
+__cdbc:     
+            .hex c6 08 d0 db   ; $cdbc: c6 08 d0 db   Data
             .hex e6 06 e6 06   ; $cdc0: e6 06 e6 06   Data
             .hex e6 07 a5 47   ; $cdc4: e6 07 a5 47   Data
             .hex f0 0a a5 77   ; $cdc8: f0 0a a5 77   Data
@@ -1464,14 +1483,14 @@ __cdbc:     .hex c6 08 d0 db   ; $cdbc: c6 08 d0 db   Data
 __cdd4:     .hex c6 04 f0 04   ; $cdd4: c6 04 f0 04   Data
             .hex 10 ae 30 10   ; $cdd8: 10 ae 30 10   Data
 __cddc:     LDA $47            ; $cddc: a5 47     
-            BEQ __cDEC         ; $cdde: f0 0c     
+            BEQ __cdec         ; $cdde: f0 0c     
             LDA $46            ; $cde0: a5 46     
             BEQ __cd88         ; $cde2: f0 a4     
             INC $05            ; $cde4: e6 05     
             INC $05            ; $cde6: e6 05     
             INC $05            ; $cde8: e6 05     
             BNE __cd88         ; $cdea: d0 9c     
-__cDEC:     INC $87            ; $cDEC: e6 87     
+__cdec:     INC $87            ; $cDEC: e6 87     
             BNE __cdfe         ; $cdee: d0 0e     
             LDA #$00           ; $cdf0: a9 00     
             TAY                ; $cdf2: a8        
@@ -1498,9 +1517,12 @@ __ce15:     .hex 00 00 00 00   ; $ce15: 00 00 00 00   Data
 __ce29:     .hex 38            ; $ce29: 38            Data
 __ce2a:     .hex 88 60 88 44   ; $ce2a: 88 60 88 44   Data
             .hex 60 50 70      ; $ce2e: 60 50 70      Data
-__ce31:     .hex 04 04 06 03   ; $ce31: 04 04 06 03   Data
-            .hex a9 01 85 40   ; $ce35: a9 01 85 40   Data
-__ce39:     LDA $40            ; $ce39: a5 40     
+            .hex 04 04 06 03   ; $ce31: 04 04 06 03   Data
+__ce35:     
+            LDA #$01           ; $ce35: a9 01 
+            STA $40            ; $ce37: 85 40
+__ce39:    
+            LDA $40            ; $ce39: a5 40     
             BNE __ce39         ; $ce3b: d0 fc     
             LDA #$08           ; $ce3d: a9 08     
             STA PPUCTRL        ; $ce3f: 8d 00 20  
@@ -1545,12 +1567,14 @@ __ce68:     LDA __d060,Y       ; $ce68: b9 60 d0
             INC Current_Level  ; $ce91: e6 68     
 __ce93:     JSR __d080         ; $ce93: 20 80 d0  
             JSR __e25c         ; $ce96: 20 5c e2  
-__ce99:     JSR __e379         ; $ce99: 20 79 e3  
+            JSR __e379         ; $ce99: 20 79 e3  
             JSR __cffa         ; $ce9c: 20 fa cf  
-            .hex 20 cd         ; $ce9f: 20 cd     Suspected data
-__cea1:     .hex e4 20 3b e5   ; $cea1: e4 20 3b e5   Data
-            .hex 20 7c e4 a6   ; $cea5: 20 7c e4 a6   Data
-            .hex 68 a9 00 18   ; $cea9: 68 a9 00 18   Data
+            JSR __e4cd         ; $ce9f: 20 cd e4
+            JSR __e53b         ; $cea1: 20 3b e5
+            JSR __e47c         ; $cea5: 20 7c e4
+            LDX $68            ; $cea8: a6 68 
+            LDA #$00           ; $ceaa: a9 00 
+            CLC                ; $ceac: 18   Data
 __cead:     DEX                ; $cead: ca        
             BMI __ceb4         ; $ceae: 30 04     
             ADC #$06           ; $ceb0: 69 06     
