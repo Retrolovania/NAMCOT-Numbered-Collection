@@ -8,6 +8,10 @@
 ; Some known addresses
 ;-------------------------------------------------------------------------------
             ;$0F = Title_Timer
+            ;$26 = Button_Direction:
+                  ;$01 = Right
+                  ;$FF = Left
+            ;$22 = Button_Action (pressing A or B makes it go from $00 to $FF, but not instantaneously)      
             ;$7B = Item_Remain
 ;-------------------------------------------------------------------------------
 ; iNES Header

@@ -4,20 +4,28 @@
 
 ; Still very much a work in progress!
 ;-------------------------------------------------------------------------------
-; Some known zeropage addresses
+; Known zeropage variables
 ;-------------------------------------------------------------------------------
             ;$3F = Pac_State
+            ;$48 = Game_State
             ;$4B = Frame_Ctr
-            ;$67 = Pac_Lives
-            ;$89 = Scared_Timer
-            ;$8A = Scared_Ctr
             ;$4D & $4F = Button_Pressed
             ;$50 & $51 = Pac_Direction
-            ;$70-$75 = Active_Score
-            ;$80-$85 = Inactive_Score
             ;$61-66 = Hi_Score
-            ;$6A = Dot_Number
+            ;$67 = Pac_Lives
             ;$68 = Current_Level
+            ;$6A = Dot_Number
+            ;$6C-6F = Energizer_State (6C - UR, 6D - UL, 6E - BR, 6F - BL):
+                    ;$01 = Uneaten, visible
+                    ;$02 = Uneaten, invisible
+                    ;$07 = Eaten, invisible
+                    ;$2D = Written during title and character screens, invisible yet still technically present
+            ;$70-$75 = Active_Score  
+            ;$80-$85 = Inactive_Score
+            ;$87 & $88 = general timers, dunno what to explicitly name these      
+            ;$89 = Scared_Timer
+            ;$8A = Scared_Ctr
+  
 ;-------------------------------------------------------------------------------
 ; iNES Header
 ;-------------------------------------------------------------------------------
@@ -227,7 +235,7 @@ __c162:
             PLA                ; $c164: 68          Pull A value from stack        
             TAX                ; $c165: aa          Transfer A to X
             PLA                ; $c166: 68          Pull A value from stack        
-; irq/brk vector
+; irq/BRK vector
 ;-------------------------------------------------------------------------------
 irq:        
             RTI                ; $c167: 40          Retrieve flags and program counter from stack, then resume execution from PC
@@ -534,7 +542,7 @@ Title_Wait: ; The game waits at the title screen for you to press the START butt
             LDA $4D            ; $c42f: a5 4d  
             AND #$08           ; $c431: 29 08       Did the player press START? (START = $08)
             CMP $51            ; $c433: c5 51
-            BNE Title_Return   ; $c435: d0 03       Branch to Title_Return if Zero Flag is not clear         
+            BNE Title_Return   ; $c435: d0 03       Branch to Title_Return if we're in the demo    
             JMP __c1de         ; $c437: 4c de c1
 
 ;-------------------------------------------------------------------------------
@@ -1853,7 +1861,7 @@ __d107:     LDA $39,X          ; $d107: b5 39
             BNE __d107         ; $d115: d0 f0     
 __d117:     LDA $89            ; $d117: a5 89     
             CMP #$02           ; $d119: c9 02     
-            bcs __d141         ; $d11b: b0 24     
+            BCS __d141         ; $d11b: b0 24     
             LDX #$00           ; $d11d: a2 00     
 __d11f:     .hex a5 8a 29 08   ; $d11f: a5 8a 29 08   Data
             .hex d0 02 a2 05   ; $d123: d0 02 a2 05   Data
@@ -2005,26 +2013,26 @@ __d222:     LDA $b8,X          ; $d222: b5 b8
             LDY #$00           ; $d228: a0 00     
             LDA $1A            ; $d22a: a5 1a     
             CMP ($00),Y        ; $d22c: d1 00     
-            bcs __d237         ; $d22e: b0 07     
+            BCS __d237         ; $d22e: b0 07     
             LDA ($00),Y        ; $d230: b1 00     
             SEC                ; $d232: 38        
             SBC $1A            ; $d233: e5 1a     
-            bcs __d239         ; $d235: b0 02     
+            BCS __d239         ; $d235: b0 02     
 __d237:     SBC ($00),Y        ; $d237: f1 00     
 __d239:     CMP #$0A           ; $d239: c9 0a     
-            bcs __d25a         ; $d23b: b0 1d     
+            BCS __d25a         ; $d23b: b0 1d     
             STA $03            ; $d23d: 85 03     
             LDY #$02           ; $d23f: a0 02     
             LDA $1C            ; $d241: a5 1c     
             CMP ($00),Y        ; $d243: d1 00     
-            bcs __d24e         ; $d245: b0 07     
+            BCS __d24e         ; $d245: b0 07     
             LDA ($00),Y        ; $d247: b1 00     
             SEC                ; $d249: 38        
             SBC $1C            ; $d24a: e5 1c     
-            bcs __d250         ; $d24c: b0 02     
+            BCS __d250         ; $d24c: b0 02     
 __d24e:     SBC ($00),Y        ; $d24e: f1 00     
 __d250:     CMP #$0A           ; $d250: c9 0a     
-            bcs __d25a         ; $d252: b0 06     
+            BCS __d25a         ; $d252: b0 06     
             ADC $03            ; $d254: 65 03     
             CMP #$05           ; $d256: c9 05     
             bcc __d26a         ; $d258: 90 10     
@@ -2256,7 +2264,7 @@ __d42c:     LDA $1A            ; $d42c: a5 1a
             CMP #$18           ; $d42e: c9 18     
             bcc __d43c         ; $d430: 90 0a     
             CMP #$a9           ; $d432: c9 a9     
-            bcs __d43c         ; $d434: b0 06     
+            BCS __d43c         ; $d434: b0 06     
             LDA $38            ; $d436: a5 38     
             AND #$DF           ; $d438: 29 df     
             bcc __d440         ; $d43a: 90 04     
@@ -2265,7 +2273,7 @@ __d43c:     LDA #$20           ; $d43c: a9 20
 __d440:     STA $38            ; $d440: 85 38     
             LDA $1A            ; $d442: a5 1a     
             CMP #$0B           ; $d444: c9 0b     
-            bcs __d44e         ; $d446: b0 06     
+            BCS __d44e         ; $d446: b0 06     
             LDA #$BF           ; $d448: a9 bf     
             STA $1A            ; $d44a: 85 1a     
             BNE __d456         ; $d44c: d0 08     
@@ -2498,17 +2506,17 @@ __d651:     .hex a5 1a 38 e5   ; $d651: a5 1a 38 e5   Data
             .hex 05 a9 00 38   ; $d659: 05 a9 00 38   Data
             .hex e5 05         ; $d65d: e5 05         Data
 __d65f:     CMP #$20           ; $d65f: c9 20     
-            bcs __d6a6         ; $d661: b0 43     
+            BCS __d6a6         ; $d661: b0 43     
             LDA $1C            ; $d663: a5 1c     
             SEC                ; $d665: 38        
             SBC $2C            ; $d666: e5 2c     
-            bcs __d671         ; $d668: b0 07     
+            BCS __d671         ; $d668: b0 07     
             STA $05            ; $d66a: 85 05     
             LDA #$00           ; $d66c: a9 00     
             SEC                ; $d66e: 38        
             SBC $05            ; $d66f: e5 05     
 __d671:     CMP #$20           ; $d671: c9 20     
-            bcs __d6a6         ; $d673: b0 31     
+            BCS __d6a6         ; $d673: b0 31     
 __d675:     LDA Frame_Ctr      ; $d675: a5 4b     
             STA $05            ; $d677: 85 05     
             LDA #$05           ; $d679: a9 05     
@@ -2590,7 +2598,7 @@ __d70b:     LDY #$00           ; $d70b: a0 00
             LDA $CD          ; $d70f: a5 cd     
             SEC                ; $d711: 38        
             SBC ($02),Y        ; $d712: f1 02     
-            bcs __d725         ; $d714: b0 0f     
+            BCS __d725         ; $d714: b0 0f     
             STA $08            ; $d716: 85 08     
             LDA #$00           ; $d718: a9 00     
             SEC                ; $d71a: 38        
@@ -2604,7 +2612,7 @@ __d725:     STA $06            ; $d725: 85 06
             LDY #$02           ; $d729: a0 02     
             SEC                ; $d72b: 38        
             SBC ($02),Y        ; $d72c: f1 02     
-            bcs __d73b         ; $d72e: b0 0b     
+            BCS __d73b         ; $d72e: b0 0b     
             STA $08            ; $d730: 85 08     
             LDA #$00           ; $d732: a9 00     
             SEC                ; $d734: 38        
@@ -2614,7 +2622,7 @@ __d725:     STA $06            ; $d725: 85 06
 __d73b:     STA $07            ; $d73b: 85 07     
             LDA $06            ; $d73d: a5 06     
             CMP $07            ; $d73f: c5 07     
-            bcs __d745         ; $d741: b0 02     
+            BCS __d745         ; $d741: b0 02     
             INC $05            ; $d743: e6 05     
 __d745:     LDA $05            ; $d745: a5 05     
             ASL                ; $d747: 0a        
@@ -2818,10 +2826,10 @@ __d8d7:     INX                ; $d8d7: e8
 __d8e5:     LDY #$00           ; $d8e5: a0 00     
             LDA $6A            ; $d8e7: a5 6a     
             CMP #$88           ; $d8e9: c9 88     
-            bcs __d8f3         ; $d8eb: b0 06     
+            BCS __d8f3         ; $d8eb: b0 06     
             INY                ; $d8ed: c8        
             CMP #$42           ; $d8ee: c9 42     
-            bcs __d8f3         ; $d8f0: b0 01     
+            BCS __d8f3         ; $d8f0: b0 01     
             INY                ; $d8f2: c8        
 __d8f3:     LDA #$01           ; $d8f3: a9 01     
             STA $060a,Y        ; $d8f5: 99 0a 06  
@@ -2941,29 +2949,29 @@ __d9c5:     LDA $03            ; $d9c5: a5 03
             LDY #$00           ; $d9cb: a0 00     
             LDA $0274          ; $d9cd: ad 74 02  
             CMP ($00),Y        ; $d9d0: d1 00     
-            bcs __d9dc         ; $d9d2: b0 08     
+            BCS __d9dc         ; $d9d2: b0 08     
             LDA ($00),Y        ; $d9d4: b1 00     
             SEC                ; $d9d6: 38        
             SBC $0274          ; $d9d7: ed 74 02  
-            bcs __d9de         ; $d9da: b0 02     
+            BCS __d9de         ; $d9da: b0 02     
 __d9dc:     SBC ($00),Y        ; $d9dc: f1 00     
 __d9de:     CMP #$19           ; $d9de: c9 19     
-            bcs __da46         ; $d9e0: b0 64     
+            BCS __da46         ; $d9e0: b0 64     
             STA $04            ; $d9e2: 85 04     
             LDY #$02           ; $d9e4: a0 02     
             LDA $0276          ; $d9e6: ad 76 02  
             CMP ($00),Y        ; $d9e9: d1 00     
-            bcs __d9f5         ; $d9eb: b0 08     
+            BCS __d9f5         ; $d9eb: b0 08     
             LDA ($00),Y        ; $d9ed: b1 00     
             SEC                ; $d9ef: 38        
             SBC $0276          ; $d9f0: ed 76 02  
-            bcs __d9f7         ; $d9f3: b0 02     
+            BCS __d9f7         ; $d9f3: b0 02     
 __d9f5:     SBC ($00),Y        ; $d9f5: f1 00     
 __d9f7:     CMP #$19           ; $d9f7: c9 19     
-            bcs __da46         ; $d9f9: b0 4b     
+            BCS __da46         ; $d9f9: b0 4b     
             ADC $04            ; $d9fb: 65 04     
             CMP #$10           ; $d9fd: c9 10     
-            bcs __da46         ; $d9ff: b0 45     
+            BCS __da46         ; $d9ff: b0 45     
             LDA $0274          ; $da01: ad 74 02  
             STA $03            ; $da04: 85 03     
             LDA $0276          ; $da06: ad 76 02  
@@ -3767,7 +3775,7 @@ __e13a:     .hex 23 17 3c 3d   ; $e13a: 23 17 3c 3d   Data
             .hex 4a 4a         ; $e146: 4a 4a         Data
 __e148:     AND #$0F           ; $e148: 29 0f     
             CMP #$0A           ; $e14a: c9 0a     
-            bcs __e151         ; $e14c: b0 03     
+            BCS __e151         ; $e14c: b0 03     
             ADC #$30           ; $e14e: 69 30     
             RTS                ; $e150: 60        
 
@@ -4926,10 +4934,10 @@ __ebe0:     bvc __ebe2         ; $ebe0: 50 00
 __ebe2:     BNE __ebe4         ; $ebe2: d0 00     
 __ebe4:     CPY #$00           ; $ebe4: c0 00     
             LDY #$00           ; $ebe6: a0 00     
-            bcs __ebea         ; $ebe8: b0 00     
+            BCS __ebea         ; $ebe8: b0 00     
 __ebea:     LDY #$00           ; $ebea: a0 00     
             .hex 80 00         ; $ebec: 80 00     Invalid Opcode - NOP #$00
-            bcs __ebf0         ; $ebee: b0 00     
+            BCS __ebf0         ; $ebee: b0 00     
 __ebf0:     CPY #$00           ; $ebf0: c0 00     
             LDY #$00           ; $ebf2: a0 00     
             bvc __ebf6         ; $ebf4: 50 00     
@@ -4939,38 +4947,38 @@ __ebfa:     CPX #$00           ; $ebfa: e0 00
             CPY #$00           ; $ebfc: c0 00     
             CPX #$00           ; $ebfe: e0 00     
             BNE __ec02         ; $ec00: d0 00     
-__ec02:     bcs __ec04         ; $ec02: b0 00     
+__ec02:     BCS __ec04         ; $ec02: b0 00     
 __ec04:     CPX #$00           ; $ec04: e0 00     
             BEQ __ec08         ; $ec06: f0 00     
 __ec08:     BNE __ec0a         ; $ec08: d0 00     
-__ec0a:     bvs __ec0c         ; $ec0a: 70 00     
-__ec0c:     bvs __ec0e         ; $ec0c: 70 00     
-__ec0e:     brk                ; $ec0e: 00        
+__ec0a:     BVS __ec0c         ; $ec0a: 70 00     
+__ec0c:     BVS __ec0e         ; $ec0c: 70 00     
+__ec0e:     BRK                ; $ec0e: 00        
             ORA ($f0,X)        ; $ec0f: 01 f0     
-            brk                ; $ec11: 00        
+            BRK                ; $ec11: 00        
             BNE __ec14         ; $ec12: d0 00     
-__ec14:     brk                ; $ec14: 00        
+__ec14:     BRK                ; $ec14: 00        
             ORA ($f0,X)        ; $ec15: 01 f0     
-            brk                ; $ec17: 00        
+            BRK                ; $ec17: 00        
             BNE __ec1a         ; $ec18: d0 00     
-__ec1a:     brk                ; $ec1a: 00        
+__ec1a:     BRK                ; $ec1a: 00        
             ORA ($10,X)        ; $ec1b: 01 10     
             ORA ($f0,X)        ; $ec1d: 01 f0     
-            brk                ; $ec1f: 00        
+            BRK                ; $ec1f: 00        
             .hex 80 00         ; $ec20: 80 00     Invalid Opcode - NOP #$00
             .hex 80 00         ; $ec22: 80 00     Invalid Opcode - NOP #$00
-            brk                ; $ec24: 00        
+            BRK                ; $ec24: 00        
             ORA ($f0,X)        ; $ec25: 01 f0     
-            brk                ; $ec27: 00        
+            BRK                ; $ec27: 00        
             BNE __ec2a         ; $ec28: d0 00     
-__ec2a:     brk                ; $ec2a: 00        
+__ec2a:     BRK                ; $ec2a: 00        
             ORA ($f0,X)        ; $ec2b: 01 f0     
-            brk                ; $ec2d: 00        
+            BRK                ; $ec2d: 00        
             BNE __ec30         ; $ec2e: d0 00     
 __ec30:     JSR $3001          ; $ec30: 20 01 30  
             ORA ($10,X)        ; $ec33: 01 10     
             ORA ($80,X)        ; $ec35: 01 80     
-            brk                ; $ec37: 00        
+            BRK                ; $ec37: 00        
             .hex 80 00         ; $ec38: 80 00     Invalid Opcode - NOP #$00
 __ec3a:     .hex 07 14 07 14   ; $ec3a: 07 14 07 14   Data
             .hex 05 14 05 ff   ; $ec3e: 05 14 05 ff   Data
@@ -5057,17 +5065,17 @@ __ed1c:     .hex 03 1f         ; $ed1c: 03 1f     Invalid Opcode - SLO ($1F,X)
             ORA ($e0),Y        ; $ed29: 11 e0     
             AND $11e0          ; $ed2b: 2d e0 11  
 __ed2e:     .hex 03 11         ; $ed2e: 03 11     Invalid Opcode - SLO ($11,X)
-            brk                ; $ed30: 00        
+            BRK                ; $ed30: 00        
             .hex 1f 17 2c      ; $ed31: 1f 17 2c  Invalid Opcode - SLO $2C17,X
             ASL $1D,X          ; $ed34: 16 1d     
-            brk                ; $ed36: 00        
+            BRK                ; $ed36: 00        
             ORA ($03),Y        ; $ed37: 11 03     
             ORA ($e0),Y        ; $ed39: 11 e0     
             .hex 2d            ; $ed3b: 2d        Suspected data
 __ed3c:     .hex 22            ; $ed3c: 22        Invalid Opcode - KIL 
             bcc __ed5b         ; $ed3d: 90 1c     
             .hex 03 1a         ; $ed3f: 03 1a     Invalid Opcode - SLO ($1A,X)
-            brk                ; $ed41: 00        
+            BRK                ; $ed41: 00        
             ORA ($80),Y        ; $ed42: 11 80     
             ORA ($00),Y        ; $ed44: 11 00     
             .hex 1a            ; $ed46: 1a        Invalid Opcode - NOP 
@@ -5085,9 +5093,9 @@ __ed3c:     .hex 22            ; $ed3c: 22        Invalid Opcode - KIL
             .hex 22            ; $ed58: 22        Invalid Opcode - KIL 
             bcc __ed78         ; $ed59: 90 1d     
 __ed5b:     .hex 03 1b         ; $ed5b: 03 1b     Invalid Opcode - SLO ($1B,X)
-            brk                ; $ed5d: 00        
+            BRK                ; $ed5d: 00        
             ASL $1C90,X        ; $ed5e: 1e 90 1c  
-            brk                ; $ed61: 00        
+            BRK                ; $ed61: 00        
             .hex 1b 03 1f      ; $ed62: 1b 03 1f  Invalid Opcode - SLO $1F03,Y
             bcc __ed88         ; $ed65: 90 21     
             AND $11e0          ; $ed67: 2d e0 11  
@@ -5097,18 +5105,18 @@ __ed6c:     CPY #$80           ; $ed6c: c0 80
             ORA ($e0),Y        ; $ed70: 11 e0     
             AND $11e0          ; $ed72: 2d e0 11  
             .hex 03 11         ; $ed75: 03 11     Invalid Opcode - SLO ($11,X)
-            brk                ; $ed77: 00        
+            BRK                ; $ed77: 00        
 __ed78:     .hex 1f 90 1d      ; $ed78: 1f 90 1d  Invalid Opcode - SLO $1D90,X
-            brk                ; $ed7b: 00        
+            BRK                ; $ed7b: 00        
             ORA ($03),Y        ; $ed7c: 11 03     
             ORA ($e0),Y        ; $ed7e: 11 e0     
             AND $901f          ; $ed80: 2d 1f 90  
             .hex 1c 03 1a      ; $ed83: 1c 03 1a  Invalid Opcode - NOP $1A03,X
-            brk                ; $ed86: 00        
+            BRK                ; $ed86: 00        
             .hex 1e            ; $ed87: 1e        Suspected data
 __ed88:     BPL __ed9d         ; $ed88: 10 13     
             BPL __eda8         ; $ed8a: 10 1c     
-            brk                ; $ed8c: 00        
+            BRK                ; $ed8c: 00        
             .hex 1a            ; $ed8d: 1a        Invalid Opcode - NOP 
             .hex 03 1e         ; $ed8e: 03 1e     Invalid Opcode - SLO ($1E,X)
             bcc __edaf         ; $ed90: 90 1d     
@@ -5131,7 +5139,7 @@ __edaf:     CLC                ; $edaf: 18
             AND $0111          ; $edb2: 2d 11 01  
             .hex 43 11         ; $edb5: 43 11     Invalid Opcode - SRE ($11,X)
             .hex c3 03         ; $edb7: c3 03     Invalid Opcode - DCP ($03,X)
-            brk                ; $edb9: 00        
+            BRK                ; $edb9: 00        
             .hex c3 03         ; $edba: c3 03     Invalid Opcode - DCP ($03,X)
             ORA ($43),Y        ; $edbc: 11 43     
 __edbe:     ORA ($11,X)        ; $edbe: 01 11     
@@ -5343,9 +5351,9 @@ __ef1f:     LDA $FD            ; $ef1f: a5 fd
             BNE __ef84         ; $ef2c: d0 56     
 __ef2e:     JSR __f04f         ; $ef2e: 20 4f f0  
             CMP #$f0           ; $ef31: c9 f0     
-            bcs __ef99         ; $ef33: b0 64     
+            BCS __ef99         ; $ef33: b0 64     
             CMP #$c0           ; $ef35: c9 c0     
-            bcs __ef77         ; $ef37: b0 3e     
+            BCS __ef77         ; $ef37: b0 3e     
             PHA                ; $ef39: 48        
             AND #$f0           ; $ef3a: 29 f0     
             lsr                ; $ef3c: 4a        
@@ -5398,7 +5406,7 @@ __ef84:     LDA $FD            ; $ef84: a5 fd
             ADC #$01           ; $ef8d: 69 01     
             STA $FC            ; $ef8f: 85 fc     
             CMP #$10           ; $ef91: c9 10     
-            bcs __ef98         ; $ef93: b0 03     
+            BCS __ef98         ; $ef93: b0 03     
             JMP __eebf         ; $ef95: 4c bf ee  
 
 ;-------------------------------------------------------------------------------
@@ -5708,18 +5716,18 @@ __f209:     RTI                ; $f209: 40
             CPY #$01           ; $f28a: c0 01     
             ORA ($04),Y        ; $f28c: 11 04     
             CPY #$01           ; $f28e: c0 01     
-            bcs __f296         ; $f290: b0 04     
+            BCS __f296         ; $f290: b0 04     
             CPY #$01           ; $f292: c0 01     
             .hex 80 04         ; $f294: 80 04     Invalid Opcode - NOP #$04
 __f296:     CPY #$01           ; $f296: c0 01     
-            bvs __f29e         ; $f298: 70 04     
+            BVS __f29e         ; $f298: 70 04     
             CPY #$01           ; $f29a: c0 01     
             RTS                ; $f29c: 60        
 
 ;-------------------------------------------------------------------------------
             PHP                ; $f29d: 08        
 __f29e:     CPY #$02           ; $f29e: c0 02     
-            bvs __f2aa         ; $f2a0: 70 08     
+            BVS __f2aa         ; $f2a0: 70 08     
             CPY #$02           ; $f2a2: c0 02     
             .hex 80 0c         ; $f2a4: 80 0c     Invalid Opcode - NOP #$0C
             CPY #$06           ; $f2a6: c0 06     
@@ -5803,7 +5811,7 @@ __f2ac:     plp                ; $f2ac: 28
             .hex 02            ; $f32b: 02        Invalid Opcode - KIL 
             .hex 82 02         ; $f32c: 82 02     Invalid Opcode - NOP #$02
             .hex f2            ; $f32e: f2        Invalid Opcode - KIL 
-            brk                ; $f32f: 00        
+            BRK                ; $f32f: 00        
             .hex f3 00         ; $f330: f3 00     Invalid Opcode - ISC ($00),Y
             SBC $18,X          ; $f332: f5 18     
             AND ($01),Y        ; $f334: 31 01     
@@ -5878,7 +5886,7 @@ __f2ac:     plp                ; $f2ac: 28
 
 ;-------------------------------------------------------------------------------
             CLC                ; $f3af: 18        
-            bcs __f3ba         ; $f3b0: b0 08     
+            BCS __f3ba         ; $f3b0: b0 08     
             RTI                ; $f3b2: 40        
 
 ;-------------------------------------------------------------------------------
@@ -6937,7 +6945,7 @@ __ff3f:     .hex ff ff ff ff   ; $FF3f: ff ff ff ff   Data
             .hex ff ff ff ff   ; $FFf3: ff ff ff ff   Data
             .hex ff            ; $FFf7: ff            Data
 __fff8:     .hex 78            ; $FFf8: 78            Data
-__fff9:     .hex ec            ; $FFf9: ec            Data
+__fff9:     .hex ec            ; $FFf9: ec            Data   ; Is 78 EC an instruction?
 
 ;-------------------------------------------------------------------------------
 ; Vector Table
