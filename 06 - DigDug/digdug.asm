@@ -31,307 +31,307 @@
 ;-------------------------------------------------------------------------------
 ; reset vector
 ;-------------------------------------------------------------------------------
-reset:      sei                ; $c000: 78        
-            cld                ; $c001: d8        
-            ldx #$ef           ; $c002: a2 ef     
-            txs                ; $c004: 9a        
-            lda #$10           ; $c005: a9 10     
-            sta $2000          ; $c007: 8d 00 20  
-            lda $2002          ; $c00a: ad 02 20  
-__c00d:     lda $2002          ; $c00d: ad 02 20  
-            bpl __c00d         ; $c010: 10 fb     
-            ldx #$05           ; $c012: a2 05     
-__c014:     lda $68,x          ; $c014: b5 68     
-            sta $0100,x        ; $c016: 9d 00 01  
-            lda $88,x          ; $c019: b5 88     
-            sta $0110,x        ; $c01b: 9d 10 01  
-            lda $17,x          ; $c01e: b5 17     
-            sta $0120,x        ; $c020: 9d 20 01  
-            dex                ; $c023: ca        
-            bpl __c014         ; $c024: 10 ee     
-            lda $25            ; $c026: a5 25     
-            sta $0140          ; $c028: 8d 40 01  
-            lda #$07           ; $c02b: a9 07     
-            sta $e5            ; $c02d: 85 e5     
-            lda #$00           ; $c02f: a9 00     
-            sta $e4            ; $c031: 85 e4     
-            ldy #$00           ; $c033: a0 00     
-__c035:     sta ($e4),y        ; $c035: 91 e4     
-            iny                ; $c037: c8        
-            bne __c035         ; $c038: d0 fb     
-            dec $e5            ; $c03a: c6 e5     
-            dec $e5            ; $c03c: c6 e5     
-            beq __c035         ; $c03e: f0 f5     
-            inc $e5            ; $c040: e6 e5     
-            bpl __c035         ; $c042: 10 f1     
-            lda #$01           ; $c044: a9 01     
-            sta $19            ; $c046: 85 19     
-            sta $25            ; $c048: 85 25     
-            lda #$01           ; $c04a: a9 01     
-            sta $29            ; $c04c: 85 29     
-            lda #$04           ; $c04e: a9 04     
-            sta $2a            ; $c050: 85 2a     
-            sta $2b            ; $c052: 85 2b     
-            ldx #$00           ; $c054: a2 00     
-__c056:     lda $01f0,x        ; $c056: bd f0 01  
-            cmp __ffc1,x       ; $c059: dd c1 ff  
-            bne __c066         ; $c05c: d0 08     
-            inx                ; $c05e: e8        
-            cpx #$10           ; $c05f: e0 10     
-            bne __c056         ; $c061: d0 f3     
-            jmp __c075         ; $c063: 4c 75 c0  
+reset:      SEI                ; $c000: 78        
+            CLD                ; $c001: d8        
+            LDX #$ef           ; $c002: a2 ef     
+            TXS                ; $c004: 9a        
+            LDA #$10           ; $c005: a9 10     
+            STA $2000          ; $c007: 8d 00 20  
+            LDA $2002          ; $c00a: ad 02 20  
+__c00d:     LDA $2002          ; $c00d: ad 02 20  
+            BPL __c00d         ; $c010: 10 fb     
+            LDX #$05           ; $c012: a2 05     
+__c014:     LDA $68,x          ; $c014: b5 68     
+            STA $0100,x        ; $c016: 9d 00 01  
+            LDA $88,x          ; $c019: b5 88     
+            STA $0110,x        ; $c01b: 9d 10 01  
+            LDA $17,x          ; $c01e: b5 17     
+            STA $0120,x        ; $c020: 9d 20 01  
+            DEX                ; $c023: ca        
+            BPL __c014         ; $c024: 10 ee     
+            LDA $25            ; $c026: a5 25     
+            STA $0140          ; $c028: 8d 40 01  
+            LDA #$07           ; $c02b: a9 07     
+            STA $e5            ; $c02d: 85 e5     
+            LDA #$00           ; $c02f: a9 00     
+            STA $e4            ; $c031: 85 e4     
+            LDY #$00           ; $c033: a0 00     
+__c035:     STA ($e4),y        ; $c035: 91 e4     
+            INY                ; $c037: c8        
+            BNE __c035         ; $c038: d0 fb     
+            DEC $e5            ; $c03a: c6 e5     
+            DEC $e5            ; $c03c: c6 e5     
+            BEQ __c035         ; $c03e: f0 f5     
+            INC $e5            ; $c040: e6 e5     
+            BPL __c035         ; $c042: 10 f1     
+            LDA #$01           ; $c044: a9 01     
+            STA $19            ; $c046: 85 19     
+            STA $25            ; $c048: 85 25     
+            LDA #$01           ; $c04a: a9 01     
+            STA $29            ; $c04c: 85 29     
+            LDA #$04           ; $c04e: a9 04     
+            STA $2a            ; $c050: 85 2a     
+            STA $2b            ; $c052: 85 2b     
+            LDX #$00           ; $c054: a2 00     
+__c056:     LDA $01f0,x        ; $c056: bd f0 01  
+            CMP __ffc1,x       ; $c059: dd c1 ff  
+            BNE __c066         ; $c05c: d0 08     
+            INX                ; $c05e: e8        
+            CPX #$10           ; $c05f: e0 10     
+            BNE __c056         ; $c061: d0 f3     
+            JMP __c075         ; $c063: 4c 75 c0  
 
 ;-------------------------------------------------------------------------------
-__c066:     ldx #$00           ; $c066: a2 00     
-            lda #$00           ; $c068: a9 00     
-__c06a:     sta $0100,x        ; $c06a: 9d 00 01  
-            inx                ; $c06d: e8        
-            cpx #$f0           ; $c06e: e0 f0     
-            bne __c06a         ; $c070: d0 f8     
-            jmp __c08e         ; $c072: 4c 8e c0  
+__c066:     LDX #$00           ; $c066: a2 00     
+            LDA #$00           ; $c068: a9 00     
+__c06a:     STA $0100,x        ; $c06a: 9d 00 01  
+            INX                ; $c06d: e8        
+            CPX #$f0           ; $c06e: e0 f0     
+            BNE __c06a         ; $c070: d0 f8     
+            JMP __c08e         ; $c072: 4c 8e c0  
 
 ;-------------------------------------------------------------------------------
-__c075:     lda $0140          ; $c075: ad 40 01  
-            sta $25            ; $c078: 85 25     
-            ldx #$05           ; $c07a: a2 05     
-__c07c:     lda $0100,x        ; $c07c: bd 00 01  
-            sta $68,x          ; $c07f: 95 68     
-            lda $0110,x        ; $c081: bd 10 01  
-            sta $88,x          ; $c084: 95 88     
-            lda $0120,x        ; $c086: bd 20 01  
-            sta $17,x          ; $c089: 95 17     
-            dex                ; $c08b: ca        
-            bpl __c07c         ; $c08c: 10 ee     
-__c08e:     lda #$c0           ; $c08e: a9 c0     
-            sta $4017          ; $c090: 8d 17 40  
-            lda #$00           ; $c093: a9 00     
-            sta $4010          ; $c095: 8d 10 40  
-            jsr __f09e         ; $c098: 20 9e f0  
-            ldx #$00           ; $c09b: a2 00     
-__c09d:     lda __ffc1,x       ; $c09d: bd c1 ff  
-            sta $01f0,x        ; $c0a0: 9d f0 01  
-            inx                ; $c0a3: e8        
-            cpx #$10           ; $c0a4: e0 10     
-            bne __c09d         ; $c0a6: d0 f5     
-            lda #$30           ; $c0a8: a9 30     
-            sta $2000          ; $c0aa: 8d 00 20  
-            sta $08            ; $c0ad: 85 08     
-            lda #$06           ; $c0af: a9 06     
-            sta $2001          ; $c0b1: 8d 01 20  
-            lda #$1e           ; $c0b4: a9 1e     
-            sta $09            ; $c0b6: 85 09     
-__c0b8:     lda $2002          ; $c0b8: ad 02 20  
-            bpl __c0b8         ; $c0bb: 10 fb     
-            lda #$3f           ; $c0bd: a9 3f     
-            sta $2006          ; $c0bf: 8d 06 20  
-            ldx #$10           ; $c0c2: a2 10     
-            stx $2006          ; $c0c4: 8e 06 20  
-            ldy #$00           ; $c0c7: a0 00     
-__c0c9:     lda __c2ba,y       ; $c0c9: b9 ba c2  
-            sta $2007          ; $c0cc: 8d 07 20  
-            iny                ; $c0cf: c8        
-            dex                ; $c0d0: ca        
-            bne __c0c9         ; $c0d1: d0 f6     
-            lda $2002          ; $c0d3: ad 02 20  
-            lda #$3f           ; $c0d6: a9 3f     
-            sta $2006          ; $c0d8: 8d 06 20  
-            lda #$00           ; $c0db: a9 00     
-            sta $2006          ; $c0dd: 8d 06 20  
-            sta $2006          ; $c0e0: 8d 06 20  
-            sta $2006          ; $c0e3: 8d 06 20  
-            ldy #$00           ; $c0e6: a0 00     
-__c0e8:     lda #$f0           ; $c0e8: a9 f0     
-            sta $0700,y        ; $c0ea: 99 00 07  
-            iny                ; $c0ed: c8        
-            bne __c0e8         ; $c0ee: d0 f8     
-            jsr __c2e6         ; $c0f0: 20 e6 c2  
-            lda $08            ; $c0f3: a5 08     
-            ora #$80           ; $c0f5: 09 80     
-            sta $2000          ; $c0f7: 8d 00 20  
-__c0fa:     jmp __c0fa         ; $c0fa: 4c fa c0  
+__c075:     LDA $0140          ; $c075: ad 40 01  
+            STA $25            ; $c078: 85 25     
+            LDX #$05           ; $c07a: a2 05     
+__c07c:     LDA $0100,x        ; $c07c: bd 00 01  
+            STA $68,x          ; $c07f: 95 68     
+            LDA $0110,x        ; $c081: bd 10 01  
+            STA $88,x          ; $c084: 95 88     
+            LDA $0120,x        ; $c086: bd 20 01  
+            STA $17,x          ; $c089: 95 17     
+            DEX                ; $c08b: ca        
+            BPL __c07c         ; $c08c: 10 ee     
+__c08e:     LDA #$c0           ; $c08e: a9 c0     
+            STA $4017          ; $c090: 8d 17 40  
+            LDA #$00           ; $c093: a9 00     
+            STA $4010          ; $c095: 8d 10 40  
+            JSR __f09e         ; $c098: 20 9e f0  
+            LDX #$00           ; $c09b: a2 00     
+__c09d:     LDA __ffc1,x       ; $c09d: bd c1 ff  
+            STA $01f0,x        ; $c0a0: 9d f0 01  
+            INX                ; $c0a3: e8        
+            CPX #$10           ; $c0a4: e0 10     
+            BNE __c09d         ; $c0a6: d0 f5     
+            LDA #$30           ; $c0a8: a9 30     
+            STA $2000          ; $c0aa: 8d 00 20  
+            STA $08            ; $c0ad: 85 08     
+            LDA #$06           ; $c0af: a9 06     
+            STA $2001          ; $c0b1: 8d 01 20  
+            LDA #$1e           ; $c0b4: a9 1e     
+            STA $09            ; $c0b6: 85 09     
+__c0b8:     LDA $2002          ; $c0b8: ad 02 20  
+            BPL __c0b8         ; $c0bb: 10 fb     
+            LDA #$3f           ; $c0bd: a9 3f     
+            STA $2006          ; $c0bf: 8d 06 20  
+            LDX #$10           ; $c0c2: a2 10     
+            STX $2006          ; $c0c4: 8e 06 20  
+            LDY #$00           ; $c0c7: a0 00     
+__c0c9:     LDA __c2ba,y       ; $c0c9: b9 ba c2  
+            STA $2007          ; $c0cc: 8d 07 20  
+            INY                ; $c0cf: c8        
+            DEX                ; $c0d0: ca        
+            BNE __c0c9         ; $c0d1: d0 f6     
+            LDA $2002          ; $c0d3: ad 02 20  
+            LDA #$3f           ; $c0d6: a9 3f     
+            STA $2006          ; $c0d8: 8d 06 20  
+            LDA #$00           ; $c0db: a9 00     
+            STA $2006          ; $c0dd: 8d 06 20  
+            STA $2006          ; $c0e0: 8d 06 20  
+            STA $2006          ; $c0e3: 8d 06 20  
+            LDY #$00           ; $c0e6: a0 00     
+__c0e8:     LDA #$f0           ; $c0e8: a9 f0     
+            STA $0700,y        ; $c0ea: 99 00 07  
+            INY                ; $c0ed: c8        
+            BNE __c0e8         ; $c0ee: d0 f8     
+            JSR __c2e6         ; $c0f0: 20 e6 c2  
+            LDA $08            ; $c0f3: a5 08     
+            ORA #$80           ; $c0f5: 09 80     
+            STA $2000          ; $c0f7: 8d 00 20  
+__c0fa:     JMP __c0fa         ; $c0fa: 4c fa c0  
 
 ;-------------------------------------------------------------------------------
 ; nmi vector
 ;-------------------------------------------------------------------------------
-nmi:        lda $08            ; $c0fd: a5 08     
-            eor $11            ; $c0ff: 45 11     
-            sta $2000          ; $c101: 8d 00 20  
-            sta $08            ; $c104: 85 08     
-            lda $2002          ; $c106: ad 02 20  
-            lda $09            ; $c109: a5 09     
-            sta $2001          ; $c10b: 8d 01 20  
-            lda #$00           ; $c10e: a9 00     
-            sta $2003          ; $c110: 8d 03 20  
-            lda #$07           ; $c113: a9 07     
-            sta $4014          ; $c115: 8d 14 40  
-            jsr __c1dd         ; $c118: 20 dd c1  
-            lda $2002          ; $c11b: ad 02 20  
-            lda $12            ; $c11e: a5 12     
-            sta $2005          ; $c120: 8d 05 20  
-            lda $13            ; $c123: a5 13     
-            sta $2005          ; $c125: 8d 05 20  
-            lda $08            ; $c128: a5 08     
-            sta $2000          ; $c12a: 8d 00 20  
-            lda #$00           ; $c12d: a9 00     
-            sta $11            ; $c12f: 85 11     
-            inc $10            ; $c131: e6 10     
-            jsr __c273         ; $c133: 20 73 c2  
-            lda #$00           ; $c136: a9 00     
-            sta $2c            ; $c138: 85 2c     
-            sta $0f            ; $c13a: 85 0f     
-            jsr __c2cb         ; $c13c: 20 cb c2  
-            lda $23            ; $c13f: a5 23     
-            bne __c162         ; $c141: d0 1f     
-            ldx $0f            ; $c143: a6 0f     
-            lda #$fc           ; $c145: a9 fc     
-            sta $20            ; $c147: 85 20     
-            lda #$f0           ; $c149: a9 f0     
-__c14b:     sta $0700,x        ; $c14b: 9d 00 07  
-            inx                ; $c14e: e8        
-            bne __c14b         ; $c14f: d0 fa     
-            ldy $0f            ; $c151: a4 0f     
-            beq __c158         ; $c153: f0 03     
-            jsr __c17f         ; $c155: 20 7f c1  
-__c158:     jsr __e45a         ; $c158: 20 5a e4  
-            lda $2c            ; $c15b: a5 2c     
-            beq __c162         ; $c15d: f0 03     
-            jsr __c20a         ; $c15f: 20 0a c2  
-__c162:     lda $45            ; $c162: a5 45     
-            beq __c171         ; $c164: f0 0b     
-            lda #$00           ; $c166: a9 00     
+nmi:        LDA $08            ; $c0fd: a5 08     
+            EOR $11            ; $c0ff: 45 11     
+            STA $2000          ; $c101: 8d 00 20  
+            STA $08            ; $c104: 85 08     
+            LDA $2002          ; $c106: ad 02 20  
+            LDA $09            ; $c109: a5 09     
+            STA $2001          ; $c10b: 8d 01 20  
+            LDA #$00           ; $c10e: a9 00     
+            STA $2003          ; $c110: 8d 03 20  
+            LDA #$07           ; $c113: a9 07     
+            STA $4014          ; $c115: 8d 14 40  
+            JSR __c1dd         ; $c118: 20 dd c1  
+            LDA $2002          ; $c11b: ad 02 20  
+            LDA $12            ; $c11e: a5 12     
+            STA $2005          ; $c120: 8d 05 20  
+            LDA $13            ; $c123: a5 13     
+            STA $2005          ; $c125: 8d 05 20  
+            LDA $08            ; $c128: a5 08     
+            STA $2000          ; $c12a: 8d 00 20  
+            LDA #$00           ; $c12d: a9 00     
+            STA $11            ; $c12f: 85 11     
+            INC $10            ; $c131: e6 10     
+            JSR __c273         ; $c133: 20 73 c2  
+            LDA #$00           ; $c136: a9 00     
+            STA $2c            ; $c138: 85 2c     
+            STA $0f            ; $c13a: 85 0f     
+            JSR __c2cb         ; $c13c: 20 cb c2  
+            LDA $23            ; $c13f: a5 23     
+            BNE __c162         ; $c141: d0 1f     
+            LDX $0f            ; $c143: a6 0f     
+            LDA #$fc           ; $c145: a9 fc     
+            STA $20            ; $c147: 85 20     
+            LDA #$f0           ; $c149: a9 f0     
+__c14b:     STA $0700,x        ; $c14b: 9d 00 07  
+            INX                ; $c14e: e8        
+            BNE __c14b         ; $c14f: d0 fa     
+            LDY $0f            ; $c151: a4 0f     
+            BEQ __c158         ; $c153: f0 03     
+            JSR __c17f         ; $c155: 20 7f c1  
+__c158:     JSR __e45a         ; $c158: 20 5a e4  
+            LDA $2c            ; $c15b: a5 2c     
+            BEQ __c162         ; $c15d: f0 03     
+            JSR __c20a         ; $c15f: 20 0a c2  
+__c162:     LDA $45            ; $c162: a5 45     
+            BEQ __c171         ; $c164: f0 0b     
+            LDA #$00           ; $c166: a9 00     
             tax                ; $c168: aa        
-__c169:     sta $05e0,x        ; $c169: 9d e0 05  
-            inx                ; $c16c: e8        
-            cpx #$1c           ; $c16d: e0 1c     
-            bne __c169         ; $c16f: d0 f8     
-__c171:     jsr __f0d1         ; $c171: 20 d1 f0  
-            lda $2002          ; $c174: ad 02 20  
-            lda $08            ; $c177: a5 08     
-            ora #$80           ; $c179: 09 80     
-            sta $2000          ; $c17b: 8d 00 20  
-            rti                ; $c17e: 40        
+__c169:     STA $05e0,x        ; $c169: 9d e0 05  
+            INX                ; $c16c: e8        
+            CPX #$1c           ; $c16d: e0 1c     
+            BNE __c169         ; $c16f: d0 f8     
+__c171:     JSR __f0d1         ; $c171: 20 d1 f0  
+            LDA $2002          ; $c174: ad 02 20  
+            LDA $08            ; $c177: a5 08     
+            ORA #$80           ; $c179: 09 80     
+            STA $2000          ; $c17b: 8d 00 20  
+            RTI                ; $c17e: 40        
 
 ;-------------------------------------------------------------------------------
-__c17f:     lda $10            ; $c17f: a5 10     
-            lsr                ; $c181: 4a        
-            bcs __c1b3         ; $c182: b0 2f     
-            ldy #$0f           ; $c184: a0 0f     
-__c186:     lda $0710,y        ; $c186: b9 10 07  
-            sta $07f0,y        ; $c189: 99 f0 07  
-            lda $0720,y        ; $c18c: b9 20 07  
-            sta $0710,y        ; $c18f: 99 10 07  
-            lda $0730,y        ; $c192: b9 30 07  
-            sta $07e0,y        ; $c195: 99 e0 07  
-            lda #$f0           ; $c198: a9 f0     
-            sta $0720,y        ; $c19a: 99 20 07  
-            sta $0730,y        ; $c19d: 99 30 07  
-            dey                ; $c1a0: 88        
-            bpl __c186         ; $c1a1: 10 e3     
-            ldy #$00           ; $c1a3: a0 00     
-__c1a5:     iny                ; $c1a5: c8        
-            iny                ; $c1a6: c8        
-            iny                ; $c1a7: c8        
-            iny                ; $c1a8: c8        
-            lda $0700,y        ; $c1a9: b9 00 07  
-            cmp #$f0           ; $c1ac: c9 f0     
-            bne __c1a5         ; $c1ae: d0 f5     
-            sty $0f            ; $c1b0: 84 0f     
-            rts                ; $c1b2: 60        
+__c17f:     LDA $10            ; $c17f: a5 10     
+            LSR                ; $c181: 4a        
+            BCS __c1b3         ; $c182: b0 2f     
+            LDY #$0f           ; $c184: a0 0f     
+__c186:     LDA $0710,y        ; $c186: b9 10 07  
+            STA $07f0,y        ; $c189: 99 f0 07  
+            LDA $0720,y        ; $c18c: b9 20 07  
+            STA $0710,y        ; $c18f: 99 10 07  
+            LDA $0730,y        ; $c192: b9 30 07  
+            STA $07e0,y        ; $c195: 99 e0 07  
+            LDA #$f0           ; $c198: a9 f0     
+            STA $0720,y        ; $c19a: 99 20 07  
+            STA $0730,y        ; $c19d: 99 30 07  
+            DEY                ; $c1a0: 88        
+            BPL __c186         ; $c1a1: 10 e3     
+            LDY #$00           ; $c1a3: a0 00     
+__c1a5:     INY                ; $c1a5: c8        
+            INY                ; $c1a6: c8        
+            INY                ; $c1a7: c8        
+            INY                ; $c1a8: c8        
+            LDA $0700,y        ; $c1a9: b9 00 07  
+            CMP #$f0           ; $c1ac: c9 f0     
+            BNE __c1a5         ; $c1ae: d0 f5     
+            STY $0f            ; $c1b0: 84 0f     
+            RTS                ; $c1b2: 60        
 
 ;-------------------------------------------------------------------------------
-__c1b3:     ldy #$0f           ; $c1b3: a0 0f     
-__c1b5:     lda $0700,y        ; $c1b5: b9 00 07  
-            sta $07f0,y        ; $c1b8: 99 f0 07  
-            lda $0710,y        ; $c1bb: b9 10 07  
-            sta $0700,y        ; $c1be: 99 00 07  
-            lda $0720,y        ; $c1c1: b9 20 07  
-            sta $07e0,y        ; $c1c4: 99 e0 07  
-            lda $0730,y        ; $c1c7: b9 30 07  
-            sta $0710,y        ; $c1ca: 99 10 07  
-            lda #$f0           ; $c1cd: a9 f0     
-            sta $0720,y        ; $c1cf: 99 20 07  
-            sta $0730,y        ; $c1d2: 99 30 07  
-            dey                ; $c1d5: 88        
-            bpl __c1b5         ; $c1d6: 10 dd     
-            ldy #$00           ; $c1d8: a0 00     
-            jmp __c1a5         ; $c1da: 4c a5 c1  
+__c1b3:     LDY #$0f           ; $c1b3: a0 0f     
+__c1b5:     LDA $0700,y        ; $c1b5: b9 00 07  
+            STA $07f0,y        ; $c1b8: 99 f0 07  
+            LDA $0710,y        ; $c1bb: b9 10 07  
+            STA $0700,y        ; $c1be: 99 00 07  
+            LDA $0720,y        ; $c1c1: b9 20 07  
+            STA $07e0,y        ; $c1c4: 99 e0 07  
+            LDA $0730,y        ; $c1c7: b9 30 07  
+            STA $0710,y        ; $c1ca: 99 10 07  
+            LDA #$f0           ; $c1cd: a9 f0     
+            STA $0720,y        ; $c1cf: 99 20 07  
+            STA $0730,y        ; $c1d2: 99 30 07  
+            DEY                ; $c1d5: 88        
+            BPL __c1b5         ; $c1d6: 10 dd     
+            LDY #$00           ; $c1d8: a0 00     
+            JMP __c1a5         ; $c1da: 4c a5 c1  
 
 ;-------------------------------------------------------------------------------
-__c1dd:     ldy #$00           ; $c1dd: a0 00     
-__c1df:     lda $2002          ; $c1df: ad 02 20  
-            lda $0500,y        ; $c1e2: b9 00 05  
-            beq __c204         ; $c1e5: f0 1d     
-            sta $2006          ; $c1e7: 8d 06 20  
-            iny                ; $c1ea: c8        
-            lda $0500,y        ; $c1eb: b9 00 05  
-            sta $2006          ; $c1ee: 8d 06 20  
-            iny                ; $c1f1: c8        
-            lda $0500,y        ; $c1f2: b9 00 05  
+__c1dd:     LDY #$00           ; $c1dd: a0 00     
+__c1df:     LDA $2002          ; $c1df: ad 02 20  
+            LDA $0500,y        ; $c1e2: b9 00 05  
+            BEQ __c204         ; $c1e5: f0 1d     
+            STA $2006          ; $c1e7: 8d 06 20  
+            INY                ; $c1ea: c8        
+            LDA $0500,y        ; $c1eb: b9 00 05  
+            STA $2006          ; $c1ee: 8d 06 20  
+            INY                ; $c1f1: c8        
+            LDA $0500,y        ; $c1f2: b9 00 05  
             tax                ; $c1f5: aa        
-            iny                ; $c1f6: c8        
-__c1f7:     lda $0500,y        ; $c1f7: b9 00 05  
-            sta $2007          ; $c1fa: 8d 07 20  
-            iny                ; $c1fd: c8        
-            dex                ; $c1fe: ca        
-            bne __c1f7         ; $c1ff: d0 f6     
-            jmp __c1df         ; $c201: 4c df c1  
+            INY                ; $c1f6: c8        
+__c1f7:     LDA $0500,y        ; $c1f7: b9 00 05  
+            STA $2007          ; $c1fa: 8d 07 20  
+            INY                ; $c1fd: c8        
+            DEX                ; $c1fe: ca        
+            BNE __c1f7         ; $c1ff: d0 f6     
+            JMP __c1df         ; $c201: 4c df c1  
 
 ;-------------------------------------------------------------------------------
-__c204:     sta $0e            ; $c204: 85 0e     
-            sta $0500          ; $c206: 8d 00 05  
-            rts                ; $c209: 60        
+__c204:     STA $0e            ; $c204: 85 0e     
+            STA $0500          ; $c206: 8d 00 05  
+            RTS                ; $c209: 60        
 
 ;-------------------------------------------------------------------------------
-__c20a:     bpl __c21e         ; $c20a: 10 12     
-            ldx $0e            ; $c20c: a6 0e     
-            lda #$17           ; $c20e: a9 17     
-            sta $e0            ; $c210: 85 e0     
-            lda #$00           ; $c212: a9 00     
-            sta $e1            ; $c214: 85 e1     
-            lda $14            ; $c216: a5 14     
+__c20a:     BPL __c21e         ; $c20a: 10 12     
+            LDX $0e            ; $c20c: a6 0e     
+            LDA #$17           ; $c20e: a9 17     
+            STA $e0            ; $c210: 85 e0     
+            LDA #$00           ; $c212: a9 00     
+            STA $e1            ; $c214: 85 e1     
+            LDA $14            ; $c216: a5 14     
             asl                ; $c218: 0a        
-            ora #$04           ; $c219: 09 04     
-            jsr __c22b         ; $c21b: 20 2b c2  
-__c21e:     ldx $0e            ; $c21e: a6 0e     
-            lda $27            ; $c220: a5 27     
-            sta $e0            ; $c222: 85 e0     
-            lda $28            ; $c224: a5 28     
-            sta $e1            ; $c226: 85 e1     
-            lda $14            ; $c228: a5 14     
+            ORA #$04           ; $c219: 09 04     
+            JSR __c22b         ; $c21b: 20 2b c2  
+__c21e:     LDX $0e            ; $c21e: a6 0e     
+            LDA $27            ; $c220: a5 27     
+            STA $e0            ; $c222: 85 e0     
+            LDA $28            ; $c224: a5 28     
+            STA $e1            ; $c226: 85 e1     
+            LDA $14            ; $c228: a5 14     
             asl                ; $c22a: 0a        
 __c22b:     tay                ; $c22b: a8        
-            lda __c26c,y       ; $c22c: b9 6c c2  
-            sta $0500,x        ; $c22f: 9d 00 05  
-            inx                ; $c232: e8        
-            lda __c26b,y       ; $c233: b9 6b c2  
-            sta $0500,x        ; $c236: 9d 00 05  
-            inx                ; $c239: e8        
-            lda #$05           ; $c23a: a9 05     
-            sta $0500,x        ; $c23c: 9d 00 05  
-            inx                ; $c23f: e8        
-            ldy #$00           ; $c240: a0 00     
-            lda ($e0),y        ; $c242: b1 e0     
-            iny                ; $c244: c8        
-            cmp #$00           ; $c245: c9 00     
-            bne __c258         ; $c247: d0 0f     
-__c249:     lda ($e0),y        ; $c249: b1 e0     
-            bne __c258         ; $c24b: d0 0b     
-            lda #$24           ; $c24d: a9 24     
-            sta $0500,x        ; $c24f: 9d 00 05  
-            inx                ; $c252: e8        
-            iny                ; $c253: c8        
-            cpy #$05           ; $c254: c0 05     
-            bne __c249         ; $c256: d0 f1     
-__c258:     lda ($e0),y        ; $c258: b1 e0     
-            sta $0500,x        ; $c25a: 9d 00 05  
-            inx                ; $c25d: e8        
-            iny                ; $c25e: c8        
-            cpy #$06           ; $c25f: c0 06     
-            bne __c258         ; $c261: d0 f5     
-            lda #$00           ; $c263: a9 00     
-            sta $0500,x        ; $c265: 9d 00 05  
-            stx $0e            ; $c268: 86 0e     
-            rts                ; $c26a: 60        
+            LDA __c26c,y       ; $c22c: b9 6c c2  
+            STA $0500,x        ; $c22f: 9d 00 05  
+            INX                ; $c232: e8        
+            LDA __c26b,y       ; $c233: b9 6b c2  
+            STA $0500,x        ; $c236: 9d 00 05  
+            INX                ; $c239: e8        
+            LDA #$05           ; $c23a: a9 05     
+            STA $0500,x        ; $c23c: 9d 00 05  
+            INX                ; $c23f: e8        
+            LDY #$00           ; $c240: a0 00     
+            LDA ($e0),y        ; $c242: b1 e0     
+            INY                ; $c244: c8        
+            CMP #$00           ; $c245: c9 00     
+            BNE __c258         ; $c247: d0 0f     
+__c249:     LDA ($e0),y        ; $c249: b1 e0     
+            BNE __c258         ; $c24b: d0 0b     
+            LDA #$24           ; $c24d: a9 24     
+            STA $0500,x        ; $c24f: 9d 00 05  
+            INX                ; $c252: e8        
+            INY                ; $c253: c8        
+            CPY #$05           ; $c254: c0 05     
+            BNE __c249         ; $c256: d0 f1     
+__c258:     LDA ($e0),y        ; $c258: b1 e0     
+            STA $0500,x        ; $c25a: 9d 00 05  
+            INX                ; $c25d: e8        
+            INY                ; $c25e: c8        
+            CPY #$06           ; $c25f: c0 06     
+            BNE __c258         ; $c261: d0 f5     
+            LDA #$00           ; $c263: a9 00     
+            STA $0500,x        ; $c265: 9d 00 05  
+            STX $0e            ; $c268: 86 0e     
+            RTS                ; $c26a: 60        
 
 ;-------------------------------------------------------------------------------
 __c26b:     .hex 58            ; $c26b: 58            Data
@@ -339,43 +339,43 @@ __c26c:     .hex 21 d8 29 d8   ; $c26c: 21 d8 29 d8   Data
             .hex 20 d8 28      ; $c270: 20 d8 28      Data
 
 ;-------------------------------------------------------------------------------
-__c273:     ldx #$02           ; $c273: a2 02     
-__c275:     lda $00,x          ; $c275: b5 00     
-            sta $01,x          ; $c277: 95 01     
-            lda $04,x          ; $c279: b5 04     
-            sta $05,x          ; $c27b: 95 05     
-            dex                ; $c27d: ca        
-            bpl __c275         ; $c27e: 10 f5     
-            lda #$01           ; $c280: a9 01     
-            sta $4016          ; $c282: 8d 16 40  
-            lda #$00           ; $c285: a9 00     
-            sta $4016          ; $c287: 8d 16 40  
-            ldx #$08           ; $c28a: a2 08     
-__c28c:     lda $4016          ; $c28c: ad 16 40  
-            ror                ; $c28f: 6a        
-            bcs __c293         ; $c290: b0 01     
-            ror                ; $c292: 6a        
-__c293:     ror $00            ; $c293: 66 00     
-            lda $4017          ; $c295: ad 17 40  
-            ror                ; $c298: 6a        
-            bcs __c29c         ; $c299: b0 01     
-            ror                ; $c29b: 6a        
-__c29c:     ror $04            ; $c29c: 66 04     
-            dex                ; $c29e: ca        
-            bne __c28c         ; $c29f: d0 eb     
-            lda $03            ; $c2a1: a5 03     
-            ora $02            ; $c2a3: 05 02     
-            eor #$ff           ; $c2a5: 49 ff     
+__c273:     LDX #$02           ; $c273: a2 02     
+__c275:     LDA $00,x          ; $c275: b5 00     
+            STA $01,x          ; $c277: 95 01     
+            LDA $04,x          ; $c279: b5 04     
+            STA $05,x          ; $c27b: 95 05     
+            DEX                ; $c27d: ca        
+            BPL __c275         ; $c27e: 10 f5     
+            LDA #$01           ; $c280: a9 01     
+            STA $4016          ; $c282: 8d 16 40  
+            LDA #$00           ; $c285: a9 00     
+            STA $4016          ; $c287: 8d 16 40  
+            LDX #$08           ; $c28a: a2 08     
+__c28c:     LDA $4016          ; $c28c: ad 16 40  
+            ROR                ; $c28f: 6a        
+            BCS __c293         ; $c290: b0 01     
+            ROR                ; $c292: 6a        
+__c293:     ROR $00            ; $c293: 66 00     
+            LDA $4017          ; $c295: ad 17 40  
+            ROR                ; $c298: 6a        
+            BCS __c29c         ; $c299: b0 01     
+            ROR                ; $c29b: 6a        
+__c29c:     ROR $04            ; $c29c: 66 04     
+            DEX                ; $c29e: ca        
+            BNE __c28c         ; $c29f: d0 eb     
+            LDA $03            ; $c2a1: a5 03     
+            ORA $02            ; $c2a3: 05 02     
+            EOR #$ff           ; $c2a5: 49 ff     
             and $01            ; $c2a7: 25 01     
             and $00            ; $c2a9: 25 00     
-            sta $03            ; $c2ab: 85 03     
-            lda $07            ; $c2ad: a5 07     
-            ora $06            ; $c2af: 05 06     
-            eor #$ff           ; $c2b1: 49 ff     
+            STA $03            ; $c2ab: 85 03     
+            LDA $07            ; $c2ad: a5 07     
+            ORA $06            ; $c2af: 05 06     
+            EOR #$ff           ; $c2b1: 49 ff     
             and $05            ; $c2b3: 25 05     
             and $04            ; $c2b5: 25 04     
-            sta $07            ; $c2b7: 85 07     
-            rts                ; $c2b9: 60        
+            STA $07            ; $c2b7: 85 07     
+            RTS                ; $c2b9: 60        
 
 ;-------------------------------------------------------------------------------
 __c2ba:     .hex 0f 0f 30 1c   ; $c2ba: 0f 0f 30 1c   Data
@@ -384,487 +384,487 @@ __c2ba:     .hex 0f 0f 30 1c   ; $c2ba: 0f 0f 30 1c   Data
             .hex 0f 17 06 07   ; $c2c6: 0f 17 06 07   Data
 ; irq/brk vector
 ;-------------------------------------------------------------------------------
-irq:        rti                ; $c2ca: 40        
+irq:        RTI                ; $c2ca: 40        
 
 ;-------------------------------------------------------------------------------
-__c2cb:     lda $45            ; $c2cb: a5 45     
-            beq __c2d8         ; $c2cd: f0 09     
-            lda $03            ; $c2cf: a5 03     
+__c2cb:     LDA $45            ; $c2cb: a5 45     
+            BEQ __c2d8         ; $c2cd: f0 09     
+            LDA $03            ; $c2cf: a5 03     
             and #$0c           ; $c2d1: 29 0c     
-            beq __c2d8         ; $c2d3: f0 03     
-            jmp __c2ed         ; $c2d5: 4c ed c2  
+            BEQ __c2d8         ; $c2d3: f0 03     
+            JMP __c2ed         ; $c2d5: 4c ed c2  
 
 ;-------------------------------------------------------------------------------
-__c2d8:     lda $16            ; $c2d8: a5 16     
+__c2d8:     LDA $16            ; $c2d8: a5 16     
             pha                ; $c2da: 48        
-            lda $15            ; $c2db: a5 15     
+            LDA $15            ; $c2db: a5 15     
             pha                ; $c2dd: 48        
-            rts                ; $c2de: 60        
+            RTS                ; $c2de: 60        
 
 ;-------------------------------------------------------------------------------
 __c2df:     pla                ; $c2df: 68        
-            sta $15            ; $c2e0: 85 15     
+            STA $15            ; $c2e0: 85 15     
             pla                ; $c2e2: 68        
-            sta $16            ; $c2e3: 85 16     
-            rts                ; $c2e5: 60        
+            STA $16            ; $c2e3: 85 16     
+            RTS                ; $c2e5: 60        
 
 ;-------------------------------------------------------------------------------
-__c2e6:     jsr __c2df         ; $c2e6: 20 df c2  
-            lda #$00           ; $c2e9: a9 00     
-            sta $24            ; $c2eb: 85 24     
-__c2ed:     jsr __c2df         ; $c2ed: 20 df c2  
-            lda #$00           ; $c2f0: a9 00     
-            sta $45            ; $c2f2: 85 45     
-            jsr __c74e         ; $c2f4: 20 4e c7  
-            jsr __e284         ; $c2f7: 20 84 e2  
-            lda #$06           ; $c2fa: a9 06     
-            sta $2001          ; $c2fc: 8d 01 20  
-            lda $2002          ; $c2ff: ad 02 20  
-            lda #$3f           ; $c302: a9 3f     
-            sta $2006          ; $c304: 8d 06 20  
-            lda #$00           ; $c307: a9 00     
-            sta $2006          ; $c309: 8d 06 20  
-            ldx #$00           ; $c30c: a2 00     
-__c30e:     lda __ccdd,x       ; $c30e: bd dd cc  
-            sta $2007          ; $c311: 8d 07 20  
-            inx                ; $c314: e8        
-            cpx #$10           ; $c315: e0 10     
-            bne __c30e         ; $c317: d0 f5     
-            lda $2002          ; $c319: ad 02 20  
-            lda #$3f           ; $c31c: a9 3f     
-            sta $2006          ; $c31e: 8d 06 20  
-            lda #$00           ; $c321: a9 00     
-            sta $2006          ; $c323: 8d 06 20  
-            sta $2006          ; $c326: 8d 06 20  
-            sta $2006          ; $c329: 8d 06 20  
-            lda #$00           ; $c32c: a9 00     
-            sta $13            ; $c32e: 85 13     
-            sta $12            ; $c330: 85 12     
-            lda $08            ; $c332: a5 08     
-            ora #$02           ; $c334: 09 02     
-            sta $08            ; $c336: 85 08     
-            lda $2002          ; $c338: ad 02 20  
-            lda #$20           ; $c33b: a9 20     
-            sta $2006          ; $c33d: 8d 06 20  
-            lda #$00           ; $c340: a9 00     
-            sta $2006          ; $c342: 8d 06 20  
-            ldx #$00           ; $c345: a2 00     
-            lda #$24           ; $c347: a9 24     
-            jsr __cba0         ; $c349: 20 a0 cb  
-            jsr __cba0         ; $c34c: 20 a0 cb  
-            jsr __cba0         ; $c34f: 20 a0 cb  
-            ldx #$c0           ; $c352: a2 c0     
-            jsr __cba0         ; $c354: 20 a0 cb  
-            ldx #$40           ; $c357: a2 40     
-            lda #$00           ; $c359: a9 00     
-            jsr __cba0         ; $c35b: 20 a0 cb  
-            lda $2002          ; $c35e: ad 02 20  
-            lda #$28           ; $c361: a9 28     
-            sta $2006          ; $c363: 8d 06 20  
-            lda #$00           ; $c366: a9 00     
-            sta $2006          ; $c368: 8d 06 20  
-            lda #$24           ; $c36b: a9 24     
-            ldx #$00           ; $c36d: a2 00     
-            jsr __cba0         ; $c36f: 20 a0 cb  
-            jsr __cba0         ; $c372: 20 a0 cb  
-            jsr __cba0         ; $c375: 20 a0 cb  
-            ldx #$c0           ; $c378: a2 c0     
-            jsr __cba0         ; $c37a: 20 a0 cb  
-            ldx #$40           ; $c37d: a2 40     
-            lda #$00           ; $c37f: a9 00     
-            jsr __cba0         ; $c381: 20 a0 cb  
-            ldx #$00           ; $c384: a2 00     
-            ldy #$0d           ; $c386: a0 0d     
-__c388:     jsr __cba7         ; $c388: 20 a7 cb  
-            dey                ; $c38b: 88        
-            bne __c388         ; $c38c: d0 fa     
-            lda $25            ; $c38e: a5 25     
-            beq __c398         ; $c390: f0 06     
-            jsr __cba7         ; $c392: 20 a7 cb  
-            jsr __cbd9         ; $c395: 20 d9 cb  
-__c398:     jsr __cbe0         ; $c398: 20 e0 cb  
-            jsr __cc1d         ; $c39b: 20 1d cc  
-            jsr __ca26         ; $c39e: 20 26 ca  
-__c3a1:     lda $03            ; $c3a1: a5 03     
+__c2e6:     JSR __c2df         ; $c2e6: 20 df c2  
+            LDA #$00           ; $c2e9: a9 00     
+            STA $24            ; $c2eb: 85 24     
+__c2ed:     JSR __c2df         ; $c2ed: 20 df c2  
+            LDA #$00           ; $c2f0: a9 00     
+            STA $45            ; $c2f2: 85 45     
+            JSR __c74e         ; $c2f4: 20 4e c7  
+            JSR __e284         ; $c2f7: 20 84 e2  
+            LDA #$06           ; $c2fa: a9 06     
+            STA $2001          ; $c2fc: 8d 01 20  
+            LDA $2002          ; $c2ff: ad 02 20  
+            LDA #$3f           ; $c302: a9 3f     
+            STA $2006          ; $c304: 8d 06 20  
+            LDA #$00           ; $c307: a9 00     
+            STA $2006          ; $c309: 8d 06 20  
+            LDX #$00           ; $c30c: a2 00     
+__c30e:     LDA __ccdd,x       ; $c30e: bd dd cc  
+            STA $2007          ; $c311: 8d 07 20  
+            INX                ; $c314: e8        
+            CPX #$10           ; $c315: e0 10     
+            BNE __c30e         ; $c317: d0 f5     
+            LDA $2002          ; $c319: ad 02 20  
+            LDA #$3f           ; $c31c: a9 3f     
+            STA $2006          ; $c31e: 8d 06 20  
+            LDA #$00           ; $c321: a9 00     
+            STA $2006          ; $c323: 8d 06 20  
+            STA $2006          ; $c326: 8d 06 20  
+            STA $2006          ; $c329: 8d 06 20  
+            LDA #$00           ; $c32c: a9 00     
+            STA $13            ; $c32e: 85 13     
+            STA $12            ; $c330: 85 12     
+            LDA $08            ; $c332: a5 08     
+            ORA #$02           ; $c334: 09 02     
+            STA $08            ; $c336: 85 08     
+            LDA $2002          ; $c338: ad 02 20  
+            LDA #$20           ; $c33b: a9 20     
+            STA $2006          ; $c33d: 8d 06 20  
+            LDA #$00           ; $c340: a9 00     
+            STA $2006          ; $c342: 8d 06 20  
+            LDX #$00           ; $c345: a2 00     
+            LDA #$24           ; $c347: a9 24     
+            JSR __cba0         ; $c349: 20 a0 cb  
+            JSR __cba0         ; $c34c: 20 a0 cb  
+            JSR __cba0         ; $c34f: 20 a0 cb  
+            LDX #$c0           ; $c352: a2 c0     
+            JSR __cba0         ; $c354: 20 a0 cb  
+            LDX #$40           ; $c357: a2 40     
+            LDA #$00           ; $c359: a9 00     
+            JSR __cba0         ; $c35b: 20 a0 cb  
+            LDA $2002          ; $c35e: ad 02 20  
+            LDA #$28           ; $c361: a9 28     
+            STA $2006          ; $c363: 8d 06 20  
+            LDA #$00           ; $c366: a9 00     
+            STA $2006          ; $c368: 8d 06 20  
+            LDA #$24           ; $c36b: a9 24     
+            LDX #$00           ; $c36d: a2 00     
+            JSR __cba0         ; $c36f: 20 a0 cb  
+            JSR __cba0         ; $c372: 20 a0 cb  
+            JSR __cba0         ; $c375: 20 a0 cb  
+            LDX #$c0           ; $c378: a2 c0     
+            JSR __cba0         ; $c37a: 20 a0 cb  
+            LDX #$40           ; $c37d: a2 40     
+            LDA #$00           ; $c37f: a9 00     
+            JSR __cba0         ; $c381: 20 a0 cb  
+            LDX #$00           ; $c384: a2 00     
+            LDY #$0d           ; $c386: a0 0d     
+__c388:     JSR __cba7         ; $c388: 20 a7 cb  
+            DEY                ; $c38b: 88        
+            BNE __c388         ; $c38c: d0 fa     
+            LDA $25            ; $c38e: a5 25     
+            BEQ __c398         ; $c390: f0 06     
+            JSR __cba7         ; $c392: 20 a7 cb  
+            JSR __cbd9         ; $c395: 20 d9 cb  
+__c398:     JSR __cbe0         ; $c398: 20 e0 cb  
+            JSR __cc1d         ; $c39b: 20 1d cc  
+            JSR __ca26         ; $c39e: 20 26 ca  
+__c3a1:     LDA $03            ; $c3a1: a5 03     
             and #$0c           ; $c3a3: 29 0c     
-            bne __c3b2         ; $c3a5: d0 0b     
-            jsr __c2df         ; $c3a7: 20 df c2  
-            inc $13            ; $c3aa: e6 13     
-            lda $13            ; $c3ac: a5 13     
-            cmp #$f0           ; $c3ae: c9 f0     
-            bne __c3a1         ; $c3b0: d0 ef     
-__c3b2:     lda #$02           ; $c3b2: a9 02     
-            sta $11            ; $c3b4: 85 11     
-            lda #$00           ; $c3b6: a9 00     
-            sta $13            ; $c3b8: 85 13     
-            lda #$f0           ; $c3ba: a9 f0     
-            sta $1e            ; $c3bc: 85 1e     
-__c3be:     jsr __c2df         ; $c3be: 20 df c2  
-            lda $03            ; $c3c1: a5 03     
+            BNE __c3b2         ; $c3a5: d0 0b     
+            JSR __c2df         ; $c3a7: 20 df c2  
+            INC $13            ; $c3aa: e6 13     
+            LDA $13            ; $c3ac: a5 13     
+            CMP #$f0           ; $c3ae: c9 f0     
+            BNE __c3a1         ; $c3b0: d0 ef     
+__c3b2:     LDA #$02           ; $c3b2: a9 02     
+            STA $11            ; $c3b4: 85 11     
+            LDA #$00           ; $c3b6: a9 00     
+            STA $13            ; $c3b8: 85 13     
+            LDA #$f0           ; $c3ba: a9 f0     
+            STA $1e            ; $c3bc: 85 1e     
+__c3be:     JSR __c2df         ; $c3be: 20 df c2  
+            LDA $03            ; $c3c1: a5 03     
             and #$08           ; $c3c3: 29 08     
-            bne __c40a         ; $c3c5: d0 43     
-            lda $03            ; $c3c7: a5 03     
+            BNE __c40a         ; $c3c5: d0 43     
+            LDA $03            ; $c3c7: a5 03     
             and #$04           ; $c3c9: 29 04     
-            beq __c3d6         ; $c3cb: f0 09     
-            lda $24            ; $c3cd: a5 24     
-            eor #$01           ; $c3cf: 49 01     
-            sta $24            ; $c3d1: 85 24     
-            jsr __ca26         ; $c3d3: 20 26 ca  
-__c3d6:     lda $10            ; $c3d6: a5 10     
+            BEQ __c3d6         ; $c3cb: f0 09     
+            LDA $24            ; $c3cd: a5 24     
+            EOR #$01           ; $c3cf: 49 01     
+            STA $24            ; $c3d1: 85 24     
+            JSR __ca26         ; $c3d3: 20 26 ca  
+__c3d6:     LDA $10            ; $c3d6: a5 10     
             and #$01           ; $c3d8: 29 01     
-            bne __c3be         ; $c3da: d0 e2     
-            dec $1e            ; $c3dc: c6 1e     
-            bne __c3be         ; $c3de: d0 de     
-            lda #$01           ; $c3e0: a9 01     
-            sta $45            ; $c3e2: 85 45     
-            sta $47            ; $c3e4: 85 47     
-            lda #$f8           ; $c3e6: a9 f8     
-            sta $12            ; $c3e8: 85 12     
-            lda #$08           ; $c3ea: a9 08     
-            sta $13            ; $c3ec: 85 13     
-            ldx #$00           ; $c3ee: a2 00     
+            BNE __c3be         ; $c3da: d0 e2     
+            DEC $1e            ; $c3dc: c6 1e     
+            BNE __c3be         ; $c3de: d0 de     
+            LDA #$01           ; $c3e0: a9 01     
+            STA $45            ; $c3e2: 85 45     
+            STA $47            ; $c3e4: 85 47     
+            LDA #$f8           ; $c3e6: a9 f8     
+            STA $12            ; $c3e8: 85 12     
+            LDA #$08           ; $c3ea: a9 08     
+            STA $13            ; $c3ec: 85 13     
+            LDX #$00           ; $c3ee: a2 00     
             txa                ; $c3f0: 8a        
-            sta $46            ; $c3f1: 85 46     
-__c3f3:     sta $60,x          ; $c3f3: 95 60     
-            inx                ; $c3f5: e8        
-            cpx #$08           ; $c3f6: e0 08     
-            bne __c3f3         ; $c3f8: d0 f9     
-            ldx #$0e           ; $c3fa: a2 0e     
-__c3fc:     sta $60,x          ; $c3fc: 95 60     
-            inx                ; $c3fe: e8        
-            cpx #$20           ; $c3ff: e0 20     
-            bne __c3fc         ; $c401: d0 f9     
-            inc $60            ; $c403: e6 60     
-            inc $6e            ; $c405: e6 6e     
-            jmp __c431         ; $c407: 4c 31 c4  
+            STA $46            ; $c3f1: 85 46     
+__c3f3:     STA $60,x          ; $c3f3: 95 60     
+            INX                ; $c3f5: e8        
+            CPX #$08           ; $c3f6: e0 08     
+            BNE __c3f3         ; $c3f8: d0 f9     
+            LDX #$0e           ; $c3fa: a2 0e     
+__c3fc:     STA $60,x          ; $c3fc: 95 60     
+            INX                ; $c3fe: e8        
+            CPX #$20           ; $c3ff: e0 20     
+            BNE __c3fc         ; $c401: d0 f9     
+            INC $60            ; $c403: e6 60     
+            INC $6e            ; $c405: e6 6e     
+            JMP __c431         ; $c407: 4c 31 c4  
 
 ;-------------------------------------------------------------------------------
-__c40a:     lda #$f8           ; $c40a: a9 f8     
-            sta $12            ; $c40c: 85 12     
-            lda #$08           ; $c40e: a9 08     
-            sta $13            ; $c410: 85 13     
-            lda #$00           ; $c412: a9 00     
-            ldx #$3f           ; $c414: a2 3f     
-__c416:     sta $60,x          ; $c416: 95 60     
-            dex                ; $c418: ca        
-            bpl __c416         ; $c419: 10 fb     
-            lda #$00           ; $c41b: a9 00     
-            sta $14            ; $c41d: 85 14     
-            lda $29            ; $c41f: a5 29     
-            sta $62            ; $c421: 85 62     
-            sta $82            ; $c423: 85 82     
-            lda #$03           ; $c425: a9 03     
-            sta $60            ; $c427: 85 60     
-            ldx $24            ; $c429: a6 24     
-            stx $25            ; $c42b: 86 25     
-            beq __c431         ; $c42d: f0 02     
-            sta $80            ; $c42f: 85 80     
-__c431:     jsr __c2df         ; $c431: 20 df c2  
-            lda $6e            ; $c434: a5 6e     
-            bne __c440         ; $c436: d0 08     
-            lda #$01           ; $c438: a9 01     
-            sta $05fa          ; $c43a: 8d fa 05  
-            sta $05fb          ; $c43d: 8d fb 05  
-__c440:     inc $6e            ; $c440: e6 6e     
-            cmp #$6f           ; $c442: c9 6f     
-            bne __c44a         ; $c444: d0 04     
-            lda #$63           ; $c446: a9 63     
-            sta $6e            ; $c448: 85 6e     
-__c44a:     lda #$00           ; $c44a: a9 00     
-            sta $26            ; $c44c: 85 26     
-            sta $0e            ; $c44e: 85 0e     
-            sta $0b            ; $c450: 85 0b     
-            sta $6f            ; $c452: 85 6f     
-            lda #$06           ; $c454: a9 06     
-            sta $2001          ; $c456: 8d 01 20  
-            jsr __c7d0         ; $c459: 20 d0 c7  
-            jsr __c841         ; $c45c: 20 41 c8  
-            ldx #$1c           ; $c45f: a2 1c     
-            jsr __cba7         ; $c461: 20 a7 cb  
-            jsr __cba7         ; $c464: 20 a7 cb  
-            jsr __cba7         ; $c467: 20 a7 cb  
-            jsr __cba7         ; $c46a: 20 a7 cb  
-            jsr __c918         ; $c46d: 20 18 c9  
-            jsr __e2f5         ; $c470: 20 f5 e2  
-            lda #$01           ; $c473: a9 01     
-            sta $1f            ; $c475: 85 1f     
-            jsr __c2df         ; $c477: 20 df c2  
-            jsr __c675         ; $c47a: 20 75 c6  
-            jsr __c778         ; $c47d: 20 78 c7  
-            jmp __c4ae         ; $c480: 4c ae c4  
+__c40a:     LDA #$f8           ; $c40a: a9 f8     
+            STA $12            ; $c40c: 85 12     
+            LDA #$08           ; $c40e: a9 08     
+            STA $13            ; $c410: 85 13     
+            LDA #$00           ; $c412: a9 00     
+            LDX #$3f           ; $c414: a2 3f     
+__c416:     STA $60,x          ; $c416: 95 60     
+            DEX                ; $c418: ca        
+            BPL __c416         ; $c419: 10 fb     
+            LDA #$00           ; $c41b: a9 00     
+            STA $14            ; $c41d: 85 14     
+            LDA $29            ; $c41f: a5 29     
+            STA $62            ; $c421: 85 62     
+            STA $82            ; $c423: 85 82     
+            LDA #$03           ; $c425: a9 03     
+            STA $60            ; $c427: 85 60     
+            LDX $24            ; $c429: a6 24     
+            STX $25            ; $c42b: 86 25     
+            BEQ __c431         ; $c42d: f0 02     
+            STA $80            ; $c42f: 85 80     
+__c431:     JSR __c2df         ; $c431: 20 df c2  
+            LDA $6e            ; $c434: a5 6e     
+            BNE __c440         ; $c436: d0 08     
+            LDA #$01           ; $c438: a9 01     
+            STA $05fa          ; $c43a: 8d fa 05  
+            STA $05fb          ; $c43d: 8d fb 05  
+__c440:     INC $6e            ; $c440: e6 6e     
+            CMP #$6f           ; $c442: c9 6f     
+            BNE __c44a         ; $c444: d0 04     
+            LDA #$63           ; $c446: a9 63     
+            STA $6e            ; $c448: 85 6e     
+__c44a:     LDA #$00           ; $c44a: a9 00     
+            STA $26            ; $c44c: 85 26     
+            STA $0e            ; $c44e: 85 0e     
+            STA $0b            ; $c450: 85 0b     
+            STA $6f            ; $c452: 85 6f     
+            LDA #$06           ; $c454: a9 06     
+            STA $2001          ; $c456: 8d 01 20  
+            JSR __c7d0         ; $c459: 20 d0 c7  
+            JSR __c841         ; $c45c: 20 41 c8  
+            LDX #$1c           ; $c45f: a2 1c     
+            JSR __cba7         ; $c461: 20 a7 cb  
+            JSR __cba7         ; $c464: 20 a7 cb  
+            JSR __cba7         ; $c467: 20 a7 cb  
+            JSR __cba7         ; $c46a: 20 a7 cb  
+            JSR __c918         ; $c46d: 20 18 c9  
+            JSR __e2f5         ; $c470: 20 f5 e2  
+            LDA #$01           ; $c473: a9 01     
+            STA $1f            ; $c475: 85 1f     
+            JSR __c2df         ; $c477: 20 df c2  
+            JSR __c675         ; $c47a: 20 75 c6  
+            JSR __c778         ; $c47d: 20 78 c7  
+            JMP __c4ae         ; $c480: 4c ae c4  
 
 ;-------------------------------------------------------------------------------
-__c483:     jsr __c2df         ; $c483: 20 df c2  
-            jsr __c742         ; $c486: 20 42 c7  
-            ldx #$01           ; $c489: a2 01     
-__c48b:     lda $a0,x          ; $c48b: b5 a0     
-            cmp #$04           ; $c48d: c9 04     
-            beq __c49d         ; $c48f: f0 0c     
-            cmp #$06           ; $c491: c9 06     
-            beq __c49d         ; $c493: f0 08     
-            inx                ; $c495: e8        
-            cpx #$0e           ; $c496: e0 0e     
-            bne __c48b         ; $c498: d0 f1     
-            jmp __c431         ; $c49a: 4c 31 c4  
+__c483:     JSR __c2df         ; $c483: 20 df c2  
+            JSR __c742         ; $c486: 20 42 c7  
+            LDX #$01           ; $c489: a2 01     
+__c48b:     LDA $a0,x          ; $c48b: b5 a0     
+            CMP #$04           ; $c48d: c9 04     
+            BEQ __c49d         ; $c48f: f0 0c     
+            CMP #$06           ; $c491: c9 06     
+            BEQ __c49d         ; $c493: f0 08     
+            INX                ; $c495: e8        
+            CPX #$0e           ; $c496: e0 0e     
+            BNE __c48b         ; $c498: d0 f1     
+            JMP __c431         ; $c49a: 4c 31 c4  
 
 ;-------------------------------------------------------------------------------
-__c49d:     lda #$02           ; $c49d: a9 02     
-            sta $a0            ; $c49f: 85 a0     
-            jsr __e382         ; $c4a1: 20 82 e3  
-            lda #$01           ; $c4a4: a9 01     
-            sta $1f            ; $c4a6: 85 1f     
-            jsr __c823         ; $c4a8: 20 23 c8  
-            jsr __c85e         ; $c4ab: 20 5e c8  
-__c4ae:     jsr __c2df         ; $c4ae: 20 df c2  
-            jsr __eead         ; $c4b1: 20 ad ee  
-            ldx $14            ; $c4b4: a6 14     
-            lda __c65d,x       ; $c4b6: bd 5d c6  
-            sta $27            ; $c4b9: 85 27     
-            lda #$00           ; $c4bb: a9 00     
-            sta $28            ; $c4bd: 85 28     
-            jsr __ca45         ; $c4bf: 20 45 ca  
-            jsr __c675         ; $c4c2: 20 75 c6  
-            lda #$78           ; $c4c5: a9 78     
-            sta $1e            ; $c4c7: 85 1e     
-            lda #$0c           ; $c4c9: a9 0c     
-            sta $26            ; $c4cb: 85 26     
-__c4cd:     jsr __c2df         ; $c4cd: 20 df c2  
-            jsr __c675         ; $c4d0: 20 75 c6  
-            dec $26            ; $c4d3: c6 26     
-            bne __c4cd         ; $c4d5: d0 f6     
-__c4d7:     jsr __c675         ; $c4d7: 20 75 c6  
-            jsr __c2df         ; $c4da: 20 df c2  
-            dec $1e            ; $c4dd: c6 1e     
-            bne __c4d7         ; $c4df: d0 f6     
-            inc $1e            ; $c4e1: e6 1e     
-            lda $05fa          ; $c4e3: ad fa 05  
-            bne __c4d7         ; $c4e6: d0 ef     
-            jsr __c2df         ; $c4e8: 20 df c2  
-            lda #$01           ; $c4eb: a9 01     
-            sta $2d            ; $c4ed: 85 2d     
-            lda #$00           ; $c4ef: a9 00     
-            sta $1f            ; $c4f1: 85 1f     
-            sta $23            ; $c4f3: 85 23     
-__c4f5:     jsr __f026         ; $c4f5: 20 26 f0  
-            jsr __c2df         ; $c4f8: 20 df c2  
-            lda $03            ; $c4fb: a5 03     
+__c49d:     LDA #$02           ; $c49d: a9 02     
+            STA $a0            ; $c49f: 85 a0     
+            JSR __e382         ; $c4a1: 20 82 e3  
+            LDA #$01           ; $c4a4: a9 01     
+            STA $1f            ; $c4a6: 85 1f     
+            JSR __c823         ; $c4a8: 20 23 c8  
+            JSR __c85e         ; $c4ab: 20 5e c8  
+__c4ae:     JSR __c2df         ; $c4ae: 20 df c2  
+            JSR __eead         ; $c4b1: 20 ad ee  
+            LDX $14            ; $c4b4: a6 14     
+            LDA __c65d,x       ; $c4b6: bd 5d c6  
+            STA $27            ; $c4b9: 85 27     
+            LDA #$00           ; $c4bb: a9 00     
+            STA $28            ; $c4bd: 85 28     
+            JSR __ca45         ; $c4bf: 20 45 ca  
+            JSR __c675         ; $c4c2: 20 75 c6  
+            LDA #$78           ; $c4c5: a9 78     
+            STA $1e            ; $c4c7: 85 1e     
+            LDA #$0c           ; $c4c9: a9 0c     
+            STA $26            ; $c4cb: 85 26     
+__c4cd:     JSR __c2df         ; $c4cd: 20 df c2  
+            JSR __c675         ; $c4d0: 20 75 c6  
+            DEC $26            ; $c4d3: c6 26     
+            BNE __c4cd         ; $c4d5: d0 f6     
+__c4d7:     JSR __c675         ; $c4d7: 20 75 c6  
+            JSR __c2df         ; $c4da: 20 df c2  
+            DEC $1e            ; $c4dd: c6 1e     
+            BNE __c4d7         ; $c4df: d0 f6     
+            INC $1e            ; $c4e1: e6 1e     
+            LDA $05fa          ; $c4e3: ad fa 05  
+            BNE __c4d7         ; $c4e6: d0 ef     
+            JSR __c2df         ; $c4e8: 20 df c2  
+            LDA #$01           ; $c4eb: a9 01     
+            STA $2d            ; $c4ed: 85 2d     
+            LDA #$00           ; $c4ef: a9 00     
+            STA $1f            ; $c4f1: 85 1f     
+            STA $23            ; $c4f3: 85 23     
+__c4f5:     JSR __f026         ; $c4f5: 20 26 f0  
+            JSR __c2df         ; $c4f8: 20 df c2  
+            LDA $03            ; $c4fb: a5 03     
             and #$08           ; $c4fd: 29 08     
-            bne __c561         ; $c4ff: d0 60     
-            jsr __eeee         ; $c501: 20 ee ee  
-            jsr __c75e         ; $c504: 20 5e c7  
-__c507:     lda $b0            ; $c507: a5 b0     
-            cmp #$0a           ; $c509: c9 0a     
-            bcs __c579         ; $c50b: b0 6c     
-            lda $61            ; $c50d: a5 61     
-            bne __c4f5         ; $c50f: d0 e4     
-            sta $05f7          ; $c511: 8d f7 05  
-            lda $41            ; $c514: a5 41     
-            cmp #$01           ; $c516: c9 01     
-            beq __c4f5         ; $c518: f0 db     
-__c51a:     jsr __c2df         ; $c51a: 20 df c2  
-            jsr __c2df         ; $c51d: 20 df c2  
-            lda $05e7          ; $c520: ad e7 05  
-            bne __c51a         ; $c523: d0 f5     
-            jsr __c778         ; $c525: 20 78 c7  
-            lda #$01           ; $c528: a9 01     
-            sta $26            ; $c52a: 85 26     
-            sta $1f            ; $c52c: 85 1f     
-__c52e:     jsr __c2df         ; $c52e: 20 df c2  
-            lda $41            ; $c531: a5 41     
-            cmp #$02           ; $c533: c9 02     
-            beq __c52e         ; $c535: f0 f7     
-            lda $44            ; $c537: a5 44     
-            bne __c52e         ; $c539: d0 f3     
-            lda #$01           ; $c53b: a9 01     
-            sta $05e5          ; $c53d: 8d e5 05  
-            sta $05e6          ; $c540: 8d e6 05  
-__c543:     jsr __c2df         ; $c543: 20 df c2  
-            lda $b0            ; $c546: a5 b0     
-            cmp #$06           ; $c548: c9 06     
-            bcs __c579         ; $c54a: b0 2d     
-            lda $05e5          ; $c54c: ad e5 05  
-            bne __c543         ; $c54f: d0 f2     
-            jsr __c74e         ; $c551: 20 4e c7  
-            jsr __e284         ; $c554: 20 84 e2  
-            lda $45            ; $c557: a5 45     
-            bne __c55e         ; $c559: d0 03     
-            jmp __c431         ; $c55b: 4c 31 c4  
+            BNE __c561         ; $c4ff: d0 60     
+            JSR __eeee         ; $c501: 20 ee ee  
+            JSR __c75e         ; $c504: 20 5e c7  
+__c507:     LDA $b0            ; $c507: a5 b0     
+            CMP #$0a           ; $c509: c9 0a     
+            BCS __c579         ; $c50b: b0 6c     
+            LDA $61            ; $c50d: a5 61     
+            BNE __c4f5         ; $c50f: d0 e4     
+            STA $05f7          ; $c511: 8d f7 05  
+            LDA $41            ; $c514: a5 41     
+            CMP #$01           ; $c516: c9 01     
+            BEQ __c4f5         ; $c518: f0 db     
+__c51a:     JSR __c2df         ; $c51a: 20 df c2  
+            JSR __c2df         ; $c51d: 20 df c2  
+            LDA $05e7          ; $c520: ad e7 05  
+            BNE __c51a         ; $c523: d0 f5     
+            JSR __c778         ; $c525: 20 78 c7  
+            LDA #$01           ; $c528: a9 01     
+            STA $26            ; $c52a: 85 26     
+            STA $1f            ; $c52c: 85 1f     
+__c52e:     JSR __c2df         ; $c52e: 20 df c2  
+            LDA $41            ; $c531: a5 41     
+            CMP #$02           ; $c533: c9 02     
+            BEQ __c52e         ; $c535: f0 f7     
+            LDA $44            ; $c537: a5 44     
+            BNE __c52e         ; $c539: d0 f3     
+            LDA #$01           ; $c53b: a9 01     
+            STA $05e5          ; $c53d: 8d e5 05  
+            STA $05e6          ; $c540: 8d e6 05  
+__c543:     JSR __c2df         ; $c543: 20 df c2  
+            LDA $b0            ; $c546: a5 b0     
+            CMP #$06           ; $c548: c9 06     
+            BCS __c579         ; $c54a: b0 2d     
+            LDA $05e5          ; $c54c: ad e5 05  
+            BNE __c543         ; $c54f: d0 f2     
+            JSR __c74e         ; $c551: 20 4e c7  
+            JSR __e284         ; $c554: 20 84 e2  
+            LDA $45            ; $c557: a5 45     
+            BNE __c55e         ; $c559: d0 03     
+            JMP __c431         ; $c55b: 4c 31 c4  
 
 ;-------------------------------------------------------------------------------
-__c55e:     jmp __c2ed         ; $c55e: 4c ed c2  
+__c55e:     JMP __c2ed         ; $c55e: 4c ed c2  
 
 ;-------------------------------------------------------------------------------
-__c561:     lda #$01           ; $c561: a9 01     
-            sta $05e0          ; $c563: 8d e0 05  
-__c566:     lda #$01           ; $c566: a9 01     
-            sta $23            ; $c568: 85 23     
-            jsr __c6fc         ; $c56a: 20 fc c6  
-            jsr __c2df         ; $c56d: 20 df c2  
-            lda $03            ; $c570: a5 03     
+__c561:     LDA #$01           ; $c561: a9 01     
+            STA $05e0          ; $c563: 8d e0 05  
+__c566:     LDA #$01           ; $c566: a9 01     
+            STA $23            ; $c568: 85 23     
+            JSR __c6fc         ; $c56a: 20 fc c6  
+            JSR __c2df         ; $c56d: 20 df c2  
+            LDA $03            ; $c570: a5 03     
             and #$08           ; $c572: 29 08     
-            beq __c566         ; $c574: f0 f0     
-            jmp __c605         ; $c576: 4c 05 c6  
+            BEQ __c566         ; $c574: f0 f0     
+            JMP __c605         ; $c576: 4c 05 c6  
 
 ;-------------------------------------------------------------------------------
-__c579:     lda #$01           ; $c579: a9 01     
-            sta $1f            ; $c57b: 85 1f     
-            jsr __c778         ; $c57d: 20 78 c7  
-__c580:     jsr __c2df         ; $c580: 20 df c2  
-            lda $a0            ; $c583: a5 a0     
-            bne __c580         ; $c585: d0 f9     
-            lda $05e3          ; $c587: ad e3 05  
-            bne __c580         ; $c58a: d0 f4     
-            lda $41            ; $c58c: a5 41     
-            beq __c594         ; $c58e: f0 04     
-            cmp #$03           ; $c590: c9 03     
-            bne __c580         ; $c592: d0 ec     
-__c594:     ldx $42            ; $c594: a6 42     
-            lda $a0,x          ; $c596: b5 a0     
-            cmp #$0a           ; $c598: c9 0a     
-            bne __c5a3         ; $c59a: d0 07     
-            lda #$00           ; $c59c: a9 00     
-            sta $a0,x          ; $c59e: 95 a0     
-            jsr __e284         ; $c5a0: 20 84 e2  
-__c5a3:     jsr __c74e         ; $c5a3: 20 4e c7  
-            lda $61            ; $c5a6: a5 61     
-            bne __c5ba         ; $c5a8: d0 10     
-            lda #$01           ; $c5aa: a9 01     
-            sta $05e5          ; $c5ac: 8d e5 05  
-            sta $05e6          ; $c5af: 8d e6 05  
-__c5b2:     jsr __c2df         ; $c5b2: 20 df c2  
-            lda $05e5          ; $c5b5: ad e5 05  
-            bne __c5b2         ; $c5b8: d0 f8     
-__c5ba:     lda $45            ; $c5ba: a5 45     
-            bne __c602         ; $c5bc: d0 44     
-            dec $60            ; $c5be: c6 60     
-            bne __c60f         ; $c5c0: d0 4d     
-            lda #$08           ; $c5c2: a9 08     
-            sta $1e            ; $c5c4: 85 1e     
-__c5c6:     jsr __c2df         ; $c5c6: 20 df c2  
-            dec $1e            ; $c5c9: c6 1e     
-            bne __c5c6         ; $c5cb: d0 f9     
-            lda #$78           ; $c5cd: a9 78     
-            sta $1e            ; $c5cf: 85 1e     
-            lda #$01           ; $c5d1: a9 01     
-            sta $05f8          ; $c5d3: 8d f8 05  
-            sta $05f9          ; $c5d6: 8d f9 05  
-__c5d9:     jsr __c2df         ; $c5d9: 20 df c2  
-            jsr __c65f         ; $c5dc: 20 5f c6  
-            dec $1e            ; $c5df: c6 1e     
-            bne __c5d9         ; $c5e1: d0 f6     
-            lda $80            ; $c5e3: a5 80     
-            bne __c60f         ; $c5e5: d0 28     
-            lda #$5a           ; $c5e7: a9 5a     
-            sta $1e            ; $c5e9: 85 1e     
-__c5eb:     jsr __c2df         ; $c5eb: 20 df c2  
-            jsr __c662         ; $c5ee: 20 62 c6  
-            lda $03            ; $c5f1: a5 03     
+__c579:     LDA #$01           ; $c579: a9 01     
+            STA $1f            ; $c57b: 85 1f     
+            JSR __c778         ; $c57d: 20 78 c7  
+__c580:     JSR __c2df         ; $c580: 20 df c2  
+            LDA $a0            ; $c583: a5 a0     
+            BNE __c580         ; $c585: d0 f9     
+            LDA $05e3          ; $c587: ad e3 05  
+            BNE __c580         ; $c58a: d0 f4     
+            LDA $41            ; $c58c: a5 41     
+            BEQ __c594         ; $c58e: f0 04     
+            CMP #$03           ; $c590: c9 03     
+            BNE __c580         ; $c592: d0 ec     
+__c594:     LDX $42            ; $c594: a6 42     
+            LDA $a0,x          ; $c596: b5 a0     
+            CMP #$0a           ; $c598: c9 0a     
+            BNE __c5a3         ; $c59a: d0 07     
+            LDA #$00           ; $c59c: a9 00     
+            STA $a0,x          ; $c59e: 95 a0     
+            JSR __e284         ; $c5a0: 20 84 e2  
+__c5a3:     JSR __c74e         ; $c5a3: 20 4e c7  
+            LDA $61            ; $c5a6: a5 61     
+            BNE __c5ba         ; $c5a8: d0 10     
+            LDA #$01           ; $c5aa: a9 01     
+            STA $05e5          ; $c5ac: 8d e5 05  
+            STA $05e6          ; $c5af: 8d e6 05  
+__c5b2:     JSR __c2df         ; $c5b2: 20 df c2  
+            LDA $05e5          ; $c5b5: ad e5 05  
+            BNE __c5b2         ; $c5b8: d0 f8     
+__c5ba:     LDA $45            ; $c5ba: a5 45     
+            BNE __c602         ; $c5bc: d0 44     
+            DEC $60            ; $c5be: c6 60     
+            BNE __c60f         ; $c5c0: d0 4d     
+            LDA #$08           ; $c5c2: a9 08     
+            STA $1e            ; $c5c4: 85 1e     
+__c5c6:     JSR __c2df         ; $c5c6: 20 df c2  
+            DEC $1e            ; $c5c9: c6 1e     
+            BNE __c5c6         ; $c5cb: d0 f9     
+            LDA #$78           ; $c5cd: a9 78     
+            STA $1e            ; $c5cf: 85 1e     
+            LDA #$01           ; $c5d1: a9 01     
+            STA $05f8          ; $c5d3: 8d f8 05  
+            STA $05f9          ; $c5d6: 8d f9 05  
+__c5d9:     JSR __c2df         ; $c5d9: 20 df c2  
+            JSR __c65f         ; $c5dc: 20 5f c6  
+            DEC $1e            ; $c5df: c6 1e     
+            BNE __c5d9         ; $c5e1: d0 f6     
+            LDA $80            ; $c5e3: a5 80     
+            BNE __c60f         ; $c5e5: d0 28     
+            LDA #$5a           ; $c5e7: a9 5a     
+            STA $1e            ; $c5e9: 85 1e     
+__c5eb:     JSR __c2df         ; $c5eb: 20 df c2  
+            JSR __c662         ; $c5ee: 20 62 c6  
+            LDA $03            ; $c5f1: a5 03     
             and #$0c           ; $c5f3: 29 0c     
-            bne __c5fb         ; $c5f5: d0 04     
-            dec $1e            ; $c5f7: c6 1e     
-            bne __c5eb         ; $c5f9: d0 f0     
-__c5fb:     lda $14            ; $c5fb: a5 14     
-            beq __c602         ; $c5fd: f0 03     
-            jsr __c620         ; $c5ff: 20 20 c6  
-__c602:     jmp __c2ed         ; $c602: 4c ed c2  
+            BNE __c5fb         ; $c5f5: d0 04     
+            DEC $1e            ; $c5f7: c6 1e     
+            BNE __c5eb         ; $c5f9: d0 f0     
+__c5fb:     LDA $14            ; $c5fb: a5 14     
+            BEQ __c602         ; $c5fd: f0 03     
+            JSR __c620         ; $c5ff: 20 20 c6  
+__c602:     JMP __c2ed         ; $c602: 4c ed c2  
 
 ;-------------------------------------------------------------------------------
-__c605:     lda #$00           ; $c605: a9 00     
-            sta $23            ; $c607: 85 23     
-            jsr __c6fc         ; $c609: 20 fc c6  
-            jmp __c507         ; $c60c: 4c 07 c5  
+__c605:     LDA #$00           ; $c605: a9 00     
+            STA $23            ; $c607: 85 23     
+            JSR __c6fc         ; $c609: 20 fc c6  
+            JMP __c507         ; $c60c: 4c 07 c5  
 
 ;-------------------------------------------------------------------------------
-__c60f:     lda $80            ; $c60f: a5 80     
-            beq __c61d         ; $c611: f0 0a     
-            jsr __c620         ; $c613: 20 20 c6  
-            lda $6e            ; $c616: a5 6e     
-            bne __c61d         ; $c618: d0 03     
-            jmp __c431         ; $c61a: 4c 31 c4  
+__c60f:     LDA $80            ; $c60f: a5 80     
+            BEQ __c61d         ; $c611: f0 0a     
+            JSR __c620         ; $c613: 20 20 c6  
+            LDA $6e            ; $c616: a5 6e     
+            BNE __c61d         ; $c618: d0 03     
+            JMP __c431         ; $c61a: 4c 31 c4  
 
 ;-------------------------------------------------------------------------------
-__c61d:     jmp __c483         ; $c61d: 4c 83 c4  
+__c61d:     JMP __c483         ; $c61d: 4c 83 c4  
 
 ;-------------------------------------------------------------------------------
-__c620:     ldx #$00           ; $c620: a2 00     
-__c622:     lda $0200,x        ; $c622: bd 00 02  
+__c620:     LDX #$00           ; $c620: a2 00     
+__c622:     LDA $0200,x        ; $c622: bd 00 02  
             tay                ; $c625: a8        
-            lda $0300,x        ; $c626: bd 00 03  
-            sta $0200,x        ; $c629: 9d 00 02  
+            LDA $0300,x        ; $c626: bd 00 03  
+            STA $0200,x        ; $c629: 9d 00 02  
             tya                ; $c62c: 98        
-            sta $0300,x        ; $c62d: 9d 00 03  
-            inx                ; $c630: e8        
-            bne __c622         ; $c631: d0 ef     
-            ldx #$07           ; $c633: a2 07     
-__c635:     lda $60,x          ; $c635: b5 60     
+            STA $0300,x        ; $c62d: 9d 00 03  
+            INX                ; $c630: e8        
+            BNE __c622         ; $c631: d0 ef     
+            LDX #$07           ; $c633: a2 07     
+__c635:     LDA $60,x          ; $c635: b5 60     
             tay                ; $c637: a8        
-            lda $80,x          ; $c638: b5 80     
-            sta $60,x          ; $c63a: 95 60     
+            LDA $80,x          ; $c638: b5 80     
+            STA $60,x          ; $c63a: 95 60     
             tya                ; $c63c: 98        
-            sta $80,x          ; $c63d: 95 80     
-            dex                ; $c63f: ca        
-            bpl __c635         ; $c640: 10 f3     
-            ldx #$11           ; $c642: a2 11     
-__c644:     lda $6e,x          ; $c644: b5 6e     
+            STA $80,x          ; $c63d: 95 80     
+            DEX                ; $c63f: ca        
+            BPL __c635         ; $c640: 10 f3     
+            LDX #$11           ; $c642: a2 11     
+__c644:     LDA $6e,x          ; $c644: b5 6e     
             tay                ; $c646: a8        
-            lda $8e,x          ; $c647: b5 8e     
-            sta $6e,x          ; $c649: 95 6e     
+            LDA $8e,x          ; $c647: b5 8e     
+            STA $6e,x          ; $c649: 95 6e     
             tya                ; $c64b: 98        
-            sta $8e,x          ; $c64c: 95 8e     
-            dex                ; $c64e: ca        
-            bpl __c644         ; $c64f: 10 f3     
-            lda $14            ; $c651: a5 14     
-            eor #$01           ; $c653: 49 01     
-            sta $14            ; $c655: 85 14     
+            STA $8e,x          ; $c64c: 95 8e     
+            DEX                ; $c64e: ca        
+            BPL __c644         ; $c64f: 10 f3     
+            LDA $14            ; $c651: a5 14     
+            EOR #$01           ; $c653: 49 01     
+            STA $14            ; $c655: 85 14     
             asl                ; $c657: 0a        
-            ora #$30           ; $c658: 09 30     
-            sta $08            ; $c65a: 85 08     
-            rts                ; $c65c: 60        
+            ORA #$30           ; $c658: 09 30     
+            STA $08            ; $c65a: 85 08     
+            RTS                ; $c65c: 60        
 
 ;-------------------------------------------------------------------------------
 __c65d:     .hex 68 88         ; $c65d: 68 88         Data
 
 ;-------------------------------------------------------------------------------
-__c65f:     jsr __c68f         ; $c65f: 20 8f c6  
-__c662:     ldx $0f            ; $c662: a6 0f     
-            ldy #$00           ; $c664: a0 00     
-__c666:     lda __c6dc,y       ; $c666: b9 dc c6  
-            sta $0700,x        ; $c669: 9d 00 07  
-            inx                ; $c66c: e8        
-            iny                ; $c66d: c8        
-            cpy #$20           ; $c66e: c0 20     
-            bne __c666         ; $c670: d0 f4     
-            stx $0f            ; $c672: 86 0f     
-            rts                ; $c674: 60        
+__c65f:     JSR __c68f         ; $c65f: 20 8f c6  
+__c662:     LDX $0f            ; $c662: a6 0f     
+            LDY #$00           ; $c664: a0 00     
+__c666:     LDA __c6dc,y       ; $c666: b9 dc c6  
+            STA $0700,x        ; $c669: 9d 00 07  
+            INX                ; $c66c: e8        
+            INY                ; $c66d: c8        
+            CPY #$20           ; $c66e: c0 20     
+            BNE __c666         ; $c670: d0 f4     
+            STX $0f            ; $c672: 86 0f     
+            RTS                ; $c674: 60        
 
 ;-------------------------------------------------------------------------------
-__c675:     lda $45            ; $c675: a5 45     
-            bne __c68e         ; $c677: d0 15     
-            jsr __c68f         ; $c679: 20 8f c6  
-            ldx $0f            ; $c67c: a6 0f     
-            ldy #$00           ; $c67e: a0 00     
-__c680:     lda __c6a8,y       ; $c680: b9 a8 c6  
-            sta $0700,x        ; $c683: 9d 00 07  
-            inx                ; $c686: e8        
-            iny                ; $c687: c8        
-            cpy #$18           ; $c688: c0 18     
-            bne __c680         ; $c68a: d0 f4     
-            stx $0f            ; $c68c: 86 0f     
-__c68e:     rts                ; $c68e: 60        
+__c675:     LDA $45            ; $c675: a5 45     
+            BNE __c68e         ; $c677: d0 15     
+            JSR __c68f         ; $c679: 20 8f c6  
+            LDX $0f            ; $c67c: a6 0f     
+            LDY #$00           ; $c67e: a0 00     
+__c680:     LDA __c6a8,y       ; $c680: b9 a8 c6  
+            STA $0700,x        ; $c683: 9d 00 07  
+            INX                ; $c686: e8        
+            INY                ; $c687: c8        
+            CPY #$18           ; $c688: c0 18     
+            BNE __c680         ; $c68a: d0 f4     
+            STX $0f            ; $c68c: 86 0f     
+__c68e:     RTS                ; $c68e: 60        
 
 ;-------------------------------------------------------------------------------
-__c68f:     ldx #$00           ; $c68f: a2 00     
-__c691:     lda __c6c0,x       ; $c691: bd c0 c6  
-            sta $0700,x        ; $c694: 9d 00 07  
-            inx                ; $c697: e8        
-            cpx #$1c           ; $c698: e0 1c     
-            bne __c691         ; $c69a: d0 f5     
-            stx $0f            ; $c69c: 86 0f     
-            lda $14            ; $c69e: a5 14     
-            beq __c6a7         ; $c6a0: f0 05     
-            lda #$f7           ; $c6a2: a9 f7     
-            sta $0719          ; $c6a4: 8d 19 07  
-__c6a7:     rts                ; $c6a7: 60        
+__c68f:     LDX #$00           ; $c68f: a2 00     
+__c691:     LDA __c6c0,x       ; $c691: bd c0 c6  
+            STA $0700,x        ; $c694: 9d 00 07  
+            INX                ; $c697: e8        
+            CPX #$1c           ; $c698: e0 1c     
+            BNE __c691         ; $c69a: d0 f5     
+            STX $0f            ; $c69c: 86 0f     
+            LDA $14            ; $c69e: a5 14     
+            BEQ __c6a7         ; $c6a0: f0 05     
+            LDA #$f7           ; $c6a2: a9 f7     
+            STA $0719          ; $c6a4: 8d 19 07  
+__c6a7:     RTS                ; $c6a7: 60        
 
 ;-------------------------------------------------------------------------------
 __c6a8:     .hex 84 e7 00 48   ; $c6a8: 84 e7 00 48   Data
@@ -890,36 +890,36 @@ __c6dc:     .hex 84 e9 00 3c   ; $c6dc: 84 e9 00 3c   Data
             .hex 84 e7 00 7c   ; $c6f8: 84 e7 00 7c   Data
 
 ;-------------------------------------------------------------------------------
-__c6fc:     ldy $0e            ; $c6fc: a4 0e     
-            lda $14            ; $c6fe: a5 14     
+__c6fc:     LDY $0e            ; $c6fc: a4 0e     
+            LDA $14            ; $c6fe: a5 14     
             asl                ; $c700: 0a        
             asl                ; $c701: 0a        
             asl                ; $c702: 0a        
-            ora #$22           ; $c703: 09 22     
-            sta $0500,y        ; $c705: 99 00 05  
-            iny                ; $c708: c8        
-            lda #$39           ; $c709: a9 39     
-            sta $0500,y        ; $c70b: 99 00 05  
-            iny                ; $c70e: c8        
-            lda #$05           ; $c70f: a9 05     
-            sta $0500,y        ; $c711: 99 00 05  
-            iny                ; $c714: c8        
-            ldx #$00           ; $c715: a2 00     
-            lda $23            ; $c717: a5 23     
-            beq __c723         ; $c719: f0 08     
-            lda $10            ; $c71b: a5 10     
+            ORA #$22           ; $c703: 09 22     
+            STA $0500,y        ; $c705: 99 00 05  
+            INY                ; $c708: c8        
+            LDA #$39           ; $c709: a9 39     
+            STA $0500,y        ; $c70b: 99 00 05  
+            INY                ; $c70e: c8        
+            LDA #$05           ; $c70f: a9 05     
+            STA $0500,y        ; $c711: 99 00 05  
+            INY                ; $c714: c8        
+            LDX #$00           ; $c715: a2 00     
+            LDA $23            ; $c717: a5 23     
+            BEQ __c723         ; $c719: f0 08     
+            LDA $10            ; $c71b: a5 10     
             and #$10           ; $c71d: 29 10     
-            beq __c723         ; $c71f: f0 02     
-            ldx #$06           ; $c721: a2 06     
-__c723:     lda __c736,x       ; $c723: bd 36 c7  
-__c726:     sta $0500,y        ; $c726: 99 00 05  
-            iny                ; $c729: c8        
-            inx                ; $c72a: e8        
-            lda __c736,x       ; $c72b: bd 36 c7  
-            bne __c726         ; $c72e: d0 f6     
-            sta $0500,y        ; $c730: 99 00 05  
-            sty $0e            ; $c733: 84 0e     
-            rts                ; $c735: 60        
+            BEQ __c723         ; $c71f: f0 02     
+            LDX #$06           ; $c721: a2 06     
+__c723:     LDA __c736,x       ; $c723: bd 36 c7  
+__c726:     STA $0500,y        ; $c726: 99 00 05  
+            INY                ; $c729: c8        
+            INX                ; $c72a: e8        
+            LDA __c736,x       ; $c72b: bd 36 c7  
+            BNE __c726         ; $c72e: d0 f6     
+            STA $0500,y        ; $c730: 99 00 05  
+            STY $0e            ; $c733: 84 0e     
+            RTS                ; $c735: 60        
 
 ;-------------------------------------------------------------------------------
 __c736:     .hex 24 24 24 24   ; $c736: 24 24 24 24   Data
@@ -927,81 +927,81 @@ __c736:     .hex 24 24 24 24   ; $c736: 24 24 24 24   Data
             .hex 1e 1c 0e 00   ; $c73e: 1e 1c 0e 00   Data
 
 ;-------------------------------------------------------------------------------
-__c742:     ldx #$00           ; $c742: a2 00     
-__c744:     lda $72,x          ; $c744: b5 72     
-            sta $a0,x          ; $c746: 95 a0     
-            inx                ; $c748: e8        
-            cpx #$0e           ; $c749: e0 0e     
-            bne __c744         ; $c74b: d0 f7     
-            rts                ; $c74d: 60        
+__c742:     LDX #$00           ; $c742: a2 00     
+__c744:     LDA $72,x          ; $c744: b5 72     
+            STA $a0,x          ; $c746: 95 a0     
+            INX                ; $c748: e8        
+            CPX #$0e           ; $c749: e0 0e     
+            BNE __c744         ; $c74b: d0 f7     
+            RTS                ; $c74d: 60        
 
 ;-------------------------------------------------------------------------------
-__c74e:     ldx #$00           ; $c74e: a2 00     
-__c750:     lda $a0,x          ; $c750: b5 a0     
-            sta $72,x          ; $c752: 95 72     
-            lda #$00           ; $c754: a9 00     
-            sta $a0,x          ; $c756: 95 a0     
-            inx                ; $c758: e8        
-            cpx #$0e           ; $c759: e0 0e     
-            bne __c750         ; $c75b: d0 f3     
-            rts                ; $c75d: 60        
+__c74e:     LDX #$00           ; $c74e: a2 00     
+__c750:     LDA $a0,x          ; $c750: b5 a0     
+            STA $72,x          ; $c752: 95 72     
+            LDA #$00           ; $c754: a9 00     
+            STA $a0,x          ; $c756: 95 a0     
+            INX                ; $c758: e8        
+            CPX #$0e           ; $c759: e0 0e     
+            BNE __c750         ; $c75b: d0 f3     
+            RTS                ; $c75d: 60        
 
 ;-------------------------------------------------------------------------------
-__c75e:     lda $45            ; $c75e: a5 45     
-            beq __c763         ; $c760: f0 01     
-            rts                ; $c762: 60        
+__c75e:     LDA $45            ; $c75e: a5 45     
+            BEQ __c763         ; $c760: f0 01     
+            RTS                ; $c762: 60        
 
 ;-------------------------------------------------------------------------------
-__c763:     lda $14            ; $c763: a5 14     
+__c763:     LDA $14            ; $c763: a5 14     
             asl                ; $c765: 0a        
             asl                ; $c766: 0a        
             adc $14            ; $c767: 65 14     
             tax                ; $c769: aa        
-            lda $10            ; $c76a: a5 10     
+            LDA $10            ; $c76a: a5 10     
             and #$10           ; $c76c: 29 10     
-            beq __c784         ; $c76e: f0 14     
+            BEQ __c784         ; $c76e: f0 14     
             txa                ; $c770: 8a        
             clc                ; $c771: 18        
             adc #$0a           ; $c772: 69 0a     
             tax                ; $c774: aa        
-            jmp __c784         ; $c775: 4c 84 c7  
+            JMP __c784         ; $c775: 4c 84 c7  
 
 ;-------------------------------------------------------------------------------
-__c778:     ldx #$00           ; $c778: a2 00     
-            jsr __c784         ; $c77a: 20 84 c7  
-            lda $25            ; $c77d: a5 25     
-            bne __c782         ; $c77f: d0 01     
-            rts                ; $c781: 60        
+__c778:     LDX #$00           ; $c778: a2 00     
+            JSR __c784         ; $c77a: 20 84 c7  
+            LDA $25            ; $c77d: a5 25     
+            BNE __c782         ; $c77f: d0 01     
+            RTS                ; $c781: 60        
 
 ;-------------------------------------------------------------------------------
-__c782:     ldx #$05           ; $c782: a2 05     
-__c784:     ldy $0e            ; $c784: a4 0e     
-            lda $14            ; $c786: a5 14     
+__c782:     LDX #$05           ; $c782: a2 05     
+__c784:     LDY $0e            ; $c784: a4 0e     
+            LDA $14            ; $c786: a5 14     
             asl                ; $c788: 0a        
             asl                ; $c789: 0a        
             asl                ; $c78a: 0a        
-            ora __c7bd,x       ; $c78b: 1d bd c7  
-            sta $0500,y        ; $c78e: 99 00 05  
-            iny                ; $c791: c8        
-            lda __c7bc,x       ; $c792: bd bc c7  
-            sta $0500,y        ; $c795: 99 00 05  
-            iny                ; $c798: c8        
-            lda #$03           ; $c799: a9 03     
-            sta $0500,y        ; $c79b: 99 00 05  
-            iny                ; $c79e: c8        
-            lda __c7be,x       ; $c79f: bd be c7  
-            sta $0500,y        ; $c7a2: 99 00 05  
-            iny                ; $c7a5: c8        
-            lda __c7bf,x       ; $c7a6: bd bf c7  
-            sta $0500,y        ; $c7a9: 99 00 05  
-            iny                ; $c7ac: c8        
-            lda __c7c0,x       ; $c7ad: bd c0 c7  
-            sta $0500,y        ; $c7b0: 99 00 05  
-            iny                ; $c7b3: c8        
-            lda #$00           ; $c7b4: a9 00     
-            sta $0500,y        ; $c7b6: 99 00 05  
-            sty $0e            ; $c7b9: 84 0e     
-            rts                ; $c7bb: 60        
+            ORA __c7bd,x       ; $c78b: 1d bd c7  
+            STA $0500,y        ; $c78e: 99 00 05  
+            INY                ; $c791: c8        
+            LDA __c7bc,x       ; $c792: bd bc c7  
+            STA $0500,y        ; $c795: 99 00 05  
+            INY                ; $c798: c8        
+            LDA #$03           ; $c799: a9 03     
+            STA $0500,y        ; $c79b: 99 00 05  
+            INY                ; $c79e: c8        
+            LDA __c7be,x       ; $c79f: bd be c7  
+            STA $0500,y        ; $c7a2: 99 00 05  
+            INY                ; $c7a5: c8        
+            LDA __c7bf,x       ; $c7a6: bd bf c7  
+            STA $0500,y        ; $c7a9: 99 00 05  
+            INY                ; $c7ac: c8        
+            LDA __c7c0,x       ; $c7ad: bd c0 c7  
+            STA $0500,y        ; $c7b0: 99 00 05  
+            INY                ; $c7b3: c8        
+            LDA #$00           ; $c7b4: a9 00     
+            STA $0500,y        ; $c7b6: 99 00 05  
+            STY $0e            ; $c7b9: 84 0e     
+            RTS                ; $c7bb: 60        
 
 ;-------------------------------------------------------------------------------
 __c7bc:     .hex 38            ; $c7bc: 38            Data
@@ -1014,407 +1014,407 @@ __c7c0:     .hex 19 b8 21 02   ; $c7c0: 19 b8 21 02   Data
             .hex 21 24 24 24   ; $c7cc: 21 24 24 24   Data
 
 ;-------------------------------------------------------------------------------
-__c7d0:     ldy #$00           ; $c7d0: a0 00     
-            lda #$f9           ; $c7d2: a9 f9     
-            ldx #$0c           ; $c7d4: a2 0c     
-__c7d6:     sta $0200,y        ; $c7d6: 99 00 02  
-            iny                ; $c7d9: c8        
-            dex                ; $c7da: ca        
-            bne __c7d6         ; $c7db: d0 f9     
-            ldx #$a8           ; $c7dd: a2 a8     
-            lda #$00           ; $c7df: a9 00     
-__c7e1:     sta $0200,y        ; $c7e1: 99 00 02  
-            iny                ; $c7e4: c8        
-            dex                ; $c7e5: ca        
-            bne __c7e1         ; $c7e6: d0 f9     
-            lda $2002          ; $c7e8: ad 02 20  
-            lda $14            ; $c7eb: a5 14     
+__c7d0:     LDY #$00           ; $c7d0: a0 00     
+            LDA #$f9           ; $c7d2: a9 f9     
+            LDX #$0c           ; $c7d4: a2 0c     
+__c7d6:     STA $0200,y        ; $c7d6: 99 00 02  
+            INY                ; $c7d9: c8        
+            DEX                ; $c7da: ca        
+            BNE __c7d6         ; $c7db: d0 f9     
+            LDX #$a8           ; $c7dd: a2 a8     
+            LDA #$00           ; $c7df: a9 00     
+__c7e1:     STA $0200,y        ; $c7e1: 99 00 02  
+            INY                ; $c7e4: c8        
+            DEX                ; $c7e5: ca        
+            BNE __c7e1         ; $c7e6: d0 f9     
+            LDA $2002          ; $c7e8: ad 02 20  
+            LDA $14            ; $c7eb: a5 14     
             asl                ; $c7ed: 0a        
             asl                ; $c7ee: 0a        
             asl                ; $c7ef: 0a        
-            ora #$20           ; $c7f0: 09 20     
-            sta $2006          ; $c7f2: 8d 06 20  
-            lda #$00           ; $c7f5: a9 00     
-            sta $2006          ; $c7f7: 8d 06 20  
-            ldy #$04           ; $c7fa: a0 04     
-__c7fc:     lda #$06           ; $c7fc: a9 06     
-            sta $e0            ; $c7fe: 85 e0     
-__c800:     ldx #$18           ; $c800: a2 18     
-            lda __cb5b,y       ; $c802: b9 5b cb  
-            jsr __cba0         ; $c805: 20 a0 cb  
-            ldx #$08           ; $c808: a2 08     
-            lda #$24           ; $c80a: a9 24     
-            jsr __cba0         ; $c80c: 20 a0 cb  
-            dec $e0            ; $c80f: c6 e0     
-            bne __c800         ; $c811: d0 ed     
-            dey                ; $c813: 88        
-            bpl __c7fc         ; $c814: 10 e6     
-            ldx #$00           ; $c816: a2 00     
-__c818:     lda __cb60,x       ; $c818: bd 60 cb  
-            sta $2007          ; $c81b: 8d 07 20  
-            inx                ; $c81e: e8        
-            cpx #$40           ; $c81f: e0 40     
-            bne __c818         ; $c821: d0 f5     
-__c823:     lda #$06           ; $c823: a9 06     
-            sta $2001          ; $c825: 8d 01 20  
-            ldx #$68           ; $c828: a2 68     
-            ldy #$59           ; $c82a: a0 59     
-            jsr __cbe7         ; $c82c: 20 e7 cb  
-            lda $25            ; $c82f: a5 25     
-            beq __c83a         ; $c831: f0 07     
-            ldx #$88           ; $c833: a2 88     
-            ldy #$d9           ; $c835: a0 d9     
-            jsr __cbe7         ; $c837: 20 e7 cb  
-__c83a:     ldx #$17           ; $c83a: a2 17     
-            ldy #$d8           ; $c83c: a0 d8     
-            jmp __cbe7         ; $c83e: 4c e7 cb  
+            ORA #$20           ; $c7f0: 09 20     
+            STA $2006          ; $c7f2: 8d 06 20  
+            LDA #$00           ; $c7f5: a9 00     
+            STA $2006          ; $c7f7: 8d 06 20  
+            LDY #$04           ; $c7fa: a0 04     
+__c7fc:     LDA #$06           ; $c7fc: a9 06     
+            STA $e0            ; $c7fe: 85 e0     
+__c800:     LDX #$18           ; $c800: a2 18     
+            LDA __cb5b,y       ; $c802: b9 5b cb  
+            JSR __cba0         ; $c805: 20 a0 cb  
+            LDX #$08           ; $c808: a2 08     
+            LDA #$24           ; $c80a: a9 24     
+            JSR __cba0         ; $c80c: 20 a0 cb  
+            DEC $e0            ; $c80f: c6 e0     
+            BNE __c800         ; $c811: d0 ed     
+            DEY                ; $c813: 88        
+            BPL __c7fc         ; $c814: 10 e6     
+            LDX #$00           ; $c816: a2 00     
+__c818:     LDA __cb60,x       ; $c818: bd 60 cb  
+            STA $2007          ; $c81b: 8d 07 20  
+            INX                ; $c81e: e8        
+            CPX #$40           ; $c81f: e0 40     
+            BNE __c818         ; $c821: d0 f5     
+__c823:     LDA #$06           ; $c823: a9 06     
+            STA $2001          ; $c825: 8d 01 20  
+            LDX #$68           ; $c828: a2 68     
+            LDY #$59           ; $c82a: a0 59     
+            JSR __cbe7         ; $c82c: 20 e7 cb  
+            LDA $25            ; $c82f: a5 25     
+            BEQ __c83a         ; $c831: f0 07     
+            LDX #$88           ; $c833: a2 88     
+            LDY #$d9           ; $c835: a0 d9     
+            JSR __cbe7         ; $c837: 20 e7 cb  
+__c83a:     LDX #$17           ; $c83a: a2 17     
+            LDY #$d8           ; $c83c: a0 d8     
+            JMP __cbe7         ; $c83e: 4c e7 cb  
 
 ;-------------------------------------------------------------------------------
-__c841:     lda $6e            ; $c841: a5 6e     
-            cmp #$10           ; $c843: c9 10     
+__c841:     LDA $6e            ; $c841: a5 6e     
+            CMP #$10           ; $c843: c9 10     
             bcc __c84c         ; $c845: 90 05     
             and #$03           ; $c847: 29 03     
             clc                ; $c849: 18        
             adc #$0c           ; $c84a: 69 0c     
 __c84c:     asl                ; $c84c: 0a        
             tay                ; $c84d: a8        
-            lda __fb6f,y       ; $c84e: b9 6f fb  
-            sta $ec            ; $c851: 85 ec     
-            lda __fb70,y       ; $c853: b9 70 fb  
-            sta $ed            ; $c856: 85 ed     
-            ldy #$00           ; $c858: a0 00     
-__c85a:     lda ($ec),y        ; $c85a: b1 ec     
-            bpl __c8dc         ; $c85c: 10 7e     
-__c85e:     lda $6e            ; $c85e: a5 6e     
+            LDA __fb6f,y       ; $c84e: b9 6f fb  
+            STA $ec            ; $c851: 85 ec     
+            LDA __fb70,y       ; $c853: b9 70 fb  
+            STA $ed            ; $c856: 85 ed     
+            LDY #$00           ; $c858: a0 00     
+__c85a:     LDA ($ec),y        ; $c85a: b1 ec     
+            BPL __c8dc         ; $c85c: 10 7e     
+__c85e:     LDA $6e            ; $c85e: a5 6e     
             sec                ; $c860: 38        
             sbc #$01           ; $c861: e9 01     
-            lsr                ; $c863: 4a        
-            lsr                ; $c864: 4a        
-__c865:     cmp #$03           ; $c865: c9 03     
+            LSR                ; $c863: 4a        
+            LSR                ; $c864: 4a        
+__c865:     CMP #$03           ; $c865: c9 03     
             bcc __c86f         ; $c867: 90 06     
             sec                ; $c869: 38        
             sbc #$03           ; $c86a: e9 03     
-            jmp __c865         ; $c86c: 4c 65 c8  
+            JMP __c865         ; $c86c: 4c 65 c8  
 
 ;-------------------------------------------------------------------------------
 __c86f:     asl                ; $c86f: 0a        
             asl                ; $c870: 0a        
             tay                ; $c871: a8        
-            ldx #$00           ; $c872: a2 00     
-__c874:     lda __caef,x       ; $c874: bd ef ca  
-            sta $e0,x          ; $c877: 95 e0     
-            inx                ; $c879: e8        
-            cpx #$10           ; $c87a: e0 10     
-            bne __c874         ; $c87c: d0 f6     
-            lda __cb4f,y       ; $c87e: b9 4f cb  
-            sta $e2            ; $c881: 85 e2     
-            lda __cb50,y       ; $c883: b9 50 cb  
-            sta $e3            ; $c886: 85 e3     
-            lda __cb51,y       ; $c888: b9 51 cb  
-            sta $e6            ; $c88b: 85 e6     
-            lda __cb52,y       ; $c88d: b9 52 cb  
-            sta $e7            ; $c890: 85 e7     
-            lda $6e            ; $c892: a5 6e     
-            cmp #$12           ; $c894: c9 12     
+            LDX #$00           ; $c872: a2 00     
+__c874:     LDA __caef,x       ; $c874: bd ef ca  
+            STA $e0,x          ; $c877: 95 e0     
+            INX                ; $c879: e8        
+            CPX #$10           ; $c87a: e0 10     
+            BNE __c874         ; $c87c: d0 f6     
+            LDA __cb4f,y       ; $c87e: b9 4f cb  
+            STA $e2            ; $c881: 85 e2     
+            LDA __cb50,y       ; $c883: b9 50 cb  
+            STA $e3            ; $c886: 85 e3     
+            LDA __cb51,y       ; $c888: b9 51 cb  
+            STA $e6            ; $c88b: 85 e6     
+            LDA __cb52,y       ; $c88d: b9 52 cb  
+            STA $e7            ; $c890: 85 e7     
+            LDA $6e            ; $c892: a5 6e     
+            CMP #$12           ; $c894: c9 12     
             bcc __c89a         ; $c896: 90 02     
-            lda #$12           ; $c898: a9 12     
+            LDA #$12           ; $c898: a9 12     
 __c89a:     asl                ; $c89a: 0a        
             asl                ; $c89b: 0a        
             tay                ; $c89c: a8        
-            ldx #$00           ; $c89d: a2 00     
-__c89f:     lda __caff,y       ; $c89f: b9 ff ca  
-            sta $e8,x          ; $c8a2: 95 e8     
-            iny                ; $c8a4: c8        
-            inx                ; $c8a5: e8        
-            cpx #$04           ; $c8a6: e0 04     
-            bne __c89f         ; $c8a8: d0 f5     
-            lda #$06           ; $c8aa: a9 06     
-            sta $2001          ; $c8ac: 8d 01 20  
-            lda $2002          ; $c8af: ad 02 20  
-            lda #$3f           ; $c8b2: a9 3f     
-            sta $2006          ; $c8b4: 8d 06 20  
-            lda #$00           ; $c8b7: a9 00     
-            sta $2006          ; $c8b9: 8d 06 20  
-            ldx #$00           ; $c8bc: a2 00     
-__c8be:     lda $e0,x          ; $c8be: b5 e0     
-            sta $2007          ; $c8c0: 8d 07 20  
-            inx                ; $c8c3: e8        
-            cpx #$10           ; $c8c4: e0 10     
-            bne __c8be         ; $c8c6: d0 f6     
-            lda $2002          ; $c8c8: ad 02 20  
-            lda #$3f           ; $c8cb: a9 3f     
-            sta $2006          ; $c8cd: 8d 06 20  
-            lda #$00           ; $c8d0: a9 00     
-            sta $2006          ; $c8d2: 8d 06 20  
-            sta $2006          ; $c8d5: 8d 06 20  
-            sta $2006          ; $c8d8: 8d 06 20  
-            rts                ; $c8db: 60        
+            LDX #$00           ; $c89d: a2 00     
+__c89f:     LDA __caff,y       ; $c89f: b9 ff ca  
+            STA $e8,x          ; $c8a2: 95 e8     
+            INY                ; $c8a4: c8        
+            INX                ; $c8a5: e8        
+            CPX #$04           ; $c8a6: e0 04     
+            BNE __c89f         ; $c8a8: d0 f5     
+            LDA #$06           ; $c8aa: a9 06     
+            STA $2001          ; $c8ac: 8d 01 20  
+            LDA $2002          ; $c8af: ad 02 20  
+            LDA #$3f           ; $c8b2: a9 3f     
+            STA $2006          ; $c8b4: 8d 06 20  
+            LDA #$00           ; $c8b7: a9 00     
+            STA $2006          ; $c8b9: 8d 06 20  
+            LDX #$00           ; $c8bc: a2 00     
+__c8be:     LDA $e0,x          ; $c8be: b5 e0     
+            STA $2007          ; $c8c0: 8d 07 20  
+            INX                ; $c8c3: e8        
+            CPX #$10           ; $c8c4: e0 10     
+            BNE __c8be         ; $c8c6: d0 f6     
+            LDA $2002          ; $c8c8: ad 02 20  
+            LDA #$3f           ; $c8cb: a9 3f     
+            STA $2006          ; $c8cd: 8d 06 20  
+            LDA #$00           ; $c8d0: a9 00     
+            STA $2006          ; $c8d2: 8d 06 20  
+            STA $2006          ; $c8d5: 8d 06 20  
+            STA $2006          ; $c8d8: 8d 06 20  
+            RTS                ; $c8db: 60        
 
 ;-------------------------------------------------------------------------------
-__c8dc:     sta $e0            ; $c8dc: 85 e0     
+__c8dc:     STA $e0            ; $c8dc: 85 e0     
             asl                ; $c8de: 0a        
             adc $e0            ; $c8df: 65 e0     
             asl                ; $c8e1: 0a        
             asl                ; $c8e2: 0a        
-            sta $e2            ; $c8e3: 85 e2     
-            iny                ; $c8e5: c8        
-            lda ($ec),y        ; $c8e6: b1 ec     
-            sta $e6            ; $c8e8: 85 e6     
+            STA $e2            ; $c8e3: 85 e2     
+            INY                ; $c8e5: c8        
+            LDA ($ec),y        ; $c8e6: b1 ec     
+            STA $e6            ; $c8e8: 85 e6     
             clc                ; $c8ea: 18        
             adc $e2            ; $c8eb: 65 e2     
             tax                ; $c8ed: aa        
-            iny                ; $c8ee: c8        
-            lda ($ec),y        ; $c8ef: b1 ec     
-            sta $0200,x        ; $c8f1: 9d 00 02  
-            sta $e2            ; $c8f4: 85 e2     
-            lda $e0            ; $c8f6: a5 e0     
+            INY                ; $c8ee: c8        
+            LDA ($ec),y        ; $c8ef: b1 ec     
+            STA $0200,x        ; $c8f1: 9d 00 02  
+            STA $e2            ; $c8f4: 85 e2     
+            LDA $e0            ; $c8f6: a5 e0     
             asl                ; $c8f8: 0a        
             asl                ; $c8f9: 0a        
             asl                ; $c8fa: 0a        
             asl                ; $c8fb: 0a        
-            sta $e8            ; $c8fc: 85 e8     
+            STA $e8            ; $c8fc: 85 e8     
             asl $e6            ; $c8fe: 06 e6     
             tya                ; $c900: 98        
             pha                ; $c901: 48        
-            jsr __d66b         ; $c902: 20 6b d6  
-            lda #$06           ; $c905: a9 06     
-            sta $2001          ; $c907: 8d 01 20  
-            jsr __c1dd         ; $c90a: 20 dd c1  
+            JSR __d66b         ; $c902: 20 6b d6  
+            LDA #$06           ; $c905: a9 06     
+            STA $2001          ; $c907: 8d 01 20  
+            JSR __c1dd         ; $c90a: 20 dd c1  
             pla                ; $c90d: 68        
             tay                ; $c90e: a8        
-            iny                ; $c90f: c8        
-            jmp __c85a         ; $c910: 4c 5a c8  
+            INY                ; $c90f: c8        
+            JMP __c85a         ; $c910: 4c 5a c8  
 
 ;-------------------------------------------------------------------------------
 __c913:     .hex 1b 18 1e 17   ; $c913: 1b 18 1e 17   Data
             .hex 0d            ; $c917: 0d            Data
 
 ;-------------------------------------------------------------------------------
-__c918:     lda $6e            ; $c918: a5 6e     
-            ldy #$00           ; $c91a: a0 00     
-            cmp #$63           ; $c91c: c9 63     
+__c918:     LDA $6e            ; $c918: a5 6e     
+            LDY #$00           ; $c91a: a0 00     
+            CMP #$63           ; $c91c: c9 63     
             bcc __c922         ; $c91e: 90 02     
-            lda #$63           ; $c920: a9 63     
-__c922:     cmp #$0a           ; $c922: c9 0a     
+            LDA #$63           ; $c920: a9 63     
+__c922:     CMP #$0a           ; $c922: c9 0a     
             bcc __c92d         ; $c924: 90 07     
             sec                ; $c926: 38        
             sbc #$0a           ; $c927: e9 0a     
-            iny                ; $c929: c8        
-            jmp __c922         ; $c92a: 4c 22 c9  
+            INY                ; $c929: c8        
+            JMP __c922         ; $c92a: 4c 22 c9  
 
 ;-------------------------------------------------------------------------------
-__c92d:     sta $e0            ; $c92d: 85 e0     
-            sty $e2            ; $c92f: 84 e2     
-            lda #$06           ; $c931: a9 06     
-            sta $2001          ; $c933: 8d 01 20  
-            lda $2002          ; $c936: ad 02 20  
-            lda $14            ; $c939: a5 14     
+__c92d:     STA $e0            ; $c92d: 85 e0     
+            STY $e2            ; $c92f: 84 e2     
+            LDA #$06           ; $c931: a9 06     
+            STA $2001          ; $c933: 8d 01 20  
+            LDA $2002          ; $c936: ad 02 20  
+            LDA $14            ; $c939: a5 14     
             asl                ; $c93b: 0a        
             asl                ; $c93c: 0a        
             asl                ; $c93d: 0a        
-            ora #$23           ; $c93e: 09 23     
-            sta $2006          ; $c940: 8d 06 20  
-            sta $e4            ; $c943: 85 e4     
-            lda #$78           ; $c945: a9 78     
-            sta $2006          ; $c947: 8d 06 20  
-            ldx #$00           ; $c94a: a2 00     
-__c94c:     lda __c913,x       ; $c94c: bd 13 c9  
-            sta $2007          ; $c94f: 8d 07 20  
-            inx                ; $c952: e8        
-            cpx #$05           ; $c953: e0 05     
-            bne __c94c         ; $c955: d0 f5     
-            lda $2002          ; $c957: ad 02 20  
-            lda $e4            ; $c95a: a5 e4     
-            sta $2006          ; $c95c: 8d 06 20  
-            lda #$9c           ; $c95f: a9 9c     
-            sta $2006          ; $c961: 8d 06 20  
-            lda $e2            ; $c964: a5 e2     
-            bne __c96a         ; $c966: d0 02     
-            lda #$24           ; $c968: a9 24     
-__c96a:     sta $2007          ; $c96a: 8d 07 20  
-            lda $e0            ; $c96d: a5 e0     
-            sta $2007          ; $c96f: 8d 07 20  
+            ORA #$23           ; $c93e: 09 23     
+            STA $2006          ; $c940: 8d 06 20  
+            STA $e4            ; $c943: 85 e4     
+            LDA #$78           ; $c945: a9 78     
+            STA $2006          ; $c947: 8d 06 20  
+            LDX #$00           ; $c94a: a2 00     
+__c94c:     LDA __c913,x       ; $c94c: bd 13 c9  
+            STA $2007          ; $c94f: 8d 07 20  
+            INX                ; $c952: e8        
+            CPX #$05           ; $c953: e0 05     
+            BNE __c94c         ; $c955: d0 f5     
+            LDA $2002          ; $c957: ad 02 20  
+            LDA $e4            ; $c95a: a5 e4     
+            STA $2006          ; $c95c: 8d 06 20  
+            LDA #$9c           ; $c95f: a9 9c     
+            STA $2006          ; $c961: 8d 06 20  
+            LDA $e2            ; $c964: a5 e2     
+            BNE __c96a         ; $c966: d0 02     
+            LDA #$24           ; $c968: a9 24     
+__c96a:     STA $2007          ; $c96a: 8d 07 20  
+            LDA $e0            ; $c96d: a5 e0     
+            STA $2007          ; $c96f: 8d 07 20  
             clc                ; $c972: 18        
             adc $e2            ; $c973: 65 e2     
-            cmp #$0c           ; $c975: c9 0c     
+            CMP #$0c           ; $c975: c9 0c     
             bcc __c97b         ; $c977: 90 02     
-            lda #$0c           ; $c979: a9 0c     
-__c97b:     sta $e4            ; $c97b: 85 e4     
-            lda #$0c           ; $c97d: a9 0c     
+            LDA #$0c           ; $c979: a9 0c     
+__c97b:     STA $e4            ; $c97b: 85 e4     
+            LDA #$0c           ; $c97d: a9 0c     
             sec                ; $c97f: 38        
             sbc $e4            ; $c980: e5 e4     
             tax                ; $c982: aa        
-            ldy #$0c           ; $c983: a0 0c     
-            lda #$00           ; $c985: a9 00     
-__c987:     sta $00e3,y        ; $c987: 99 e3 00  
-            dey                ; $c98a: 88        
-            bne __c987         ; $c98b: d0 fa     
-            ldy $e2            ; $c98d: a4 e2     
-            beq __c99d         ; $c98f: f0 0c     
-            lda #$02           ; $c991: a9 02     
-__c993:     sta $e4,x          ; $c993: 95 e4     
-            inx                ; $c995: e8        
-            cpx #$0c           ; $c996: e0 0c     
-            beq __c9ad         ; $c998: f0 13     
-            dey                ; $c99a: 88        
-            bne __c993         ; $c99b: d0 f6     
-__c99d:     ldy $e0            ; $c99d: a4 e0     
-            beq __c9ad         ; $c99f: f0 0c     
-            lda #$04           ; $c9a1: a9 04     
-__c9a3:     sta $e4,x          ; $c9a3: 95 e4     
-            inx                ; $c9a5: e8        
-            cpx #$0c           ; $c9a6: e0 0c     
-            beq __c9ad         ; $c9a8: f0 03     
-            dey                ; $c9aa: 88        
-            bne __c9a3         ; $c9ab: d0 f6     
-__c9ad:     lda $2002          ; $c9ad: ad 02 20  
-            lda $14            ; $c9b0: a5 14     
+            LDY #$0c           ; $c983: a0 0c     
+            LDA #$00           ; $c985: a9 00     
+__c987:     STA $00e3,y        ; $c987: 99 e3 00  
+            DEY                ; $c98a: 88        
+            BNE __c987         ; $c98b: d0 fa     
+            LDY $e2            ; $c98d: a4 e2     
+            BEQ __c99d         ; $c98f: f0 0c     
+            LDA #$02           ; $c991: a9 02     
+__c993:     STA $e4,x          ; $c993: 95 e4     
+            INX                ; $c995: e8        
+            CPX #$0c           ; $c996: e0 0c     
+            BEQ __c9ad         ; $c998: f0 13     
+            DEY                ; $c99a: 88        
+            BNE __c993         ; $c99b: d0 f6     
+__c99d:     LDY $e0            ; $c99d: a4 e0     
+            BEQ __c9ad         ; $c99f: f0 0c     
+            LDA #$04           ; $c9a1: a9 04     
+__c9a3:     STA $e4,x          ; $c9a3: 95 e4     
+            INX                ; $c9a5: e8        
+            CPX #$0c           ; $c9a6: e0 0c     
+            BEQ __c9ad         ; $c9a8: f0 03     
+            DEY                ; $c9aa: 88        
+            BNE __c9a3         ; $c9ab: d0 f6     
+__c9ad:     LDA $2002          ; $c9ad: ad 02 20  
+            LDA $14            ; $c9b0: a5 14     
             asl                ; $c9b2: 0a        
             asl                ; $c9b3: 0a        
             asl                ; $c9b4: 0a        
-            ora #$20           ; $c9b5: 09 20     
-            sta $2006          ; $c9b7: 8d 06 20  
-            lda #$60           ; $c9ba: a9 60     
-            sta $2006          ; $c9bc: 8d 06 20  
-            ldx #$00           ; $c9bf: a2 00     
-__c9c1:     lda $e4,x          ; $c9c1: b5 e4     
+            ORA #$20           ; $c9b5: 09 20     
+            STA $2006          ; $c9b7: 8d 06 20  
+            LDA #$60           ; $c9ba: a9 60     
+            STA $2006          ; $c9bc: 8d 06 20  
+            LDX #$00           ; $c9bf: a2 00     
+__c9c1:     LDA $e4,x          ; $c9c1: b5 e4     
             tay                ; $c9c3: a8        
-            lda __cadd,y       ; $c9c4: b9 dd ca  
-            sta $2007          ; $c9c7: 8d 07 20  
-            lda __cade,y       ; $c9ca: b9 de ca  
-            sta $2007          ; $c9cd: 8d 07 20  
-            inx                ; $c9d0: e8        
-            cpx #$0c           ; $c9d1: e0 0c     
-            bne __c9c1         ; $c9d3: d0 ec     
-            lda $2002          ; $c9d5: ad 02 20  
-            lda $14            ; $c9d8: a5 14     
+            LDA __cadd,y       ; $c9c4: b9 dd ca  
+            STA $2007          ; $c9c7: 8d 07 20  
+            LDA __cade,y       ; $c9ca: b9 de ca  
+            STA $2007          ; $c9cd: 8d 07 20  
+            INX                ; $c9d0: e8        
+            CPX #$0c           ; $c9d1: e0 0c     
+            BNE __c9c1         ; $c9d3: d0 ec     
+            LDA $2002          ; $c9d5: ad 02 20  
+            LDA $14            ; $c9d8: a5 14     
             asl                ; $c9da: 0a        
             asl                ; $c9db: 0a        
             asl                ; $c9dc: 0a        
-            ora #$20           ; $c9dd: 09 20     
-            sta $2006          ; $c9df: 8d 06 20  
-            lda #$80           ; $c9e2: a9 80     
-            sta $2006          ; $c9e4: 8d 06 20  
-            ldx #$00           ; $c9e7: a2 00     
-__c9e9:     lda $e4,x          ; $c9e9: b5 e4     
+            ORA #$20           ; $c9dd: 09 20     
+            STA $2006          ; $c9df: 8d 06 20  
+            LDA #$80           ; $c9e2: a9 80     
+            STA $2006          ; $c9e4: 8d 06 20  
+            LDX #$00           ; $c9e7: a2 00     
+__c9e9:     LDA $e4,x          ; $c9e9: b5 e4     
             tay                ; $c9eb: a8        
-            lda __cae3,y       ; $c9ec: b9 e3 ca  
-            sta $2007          ; $c9ef: 8d 07 20  
-            lda __cae4,y       ; $c9f2: b9 e4 ca  
-            sta $2007          ; $c9f5: 8d 07 20  
-            inx                ; $c9f8: e8        
-            cpx #$0c           ; $c9f9: e0 0c     
-            bne __c9e9         ; $c9fb: d0 ec     
-            lda $2002          ; $c9fd: ad 02 20  
-            lda $14            ; $ca00: a5 14     
+            LDA __cae3,y       ; $c9ec: b9 e3 ca  
+            STA $2007          ; $c9ef: 8d 07 20  
+            LDA __cae4,y       ; $c9f2: b9 e4 ca  
+            STA $2007          ; $c9f5: 8d 07 20  
+            INX                ; $c9f8: e8        
+            CPX #$0c           ; $c9f9: e0 0c     
+            BNE __c9e9         ; $c9fb: d0 ec     
+            LDA $2002          ; $c9fd: ad 02 20  
+            LDA $14            ; $ca00: a5 14     
             asl                ; $ca02: 0a        
             asl                ; $ca03: 0a        
             asl                ; $ca04: 0a        
-            ora #$20           ; $ca05: 09 20     
-            sta $2006          ; $ca07: 8d 06 20  
-            lda #$a0           ; $ca0a: a9 a0     
-            sta $2006          ; $ca0c: 8d 06 20  
-            ldx #$00           ; $ca0f: a2 00     
-__ca11:     lda $e4,x          ; $ca11: b5 e4     
+            ORA #$20           ; $ca05: 09 20     
+            STA $2006          ; $ca07: 8d 06 20  
+            LDA #$a0           ; $ca0a: a9 a0     
+            STA $2006          ; $ca0c: 8d 06 20  
+            LDX #$00           ; $ca0f: a2 00     
+__ca11:     LDA $e4,x          ; $ca11: b5 e4     
             tay                ; $ca13: a8        
-            lda __cae9,y       ; $ca14: b9 e9 ca  
-            sta $2007          ; $ca17: 8d 07 20  
-            lda __caea,y       ; $ca1a: b9 ea ca  
-            sta $2007          ; $ca1d: 8d 07 20  
-            inx                ; $ca20: e8        
-            cpx #$0c           ; $ca21: e0 0c     
-            bne __ca11         ; $ca23: d0 ec     
-            rts                ; $ca25: 60        
+            LDA __cae9,y       ; $ca14: b9 e9 ca  
+            STA $2007          ; $ca17: 8d 07 20  
+            LDA __caea,y       ; $ca1a: b9 ea ca  
+            STA $2007          ; $ca1d: 8d 07 20  
+            INX                ; $ca20: e8        
+            CPX #$0c           ; $ca21: e0 0c     
+            BNE __ca11         ; $ca23: d0 ec     
+            RTS                ; $ca25: 60        
 
 ;-------------------------------------------------------------------------------
-__ca26:     ldy $0e            ; $ca26: a4 0e     
-            ldx #$00           ; $ca28: a2 00     
-            lda $24            ; $ca2a: a5 24     
-            beq __ca30         ; $ca2c: f0 02     
-            ldx #$08           ; $ca2e: a2 08     
-__ca30:     lda __cc4a,x       ; $ca30: bd 4a cc  
-            sta $0500,y        ; $ca33: 99 00 05  
-            iny                ; $ca36: c8        
-            inx                ; $ca37: e8        
+__ca26:     LDY $0e            ; $ca26: a4 0e     
+            LDX #$00           ; $ca28: a2 00     
+            LDA $24            ; $ca2a: a5 24     
+            BEQ __ca30         ; $ca2c: f0 02     
+            LDX #$08           ; $ca2e: a2 08     
+__ca30:     LDA __cc4a,x       ; $ca30: bd 4a cc  
+            STA $0500,y        ; $ca33: 99 00 05  
+            INY                ; $ca36: c8        
+            INX                ; $ca37: e8        
             txa                ; $ca38: 8a        
             and #$07           ; $ca39: 29 07     
-            bne __ca30         ; $ca3b: d0 f3     
-            lda #$00           ; $ca3d: a9 00     
-            sta $0500,y        ; $ca3f: 99 00 05  
-            sty $0e            ; $ca42: 84 0e     
-            rts                ; $ca44: 60        
+            BNE __ca30         ; $ca3b: d0 f3     
+            LDA #$00           ; $ca3d: a9 00     
+            STA $0500,y        ; $ca3f: 99 00 05  
+            STY $0e            ; $ca42: 84 0e     
+            RTS                ; $ca44: 60        
 
 ;-------------------------------------------------------------------------------
-__ca45:     lda $60            ; $ca45: a5 60     
+__ca45:     LDA $60            ; $ca45: a5 60     
             sec                ; $ca47: 38        
             sbc #$01           ; $ca48: e9 01     
-            ldx #$00           ; $ca4a: a2 00     
-            ldy $0e            ; $ca4c: a4 0e     
-            sta $e4            ; $ca4e: 85 e4     
-__ca50:     lda $e4            ; $ca50: a5 e4     
-            cmp #$04           ; $ca52: c9 04     
+            LDX #$00           ; $ca4a: a2 00     
+            LDY $0e            ; $ca4c: a4 0e     
+            STA $e4            ; $ca4e: 85 e4     
+__ca50:     LDA $e4            ; $ca50: a5 e4     
+            CMP #$04           ; $ca52: c9 04     
             bcc __ca58         ; $ca54: 90 02     
-            lda #$03           ; $ca56: a9 03     
-__ca58:     sta $e0            ; $ca58: 85 e0     
-            lda $14            ; $ca5a: a5 14     
+            LDA #$03           ; $ca56: a9 03     
+__ca58:     STA $e0            ; $ca58: 85 e0     
+            LDA $14            ; $ca5a: a5 14     
             asl                ; $ca5c: 0a        
             asl                ; $ca5d: 0a        
             asl                ; $ca5e: 0a        
-            ora __cac6,x       ; $ca5f: 1d c6 ca  
-            sta $0500,y        ; $ca62: 99 00 05  
-            iny                ; $ca65: c8        
-            lda __cac5,x       ; $ca66: bd c5 ca  
-            sta $0500,y        ; $ca69: 99 00 05  
-            inx                ; $ca6c: e8        
-            iny                ; $ca6d: c8        
-            inx                ; $ca6e: e8        
-            lda #$06           ; $ca6f: a9 06     
-            sta $0500,y        ; $ca71: 99 00 05  
-            iny                ; $ca74: c8        
-            lda #$03           ; $ca75: a9 03     
-            sta $e2            ; $ca77: 85 e2     
-__ca79:     lda $e0            ; $ca79: a5 e0     
-            beq __ca94         ; $ca7b: f0 17     
-            lda __cac5,x       ; $ca7d: bd c5 ca  
-            sta $0500,y        ; $ca80: 99 00 05  
-            iny                ; $ca83: c8        
-            lda __cac6,x       ; $ca84: bd c6 ca  
-            sta $0500,y        ; $ca87: 99 00 05  
-            iny                ; $ca8a: c8        
-            dec $e0            ; $ca8b: c6 e0     
-            dec $e2            ; $ca8d: c6 e2     
-            bne __ca79         ; $ca8f: d0 e8     
-            jmp __caa2         ; $ca91: 4c a2 ca  
+            ORA __cac6,x       ; $ca5f: 1d c6 ca  
+            STA $0500,y        ; $ca62: 99 00 05  
+            INY                ; $ca65: c8        
+            LDA __cac5,x       ; $ca66: bd c5 ca  
+            STA $0500,y        ; $ca69: 99 00 05  
+            INX                ; $ca6c: e8        
+            INY                ; $ca6d: c8        
+            INX                ; $ca6e: e8        
+            LDA #$06           ; $ca6f: a9 06     
+            STA $0500,y        ; $ca71: 99 00 05  
+            INY                ; $ca74: c8        
+            LDA #$03           ; $ca75: a9 03     
+            STA $e2            ; $ca77: 85 e2     
+__ca79:     LDA $e0            ; $ca79: a5 e0     
+            BEQ __ca94         ; $ca7b: f0 17     
+            LDA __cac5,x       ; $ca7d: bd c5 ca  
+            STA $0500,y        ; $ca80: 99 00 05  
+            INY                ; $ca83: c8        
+            LDA __cac6,x       ; $ca84: bd c6 ca  
+            STA $0500,y        ; $ca87: 99 00 05  
+            INY                ; $ca8a: c8        
+            DEC $e0            ; $ca8b: c6 e0     
+            DEC $e2            ; $ca8d: c6 e2     
+            BNE __ca79         ; $ca8f: d0 e8     
+            JMP __caa2         ; $ca91: 4c a2 ca  
 
 ;-------------------------------------------------------------------------------
-__ca94:     lda #$24           ; $ca94: a9 24     
-            sta $0500,y        ; $ca96: 99 00 05  
-            iny                ; $ca99: c8        
-            sta $0500,y        ; $ca9a: 99 00 05  
-            iny                ; $ca9d: c8        
-            dec $e2            ; $ca9e: c6 e2     
-            bne __ca94         ; $caa0: d0 f2     
-__caa2:     inx                ; $caa2: e8        
-            inx                ; $caa3: e8        
-            cpx #$18           ; $caa4: e0 18     
-            bne __cab0         ; $caa6: d0 08     
-            lda #$00           ; $caa8: a9 00     
-            sta $0500,y        ; $caaa: 99 00 05  
-            sty $0e            ; $caad: 84 0e     
-            rts                ; $caaf: 60        
+__ca94:     LDA #$24           ; $ca94: a9 24     
+            STA $0500,y        ; $ca96: 99 00 05  
+            INY                ; $ca99: c8        
+            STA $0500,y        ; $ca9a: 99 00 05  
+            INY                ; $ca9d: c8        
+            DEC $e2            ; $ca9e: c6 e2     
+            BNE __ca94         ; $caa0: d0 f2     
+__caa2:     INX                ; $caa2: e8        
+            INX                ; $caa3: e8        
+            CPX #$18           ; $caa4: e0 18     
+            BNE __cab0         ; $caa6: d0 08     
+            LDA #$00           ; $caa8: a9 00     
+            STA $0500,y        ; $caaa: 99 00 05  
+            STY $0e            ; $caad: 84 0e     
+            RTS                ; $caaf: 60        
 
 ;-------------------------------------------------------------------------------
 __cab0:     txa                ; $cab0: 8a        
             and #$07           ; $cab1: 29 07     
-            bne __ca50         ; $cab3: d0 9b     
-            lda $e4            ; $cab5: a5 e4     
+            BNE __ca50         ; $cab3: d0 9b     
+            LDA $e4            ; $cab5: a5 e4     
             sec                ; $cab7: 38        
             sbc #$03           ; $cab8: e9 03     
-            sta $e4            ; $caba: 85 e4     
-            bpl __ca50         ; $cabc: 10 92     
-            lda #$00           ; $cabe: a9 00     
-            sta $e4            ; $cac0: 85 e4     
-            jmp __ca50         ; $cac2: 4c 50 ca  
+            STA $e4            ; $caba: 85 e4     
+            BPL __ca50         ; $cabc: 10 92     
+            LDA #$00           ; $cabe: a9 00     
+            STA $e4            ; $cac0: 85 e4     
+            JMP __ca50         ; $cac2: 4c 50 ca  
 
 ;-------------------------------------------------------------------------------
 __cac5:     .hex 98            ; $cac5: 98            Data
@@ -1483,96 +1483,96 @@ __cb60:     .hex ff ff ff ff   ; $cb60: ff ff ff ff   Data
             .hex 55 55 55 55   ; $cb9c: 55 55 55 55   Data
 
 ;-------------------------------------------------------------------------------
-__cba0:     sta $2007          ; $cba0: 8d 07 20  
-            dex                ; $cba3: ca        
-            bne __cba0         ; $cba4: d0 fa     
-            rts                ; $cba6: 60        
+__cba0:     STA $2007          ; $cba0: 8d 07 20  
+            DEX                ; $cba3: ca        
+            BNE __cba0         ; $cba4: d0 fa     
+            RTS                ; $cba6: 60        
 
 ;-------------------------------------------------------------------------------
-__cba7:     lda $2002          ; $cba7: ad 02 20  
-            lda __cc5a,x       ; $cbaa: bd 5a cc  
-            inx                ; $cbad: e8        
-            sta $e8            ; $cbae: 85 e8     
-            lda __cc5a,x       ; $cbb0: bd 5a cc  
-            inx                ; $cbb3: e8        
-            sta $e9            ; $cbb4: 85 e9     
-            sty $e6            ; $cbb6: 84 e6     
-            ldy #$01           ; $cbb8: a0 01     
-            lda ($e8),y        ; $cbba: b1 e8     
-            sta $2006          ; $cbbc: 8d 06 20  
-            ldy #$00           ; $cbbf: a0 00     
-            lda ($e8),y        ; $cbc1: b1 e8     
-            sta $2006          ; $cbc3: 8d 06 20  
-            ldy #$02           ; $cbc6: a0 02     
-            lda ($e8),y        ; $cbc8: b1 e8     
-            sta $e0            ; $cbca: 85 e0     
-__cbcc:     iny                ; $cbcc: c8        
-            lda ($e8),y        ; $cbcd: b1 e8     
-            sta $2007          ; $cbcf: 8d 07 20  
-            dec $e0            ; $cbd2: c6 e0     
-            bne __cbcc         ; $cbd4: d0 f6     
-            ldy $e6            ; $cbd6: a4 e6     
-            rts                ; $cbd8: 60        
+__cba7:     LDA $2002          ; $cba7: ad 02 20  
+            LDA __cc5a,x       ; $cbaa: bd 5a cc  
+            INX                ; $cbad: e8        
+            STA $e8            ; $cbae: 85 e8     
+            LDA __cc5a,x       ; $cbb0: bd 5a cc  
+            INX                ; $cbb3: e8        
+            STA $e9            ; $cbb4: 85 e9     
+            STY $e6            ; $cbb6: 84 e6     
+            LDY #$01           ; $cbb8: a0 01     
+            LDA ($e8),y        ; $cbba: b1 e8     
+            STA $2006          ; $cbbc: 8d 06 20  
+            LDY #$00           ; $cbbf: a0 00     
+            LDA ($e8),y        ; $cbc1: b1 e8     
+            STA $2006          ; $cbc3: 8d 06 20  
+            LDY #$02           ; $cbc6: a0 02     
+            LDA ($e8),y        ; $cbc8: b1 e8     
+            STA $e0            ; $cbca: 85 e0     
+__cbcc:     INY                ; $cbcc: c8        
+            LDA ($e8),y        ; $cbcd: b1 e8     
+            STA $2007          ; $cbcf: 8d 07 20  
+            DEC $e0            ; $cbd2: c6 e0     
+            BNE __cbcc         ; $cbd4: d0 f6     
+            LDY $e6            ; $cbd6: a4 e6     
+            RTS                ; $cbd8: 60        
 
 ;-------------------------------------------------------------------------------
-__cbd9:     ldy #$96           ; $cbd9: a0 96     
-            ldx #$88           ; $cbdb: a2 88     
-            jmp __cc21         ; $cbdd: 4c 21 cc  
+__cbd9:     LDY #$96           ; $cbd9: a0 96     
+            LDX #$88           ; $cbdb: a2 88     
+            JMP __cc21         ; $cbdd: 4c 21 cc  
 
 ;-------------------------------------------------------------------------------
-__cbe0:     ldy #$84           ; $cbe0: a0 84     
-            ldx #$68           ; $cbe2: a2 68     
-            jmp __cc21         ; $cbe4: 4c 21 cc  
+__cbe0:     LDY #$84           ; $cbe0: a0 84     
+            LDX #$68           ; $cbe2: a2 68     
+            JMP __cc21         ; $cbe4: 4c 21 cc  
 
 ;-------------------------------------------------------------------------------
-__cbe7:     lda $2002          ; $cbe7: ad 02 20  
+__cbe7:     LDA $2002          ; $cbe7: ad 02 20  
             tya                ; $cbea: 98        
             and #$01           ; $cbeb: 29 01     
-            ora #$20           ; $cbed: 09 20     
-            sta $2006          ; $cbef: 8d 06 20  
+            ORA #$20           ; $cbed: 09 20     
+            STA $2006          ; $cbef: 8d 06 20  
             tya                ; $cbf2: 98        
             and #$fe           ; $cbf3: 29 fe     
-            sta $2006          ; $cbf5: 8d 06 20  
-            sty $e6            ; $cbf8: 84 e6     
-            stx $e4            ; $cbfa: 86 e4     
-            jsr __cc14         ; $cbfc: 20 14 cc  
-            lda $2002          ; $cbff: ad 02 20  
-            lda $e6            ; $cc02: a5 e6     
+            STA $2006          ; $cbf5: 8d 06 20  
+            STY $e6            ; $cbf8: 84 e6     
+            STX $e4            ; $cbfa: 86 e4     
+            JSR __cc14         ; $cbfc: 20 14 cc  
+            LDA $2002          ; $cbff: ad 02 20  
+            LDA $e6            ; $cc02: a5 e6     
             and #$01           ; $cc04: 29 01     
-            ora #$28           ; $cc06: 09 28     
-            sta $2006          ; $cc08: 8d 06 20  
-            lda $e6            ; $cc0b: a5 e6     
+            ORA #$28           ; $cc06: 09 28     
+            STA $2006          ; $cc08: 8d 06 20  
+            LDA $e6            ; $cc0b: a5 e6     
             and #$fe           ; $cc0d: 29 fe     
-            sta $2006          ; $cc0f: 8d 06 20  
-            ldx $e4            ; $cc12: a6 e4     
-__cc14:     ldy #$05           ; $cc14: a0 05     
-            lda $00,x          ; $cc16: b5 00     
-            bne __cc40         ; $cc18: d0 26     
-            jmp __cc37         ; $cc1a: 4c 37 cc  
+            STA $2006          ; $cc0f: 8d 06 20  
+            LDX $e4            ; $cc12: a6 e4     
+__cc14:     LDY #$05           ; $cc14: a0 05     
+            LDA $00,x          ; $cc16: b5 00     
+            BNE __cc40         ; $cc18: d0 26     
+            JMP __cc37         ; $cc1a: 4c 37 cc  
 
 ;-------------------------------------------------------------------------------
-__cc1d:     ldy #$8d           ; $cc1d: a0 8d     
-            ldx #$17           ; $cc1f: a2 17     
-__cc21:     lda $2002          ; $cc21: ad 02 20  
-            lda #$20           ; $cc24: a9 20     
-            sta $2006          ; $cc26: 8d 06 20  
-            sty $2006          ; $cc29: 8c 06 20  
-            ldy #$05           ; $cc2c: a0 05     
-__cc2e:     lda $00,x          ; $cc2e: b5 00     
-            bne __cc3d         ; $cc30: d0 0b     
-            lda #$24           ; $cc32: a9 24     
-            sta $2007          ; $cc34: 8d 07 20  
-__cc37:     inx                ; $cc37: e8        
-            dey                ; $cc38: 88        
-            bne __cc2e         ; $cc39: d0 f3     
-__cc3b:     lda $00,x          ; $cc3b: b5 00     
-__cc3d:     sta $2007          ; $cc3d: 8d 07 20  
-__cc40:     inx                ; $cc40: e8        
-            dey                ; $cc41: 88        
-            bpl __cc3b         ; $cc42: 10 f7     
-            lda #$00           ; $cc44: a9 00     
-            sta $2007          ; $cc46: 8d 07 20  
-            rts                ; $cc49: 60        
+__cc1d:     LDY #$8d           ; $cc1d: a0 8d     
+            LDX #$17           ; $cc1f: a2 17     
+__cc21:     LDA $2002          ; $cc21: ad 02 20  
+            LDA #$20           ; $cc24: a9 20     
+            STA $2006          ; $cc26: 8d 06 20  
+            STY $2006          ; $cc29: 8c 06 20  
+            LDY #$05           ; $cc2c: a0 05     
+__cc2e:     LDA $00,x          ; $cc2e: b5 00     
+            BNE __cc3d         ; $cc30: d0 0b     
+            LDA #$24           ; $cc32: a9 24     
+            STA $2007          ; $cc34: 8d 07 20  
+__cc37:     INX                ; $cc37: e8        
+            DEY                ; $cc38: 88        
+            BNE __cc2e         ; $cc39: d0 f3     
+__cc3b:     LDA $00,x          ; $cc3b: b5 00     
+__cc3d:     STA $2007          ; $cc3d: 8d 07 20  
+__cc40:     INX                ; $cc40: e8        
+            DEY                ; $cc41: 88        
+            BPL __cc3b         ; $cc42: 10 f7     
+            LDA #$00           ; $cc44: a9 00     
+            STA $2007          ; $cc46: 8d 07 20  
+            RTS                ; $cc49: 60        
 
 ;-------------------------------------------------------------------------------
 __cc4a:     .hex 21 ea 01 2a   ; $cc4a: 21 ea 01 2a   Data
@@ -1673,158 +1673,158 @@ __ccdd:     .hex 0f 16 0f 16   ; $ccdd: 0f 16 0f 16   Data
             .hex 1f 0e 0d      ; $cdc5: 1f 0e 0d      Data
 
 ;-------------------------------------------------------------------------------
-            lda #$00           ; $cdc8: a9 00     
-            sta $05f5          ; $cdca: 8d f5 05  
-            sta $05f6          ; $cdcd: 8d f6 05  
-            ldy $b0            ; $cdd0: a4 b0     
-            lda __cddf,y       ; $cdd2: b9 df cd  
-            sta $ea            ; $cdd5: 85 ea     
-            lda __cde0,y       ; $cdd7: b9 e0 cd  
-            sta $eb            ; $cdda: 85 eb     
-            jmp ($00ea)        ; $cddc: 6c ea 00  
+            LDA #$00           ; $cdc8: a9 00     
+            STA $05f5          ; $cdca: 8d f5 05  
+            STA $05f6          ; $cdcd: 8d f6 05  
+            LDY $b0            ; $cdd0: a4 b0     
+            LDA __cddf,y       ; $cdd2: b9 df cd  
+            STA $ea            ; $cdd5: 85 ea     
+            LDA __cde0,y       ; $cdd7: b9 e0 cd  
+            STA $eb            ; $cdda: 85 eb     
+            JMP ($00ea)        ; $cddc: 6c ea 00  
 
 ;-------------------------------------------------------------------------------
 __cddf:     .hex 12            ; $cddf: 12            Data
 __cde0:     .hex d3 1b cf 63   ; $cde0: d3 1b cf 63   Data
             .hex ce 4d ce ed   ; $cde4: ce 4d ce ed   Data
             .hex cd 12 ce 03   ; $cde8: cd 12 ce 03   Data
-            .hex ce            ; $cdec: ce            Data
+            .hex ce            ; $cDEC: ce            Data
 
 ;-------------------------------------------------------------------------------
-            dec $0480          ; $cded: ce 80 04  
-            bne __ce3b         ; $cdf0: d0 49     
-__cdf2:     lda #$0a           ; $cdf2: a9 0a     
-            sta $b0            ; $cdf4: 85 b0     
-            lda #$01           ; $cdf6: a9 01     
-            sta $05e3          ; $cdf8: 8d e3 05  
-            sta $05e4          ; $cdfb: 8d e4 05  
-            lda #$10           ; $cdfe: a9 10     
-            sta $0480          ; $ce00: 8d 80 04  
-            ldy #$10           ; $ce03: a0 10     
-            lda $0410          ; $ce05: ad 10 04  
+            DEC $0480          ; $cded: ce 80 04  
+            BNE __ce3b         ; $cdf0: d0 49     
+__cdf2:     LDA #$0a           ; $cdf2: a9 0a     
+            STA $b0            ; $cdf4: 85 b0     
+            LDA #$01           ; $cdf6: a9 01     
+            STA $05e3          ; $cdf8: 8d e3 05  
+            STA $05e4          ; $cdfb: 8d e4 05  
+            LDA #$10           ; $cdfe: a9 10     
+            STA $0480          ; $ce00: 8d 80 04  
+            LDY #$10           ; $ce03: a0 10     
+            LDA $0410          ; $ce05: ad 10 04  
             and #$30           ; $ce08: 29 30     
-            beq __ce0e         ; $ce0a: f0 02     
-            ldy #$15           ; $ce0c: a0 15     
+            BEQ __ce0e         ; $ce0a: f0 02     
+            LDY #$15           ; $ce0c: a0 15     
 __ce0e:     tya                ; $ce0e: 98        
-            sta $0460          ; $ce0f: 8d 60 04  
-            dec $0480          ; $ce12: ce 80 04  
-            beq __ce1a         ; $ce15: f0 03     
-            jmp __e70d         ; $ce17: 4c 0d e7  
+            STA $0460          ; $ce0f: 8d 60 04  
+            DEC $0480          ; $ce12: ce 80 04  
+            BEQ __ce1a         ; $ce15: f0 03     
+            JMP __e70d         ; $ce17: 4c 0d e7  
 
 ;-------------------------------------------------------------------------------
-__ce1a:     lda $b0            ; $ce1a: a5 b0     
-            cmp #$0c           ; $ce1c: c9 0c     
-            beq __cdf2         ; $ce1e: f0 d2     
-            inc $0460          ; $ce20: ee 60 04  
-            lda $0460          ; $ce23: ad 60 04  
-            cmp #$15           ; $ce26: c9 15     
-            beq __ce36         ; $ce28: f0 0c     
-            cmp #$1a           ; $ce2a: c9 1a     
-            beq __ce36         ; $ce2c: f0 08     
-            lda #$10           ; $ce2e: a9 10     
-            sta $0480          ; $ce30: 8d 80 04  
-            jmp __e70d         ; $ce33: 4c 0d e7  
+__ce1a:     LDA $b0            ; $ce1a: a5 b0     
+            CMP #$0c           ; $ce1c: c9 0c     
+            BEQ __cdf2         ; $ce1e: f0 d2     
+            INC $0460          ; $ce20: ee 60 04  
+            LDA $0460          ; $ce23: ad 60 04  
+            CMP #$15           ; $ce26: c9 15     
+            BEQ __ce36         ; $ce28: f0 0c     
+            CMP #$1a           ; $ce2a: c9 1a     
+            BEQ __ce36         ; $ce2c: f0 08     
+            LDA #$10           ; $ce2e: a9 10     
+            STA $0480          ; $ce30: 8d 80 04  
+            JMP __e70d         ; $ce33: 4c 0d e7  
 
 ;-------------------------------------------------------------------------------
-__ce36:     lda #$00           ; $ce36: a9 00     
-            sta $a0            ; $ce38: 85 a0     
-            rts                ; $ce3a: 60        
+__ce36:     LDA #$00           ; $ce36: a9 00     
+            STA $a0            ; $ce38: 85 a0     
+            RTS                ; $ce3a: 60        
 
 ;-------------------------------------------------------------------------------
-__ce3b:     lda $0410          ; $ce3b: ad 10 04  
-            ldy #$0c           ; $ce3e: a0 0c     
+__ce3b:     LDA $0410          ; $ce3b: ad 10 04  
+            LDY #$0c           ; $ce3e: a0 0c     
             and #$30           ; $ce40: 29 30     
-            beq __ce46         ; $ce42: f0 02     
-            ldy #$0e           ; $ce44: a0 0e     
+            BEQ __ce46         ; $ce42: f0 02     
+            LDY #$0e           ; $ce44: a0 0e     
 __ce46:     tya                ; $ce46: 98        
-            sta $0460          ; $ce47: 8d 60 04  
-            jmp __e70d         ; $ce4a: 4c 0d e7  
+            STA $0460          ; $ce47: 8d 60 04  
+            JMP __e70d         ; $ce4a: 4c 0d e7  
 
 ;-------------------------------------------------------------------------------
-            inc $d0            ; $ce4d: e6 d0     
-            inc $d0            ; $ce4f: e6 d0     
-            ldy #$0d           ; $ce51: a0 0d     
-            lda $0410          ; $ce53: ad 10 04  
+            INC $d0            ; $ce4d: e6 d0     
+            INC $d0            ; $ce4f: e6 d0     
+            LDY #$0d           ; $ce51: a0 0d     
+            LDA $0410          ; $ce53: ad 10 04  
             and #$30           ; $ce56: 29 30     
-            beq __ce5c         ; $ce58: f0 02     
-            ldy #$0f           ; $ce5a: a0 0f     
+            BEQ __ce5c         ; $ce58: f0 02     
+            LDY #$0f           ; $ce5a: a0 0f     
 __ce5c:     tya                ; $ce5c: 98        
-            sta $0460          ; $ce5d: 8d 60 04  
-            jmp __e70d         ; $ce60: 4c 0d e7  
+            STA $0460          ; $ce5d: 8d 60 04  
+            JMP __e70d         ; $ce60: 4c 0d e7  
 
 ;-------------------------------------------------------------------------------
-            lda $48            ; $ce63: a5 48     
+            LDA $48            ; $ce63: a5 48     
             and #$03           ; $ce65: 29 03     
-            bne __cea1         ; $ce67: d0 38     
-            lda $49            ; $ce69: a5 49     
+            BNE __cea1         ; $ce67: d0 38     
+            LDA $49            ; $ce69: a5 49     
             and #$03           ; $ce6b: 29 03     
-            beq __ce7d         ; $ce6d: f0 0e     
-            dec $0480          ; $ce6f: ce 80 04  
-            bpl __ceba         ; $ce72: 10 46     
-            ldx $04b0          ; $ce74: ae b0 04  
-            jsr __cfee         ; $ce77: 20 ee cf  
-            jmp __ceba         ; $ce7a: 4c ba ce  
+            BEQ __ce7d         ; $ce6d: f0 0e     
+            DEC $0480          ; $ce6f: ce 80 04  
+            BPL __ceba         ; $ce72: 10 46     
+            LDX $04b0          ; $ce74: ae b0 04  
+            JSR __cfee         ; $ce77: 20 ee cf  
+            JMP __ceba         ; $ce7a: 4c ba ce  
 
 ;-------------------------------------------------------------------------------
-__ce7d:     lda $49            ; $ce7d: a5 49     
+__ce7d:     LDA $49            ; $ce7d: a5 49     
             and #$f0           ; $ce7f: 29 f0     
-            bne __ce8e         ; $ce81: d0 0b     
-            ldx $04b0          ; $ce83: ae b0 04  
-            lda $b0,x          ; $ce86: b5 b0     
-            ldx #$00           ; $ce88: a2 00     
-            cmp #$04           ; $ce8a: c9 04     
-            beq __cecb         ; $ce8c: f0 3d     
-__ce8e:     lda #$00           ; $ce8e: a9 00     
-            sta $b0            ; $ce90: 85 b0     
-            lda $0460          ; $ce92: ad 60 04  
+            BNE __ce8e         ; $ce81: d0 0b     
+            LDX $04b0          ; $ce83: ae b0 04  
+            LDA $b0,x          ; $ce86: b5 b0     
+            LDX #$00           ; $ce88: a2 00     
+            CMP #$04           ; $ce8a: c9 04     
+            BEQ __cecb         ; $ce8c: f0 3d     
+__ce8e:     LDA #$00           ; $ce8e: a9 00     
+            STA $b0            ; $ce90: 85 b0     
+            LDA $0460          ; $ce92: ad 60 04  
             and #$02           ; $ce95: 29 02     
-            ora #$04           ; $ce97: 09 04     
-            sta $0460          ; $ce99: 8d 60 04  
-            ldx #$00           ; $ce9c: a2 00     
-            jmp __d312         ; $ce9e: 4c 12 d3  
+            ORA #$04           ; $ce97: 09 04     
+            STA $0460          ; $ce99: 8d 60 04  
+            LDX #$00           ; $ce9c: a2 00     
+            JMP __d312         ; $ce9e: 4c 12 d3  
 
 ;-------------------------------------------------------------------------------
-__cea1:     ldx $04b0          ; $cea1: ae b0 04  
-            lda $0480,x        ; $cea4: bd 80 04  
+__cea1:     LDX $04b0          ; $cea1: ae b0 04  
+            LDA $0480,x        ; $cea4: bd 80 04  
             adc #$05           ; $cea7: 69 05     
-            sta $0480,x        ; $cea9: 9d 80 04  
-            lda $0480          ; $ceac: ad 80 04  
+            STA $0480,x        ; $cea9: 9d 80 04  
+            LDA $0480          ; $ceac: ad 80 04  
             sec                ; $ceaf: 38        
             sbc #$08           ; $ceb0: e9 08     
-            sta $0480          ; $ceb2: 8d 80 04  
-            bpl __ceba         ; $ceb5: 10 03     
-            jsr __cfee         ; $ceb7: 20 ee cf  
-__ceba:     ldx $04b0          ; $ceba: ae b0 04  
-            lda $b0,x          ; $cebd: b5 b0     
-            cmp #$04           ; $cebf: c9 04     
-            bne __ce8e         ; $cec1: d0 cb     
-            inc $0480,x        ; $cec3: fe 80 04  
-            inc $0480,x        ; $cec6: fe 80 04  
-            ldx #$00           ; $cec9: a2 00     
-__cecb:     lda $0480          ; $cecb: ad 80 04  
-            lsr                ; $cece: 4a        
-            lsr                ; $cecf: 4a        
-            lsr                ; $ced0: 4a        
-            lsr                ; $ced1: 4a        
+            STA $0480          ; $ceb2: 8d 80 04  
+            BPL __ceba         ; $ceb5: 10 03     
+            JSR __cfee         ; $ceb7: 20 ee cf  
+__ceba:     LDX $04b0          ; $ceba: ae b0 04  
+            LDA $b0,x          ; $cebd: b5 b0     
+            CMP #$04           ; $cebf: c9 04     
+            BNE __ce8e         ; $cec1: d0 cb     
+            INC $0480,x        ; $cec3: fe 80 04  
+            INC $0480,x        ; $cec6: fe 80 04  
+            LDX #$00           ; $cec9: a2 00     
+__cecb:     LDA $0480          ; $cecb: ad 80 04  
+            LSR                ; $cece: 4a        
+            LSR                ; $cecf: 4a        
+            LSR                ; $ced0: 4a        
+            LSR                ; $ced1: 4a        
             and #$01           ; $ced2: 29 01     
-            ora #$08           ; $ced4: 09 08     
-            sta $e0            ; $ced6: 85 e0     
-            lda $0460          ; $ced8: ad 60 04  
+            ORA #$08           ; $ced4: 09 08     
+            STA $e0            ; $ced6: 85 e0     
+            LDA $0460          ; $ced8: ad 60 04  
             and #$02           ; $cedb: 29 02     
-            ora $e0            ; $cedd: 05 e0     
-            sta $0460          ; $cedf: 8d 60 04  
-            jsr __e70d         ; $cee2: 20 0d e7  
-            lda $0410          ; $cee5: ad 10 04  
-            lsr                ; $cee8: 4a        
-            lsr                ; $cee9: 4a        
-            lsr                ; $ceea: 4a        
+            ORA $e0            ; $cedd: 05 e0     
+            STA $0460          ; $cedf: 8d 60 04  
+            JSR __e70d         ; $cee2: 20 0d e7  
+            LDA $0410          ; $cee5: ad 10 04  
+            LSR                ; $cee8: 4a        
+            LSR                ; $cee9: 4a        
+            LSR                ; $ceea: 4a        
             and #$1e           ; $ceeb: 29 1e     
             tay                ; $ceed: a8        
-            lda __cefb,y       ; $ceee: b9 fb ce  
-            sta $ea            ; $cef1: 85 ea     
-            lda __cefc,y       ; $cef3: b9 fc ce  
-            sta $eb            ; $cef6: 85 eb     
-            jmp ($00ea)        ; $cef8: 6c ea 00  
+            LDA __cefb,y       ; $ceee: b9 fb ce  
+            STA $ea            ; $cef1: 85 ea     
+            LDA __cefc,y       ; $cef3: b9 fc ce  
+            STA $eb            ; $cef6: 85 eb     
+            JMP ($00ea)        ; $cef8: 6c ea 00  
 
 ;-------------------------------------------------------------------------------
 __cefb:     .hex 11            ; $cefb: 11            Data
@@ -1838,36 +1838,36 @@ __cefc:     .hex d4 e3 d0 81   ; $cefc: d4 e3 d0 81   Data
             .hex d1 11 d4      ; $cf18: d1 11 d4      Data
 
 ;-------------------------------------------------------------------------------
-            jsr __e70d         ; $cf1b: 20 0d e7  
-            inc $04a0          ; $cf1e: ee a0 04  
-            lda $04a0          ; $cf21: ad a0 04  
-            cmp #$1e           ; $cf24: c9 1e     
-            bne __cf37         ; $cf26: d0 0f     
-            lda #$00           ; $cf28: a9 00     
-            sta $b0            ; $cf2a: 85 b0     
-            lda $0460          ; $cf2c: ad 60 04  
+            JSR __e70d         ; $cf1b: 20 0d e7  
+            INC $04a0          ; $cf1e: ee a0 04  
+            LDA $04a0          ; $cf21: ad a0 04  
+            CMP #$1e           ; $cf24: c9 1e     
+            BNE __cf37         ; $cf26: d0 0f     
+            LDA #$00           ; $cf28: a9 00     
+            STA $b0            ; $cf2a: 85 b0     
+            LDA $0460          ; $cf2c: ad 60 04  
             and #$02           ; $cf2f: 29 02     
-            ora #$04           ; $cf31: 09 04     
-            sta $0460          ; $cf33: 8d 60 04  
-            rts                ; $cf36: 60        
+            ORA #$04           ; $cf31: 09 04     
+            STA $0460          ; $cf33: 8d 60 04  
+            RTS                ; $cf36: 60        
 
 ;-------------------------------------------------------------------------------
-__cf37:     cmp #$15           ; $cf37: c9 15     
+__cf37:     CMP #$15           ; $cf37: c9 15     
             bcc __cf3c         ; $cf39: 90 01     
-            rts                ; $cf3b: 60        
+            RTS                ; $cf3b: 60        
 
 ;-------------------------------------------------------------------------------
-__cf3c:     lda $0410          ; $cf3c: ad 10 04  
-            lsr                ; $cf3f: 4a        
-            lsr                ; $cf40: 4a        
-            lsr                ; $cf41: 4a        
+__cf3c:     LDA $0410          ; $cf3c: ad 10 04  
+            LSR                ; $cf3f: 4a        
+            LSR                ; $cf40: 4a        
+            LSR                ; $cf41: 4a        
             and #$1e           ; $cf42: 29 1e     
             tay                ; $cf44: a8        
-            lda __cf52,y       ; $cf45: b9 52 cf  
-            sta $ea            ; $cf48: 85 ea     
-            lda __cf53,y       ; $cf4a: b9 53 cf  
-            sta $eb            ; $cf4d: 85 eb     
-            jmp ($00ea)        ; $cf4f: 6c ea 00  
+            LDA __cf52,y       ; $cf45: b9 52 cf  
+            STA $ea            ; $cf48: 85 ea     
+            LDA __cf53,y       ; $cf4a: b9 53 cf  
+            STA $eb            ; $cf4d: 85 eb     
+            JMP ($00ea)        ; $cf4f: 6c ea 00  
 
 ;-------------------------------------------------------------------------------
 __cf52:     .hex 11            ; $cf52: 11            Data
@@ -1881,641 +1881,641 @@ __cf53:     .hex d4 29 d1 c7   ; $cf53: d4 29 d1 c7   Data
             .hex d1 11 d4      ; $cf6f: d1 11 d4      Data
 
 ;-------------------------------------------------------------------------------
-__cf72:     lda $04a0          ; $cf72: ad a0 04  
+__cf72:     LDA $04a0          ; $cf72: ad a0 04  
             clc                ; $cf75: 18        
             adc #$03           ; $cf76: 69 03     
-            lsr                ; $cf78: 4a        
-            lsr                ; $cf79: 4a        
-            sta $e4            ; $cf7a: 85 e4     
-            lda $04a0          ; $cf7c: ad a0 04  
+            LSR                ; $cf78: 4a        
+            LSR                ; $cf79: 4a        
+            STA $e4            ; $cf7a: 85 e4     
+            LDA $04a0          ; $cf7c: ad a0 04  
             asl                ; $cf7f: 0a        
-            sta $e0            ; $cf80: 85 e0     
-            lda $c0            ; $cf82: a5 c0     
+            STA $e0            ; $cf80: 85 e0     
+            LDA $c0            ; $cf82: a5 c0     
             sec                ; $cf84: 38        
             sbc $e0            ; $cf85: e5 e0     
-            sta $ec            ; $cf87: 85 ec     
+            STA $ec            ; $cf87: 85 ec     
             clc                ; $cf89: 18        
             adc #$08           ; $cf8a: 69 08     
-            sta $e0            ; $cf8c: 85 e0     
-            lda $d0            ; $cf8e: a5 d0     
-            sta $ed            ; $cf90: 85 ed     
+            STA $e0            ; $cf8c: 85 e0     
+            LDA $d0            ; $cf8e: a5 d0     
+            STA $ed            ; $cf90: 85 ed     
             clc                ; $cf92: 18        
             adc #$1f           ; $cf93: 69 1f     
-            sta $e2            ; $cf95: 85 e2     
-            lda $0470          ; $cf97: ad 70 04  
-            ora #$01           ; $cf9a: 09 01     
-            sta $e6            ; $cf9c: 85 e6     
-            lda #$08           ; $cf9e: a9 08     
-            sta $e1            ; $cfa0: 85 e1     
-            lda #$00           ; $cfa2: a9 00     
-            sta $e3            ; $cfa4: 85 e3     
-            ldx #$00           ; $cfa6: a2 00     
-            jmp __d21f         ; $cfa8: 4c 1f d2  
+            STA $e2            ; $cf95: 85 e2     
+            LDA $0470          ; $cf97: ad 70 04  
+            ORA #$01           ; $cf9a: 09 01     
+            STA $e6            ; $cf9c: 85 e6     
+            LDA #$08           ; $cf9e: a9 08     
+            STA $e1            ; $cfa0: 85 e1     
+            LDA #$00           ; $cfa2: a9 00     
+            STA $e3            ; $cfa4: 85 e3     
+            LDX #$00           ; $cfa6: a2 00     
+            JMP __d21f         ; $cfa8: 4c 1f d2  
 
 ;-------------------------------------------------------------------------------
-            jsr __cf72         ; $cfab: 20 72 cf  
-__cfae:     lda $a0,x          ; $cfae: b5 a0     
-            cmp #$04           ; $cfb0: c9 04     
-            beq __cfcc         ; $cfb2: f0 18     
-            cmp #$06           ; $cfb4: c9 06     
-            beq __cfcc         ; $cfb6: f0 14     
-__cfb8:     inx                ; $cfb8: e8        
-            cpx #$0e           ; $cfb9: e0 0e     
-            bne __cfae         ; $cfbb: d0 f1     
-            ldx #$00           ; $cfbd: a2 00     
-            jsr __eca2         ; $cfbf: 20 a2 ec  
-            cmp $e2            ; $cfc2: c5 e2     
-            beq __cfcb         ; $cfc4: f0 05     
-            lda #$15           ; $cfc6: a9 15     
-            sta $04a0          ; $cfc8: 8d a0 04  
-__cfcb:     rts                ; $cfcb: 60        
+            JSR __cf72         ; $cfab: 20 72 cf  
+__cfae:     LDA $a0,x          ; $cfae: b5 a0     
+            CMP #$04           ; $cfb0: c9 04     
+            BEQ __cfcc         ; $cfb2: f0 18     
+            CMP #$06           ; $cfb4: c9 06     
+            BEQ __cfcc         ; $cfb6: f0 14     
+__cfb8:     INX                ; $cfb8: e8        
+            CPX #$0e           ; $cfb9: e0 0e     
+            BNE __cfae         ; $cfbb: d0 f1     
+            LDX #$00           ; $cfbd: a2 00     
+            JSR __eca2         ; $cfbf: 20 a2 ec  
+            CMP $e2            ; $cfc2: c5 e2     
+            BEQ __cfcb         ; $cfc4: f0 05     
+            LDA #$15           ; $cfc6: a9 15     
+            STA $04a0          ; $cfc8: 8d a0 04  
+__cfcb:     RTS                ; $cfcb: 60        
 
 ;-------------------------------------------------------------------------------
-__cfcc:     lda $b0,x          ; $cfcc: b5 b0     
-            cmp #$05           ; $cfce: c9 05     
+__cfcc:     LDA $b0,x          ; $cfcc: b5 b0     
+            CMP #$05           ; $cfce: c9 05     
             bcc __cfd6         ; $cfd0: 90 04     
-            cmp #$0c           ; $cfd2: c9 0c     
+            CMP #$0c           ; $cfd2: c9 0c     
             bcc __cfb8         ; $cfd4: 90 e2     
-__cfd6:     lda $d0,x          ; $cfd6: b5 d0     
+__cfd6:     LDA $d0,x          ; $cfd6: b5 d0     
             sec                ; $cfd8: 38        
             sbc $ed            ; $cfd9: e5 ed     
             clc                ; $cfdb: 18        
             adc #$03           ; $cfdc: 69 03     
-            cmp #$0b           ; $cfde: c9 0b     
-            bcs __cfb8         ; $cfe0: b0 d6     
-            lda $c0,x          ; $cfe2: b5 c0     
+            CMP #$0b           ; $cfde: c9 0b     
+            BCS __cfb8         ; $cfe0: b0 d6     
+            LDA $c0,x          ; $cfe2: b5 c0     
             sec                ; $cfe4: 38        
             sbc $ec            ; $cfe5: e5 ec     
             clc                ; $cfe7: 18        
             adc #$0e           ; $cfe8: 69 0e     
-            cmp #$11           ; $cfea: c9 11     
-            bcs __cfb8         ; $cfec: b0 ca     
-__cfee:     lda #$01           ; $cfee: a9 01     
-            sta $05f0          ; $cff0: 8d f0 05  
-            lda #$04           ; $cff3: a9 04     
-            sta $b0            ; $cff5: 85 b0     
-            cmp $b0,x          ; $cff7: d5 b0     
-            beq __d026         ; $cff9: f0 2b     
-            sta $b0,x          ; $cffb: 95 b0     
-            lda $a0,x          ; $cffd: b5 a0     
+            CMP #$11           ; $cfea: c9 11     
+            BCS __cfb8         ; $cfec: b0 ca     
+__cfee:     LDA #$01           ; $cfee: a9 01     
+            STA $05f0          ; $cff0: 8d f0 05  
+            LDA #$04           ; $cff3: a9 04     
+            STA $b0            ; $cff5: 85 b0     
+            CMP $b0,x          ; $cff7: d5 b0     
+            BEQ __d026         ; $cff9: f0 2b     
+            STA $b0,x          ; $cffb: 95 b0     
+            LDA $a0,x          ; $cffd: b5 a0     
             asl                ; $cfff: 0a        
             asl                ; $d000: 0a        
             and #$08           ; $d001: 29 08     
             clc                ; $d003: 18        
             adc #$1c           ; $d004: 69 1c     
-            sta $0460,x        ; $d006: 9d 60 04  
-            lda #$14           ; $d009: a9 14     
-            sta $0480          ; $d00b: 8d 80 04  
-            lda $34            ; $d00e: a5 34     
+            STA $0460,x        ; $d006: 9d 60 04  
+            LDA #$14           ; $d009: a9 14     
+            STA $0480          ; $d00b: 8d 80 04  
+            LDA $34            ; $d00e: a5 34     
             adc #$0c           ; $d010: 69 0c     
-            sta $0480,x        ; $d012: 9d 80 04  
-            lda $a0,x          ; $d015: b5 a0     
-            cmp #$06           ; $d017: c9 06     
-            bne __d05e         ; $d019: d0 43     
-            lda $0470,x        ; $d01b: bd 70 04  
-            ora #$02           ; $d01e: 09 02     
-            sta $0470,x        ; $d020: 9d 70 04  
-            jmp __d05e         ; $d023: 4c 5e d0  
+            STA $0480,x        ; $d012: 9d 80 04  
+            LDA $a0,x          ; $d015: b5 a0     
+            CMP #$06           ; $d017: c9 06     
+            BNE __d05e         ; $d019: d0 43     
+            LDA $0470,x        ; $d01b: bd 70 04  
+            ORA #$02           ; $d01e: 09 02     
+            STA $0470,x        ; $d020: 9d 70 04  
+            JMP __d05e         ; $d023: 4c 5e d0  
 
 ;-------------------------------------------------------------------------------
-__d026:     inc $0460,x        ; $d026: fe 60 04  
-            lda $34            ; $d029: a5 34     
-            sta $0480,x        ; $d02b: 9d 80 04  
-            lda #$1f           ; $d02e: a9 1f     
-            sta $0480          ; $d030: 8d 80 04  
-            lda $0460,x        ; $d033: bd 60 04  
+__d026:     INC $0460,x        ; $d026: fe 60 04  
+            LDA $34            ; $d029: a5 34     
+            STA $0480,x        ; $d02b: 9d 80 04  
+            LDA #$1f           ; $d02e: a9 1f     
+            STA $0480          ; $d030: 8d 80 04  
+            LDA $0460,x        ; $d033: bd 60 04  
             and #$07           ; $d036: 29 07     
-            cmp #$07           ; $d038: c9 07     
-            bne __d05e         ; $d03a: d0 22     
-            lda #$01           ; $d03c: a9 01     
-            sta $05ee          ; $d03e: 8d ee 05  
-            lda #$0a           ; $d041: a9 0a     
-            sta $b0,x          ; $d043: 95 b0     
-            lda #$20           ; $d045: a9 20     
-            sta $0480,x        ; $d047: 9d 80 04  
-            lda $0410          ; $d04a: ad 10 04  
-            sta $04d0,x        ; $d04d: 9d d0 04  
-            lda #$00           ; $d050: a9 00     
-            sta $b0            ; $d052: 85 b0     
-            lda $0460          ; $d054: ad 60 04  
+            CMP #$07           ; $d038: c9 07     
+            BNE __d05e         ; $d03a: d0 22     
+            LDA #$01           ; $d03c: a9 01     
+            STA $05ee          ; $d03e: 8d ee 05  
+            LDA #$0a           ; $d041: a9 0a     
+            STA $b0,x          ; $d043: 95 b0     
+            LDA #$20           ; $d045: a9 20     
+            STA $0480,x        ; $d047: 9d 80 04  
+            LDA $0410          ; $d04a: ad 10 04  
+            STA $04d0,x        ; $d04d: 9d d0 04  
+            LDA #$00           ; $d050: a9 00     
+            STA $b0            ; $d052: 85 b0     
+            LDA $0460          ; $d054: ad 60 04  
             and #$02           ; $d057: 29 02     
-            ora #$04           ; $d059: 09 04     
-            sta $0460          ; $d05b: 8d 60 04  
-__d05e:     stx $04b0          ; $d05e: 8e b0 04  
-            ldx #$00           ; $d061: a2 00     
-            rts                ; $d063: 60        
+            ORA #$04           ; $d059: 09 04     
+            STA $0460          ; $d05b: 8d 60 04  
+__d05e:     STX $04b0          ; $d05e: 8e b0 04  
+            LDX #$00           ; $d061: a2 00     
+            RTS                ; $d063: 60        
 
 ;-------------------------------------------------------------------------------
-__d064:     lda $04a0          ; $d064: ad a0 04  
+__d064:     LDA $04a0          ; $d064: ad a0 04  
             clc                ; $d067: 18        
             adc #$03           ; $d068: 69 03     
-            lsr                ; $d06a: 4a        
-            lsr                ; $d06b: 4a        
-            sta $e4            ; $d06c: 85 e4     
-            lda $04a0          ; $d06e: ad a0 04  
+            LSR                ; $d06a: 4a        
+            LSR                ; $d06b: 4a        
+            STA $e4            ; $d06c: 85 e4     
+            LDA $04a0          ; $d06e: ad a0 04  
             asl                ; $d071: 0a        
-            sta $e0            ; $d072: 85 e0     
-            lda $c0            ; $d074: a5 c0     
+            STA $e0            ; $d072: 85 e0     
+            LDA $c0            ; $d074: a5 c0     
             clc                ; $d076: 18        
             adc $e0            ; $d077: 65 e0     
-            sta $ec            ; $d079: 85 ec     
+            STA $ec            ; $d079: 85 ec     
             clc                ; $d07b: 18        
             adc #$10           ; $d07c: 69 10     
-            sta $e0            ; $d07e: 85 e0     
-            lda $d0            ; $d080: a5 d0     
-            sta $ed            ; $d082: 85 ed     
+            STA $e0            ; $d07e: 85 e0     
+            LDA $d0            ; $d080: a5 d0     
+            STA $ed            ; $d082: 85 ed     
             clc                ; $d084: 18        
             adc #$1f           ; $d085: 69 1f     
-            sta $e2            ; $d087: 85 e2     
-            lda $0470          ; $d089: ad 70 04  
-            ora #$01           ; $d08c: 09 01     
-            sta $e6            ; $d08e: 85 e6     
-            lda #$f8           ; $d090: a9 f8     
-            sta $e1            ; $d092: 85 e1     
-            lda #$00           ; $d094: a9 00     
-            sta $e3            ; $d096: 85 e3     
-            ldx #$00           ; $d098: a2 00     
-            jmp __d21f         ; $d09a: 4c 1f d2  
+            STA $e2            ; $d087: 85 e2     
+            LDA $0470          ; $d089: ad 70 04  
+            ORA #$01           ; $d08c: 09 01     
+            STA $e6            ; $d08e: 85 e6     
+            LDA #$f8           ; $d090: a9 f8     
+            STA $e1            ; $d092: 85 e1     
+            LDA #$00           ; $d094: a9 00     
+            STA $e3            ; $d096: 85 e3     
+            LDX #$00           ; $d098: a2 00     
+            JMP __d21f         ; $d09a: 4c 1f d2  
 
 ;-------------------------------------------------------------------------------
-            jsr __d064         ; $d09d: 20 64 d0  
-__d0a0:     lda $a0,x          ; $d0a0: b5 a0     
-            cmp #$04           ; $d0a2: c9 04     
-            beq __d0be         ; $d0a4: f0 18     
-            cmp #$06           ; $d0a6: c9 06     
-            beq __d0be         ; $d0a8: f0 14     
-__d0aa:     inx                ; $d0aa: e8        
-            cpx #$0e           ; $d0ab: e0 0e     
-            bne __d0a0         ; $d0ad: d0 f1     
-            ldx #$00           ; $d0af: a2 00     
-            jsr __ec5c         ; $d0b1: 20 5c ec  
-            cmp $e2            ; $d0b4: c5 e2     
-            beq __d0bd         ; $d0b6: f0 05     
-            lda #$15           ; $d0b8: a9 15     
-            sta $04a0          ; $d0ba: 8d a0 04  
-__d0bd:     rts                ; $d0bd: 60        
+            JSR __d064         ; $d09d: 20 64 d0  
+__d0a0:     LDA $a0,x          ; $d0a0: b5 a0     
+            CMP #$04           ; $d0a2: c9 04     
+            BEQ __d0be         ; $d0a4: f0 18     
+            CMP #$06           ; $d0a6: c9 06     
+            BEQ __d0be         ; $d0a8: f0 14     
+__d0aa:     INX                ; $d0aa: e8        
+            CPX #$0e           ; $d0ab: e0 0e     
+            BNE __d0a0         ; $d0ad: d0 f1     
+            LDX #$00           ; $d0af: a2 00     
+            JSR __ec5c         ; $d0b1: 20 5c ec  
+            CMP $e2            ; $d0b4: c5 e2     
+            BEQ __d0bd         ; $d0b6: f0 05     
+            LDA #$15           ; $d0b8: a9 15     
+            STA $04a0          ; $d0ba: 8d a0 04  
+__d0bd:     RTS                ; $d0bd: 60        
 
 ;-------------------------------------------------------------------------------
-__d0be:     lda $b0,x          ; $d0be: b5 b0     
-            cmp #$05           ; $d0c0: c9 05     
+__d0be:     LDA $b0,x          ; $d0be: b5 b0     
+            CMP #$05           ; $d0c0: c9 05     
             bcc __d0c8         ; $d0c2: 90 04     
-            cmp #$0c           ; $d0c4: c9 0c     
+            CMP #$0c           ; $d0c4: c9 0c     
             bcc __d0aa         ; $d0c6: 90 e2     
-__d0c8:     lda $d0,x          ; $d0c8: b5 d0     
+__d0c8:     LDA $d0,x          ; $d0c8: b5 d0     
             sec                ; $d0ca: 38        
             sbc $ed            ; $d0cb: e5 ed     
             clc                ; $d0cd: 18        
             adc #$03           ; $d0ce: 69 03     
-            cmp #$0b           ; $d0d0: c9 0b     
-            bcs __d0aa         ; $d0d2: b0 d6     
-            lda $c0,x          ; $d0d4: b5 c0     
+            CMP #$0b           ; $d0d0: c9 0b     
+            BCS __d0aa         ; $d0d2: b0 d6     
+            LDA $c0,x          ; $d0d4: b5 c0     
             sec                ; $d0d6: 38        
             sbc $ec            ; $d0d7: e5 ec     
             clc                ; $d0d9: 18        
             adc #$02           ; $d0da: 69 02     
-            cmp #$11           ; $d0dc: c9 11     
-            bcs __d0aa         ; $d0de: b0 ca     
-            jmp __cfee         ; $d0e0: 4c ee cf  
+            CMP #$11           ; $d0dc: c9 11     
+            BCS __d0aa         ; $d0de: b0 ca     
+            JMP __cfee         ; $d0e0: 4c ee cf  
 
 ;-------------------------------------------------------------------------------
-__d0e3:     lda $04a0          ; $d0e3: ad a0 04  
+__d0e3:     LDA $04a0          ; $d0e3: ad a0 04  
             clc                ; $d0e6: 18        
             adc #$07           ; $d0e7: 69 07     
-            lsr                ; $d0e9: 4a        
-            lsr                ; $d0ea: 4a        
-            lsr                ; $d0eb: 4a        
-            sta $e4            ; $d0ec: 85 e4     
-            lda $04a0          ; $d0ee: ad a0 04  
+            LSR                ; $d0e9: 4a        
+            LSR                ; $d0ea: 4a        
+            LSR                ; $d0eb: 4a        
+            STA $e4            ; $d0ec: 85 e4     
+            LDA $04a0          ; $d0ee: ad a0 04  
             asl                ; $d0f1: 0a        
-            sta $e2            ; $d0f2: 85 e2     
-            lda $0470          ; $d0f4: ad 70 04  
-            lsr                ; $d0f7: 4a        
-            lsr                ; $d0f8: 4a        
-            lsr                ; $d0f9: 4a        
-            eor #$ff           ; $d0fa: 49 ff     
+            STA $e2            ; $d0f2: 85 e2     
+            LDA $0470          ; $d0f4: ad 70 04  
+            LSR                ; $d0f7: 4a        
+            LSR                ; $d0f8: 4a        
+            LSR                ; $d0f9: 4a        
+            EOR #$ff           ; $d0fa: 49 ff     
             and #$08           ; $d0fc: 29 08     
             clc                ; $d0fe: 18        
             adc #$08           ; $d0ff: 69 08     
             adc $c0            ; $d101: 65 c0     
-            sta $e0            ; $d103: 85 e0     
-            lda $d0            ; $d105: a5 d0     
+            STA $e0            ; $d103: 85 e0     
+            LDA $d0            ; $d105: a5 d0     
             sec                ; $d107: 38        
             sbc $e2            ; $d108: e5 e2     
-            sta $ed            ; $d10a: 85 ed     
+            STA $ed            ; $d10a: 85 ed     
             clc                ; $d10c: 18        
             adc #$17           ; $d10d: 69 17     
-            sta $e2            ; $d10f: 85 e2     
-            lda $c0            ; $d111: a5 c0     
-            sta $ec            ; $d113: 85 ec     
-            lda $0470          ; $d115: ad 70 04  
-            ora #$01           ; $d118: 09 01     
-            sta $e6            ; $d11a: 85 e6     
-            lda #$10           ; $d11c: a9 10     
-            sta $e3            ; $d11e: 85 e3     
-            lda #$00           ; $d120: a9 00     
-            sta $e1            ; $d122: 85 e1     
-            ldx #$05           ; $d124: a2 05     
-            jmp __d21f         ; $d126: 4c 1f d2  
+            STA $e2            ; $d10f: 85 e2     
+            LDA $c0            ; $d111: a5 c0     
+            STA $ec            ; $d113: 85 ec     
+            LDA $0470          ; $d115: ad 70 04  
+            ORA #$01           ; $d118: 09 01     
+            STA $e6            ; $d11a: 85 e6     
+            LDA #$10           ; $d11c: a9 10     
+            STA $e3            ; $d11e: 85 e3     
+            LDA #$00           ; $d120: a9 00     
+            STA $e1            ; $d122: 85 e1     
+            LDX #$05           ; $d124: a2 05     
+            JMP __d21f         ; $d126: 4c 1f d2  
 
 ;-------------------------------------------------------------------------------
-            jsr __d0e3         ; $d129: 20 e3 d0  
-__d12c:     lda $a0,x          ; $d12c: b5 a0     
-            cmp #$04           ; $d12e: c9 04     
-            beq __d14a         ; $d130: f0 18     
-            cmp #$06           ; $d132: c9 06     
-            beq __d14a         ; $d134: f0 14     
-__d136:     inx                ; $d136: e8        
-            cpx #$0e           ; $d137: e0 0e     
-            bne __d12c         ; $d139: d0 f1     
-            ldx #$00           ; $d13b: a2 00     
-            jsr __ed40         ; $d13d: 20 40 ed  
-            cmp $e2            ; $d140: c5 e2     
-            beq __d149         ; $d142: f0 05     
-            lda #$15           ; $d144: a9 15     
-            sta $04a0          ; $d146: 8d a0 04  
-__d149:     rts                ; $d149: 60        
+            JSR __d0e3         ; $d129: 20 e3 d0  
+__d12c:     LDA $a0,x          ; $d12c: b5 a0     
+            CMP #$04           ; $d12e: c9 04     
+            BEQ __d14a         ; $d130: f0 18     
+            CMP #$06           ; $d132: c9 06     
+            BEQ __d14a         ; $d134: f0 14     
+__d136:     INX                ; $d136: e8        
+            CPX #$0e           ; $d137: e0 0e     
+            BNE __d12c         ; $d139: d0 f1     
+            LDX #$00           ; $d13b: a2 00     
+            JSR __ed40         ; $d13d: 20 40 ed  
+            CMP $e2            ; $d140: c5 e2     
+            BEQ __d149         ; $d142: f0 05     
+            LDA #$15           ; $d144: a9 15     
+            STA $04a0          ; $d146: 8d a0 04  
+__d149:     RTS                ; $d149: 60        
 
 ;-------------------------------------------------------------------------------
-__d14a:     lda $b0,x          ; $d14a: b5 b0     
-            cmp #$05           ; $d14c: c9 05     
+__d14a:     LDA $b0,x          ; $d14a: b5 b0     
+            CMP #$05           ; $d14c: c9 05     
             bcc __d154         ; $d14e: 90 04     
-            cmp #$0c           ; $d150: c9 0c     
+            CMP #$0c           ; $d150: c9 0c     
             bcc __d136         ; $d152: 90 e2     
-__d154:     lda $d0,x          ; $d154: b5 d0     
+__d154:     LDA $d0,x          ; $d154: b5 d0     
             sec                ; $d156: 38        
             sbc $ed            ; $d157: e5 ed     
             clc                ; $d159: 18        
             adc #$0f           ; $d15a: 69 0f     
-            cmp #$11           ; $d15c: c9 11     
-            bcs __d136         ; $d15e: b0 d6     
-            lda $0470          ; $d160: ad 70 04  
+            CMP #$11           ; $d15c: c9 11     
+            BCS __d136         ; $d15e: b0 d6     
+            LDA $0470          ; $d160: ad 70 04  
             and #$40           ; $d163: 29 40     
-            bne __d172         ; $d165: d0 0b     
-            lda $c0,x          ; $d167: b5 c0     
+            BNE __d172         ; $d165: d0 0b     
+            LDA $c0,x          ; $d167: b5 c0     
             sec                ; $d169: 38        
             sbc $ec            ; $d16a: e5 ec     
             clc                ; $d16c: 18        
             adc #$03           ; $d16d: 69 03     
-            jmp __d17a         ; $d16f: 4c 7a d1  
+            JMP __d17a         ; $d16f: 4c 7a d1  
 
 ;-------------------------------------------------------------------------------
-__d172:     lda $c0,x          ; $d172: b5 c0     
+__d172:     LDA $c0,x          ; $d172: b5 c0     
             sec                ; $d174: 38        
             sbc $ec            ; $d175: e5 ec     
             clc                ; $d177: 18        
             adc #$07           ; $d178: 69 07     
 
 ;-------------------------------------------------------------------------------
-__d17a:     cmp #$0b           ; $d17a: c9 0b     
-            bcs __d136         ; $d17c: b0 b8     
-            jmp __cfee         ; $d17e: 4c ee cf  
+__d17a:     CMP #$0b           ; $d17a: c9 0b     
+            BCS __d136         ; $d17c: b0 b8     
+            JMP __cfee         ; $d17e: 4c ee cf  
 
 ;-------------------------------------------------------------------------------
-__d181:     lda $04a0          ; $d181: ad a0 04  
+__d181:     LDA $04a0          ; $d181: ad a0 04  
             clc                ; $d184: 18        
             adc #$07           ; $d185: 69 07     
-            lsr                ; $d187: 4a        
-            lsr                ; $d188: 4a        
-            lsr                ; $d189: 4a        
-            sta $e4            ; $d18a: 85 e4     
-            lda $04a0          ; $d18c: ad a0 04  
+            LSR                ; $d187: 4a        
+            LSR                ; $d188: 4a        
+            LSR                ; $d189: 4a        
+            STA $e4            ; $d18a: 85 e4     
+            LDA $04a0          ; $d18c: ad a0 04  
             asl                ; $d18f: 0a        
-            sta $e2            ; $d190: 85 e2     
-            lda $0470          ; $d192: ad 70 04  
-            lsr                ; $d195: 4a        
-            lsr                ; $d196: 4a        
-            lsr                ; $d197: 4a        
-            eor #$ff           ; $d198: 49 ff     
+            STA $e2            ; $d190: 85 e2     
+            LDA $0470          ; $d192: ad 70 04  
+            LSR                ; $d195: 4a        
+            LSR                ; $d196: 4a        
+            LSR                ; $d197: 4a        
+            EOR #$ff           ; $d198: 49 ff     
             and #$08           ; $d19a: 29 08     
             clc                ; $d19c: 18        
             adc #$08           ; $d19d: 69 08     
             adc $c0            ; $d19f: 65 c0     
-            sta $e0            ; $d1a1: 85 e0     
-            lda $d0            ; $d1a3: a5 d0     
+            STA $e0            ; $d1a1: 85 e0     
+            LDA $d0            ; $d1a3: a5 d0     
             clc                ; $d1a5: 18        
             adc $e2            ; $d1a6: 65 e2     
-            sta $ed            ; $d1a8: 85 ed     
+            STA $ed            ; $d1a8: 85 ed     
             clc                ; $d1aa: 18        
             adc #$17           ; $d1ab: 69 17     
-            sta $e2            ; $d1ad: 85 e2     
-            lda $c0            ; $d1af: a5 c0     
-            sta $ec            ; $d1b1: 85 ec     
-            lda $0470          ; $d1b3: ad 70 04  
-            ora #$01           ; $d1b6: 09 01     
-            sta $e6            ; $d1b8: 85 e6     
-            lda #$f0           ; $d1ba: a9 f0     
-            sta $e3            ; $d1bc: 85 e3     
-            lda #$00           ; $d1be: a9 00     
-            sta $e1            ; $d1c0: 85 e1     
-            ldx #$05           ; $d1c2: a2 05     
-            jmp __d21f         ; $d1c4: 4c 1f d2  
+            STA $e2            ; $d1ad: 85 e2     
+            LDA $c0            ; $d1af: a5 c0     
+            STA $ec            ; $d1b1: 85 ec     
+            LDA $0470          ; $d1b3: ad 70 04  
+            ORA #$01           ; $d1b6: 09 01     
+            STA $e6            ; $d1b8: 85 e6     
+            LDA #$f0           ; $d1ba: a9 f0     
+            STA $e3            ; $d1bc: 85 e3     
+            LDA #$00           ; $d1be: a9 00     
+            STA $e1            ; $d1c0: 85 e1     
+            LDX #$05           ; $d1c2: a2 05     
+            JMP __d21f         ; $d1c4: 4c 1f d2  
 
 ;-------------------------------------------------------------------------------
-            jsr __d181         ; $d1c7: 20 81 d1  
-__d1ca:     lda $a0,x          ; $d1ca: b5 a0     
-            cmp #$04           ; $d1cc: c9 04     
-            beq __d1e8         ; $d1ce: f0 18     
-            cmp #$06           ; $d1d0: c9 06     
-            beq __d1e8         ; $d1d2: f0 14     
-__d1d4:     inx                ; $d1d4: e8        
-            cpx #$0e           ; $d1d5: e0 0e     
-            bne __d1ca         ; $d1d7: d0 f1     
-            ldx #$00           ; $d1d9: a2 00     
-            jsr __ecf6         ; $d1db: 20 f6 ec  
-            cmp $e2            ; $d1de: c5 e2     
-            beq __d1e7         ; $d1e0: f0 05     
-            lda #$15           ; $d1e2: a9 15     
-            sta $04a0          ; $d1e4: 8d a0 04  
-__d1e7:     rts                ; $d1e7: 60        
+            JSR __d181         ; $d1c7: 20 81 d1  
+__d1ca:     LDA $a0,x          ; $d1ca: b5 a0     
+            CMP #$04           ; $d1cc: c9 04     
+            BEQ __d1e8         ; $d1ce: f0 18     
+            CMP #$06           ; $d1d0: c9 06     
+            BEQ __d1e8         ; $d1d2: f0 14     
+__d1d4:     INX                ; $d1d4: e8        
+            CPX #$0e           ; $d1d5: e0 0e     
+            BNE __d1ca         ; $d1d7: d0 f1     
+            LDX #$00           ; $d1d9: a2 00     
+            JSR __ecf6         ; $d1db: 20 f6 ec  
+            CMP $e2            ; $d1de: c5 e2     
+            BEQ __d1e7         ; $d1e0: f0 05     
+            LDA #$15           ; $d1e2: a9 15     
+            STA $04a0          ; $d1e4: 8d a0 04  
+__d1e7:     RTS                ; $d1e7: 60        
 
 ;-------------------------------------------------------------------------------
-__d1e8:     lda $b0,x          ; $d1e8: b5 b0     
-            cmp #$05           ; $d1ea: c9 05     
+__d1e8:     LDA $b0,x          ; $d1e8: b5 b0     
+            CMP #$05           ; $d1ea: c9 05     
             bcc __d1f2         ; $d1ec: 90 04     
-            cmp #$0c           ; $d1ee: c9 0c     
+            CMP #$0c           ; $d1ee: c9 0c     
             bcc __d1d4         ; $d1f0: 90 e2     
-__d1f2:     lda $d0,x          ; $d1f2: b5 d0     
+__d1f2:     LDA $d0,x          ; $d1f2: b5 d0     
             sec                ; $d1f4: 38        
             sbc $ed            ; $d1f5: e5 ed     
             clc                ; $d1f7: 18        
             adc #$02           ; $d1f8: 69 02     
-            cmp #$11           ; $d1fa: c9 11     
-            bcs __d1d4         ; $d1fc: b0 d6     
-            lda $0470          ; $d1fe: ad 70 04  
+            CMP #$11           ; $d1fa: c9 11     
+            BCS __d1d4         ; $d1fc: b0 d6     
+            LDA $0470          ; $d1fe: ad 70 04  
             and #$40           ; $d201: 29 40     
-            bne __d210         ; $d203: d0 0b     
-            lda $c0,x          ; $d205: b5 c0     
+            BNE __d210         ; $d203: d0 0b     
+            LDA $c0,x          ; $d205: b5 c0     
             sec                ; $d207: 38        
             sbc $ec            ; $d208: e5 ec     
             clc                ; $d20a: 18        
             adc #$03           ; $d20b: 69 03     
-            jmp __d218         ; $d20d: 4c 18 d2  
+            JMP __d218         ; $d20d: 4c 18 d2  
 
 ;-------------------------------------------------------------------------------
-__d210:     lda $c0,x          ; $d210: b5 c0     
+__d210:     LDA $c0,x          ; $d210: b5 c0     
             sec                ; $d212: 38        
             sbc $ec            ; $d213: e5 ec     
             clc                ; $d215: 18        
             adc #$07           ; $d216: 69 07     
-__d218:     cmp #$0b           ; $d218: c9 0b     
-            bcs __d1d4         ; $d21a: b0 b8     
-            jmp __cfee         ; $d21c: 4c ee cf  
+__d218:     CMP #$0b           ; $d218: c9 0b     
+            BCS __d1d4         ; $d21a: b0 b8     
+            JMP __cfee         ; $d21c: 4c ee cf  
 
 ;-------------------------------------------------------------------------------
-__d21f:     lda $10            ; $d21f: a5 10     
-            lsr                ; $d221: 4a        
-            lsr                ; $d222: 4a        
+__d21f:     LDA $10            ; $d21f: a5 10     
+            LSR                ; $d221: 4a        
+            LSR                ; $d222: 4a        
             bcc __d242         ; $d223: 90 1d     
-            ldy $20            ; $d225: a4 20     
-            lda $e4            ; $d227: a5 e4     
+            LDY $20            ; $d225: a4 20     
+            LDA $e4            ; $d227: a5 e4     
             asl                ; $d229: 0a        
             asl                ; $d22a: 0a        
-            sta $ee            ; $d22b: 85 ee     
-            lda $20            ; $d22d: a5 20     
+            STA $ee            ; $d22b: 85 ee     
+            LDA $20            ; $d22d: a5 20     
             sec                ; $d22f: 38        
             sbc $ee            ; $d230: e5 ee     
-            sta $20            ; $d232: 85 20     
-            lda $10            ; $d234: a5 10     
-            lsr                ; $d236: 4a        
-            bcs __d257         ; $d237: b0 1e     
-            lda $20            ; $d239: a5 20     
+            STA $20            ; $d232: 85 20     
+            LDA $10            ; $d234: a5 10     
+            LSR                ; $d236: 4a        
+            BCS __d257         ; $d237: b0 1e     
+            LDA $20            ; $d239: a5 20     
             clc                ; $d23b: 18        
             adc #$04           ; $d23c: 69 04     
             tay                ; $d23e: a8        
-            jmp __d257         ; $d23f: 4c 57 d2  
+            JMP __d257         ; $d23f: 4c 57 d2  
 
 ;-------------------------------------------------------------------------------
-__d242:     ldy $0f            ; $d242: a4 0f     
-            lda $e4            ; $d244: a5 e4     
+__d242:     LDY $0f            ; $d242: a4 0f     
+            LDA $e4            ; $d244: a5 e4     
             asl                ; $d246: 0a        
             asl                ; $d247: 0a        
             adc $0f            ; $d248: 65 0f     
-            sta $0f            ; $d24a: 85 0f     
-            lda $10            ; $d24c: a5 10     
-            lsr                ; $d24e: 4a        
+            STA $0f            ; $d24a: 85 0f     
+            LDA $10            ; $d24c: a5 10     
+            LSR                ; $d24e: 4a        
             bcc __d257         ; $d24f: 90 06     
-            lda $0f            ; $d251: a5 0f     
+            LDA $0f            ; $d251: a5 0f     
             sec                ; $d253: 38        
             sbc #$04           ; $d254: e9 04     
             tay                ; $d256: a8        
-__d257:     lda $0700,y        ; $d257: b9 00 07  
-            cmp #$f0           ; $d25a: c9 f0     
-            bne __d2b0         ; $d25c: d0 52     
-            lda $e0            ; $d25e: a5 e0     
-            cmp #$c4           ; $d260: c9 c4     
-            bcs __d284         ; $d262: b0 20     
-            lda $e2            ; $d264: a5 e2     
-            cmp #$e4           ; $d266: c9 e4     
-            bcs __d284         ; $d268: b0 1a     
-            cmp #$10           ; $d26a: c9 10     
+__d257:     LDA $0700,y        ; $d257: b9 00 07  
+            CMP #$f0           ; $d25a: c9 f0     
+            BNE __d2b0         ; $d25c: d0 52     
+            LDA $e0            ; $d25e: a5 e0     
+            CMP #$c4           ; $d260: c9 c4     
+            BCS __d284         ; $d262: b0 20     
+            LDA $e2            ; $d264: a5 e2     
+            CMP #$e4           ; $d266: c9 e4     
+            BCS __d284         ; $d268: b0 1a     
+            CMP #$10           ; $d26a: c9 10     
             bcc __d284         ; $d26c: 90 16     
-            sta $0700,y        ; $d26e: 99 00 07  
-            lda __d2b3,x       ; $d271: bd b3 d2  
-            sta $0701,y        ; $d274: 99 01 07  
-            lda $e6            ; $d277: a5 e6     
-            sta $0702,y        ; $d279: 99 02 07  
-            lda $e0            ; $d27c: a5 e0     
-            sta $0703,y        ; $d27e: 99 03 07  
-            jmp __d289         ; $d281: 4c 89 d2  
+            STA $0700,y        ; $d26e: 99 00 07  
+            LDA __d2b3,x       ; $d271: bd b3 d2  
+            STA $0701,y        ; $d274: 99 01 07  
+            LDA $e6            ; $d277: a5 e6     
+            STA $0702,y        ; $d279: 99 02 07  
+            LDA $e0            ; $d27c: a5 e0     
+            STA $0703,y        ; $d27e: 99 03 07  
+            JMP __d289         ; $d281: 4c 89 d2  
 
 ;-------------------------------------------------------------------------------
-__d284:     lda #$15           ; $d284: a9 15     
-            sta $04a0          ; $d286: 8d a0 04  
+__d284:     LDA #$15           ; $d284: a9 15     
+            STA $04a0          ; $d286: 8d a0 04  
 
 ;-------------------------------------------------------------------------------
-__d289:     lda $e0            ; $d289: a5 e0     
+__d289:     LDA $e0            ; $d289: a5 e0     
             clc                ; $d28b: 18        
             adc $e1            ; $d28c: 65 e1     
-            sta $e0            ; $d28e: 85 e0     
-            lda $e2            ; $d290: a5 e2     
+            STA $e0            ; $d28e: 85 e0     
+            LDA $e2            ; $d290: a5 e2     
             clc                ; $d292: 18        
             adc $e3            ; $d293: 65 e3     
-            sta $e2            ; $d295: 85 e2     
-            inx                ; $d297: e8        
-            lda $10            ; $d298: a5 10     
-            lsr                ; $d29a: 4a        
-            bcs __d2a8         ; $d29b: b0 0b     
-            iny                ; $d29d: c8        
-            iny                ; $d29e: c8        
-            iny                ; $d29f: c8        
-            iny                ; $d2a0: c8        
-            dec $e4            ; $d2a1: c6 e4     
-            bne __d257         ; $d2a3: d0 b2     
-            ldx #$00           ; $d2a5: a2 00     
-            rts                ; $d2a7: 60        
+            STA $e2            ; $d295: 85 e2     
+            INX                ; $d297: e8        
+            LDA $10            ; $d298: a5 10     
+            LSR                ; $d29a: 4a        
+            BCS __d2a8         ; $d29b: b0 0b     
+            INY                ; $d29d: c8        
+            INY                ; $d29e: c8        
+            INY                ; $d29f: c8        
+            INY                ; $d2a0: c8        
+            DEC $e4            ; $d2a1: c6 e4     
+            BNE __d257         ; $d2a3: d0 b2     
+            LDX #$00           ; $d2a5: a2 00     
+            RTS                ; $d2a7: 60        
 
 ;-------------------------------------------------------------------------------
-__d2a8:     dey                ; $d2a8: 88        
-            dey                ; $d2a9: 88        
-            dey                ; $d2aa: 88        
-            dey                ; $d2ab: 88        
-            dec $e4            ; $d2ac: c6 e4     
-            bne __d257         ; $d2ae: d0 a7     
-__d2b0:     ldx #$00           ; $d2b0: a2 00     
-            rts                ; $d2b2: 60        
+__d2a8:     DEY                ; $d2a8: 88        
+            DEY                ; $d2a9: 88        
+            DEY                ; $d2aa: 88        
+            DEY                ; $d2ab: 88        
+            DEC $e4            ; $d2ac: c6 e4     
+            BNE __d257         ; $d2ae: d0 a7     
+__d2b0:     LDX #$00           ; $d2b0: a2 00     
+            RTS                ; $d2b2: 60        
 
 ;-------------------------------------------------------------------------------
 __d2b3:     .hex f4 f6 f8 f6   ; $d2b3: f4 f6 f8 f6   Data
             .hex f8 fc fe fe   ; $d2b7: f8 fc fe fe   Data
 
 ;-------------------------------------------------------------------------------
-__d2bb:     lda $49            ; $d2bb: a5 49     
+__d2bb:     LDA $49            ; $d2bb: a5 49     
             and #$f0           ; $d2bd: 29 f0     
-            beq __d2ed         ; $d2bf: f0 2c     
-            eor $0410          ; $d2c1: 4d 10 04  
+            BEQ __d2ed         ; $d2bf: f0 2c     
+            EOR $0410          ; $d2c1: 4d 10 04  
             and #$f0           ; $d2c4: 29 f0     
-            cmp #$c0           ; $d2c6: c9 c0     
-            bne __d2db         ; $d2c8: d0 11     
-            eor $0410          ; $d2ca: 4d 10 04  
-            sta $0410          ; $d2cd: 8d 10 04  
-            lda $0470          ; $d2d0: ad 70 04  
-            eor #$40           ; $d2d3: 49 40     
-            sta $0470          ; $d2d5: 8d 70 04  
-            jmp __d2ed         ; $d2d8: 4c ed d2  
+            CMP #$c0           ; $d2c6: c9 c0     
+            BNE __d2db         ; $d2c8: d0 11     
+            EOR $0410          ; $d2ca: 4d 10 04  
+            STA $0410          ; $d2cd: 8d 10 04  
+            LDA $0470          ; $d2d0: ad 70 04  
+            EOR #$40           ; $d2d3: 49 40     
+            STA $0470          ; $d2d5: 8d 70 04  
+            JMP __d2ed         ; $d2d8: 4c ed d2  
 
 ;-------------------------------------------------------------------------------
-__d2db:     cmp #$30           ; $d2db: c9 30     
-            bne __d2ed         ; $d2dd: d0 0e     
-            eor $0410          ; $d2df: 4d 10 04  
-            sta $0410          ; $d2e2: 8d 10 04  
-            lda $0470          ; $d2e5: ad 70 04  
-            eor #$80           ; $d2e8: 49 80     
-            sta $0470          ; $d2ea: 8d 70 04  
-__d2ed:     lda #$00           ; $d2ed: a9 00     
-            sta $04a0          ; $d2ef: 8d a0 04  
-            lda #$01           ; $d2f2: a9 01     
-            sta $05f1          ; $d2f4: 8d f1 05  
-            lda #$02           ; $d2f7: a9 02     
-            sta $b0            ; $d2f9: 85 b0     
-            lda $0460          ; $d2fb: ad 60 04  
+__d2db:     CMP #$30           ; $d2db: c9 30     
+            BNE __d2ed         ; $d2dd: d0 0e     
+            EOR $0410          ; $d2df: 4d 10 04  
+            STA $0410          ; $d2e2: 8d 10 04  
+            LDA $0470          ; $d2e5: ad 70 04  
+            EOR #$80           ; $d2e8: 49 80     
+            STA $0470          ; $d2ea: 8d 70 04  
+__d2ed:     LDA #$00           ; $d2ed: a9 00     
+            STA $04a0          ; $d2ef: 8d a0 04  
+            LDA #$01           ; $d2f2: a9 01     
+            STA $05f1          ; $d2f4: 8d f1 05  
+            LDA #$02           ; $d2f7: a9 02     
+            STA $b0            ; $d2f9: 85 b0     
+            LDA $0460          ; $d2fb: ad 60 04  
             and #$02           ; $d2fe: 29 02     
-            ora #$0d           ; $d300: 09 0d     
-            sta $0460          ; $d302: 8d 60 04  
-            jmp __e70d         ; $d305: 4c 0d e7  
+            ORA #$0d           ; $d300: 09 0d     
+            STA $0460          ; $d302: 8d 60 04  
+            JMP __e70d         ; $d305: 4c 0d e7  
 
 ;-------------------------------------------------------------------------------
-__d308:     lda #$40           ; $d308: a9 40     
-            jmp __d33c         ; $d30a: 4c 3c d3  
+__d308:     LDA #$40           ; $d308: a9 40     
+            JMP __d33c         ; $d30a: 4c 3c d3  
 
 ;-------------------------------------------------------------------------------
-__d30d:     lda #$20           ; $d30d: a9 20     
-            jmp __d33c         ; $d30f: 4c 3c d3  
+__d30d:     LDA #$20           ; $d30d: a9 20     
+            JMP __d33c         ; $d30f: 4c 3c d3  
 
 ;-------------------------------------------------------------------------------
-__d312:     lda $26            ; $d312: a5 26     
-            bne __d363         ; $d314: d0 4d     
-            lda $1f            ; $d316: a5 1f     
-            bne __d348         ; $d318: d0 2e     
-            lda $48            ; $d31a: a5 48     
+__d312:     LDA $26            ; $d312: a5 26     
+            BNE __d363         ; $d314: d0 4d     
+            LDA $1f            ; $d316: a5 1f     
+            BNE __d348         ; $d318: d0 2e     
+            LDA $48            ; $d31a: a5 48     
             and #$03           ; $d31c: 29 03     
-            bne __d2bb         ; $d31e: d0 9b     
-            lda $49            ; $d320: a5 49     
+            BNE __d2bb         ; $d31e: d0 9b     
+            LDA $49            ; $d320: a5 49     
             and #$f0           ; $d322: 29 f0     
-            beq __d363         ; $d324: f0 3d     
+            BEQ __d363         ; $d324: f0 3d     
             pha                ; $d326: 48        
-            lda $05eb          ; $d327: ad eb 05  
-            ora $05e9          ; $d32a: 0d e9 05  
-            bne __d33b         ; $d32d: d0 0c     
-            ldy $2d            ; $d32f: a4 2d     
-            sty $05f5          ; $d331: 8c f5 05  
-            sty $05f6          ; $d334: 8c f6 05  
-            ldy #$02           ; $d337: a0 02     
-            sty $2d            ; $d339: 84 2d     
+            LDA $05eb          ; $d327: ad eb 05  
+            ORA $05e9          ; $d32a: 0d e9 05  
+            BNE __d33b         ; $d32d: d0 0c     
+            LDY $2d            ; $d32f: a4 2d     
+            STY $05f5          ; $d331: 8c f5 05  
+            STY $05f6          ; $d334: 8c f6 05  
+            LDY #$02           ; $d337: a0 02     
+            STY $2d            ; $d339: 84 2d     
 __d33b:     pla                ; $d33b: 68        
-__d33c:     inc $04d0          ; $d33c: ee d0 04  
-            jsr __d707         ; $d33f: 20 07 d7  
-            jsr __d372         ; $d342: 20 72 d3  
-            jmp __d363         ; $d345: 4c 63 d3  
+__d33c:     INC $04d0          ; $d33c: ee d0 04  
+            JSR __d707         ; $d33f: 20 07 d7  
+            JSR __d372         ; $d342: 20 72 d3  
+            JMP __d363         ; $d345: 4c 63 d3  
 
 ;-------------------------------------------------------------------------------
-__d348:     lda $c0            ; $d348: a5 c0     
-            cmp #$50           ; $d34a: c9 50     
-            bne __d308         ; $d34c: d0 ba     
-            lda $d0            ; $d34e: a5 d0     
-            cmp #$60           ; $d350: c9 60     
-            bne __d30d         ; $d352: d0 b9     
-            lda #$80           ; $d354: a9 80     
-            sta $0410          ; $d356: 8d 10 04  
-            lda #$04           ; $d359: a9 04     
-            sta $0460          ; $d35b: 8d 60 04  
-            lda #$40           ; $d35e: a9 40     
-            sta $0470          ; $d360: 8d 70 04  
-__d363:     lda $04d0          ; $d363: ad d0 04  
-            lsr                ; $d366: 4a        
-            lsr                ; $d367: 4a        
-            lsr $0460          ; $d368: 4e 60 04  
-            lsr                ; $d36b: 4a        
-            rol $0460          ; $d36c: 2e 60 04  
-            jmp __e70d         ; $d36f: 4c 0d e7  
+__d348:     LDA $c0            ; $d348: a5 c0     
+            CMP #$50           ; $d34a: c9 50     
+            BNE __d308         ; $d34c: d0 ba     
+            LDA $d0            ; $d34e: a5 d0     
+            CMP #$60           ; $d350: c9 60     
+            BNE __d30d         ; $d352: d0 b9     
+            LDA #$80           ; $d354: a9 80     
+            STA $0410          ; $d356: 8d 10 04  
+            LDA #$04           ; $d359: a9 04     
+            STA $0460          ; $d35b: 8d 60 04  
+            LDA #$40           ; $d35e: a9 40     
+            STA $0470          ; $d360: 8d 70 04  
+__d363:     LDA $04d0          ; $d363: ad d0 04  
+            LSR                ; $d366: 4a        
+            LSR                ; $d367: 4a        
+            LSR $0460          ; $d368: 4e 60 04  
+            LSR                ; $d36b: 4a        
+            ROL $0460          ; $d36c: 2e 60 04  
+            JMP __e70d         ; $d36f: 4c 0d e7  
 
 ;-------------------------------------------------------------------------------
-__d372:     sta $e0            ; $d372: 85 e0     
-            lda $c0            ; $d374: a5 c0     
-            bne __d381         ; $d376: d0 09     
-            lda $e0            ; $d378: a5 e0     
+__d372:     STA $e0            ; $d372: 85 e0     
+            LDA $c0            ; $d374: a5 c0     
+            BNE __d381         ; $d376: d0 09     
+            LDA $e0            ; $d378: a5 e0     
             and #$bf           ; $d37a: 29 bf     
-            sta $e0            ; $d37c: 85 e0     
-            jmp __d38b         ; $d37e: 4c 8b d3  
+            STA $e0            ; $d37c: 85 e0     
+            JMP __d38b         ; $d37e: 4c 8b d3  
 
 ;-------------------------------------------------------------------------------
-__d381:     cmp #$b0           ; $d381: c9 b0     
-            bne __d38b         ; $d383: d0 06     
-            lda $e0            ; $d385: a5 e0     
+__d381:     CMP #$b0           ; $d381: c9 b0     
+            BNE __d38b         ; $d383: d0 06     
+            LDA $e0            ; $d385: a5 e0     
             and #$7f           ; $d387: 29 7f     
-            sta $e0            ; $d389: 85 e0     
-__d38b:     lda $c0            ; $d38b: a5 c0     
+            STA $e0            ; $d389: 85 e0     
+__d38b:     LDA $c0            ; $d38b: a5 c0     
             and #$0f           ; $d38d: 29 0f     
-            beq __d3a4         ; $d38f: f0 13     
-            lda $e0            ; $d391: a5 e0     
+            BEQ __d3a4         ; $d38f: f0 13     
+            LDA $e0            ; $d391: a5 e0     
             and #$30           ; $d393: 29 30     
-            beq __d3a4         ; $d395: f0 0d     
-            lda $e0            ; $d397: a5 e0     
+            BEQ __d3a4         ; $d395: f0 0d     
+            LDA $e0            ; $d397: a5 e0     
             and #$c0           ; $d399: 29 c0     
-            sta $e0            ; $d39b: 85 e0     
-            bne __d3a4         ; $d39d: d0 05     
-            lda $0410          ; $d39f: ad 10 04  
-            sta $e0            ; $d3a2: 85 e0     
-__d3a4:     lda $d0            ; $d3a4: a5 d0     
-            bne __d3b1         ; $d3a6: d0 09     
-            lda $e0            ; $d3a8: a5 e0     
+            STA $e0            ; $d39b: 85 e0     
+            BNE __d3a4         ; $d39d: d0 05     
+            LDA $0410          ; $d39f: ad 10 04  
+            STA $e0            ; $d3a2: 85 e0     
+__d3a4:     LDA $d0            ; $d3a4: a5 d0     
+            BNE __d3b1         ; $d3a6: d0 09     
+            LDA $e0            ; $d3a8: a5 e0     
             and #$ef           ; $d3aa: 29 ef     
-            sta $e0            ; $d3ac: 85 e0     
-            jmp __d3bb         ; $d3ae: 4c bb d3  
+            STA $e0            ; $d3ac: 85 e0     
+            JMP __d3bb         ; $d3ae: 4c bb d3  
 
 ;-------------------------------------------------------------------------------
-__d3b1:     cmp #$c0           ; $d3b1: c9 c0     
-            bne __d3bb         ; $d3b3: d0 06     
-            lda $e0            ; $d3b5: a5 e0     
+__d3b1:     CMP #$c0           ; $d3b1: c9 c0     
+            BNE __d3bb         ; $d3b3: d0 06     
+            LDA $e0            ; $d3b5: a5 e0     
             and #$df           ; $d3b7: 29 df     
-            sta $e0            ; $d3b9: 85 e0     
-__d3bb:     lda $d0            ; $d3bb: a5 d0     
+            STA $e0            ; $d3b9: 85 e0     
+__d3bb:     LDA $d0            ; $d3bb: a5 d0     
             and #$0f           ; $d3bd: 29 0f     
-            beq __d3d4         ; $d3bf: f0 13     
-            lda $e0            ; $d3c1: a5 e0     
+            BEQ __d3d4         ; $d3bf: f0 13     
+            LDA $e0            ; $d3c1: a5 e0     
             and #$c0           ; $d3c3: 29 c0     
-            beq __d3d4         ; $d3c5: f0 0d     
-            lda $e0            ; $d3c7: a5 e0     
+            BEQ __d3d4         ; $d3c5: f0 0d     
+            LDA $e0            ; $d3c7: a5 e0     
             and #$30           ; $d3c9: 29 30     
-            sta $e0            ; $d3cb: 85 e0     
-            bne __d3d4         ; $d3cd: d0 05     
-            lda $0410          ; $d3cf: ad 10 04  
-            sta $e0            ; $d3d2: 85 e0     
-__d3d4:     lda $e0            ; $d3d4: a5 e0     
-            lsr                ; $d3d6: 4a        
-            lsr                ; $d3d7: 4a        
-            lsr                ; $d3d8: 4a        
+            STA $e0            ; $d3cb: 85 e0     
+            BNE __d3d4         ; $d3cd: d0 05     
+            LDA $0410          ; $d3cf: ad 10 04  
+            STA $e0            ; $d3d2: 85 e0     
+__d3d4:     LDA $e0            ; $d3d4: a5 e0     
+            LSR                ; $d3d6: 4a        
+            LSR                ; $d3d7: 4a        
+            LSR                ; $d3d8: 4a        
             and #$1e           ; $d3d9: 29 1e     
             tay                ; $d3db: a8        
-            lda __d3f1,y       ; $d3dc: b9 f1 d3  
-            sta $ea            ; $d3df: 85 ea     
-            lda __d3f2,y       ; $d3e1: b9 f2 d3  
-            sta $eb            ; $d3e4: 85 eb     
-            lda $0460          ; $d3e6: ad 60 04  
-            lsr                ; $d3e9: 4a        
-            lsr                ; $d3ea: 4a        
+            LDA __d3f1,y       ; $d3dc: b9 f1 d3  
+            STA $ea            ; $d3df: 85 ea     
+            LDA __d3f2,y       ; $d3e1: b9 f2 d3  
+            STA $eb            ; $d3e4: 85 eb     
+            LDA $0460          ; $d3e6: ad 60 04  
+            LSR                ; $d3e9: 4a        
+            LSR                ; $d3ea: 4a        
             and #$01           ; $d3eb: 29 01     
             tay                ; $d3ed: a8        
-            jmp ($00ea)        ; $d3ee: 6c ea 00  
+            JMP ($00ea)        ; $d3ee: 6c ea 00  
 
 ;-------------------------------------------------------------------------------
 __d3f1:     .hex 11            ; $d3f1: 11            Data
@@ -2529,483 +2529,483 @@ __d3f2:     .hex d4 c2 d5 30   ; $d3f2: d4 c2 d5 30   Data
             .hex d5 11 d4      ; $d40e: d5 11 d4      Data
 
 ;-------------------------------------------------------------------------------
-            rts                ; $d411: 60        
+            RTS                ; $d411: 60        
 
 ;-------------------------------------------------------------------------------
-            lda #$40           ; $d412: a9 40     
-            sta $0470          ; $d414: 8d 70 04  
-            lda #$80           ; $d417: a9 80     
-            sta $0410          ; $d419: 8d 10 04  
-            lda $d0            ; $d41c: a5 d0     
+            LDA #$40           ; $d412: a9 40     
+            STA $0470          ; $d414: 8d 70 04  
+            LDA #$80           ; $d417: a9 80     
+            STA $0410          ; $d419: 8d 10 04  
+            LDA $d0            ; $d41c: a5 d0     
             and #$f0           ; $d41e: 29 f0     
-            sta $e8            ; $d420: 85 e8     
-            lsr                ; $d422: 4a        
-            sta $e0            ; $d423: 85 e0     
-            lsr                ; $d425: 4a        
+            STA $e8            ; $d420: 85 e8     
+            LSR                ; $d422: 4a        
+            STA $e0            ; $d423: 85 e0     
+            LSR                ; $d425: 4a        
             adc $e0            ; $d426: 65 e0     
-            sta $e0            ; $d428: 85 e0     
-            lda $0420          ; $d42a: ad 20 04  
+            STA $e0            ; $d428: 85 e0     
+            LDA $0420          ; $d42a: ad 20 04  
             clc                ; $d42d: 18        
             adc $002e,y        ; $d42e: 79 2e 00  
-            sta $0420          ; $d431: 8d 20 04  
-            lda $c0            ; $d434: a5 c0     
-            sta $ea            ; $d436: 85 ea     
+            STA $0420          ; $d431: 8d 20 04  
+            LDA $c0            ; $d434: a5 c0     
+            STA $ea            ; $d436: 85 ea     
             adc #$00           ; $d438: 69 00     
-            sta $c0            ; $d43a: 85 c0     
+            STA $c0            ; $d43a: 85 c0     
             clc                ; $d43c: 18        
             adc #$09           ; $d43d: 69 09     
-            lsr                ; $d43f: 4a        
-            lsr                ; $d440: 4a        
-            sta $e1            ; $d441: 85 e1     
-            lsr                ; $d443: 4a        
-            sta $e6            ; $d444: 85 e6     
-            lsr                ; $d446: 4a        
+            LSR                ; $d43f: 4a        
+            LSR                ; $d440: 4a        
+            STA $e1            ; $d441: 85 e1     
+            LSR                ; $d443: 4a        
+            STA $e6            ; $d444: 85 e6     
+            LSR                ; $d446: 4a        
             clc                ; $d447: 18        
             adc $e0            ; $d448: 65 e0     
-            sta $e0            ; $d44a: 85 e0     
+            STA $e0            ; $d44a: 85 e0     
             tay                ; $d44c: a8        
-            lda $e1            ; $d44d: a5 e1     
+            LDA $e1            ; $d44d: a5 e1     
             and #$03           ; $d44f: 29 03     
-            sta $e1            ; $d451: 85 e1     
-            lda $0200,y        ; $d453: b9 00 02  
-            sta $e2            ; $d456: 85 e2     
+            STA $e1            ; $d451: 85 e1     
+            LDA $0200,y        ; $d453: b9 00 02  
+            STA $e2            ; $d456: 85 e2     
             asl                ; $d458: 0a        
             asl                ; $d459: 0a        
             clc                ; $d45a: 18        
             adc $e1            ; $d45b: 65 e1     
             tay                ; $d45d: a8        
-            lda __f7cf,y       ; $d45e: b9 cf f7  
-            cmp $e2            ; $d461: c5 e2     
-            beq __d481         ; $d463: f0 1c     
+            LDA __f7cf,y       ; $d45e: b9 cf f7  
+            CMP $e2            ; $d461: c5 e2     
+            BEQ __d481         ; $d463: f0 1c     
             pha                ; $d465: 48        
-            lda $e2            ; $d466: a5 e2     
-            bne __d471         ; $d468: d0 07     
-            lda $1f            ; $d46a: a5 1f     
-            bne __d471         ; $d46c: d0 03     
-            jsr __ed7c         ; $d46e: 20 7c ed  
+            LDA $e2            ; $d466: a5 e2     
+            BNE __d471         ; $d468: d0 07     
+            LDA $1f            ; $d46a: a5 1f     
+            BNE __d471         ; $d46c: d0 03     
+            JSR __ed7c         ; $d46e: 20 7c ed  
 __d471:     pla                ; $d471: 68        
-            sta $e2            ; $d472: 85 e2     
-            ldy $e0            ; $d474: a4 e0     
-            sta $0200,y        ; $d476: 99 00 02  
-            lda #$00           ; $d479: a9 00     
-            sta $0460          ; $d47b: 8d 60 04  
-            jmp __d66b         ; $d47e: 4c 6b d6  
+            STA $e2            ; $d472: 85 e2     
+            LDY $e0            ; $d474: a4 e0     
+            STA $0200,y        ; $d476: 99 00 02  
+            LDA #$00           ; $d479: a9 00     
+            STA $0460          ; $d47b: 8d 60 04  
+            JMP __d66b         ; $d47e: 4c 6b d6  
 
 ;-------------------------------------------------------------------------------
-__d481:     lda $ea            ; $d481: a5 ea     
+__d481:     LDA $ea            ; $d481: a5 ea     
             clc                ; $d483: 18        
             adc #$09           ; $d484: 69 09     
-            lsr                ; $d486: 4a        
-            lsr                ; $d487: 4a        
+            LSR                ; $d486: 4a        
+            LSR                ; $d487: 4a        
             and #$03           ; $d488: 29 03     
-            cmp $e1            ; $d48a: c5 e1     
-            beq __d494         ; $d48c: f0 06     
-            lda #$04           ; $d48e: a9 04     
-            sta $0460          ; $d490: 8d 60 04  
-            rts                ; $d493: 60        
+            CMP $e1            ; $d48a: c5 e1     
+            BEQ __d494         ; $d48c: f0 06     
+            LDA #$04           ; $d48e: a9 04     
+            STA $0460          ; $d490: 8d 60 04  
+            RTS                ; $d493: 60        
 
 ;-------------------------------------------------------------------------------
-__d494:     lda $0460          ; $d494: ad 60 04  
+__d494:     LDA $0460          ; $d494: ad 60 04  
             and #$fd           ; $d497: 29 fd     
-            sta $0460          ; $d499: 8d 60 04  
-            rts                ; $d49c: 60        
+            STA $0460          ; $d499: 8d 60 04  
+            RTS                ; $d49c: 60        
 
 ;-------------------------------------------------------------------------------
-            lda #$00           ; $d49d: a9 00     
-            sta $0470          ; $d49f: 8d 70 04  
-            lda #$40           ; $d4a2: a9 40     
-            sta $0410          ; $d4a4: 8d 10 04  
-            lda $d0            ; $d4a7: a5 d0     
+            LDA #$00           ; $d49d: a9 00     
+            STA $0470          ; $d49f: 8d 70 04  
+            LDA #$40           ; $d4a2: a9 40     
+            STA $0410          ; $d4a4: 8d 10 04  
+            LDA $d0            ; $d4a7: a5 d0     
             and #$f0           ; $d4a9: 29 f0     
-            sta $e8            ; $d4ab: 85 e8     
-            lsr                ; $d4ad: 4a        
-            sta $e0            ; $d4ae: 85 e0     
-            lsr                ; $d4b0: 4a        
+            STA $e8            ; $d4ab: 85 e8     
+            LSR                ; $d4ad: 4a        
+            STA $e0            ; $d4ae: 85 e0     
+            LSR                ; $d4b0: 4a        
             adc $e0            ; $d4b1: 65 e0     
-            sta $e0            ; $d4b3: 85 e0     
-            lda $0420          ; $d4b5: ad 20 04  
+            STA $e0            ; $d4b3: 85 e0     
+            LDA $0420          ; $d4b5: ad 20 04  
             sec                ; $d4b8: 38        
             sbc $002e,y        ; $d4b9: f9 2e 00  
-            sta $0420          ; $d4bc: 8d 20 04  
-            lda $c0            ; $d4bf: a5 c0     
-            sta $ea            ; $d4c1: 85 ea     
+            STA $0420          ; $d4bc: 8d 20 04  
+            LDA $c0            ; $d4bf: a5 c0     
+            STA $ea            ; $d4c1: 85 ea     
             sbc #$00           ; $d4c3: e9 00     
-            sta $c0            ; $d4c5: 85 c0     
+            STA $c0            ; $d4c5: 85 c0     
             clc                ; $d4c7: 18        
             adc #$06           ; $d4c8: 69 06     
-            lsr                ; $d4ca: 4a        
-            lsr                ; $d4cb: 4a        
-            sta $e1            ; $d4cc: 85 e1     
-            lsr                ; $d4ce: 4a        
-            sta $e6            ; $d4cf: 85 e6     
-            lsr                ; $d4d1: 4a        
+            LSR                ; $d4ca: 4a        
+            LSR                ; $d4cb: 4a        
+            STA $e1            ; $d4cc: 85 e1     
+            LSR                ; $d4ce: 4a        
+            STA $e6            ; $d4cf: 85 e6     
+            LSR                ; $d4d1: 4a        
             clc                ; $d4d2: 18        
             adc $e0            ; $d4d3: 65 e0     
-            sta $e0            ; $d4d5: 85 e0     
+            STA $e0            ; $d4d5: 85 e0     
             tay                ; $d4d7: a8        
-            lda $e1            ; $d4d8: a5 e1     
+            LDA $e1            ; $d4d8: a5 e1     
             and #$03           ; $d4da: 29 03     
-            eor #$03           ; $d4dc: 49 03     
-            sta $e1            ; $d4de: 85 e1     
-            lda $0200,y        ; $d4e0: b9 00 02  
-            sta $e2            ; $d4e3: 85 e2     
+            EOR #$03           ; $d4dc: 49 03     
+            STA $e1            ; $d4de: 85 e1     
+            LDA $0200,y        ; $d4e0: b9 00 02  
+            STA $e2            ; $d4e3: 85 e2     
             asl                ; $d4e5: 0a        
             asl                ; $d4e6: 0a        
             clc                ; $d4e7: 18        
             adc $e1            ; $d4e8: 65 e1     
             tay                ; $d4ea: a8        
-            lda $e1            ; $d4eb: a5 e1     
-            eor #$03           ; $d4ed: 49 03     
-            sta $e1            ; $d4ef: 85 e1     
-            lda __f99f,y       ; $d4f1: b9 9f f9  
-            cmp $e2            ; $d4f4: c5 e2     
-            beq __d514         ; $d4f6: f0 1c     
+            LDA $e1            ; $d4eb: a5 e1     
+            EOR #$03           ; $d4ed: 49 03     
+            STA $e1            ; $d4ef: 85 e1     
+            LDA __f99f,y       ; $d4f1: b9 9f f9  
+            CMP $e2            ; $d4f4: c5 e2     
+            BEQ __d514         ; $d4f6: f0 1c     
             pha                ; $d4f8: 48        
-            lda $e2            ; $d4f9: a5 e2     
-            bne __d504         ; $d4fb: d0 07     
-            lda $1f            ; $d4fd: a5 1f     
-            bne __d504         ; $d4ff: d0 03     
-            jsr __ed7c         ; $d501: 20 7c ed  
+            LDA $e2            ; $d4f9: a5 e2     
+            BNE __d504         ; $d4fb: d0 07     
+            LDA $1f            ; $d4fd: a5 1f     
+            BNE __d504         ; $d4ff: d0 03     
+            JSR __ed7c         ; $d501: 20 7c ed  
 __d504:     pla                ; $d504: 68        
-            sta $e2            ; $d505: 85 e2     
-            ldy $e0            ; $d507: a4 e0     
-            sta $0200,y        ; $d509: 99 00 02  
-            lda #$00           ; $d50c: a9 00     
-            sta $0460          ; $d50e: 8d 60 04  
-            jmp __d66b         ; $d511: 4c 6b d6  
+            STA $e2            ; $d505: 85 e2     
+            LDY $e0            ; $d507: a4 e0     
+            STA $0200,y        ; $d509: 99 00 02  
+            LDA #$00           ; $d50c: a9 00     
+            STA $0460          ; $d50e: 8d 60 04  
+            JMP __d66b         ; $d511: 4c 6b d6  
 
 ;-------------------------------------------------------------------------------
-__d514:     lda $ea            ; $d514: a5 ea     
+__d514:     LDA $ea            ; $d514: a5 ea     
             clc                ; $d516: 18        
             adc #$06           ; $d517: 69 06     
-            lsr                ; $d519: 4a        
-            lsr                ; $d51a: 4a        
+            LSR                ; $d519: 4a        
+            LSR                ; $d51a: 4a        
             and #$03           ; $d51b: 29 03     
-            cmp $e1            ; $d51d: c5 e1     
-            beq __d527         ; $d51f: f0 06     
-            lda #$04           ; $d521: a9 04     
-            sta $0460          ; $d523: 8d 60 04  
-            rts                ; $d526: 60        
+            CMP $e1            ; $d51d: c5 e1     
+            BEQ __d527         ; $d51f: f0 06     
+            LDA #$04           ; $d521: a9 04     
+            STA $0460          ; $d523: 8d 60 04  
+            RTS                ; $d526: 60        
 
 ;-------------------------------------------------------------------------------
-__d527:     lda $0460          ; $d527: ad 60 04  
+__d527:     LDA $0460          ; $d527: ad 60 04  
             and #$fd           ; $d52a: 29 fd     
-            sta $0460          ; $d52c: 8d 60 04  
-            rts                ; $d52f: 60        
+            STA $0460          ; $d52c: 8d 60 04  
+            RTS                ; $d52f: 60        
 
 ;-------------------------------------------------------------------------------
-            lda $0470          ; $d530: ad 70 04  
+            LDA $0470          ; $d530: ad 70 04  
             and #$7f           ; $d533: 29 7f     
-            sta $0470          ; $d535: 8d 70 04  
-            lda #$20           ; $d538: a9 20     
-            sta $0410          ; $d53a: 8d 10 04  
-            lda $0440          ; $d53d: ad 40 04  
+            STA $0470          ; $d535: 8d 70 04  
+            LDA #$20           ; $d538: a9 20     
+            STA $0410          ; $d53a: 8d 10 04  
+            LDA $0440          ; $d53d: ad 40 04  
             clc                ; $d540: 18        
             adc $002e,y        ; $d541: 79 2e 00  
-            sta $0440          ; $d544: 8d 40 04  
-            lda $d0            ; $d547: a5 d0     
-            sta $ea            ; $d549: 85 ea     
+            STA $0440          ; $d544: 8d 40 04  
+            LDA $d0            ; $d547: a5 d0     
+            STA $ea            ; $d549: 85 ea     
             adc #$00           ; $d54b: 69 00     
-            sta $d0            ; $d54d: 85 d0     
+            STA $d0            ; $d54d: 85 d0     
             clc                ; $d54f: 18        
             adc #$09           ; $d550: 69 09     
-            sta $e1            ; $d552: 85 e1     
+            STA $e1            ; $d552: 85 e1     
             and #$f0           ; $d554: 29 f0     
-            sta $e8            ; $d556: 85 e8     
-            lsr                ; $d558: 4a        
-            sta $e0            ; $d559: 85 e0     
-            lsr                ; $d55b: 4a        
+            STA $e8            ; $d556: 85 e8     
+            LSR                ; $d558: 4a        
+            STA $e0            ; $d559: 85 e0     
+            LSR                ; $d55b: 4a        
             adc $e0            ; $d55c: 65 e0     
-            sta $e0            ; $d55e: 85 e0     
-            lda $c0            ; $d560: a5 c0     
+            STA $e0            ; $d55e: 85 e0     
+            LDA $c0            ; $d560: a5 c0     
             and #$f0           ; $d562: 29 f0     
-            lsr                ; $d564: 4a        
-            lsr                ; $d565: 4a        
-            lsr                ; $d566: 4a        
-            sta $e6            ; $d567: 85 e6     
-            lsr                ; $d569: 4a        
+            LSR                ; $d564: 4a        
+            LSR                ; $d565: 4a        
+            LSR                ; $d566: 4a        
+            STA $e6            ; $d567: 85 e6     
+            LSR                ; $d569: 4a        
             clc                ; $d56a: 18        
             adc $e0            ; $d56b: 65 e0     
-            sta $e0            ; $d56d: 85 e0     
+            STA $e0            ; $d56d: 85 e0     
             tay                ; $d56f: a8        
-            lda $e1            ; $d570: a5 e1     
-            lsr                ; $d572: 4a        
-            lsr                ; $d573: 4a        
+            LDA $e1            ; $d570: a5 e1     
+            LSR                ; $d572: 4a        
+            LSR                ; $d573: 4a        
             and #$03           ; $d574: 29 03     
-            sta $e1            ; $d576: 85 e1     
-            lda $0200,y        ; $d578: b9 00 02  
-            sta $e2            ; $d57b: 85 e2     
+            STA $e1            ; $d576: 85 e1     
+            LDA $0200,y        ; $d578: b9 00 02  
+            STA $e2            ; $d57b: 85 e2     
             asl                ; $d57d: 0a        
             asl                ; $d57e: 0a        
             clc                ; $d57f: 18        
             adc $e1            ; $d580: 65 e1     
             tay                ; $d582: a8        
-            lda __fa87,y       ; $d583: b9 87 fa  
-            cmp $e2            ; $d586: c5 e2     
-            beq __d5a6         ; $d588: f0 1c     
+            LDA __fa87,y       ; $d583: b9 87 fa  
+            CMP $e2            ; $d586: c5 e2     
+            BEQ __d5a6         ; $d588: f0 1c     
             pha                ; $d58a: 48        
-            lda $e2            ; $d58b: a5 e2     
-            bne __d596         ; $d58d: d0 07     
-            lda $1f            ; $d58f: a5 1f     
-            bne __d596         ; $d591: d0 03     
-            jsr __ed7c         ; $d593: 20 7c ed  
+            LDA $e2            ; $d58b: a5 e2     
+            BNE __d596         ; $d58d: d0 07     
+            LDA $1f            ; $d58f: a5 1f     
+            BNE __d596         ; $d591: d0 03     
+            JSR __ed7c         ; $d593: 20 7c ed  
 __d596:     pla                ; $d596: 68        
-            sta $e2            ; $d597: 85 e2     
-            ldy $e0            ; $d599: a4 e0     
-            sta $0200,y        ; $d59b: 99 00 02  
-            lda #$02           ; $d59e: a9 02     
-            sta $0460          ; $d5a0: 8d 60 04  
-            jmp __d66b         ; $d5a3: 4c 6b d6  
+            STA $e2            ; $d597: 85 e2     
+            LDY $e0            ; $d599: a4 e0     
+            STA $0200,y        ; $d59b: 99 00 02  
+            LDA #$02           ; $d59e: a9 02     
+            STA $0460          ; $d5a0: 8d 60 04  
+            JMP __d66b         ; $d5a3: 4c 6b d6  
 
 ;-------------------------------------------------------------------------------
-__d5a6:     lda $ea            ; $d5a6: a5 ea     
+__d5a6:     LDA $ea            ; $d5a6: a5 ea     
             clc                ; $d5a8: 18        
             adc #$09           ; $d5a9: 69 09     
-            lsr                ; $d5ab: 4a        
-            lsr                ; $d5ac: 4a        
+            LSR                ; $d5ab: 4a        
+            LSR                ; $d5ac: 4a        
             and #$03           ; $d5ad: 29 03     
-            cmp $e1            ; $d5af: c5 e1     
-            beq __d5b9         ; $d5b1: f0 06     
-            lda #$06           ; $d5b3: a9 06     
-            sta $0460          ; $d5b5: 8d 60 04  
-            rts                ; $d5b8: 60        
+            CMP $e1            ; $d5af: c5 e1     
+            BEQ __d5b9         ; $d5b1: f0 06     
+            LDA #$06           ; $d5b3: a9 06     
+            STA $0460          ; $d5b5: 8d 60 04  
+            RTS                ; $d5b8: 60        
 
 ;-------------------------------------------------------------------------------
-__d5b9:     lda $0460          ; $d5b9: ad 60 04  
-            ora #$02           ; $d5bc: 09 02     
-            sta $0460          ; $d5be: 8d 60 04  
-            rts                ; $d5c1: 60        
+__d5b9:     LDA $0460          ; $d5b9: ad 60 04  
+            ORA #$02           ; $d5bc: 09 02     
+            STA $0460          ; $d5be: 8d 60 04  
+            RTS                ; $d5c1: 60        
 
 ;-------------------------------------------------------------------------------
-            lda $0410          ; $d5c2: ad 10 04  
+            LDA $0410          ; $d5c2: ad 10 04  
             and #$c0           ; $d5c5: 29 c0     
-            beq __d5d1         ; $d5c7: f0 08     
-            lda $0470          ; $d5c9: ad 70 04  
-            eor #$40           ; $d5cc: 49 40     
-            sta $0470          ; $d5ce: 8d 70 04  
-__d5d1:     lda $0470          ; $d5d1: ad 70 04  
-            ora #$80           ; $d5d4: 09 80     
-            sta $0470          ; $d5d6: 8d 70 04  
-            lda #$10           ; $d5d9: a9 10     
-            sta $0410          ; $d5db: 8d 10 04  
-            lda $0440          ; $d5de: ad 40 04  
+            BEQ __d5d1         ; $d5c7: f0 08     
+            LDA $0470          ; $d5c9: ad 70 04  
+            EOR #$40           ; $d5cc: 49 40     
+            STA $0470          ; $d5ce: 8d 70 04  
+__d5d1:     LDA $0470          ; $d5d1: ad 70 04  
+            ORA #$80           ; $d5d4: 09 80     
+            STA $0470          ; $d5d6: 8d 70 04  
+            LDA #$10           ; $d5d9: a9 10     
+            STA $0410          ; $d5db: 8d 10 04  
+            LDA $0440          ; $d5de: ad 40 04  
             sec                ; $d5e1: 38        
             sbc $002e,y        ; $d5e2: f9 2e 00  
-            sta $0440          ; $d5e5: 8d 40 04  
-            lda $d0            ; $d5e8: a5 d0     
-            sta $ea            ; $d5ea: 85 ea     
+            STA $0440          ; $d5e5: 8d 40 04  
+            LDA $d0            ; $d5e8: a5 d0     
+            STA $ea            ; $d5ea: 85 ea     
             sbc #$00           ; $d5ec: e9 00     
-            sta $d0            ; $d5ee: 85 d0     
+            STA $d0            ; $d5ee: 85 d0     
             clc                ; $d5f0: 18        
             adc #$06           ; $d5f1: 69 06     
-            sta $e1            ; $d5f3: 85 e1     
+            STA $e1            ; $d5f3: 85 e1     
             and #$f0           ; $d5f5: 29 f0     
-            sta $e8            ; $d5f7: 85 e8     
-            lsr                ; $d5f9: 4a        
-            sta $e0            ; $d5fa: 85 e0     
-            lsr                ; $d5fc: 4a        
+            STA $e8            ; $d5f7: 85 e8     
+            LSR                ; $d5f9: 4a        
+            STA $e0            ; $d5fa: 85 e0     
+            LSR                ; $d5fc: 4a        
             adc $e0            ; $d5fd: 65 e0     
-            sta $e0            ; $d5ff: 85 e0     
-            lda $c0            ; $d601: a5 c0     
+            STA $e0            ; $d5ff: 85 e0     
+            LDA $c0            ; $d601: a5 c0     
             and #$f0           ; $d603: 29 f0     
-            lsr                ; $d605: 4a        
-            lsr                ; $d606: 4a        
-            lsr                ; $d607: 4a        
-            sta $e6            ; $d608: 85 e6     
-            lsr                ; $d60a: 4a        
+            LSR                ; $d605: 4a        
+            LSR                ; $d606: 4a        
+            LSR                ; $d607: 4a        
+            STA $e6            ; $d608: 85 e6     
+            LSR                ; $d60a: 4a        
             clc                ; $d60b: 18        
             adc $e0            ; $d60c: 65 e0     
-            sta $e0            ; $d60e: 85 e0     
+            STA $e0            ; $d60e: 85 e0     
             tay                ; $d610: a8        
-            lda $e1            ; $d611: a5 e1     
-            lsr                ; $d613: 4a        
-            lsr                ; $d614: 4a        
+            LDA $e1            ; $d611: a5 e1     
+            LSR                ; $d613: 4a        
+            LSR                ; $d614: 4a        
             and #$03           ; $d615: 29 03     
-            eor #$03           ; $d617: 49 03     
-            sta $e1            ; $d619: 85 e1     
-            lda $0200,y        ; $d61b: b9 00 02  
-            sta $e2            ; $d61e: 85 e2     
+            EOR #$03           ; $d617: 49 03     
+            STA $e1            ; $d619: 85 e1     
+            LDA $0200,y        ; $d61b: b9 00 02  
+            STA $e2            ; $d61e: 85 e2     
             asl                ; $d620: 0a        
             asl                ; $d621: 0a        
             clc                ; $d622: 18        
             adc $e1            ; $d623: 65 e1     
             tay                ; $d625: a8        
-            lda $e1            ; $d626: a5 e1     
-            eor #$03           ; $d628: 49 03     
-            sta $e1            ; $d62a: 85 e1     
-            lda __f8b7,y       ; $d62c: b9 b7 f8  
-            cmp $e2            ; $d62f: c5 e2     
-            beq __d64f         ; $d631: f0 1c     
+            LDA $e1            ; $d626: a5 e1     
+            EOR #$03           ; $d628: 49 03     
+            STA $e1            ; $d62a: 85 e1     
+            LDA __f8b7,y       ; $d62c: b9 b7 f8  
+            CMP $e2            ; $d62f: c5 e2     
+            BEQ __d64f         ; $d631: f0 1c     
             pha                ; $d633: 48        
-            lda $e2            ; $d634: a5 e2     
-            bne __d63f         ; $d636: d0 07     
-            lda $1f            ; $d638: a5 1f     
-            bne __d63f         ; $d63a: d0 03     
-            jsr __ed7c         ; $d63c: 20 7c ed  
+            LDA $e2            ; $d634: a5 e2     
+            BNE __d63f         ; $d636: d0 07     
+            LDA $1f            ; $d638: a5 1f     
+            BNE __d63f         ; $d63a: d0 03     
+            JSR __ed7c         ; $d63c: 20 7c ed  
 __d63f:     pla                ; $d63f: 68        
-            sta $e2            ; $d640: 85 e2     
-            ldy $e0            ; $d642: a4 e0     
-            sta $0200,y        ; $d644: 99 00 02  
-            lda #$02           ; $d647: a9 02     
-            sta $0460          ; $d649: 8d 60 04  
-            jmp __d66b         ; $d64c: 4c 6b d6  
+            STA $e2            ; $d640: 85 e2     
+            LDY $e0            ; $d642: a4 e0     
+            STA $0200,y        ; $d644: 99 00 02  
+            LDA #$02           ; $d647: a9 02     
+            STA $0460          ; $d649: 8d 60 04  
+            JMP __d66b         ; $d64c: 4c 6b d6  
 
 ;-------------------------------------------------------------------------------
-__d64f:     lda $ea            ; $d64f: a5 ea     
+__d64f:     LDA $ea            ; $d64f: a5 ea     
             clc                ; $d651: 18        
             adc #$06           ; $d652: 69 06     
-            lsr                ; $d654: 4a        
-            lsr                ; $d655: 4a        
+            LSR                ; $d654: 4a        
+            LSR                ; $d655: 4a        
             and #$03           ; $d656: 29 03     
-            cmp $e1            ; $d658: c5 e1     
-            beq __d662         ; $d65a: f0 06     
-            lda #$06           ; $d65c: a9 06     
-            sta $0460          ; $d65e: 8d 60 04  
-            rts                ; $d661: 60        
+            CMP $e1            ; $d658: c5 e1     
+            BEQ __d662         ; $d65a: f0 06     
+            LDA #$06           ; $d65c: a9 06     
+            STA $0460          ; $d65e: 8d 60 04  
+            RTS                ; $d661: 60        
 
 ;-------------------------------------------------------------------------------
-__d662:     lda $0460          ; $d662: ad 60 04  
-            ora #$02           ; $d665: 09 02     
-            sta $0460          ; $d667: 8d 60 04  
-            rts                ; $d66a: 60        
+__d662:     LDA $0460          ; $d662: ad 60 04  
+            ORA #$02           ; $d665: 09 02     
+            STA $0460          ; $d667: 8d 60 04  
+            RTS                ; $d66a: 60        
 
 ;-------------------------------------------------------------------------------
-__d66b:     lda #$00           ; $d66b: a9 00     
-            sta $e3            ; $d66d: 85 e3     
-            lda $e8            ; $d66f: a5 e8     
+__d66b:     LDA #$00           ; $d66b: a9 00     
+            STA $e3            ; $d66d: 85 e3     
+            LDA $e8            ; $d66f: a5 e8     
             and #$f0           ; $d671: 29 f0     
-            cmp #$40           ; $d673: c9 40     
+            CMP #$40           ; $d673: c9 40     
             bcc __d681         ; $d675: 90 0a     
-            cmp #$70           ; $d677: c9 70     
+            CMP #$70           ; $d677: c9 70     
             bcc __d67f         ; $d679: 90 04     
-            cmp #$a0           ; $d67b: c9 a0     
+            CMP #$a0           ; $d67b: c9 a0     
             bcc __d681         ; $d67d: 90 02     
-__d67f:     inc $e3            ; $d67f: e6 e3     
-__d681:     lda $e6            ; $d681: a5 e6     
+__d67f:     INC $e3            ; $d67f: e6 e3     
+__d681:     LDA $e6            ; $d681: a5 e6     
             and #$1e           ; $d683: 29 1e     
-            sta $e6            ; $d685: 85 e6     
-            lda $14            ; $d687: a5 14     
+            STA $e6            ; $d685: 85 e6     
+            LDA $14            ; $d687: a5 14     
             asl                ; $d689: 0a        
-            ora #$08           ; $d68a: 09 08     
-            sta $e7            ; $d68c: 85 e7     
-            lda $e8            ; $d68e: a5 e8     
+            ORA #$08           ; $d68a: 09 08     
+            STA $e7            ; $d68c: 85 e7     
+            LDA $e8            ; $d68e: a5 e8     
             clc                ; $d690: 18        
             adc #$20           ; $d691: 69 20     
             asl                ; $d693: 0a        
-            rol $e7            ; $d694: 26 e7     
+            ROL $e7            ; $d694: 26 e7     
             asl                ; $d696: 0a        
-            rol $e7            ; $d697: 26 e7     
+            ROL $e7            ; $d697: 26 e7     
             adc $e6            ; $d699: 65 e6     
-            sta $e6            ; $d69b: 85 e6     
-            lda $e2            ; $d69d: a5 e2     
+            STA $e6            ; $d69b: 85 e6     
+            LDA $e2            ; $d69d: a5 e2     
             asl                ; $d69f: 0a        
             asl                ; $d6a0: 0a        
-            stx $e4            ; $d6a1: 86 e4     
+            STX $e4            ; $d6a1: 86 e4     
             tax                ; $d6a3: aa        
-            ldy $0e            ; $d6a4: a4 0e     
-            lda $e7            ; $d6a6: a5 e7     
-            sta $0500,y        ; $d6a8: 99 00 05  
-            iny                ; $d6ab: c8        
-            lda $e6            ; $d6ac: a5 e6     
-            sta $0500,y        ; $d6ae: 99 00 05  
+            LDY $0e            ; $d6a4: a4 0e     
+            LDA $e7            ; $d6a6: a5 e7     
+            STA $0500,y        ; $d6a8: 99 00 05  
+            INY                ; $d6ab: c8        
+            LDA $e6            ; $d6ac: a5 e6     
+            STA $0500,y        ; $d6ae: 99 00 05  
             clc                ; $d6b1: 18        
             adc #$20           ; $d6b2: 69 20     
-            sta $e6            ; $d6b4: 85 e6     
-            lda $e7            ; $d6b6: a5 e7     
+            STA $e6            ; $d6b4: 85 e6     
+            LDA $e7            ; $d6b6: a5 e7     
             adc #$00           ; $d6b8: 69 00     
-            sta $e7            ; $d6ba: 85 e7     
-            iny                ; $d6bc: c8        
-            lda #$02           ; $d6bd: a9 02     
-            sta $0500,y        ; $d6bf: 99 00 05  
-            iny                ; $d6c2: c8        
-            lda __f6e7,x       ; $d6c3: bd e7 f6  
-            inx                ; $d6c6: e8        
-            ora $e3            ; $d6c7: 05 e3     
-            sta $0500,y        ; $d6c9: 99 00 05  
-            iny                ; $d6cc: c8        
-            lda __f6e7,x       ; $d6cd: bd e7 f6  
-            inx                ; $d6d0: e8        
-            ora $e3            ; $d6d1: 05 e3     
-            sta $0500,y        ; $d6d3: 99 00 05  
-            iny                ; $d6d6: c8        
-            lda $e7            ; $d6d7: a5 e7     
-            sta $0500,y        ; $d6d9: 99 00 05  
-            iny                ; $d6dc: c8        
-            lda $e6            ; $d6dd: a5 e6     
-            sta $0500,y        ; $d6df: 99 00 05  
-            iny                ; $d6e2: c8        
-            lda #$02           ; $d6e3: a9 02     
-            sta $0500,y        ; $d6e5: 99 00 05  
-            iny                ; $d6e8: c8        
-            lda __f6e7,x       ; $d6e9: bd e7 f6  
-            inx                ; $d6ec: e8        
-            ora $e3            ; $d6ed: 05 e3     
-            sta $0500,y        ; $d6ef: 99 00 05  
-            iny                ; $d6f2: c8        
-            lda __f6e7,x       ; $d6f3: bd e7 f6  
-            inx                ; $d6f6: e8        
-            ora $e3            ; $d6f7: 05 e3     
-            sta $0500,y        ; $d6f9: 99 00 05  
-            iny                ; $d6fc: c8        
-            lda #$00           ; $d6fd: a9 00     
-            sta $0500,y        ; $d6ff: 99 00 05  
-            sty $0e            ; $d702: 84 0e     
-            ldx $e4            ; $d704: a6 e4     
-            rts                ; $d706: 60        
+            STA $e7            ; $d6ba: 85 e7     
+            INY                ; $d6bc: c8        
+            LDA #$02           ; $d6bd: a9 02     
+            STA $0500,y        ; $d6bf: 99 00 05  
+            INY                ; $d6c2: c8        
+            LDA __f6e7,x       ; $d6c3: bd e7 f6  
+            INX                ; $d6c6: e8        
+            ORA $e3            ; $d6c7: 05 e3     
+            STA $0500,y        ; $d6c9: 99 00 05  
+            INY                ; $d6cc: c8        
+            LDA __f6e7,x       ; $d6cd: bd e7 f6  
+            INX                ; $d6d0: e8        
+            ORA $e3            ; $d6d1: 05 e3     
+            STA $0500,y        ; $d6d3: 99 00 05  
+            INY                ; $d6d6: c8        
+            LDA $e7            ; $d6d7: a5 e7     
+            STA $0500,y        ; $d6d9: 99 00 05  
+            INY                ; $d6dc: c8        
+            LDA $e6            ; $d6dd: a5 e6     
+            STA $0500,y        ; $d6df: 99 00 05  
+            INY                ; $d6e2: c8        
+            LDA #$02           ; $d6e3: a9 02     
+            STA $0500,y        ; $d6e5: 99 00 05  
+            INY                ; $d6e8: c8        
+            LDA __f6e7,x       ; $d6e9: bd e7 f6  
+            INX                ; $d6ec: e8        
+            ORA $e3            ; $d6ed: 05 e3     
+            STA $0500,y        ; $d6ef: 99 00 05  
+            INY                ; $d6f2: c8        
+            LDA __f6e7,x       ; $d6f3: bd e7 f6  
+            INX                ; $d6f6: e8        
+            ORA $e3            ; $d6f7: 05 e3     
+            STA $0500,y        ; $d6f9: 99 00 05  
+            INY                ; $d6fc: c8        
+            LDA #$00           ; $d6fd: a9 00     
+            STA $0500,y        ; $d6ff: 99 00 05  
+            STY $0e            ; $d702: 84 0e     
+            LDX $e4            ; $d704: a6 e4     
+            RTS                ; $d706: 60        
 
 ;-------------------------------------------------------------------------------
 __d707:     and #$f0           ; $d707: 29 f0     
-            beq __d722         ; $d709: f0 17     
-            sta $e0            ; $d70b: 85 e0     
-            lda $c0            ; $d70d: a5 c0     
-            ora $d0            ; $d70f: 05 d0     
+            BEQ __d722         ; $d709: f0 17     
+            STA $e0            ; $d70b: 85 e0     
+            LDA $c0            ; $d70d: a5 c0     
+            ORA $d0            ; $d70f: 05 d0     
             and #$0f           ; $d711: 29 0f     
-            bne __d720         ; $d713: d0 0b     
-            ldx #$0d           ; $d715: a2 0d     
-__d717:     lda #$08           ; $d717: a9 08     
-            cmp $a0,x          ; $d719: d5 a0     
-            beq __d723         ; $d71b: f0 06     
-__d71d:     dex                ; $d71d: ca        
-            bne __d717         ; $d71e: d0 f7     
-__d720:     lda $e0            ; $d720: a5 e0     
-__d722:     rts                ; $d722: 60        
+            BNE __d720         ; $d713: d0 0b     
+            LDX #$0d           ; $d715: a2 0d     
+__d717:     LDA #$08           ; $d717: a9 08     
+            CMP $a0,x          ; $d719: d5 a0     
+            BEQ __d723         ; $d71b: f0 06     
+__d71d:     DEX                ; $d71d: ca        
+            BNE __d717         ; $d71e: d0 f7     
+__d720:     LDA $e0            ; $d720: a5 e0     
+__d722:     RTS                ; $d722: 60        
 
 ;-------------------------------------------------------------------------------
-__d723:     lda $b0,x          ; $d723: b5 b0     
-            cmp #$03           ; $d725: c9 03     
-            bcs __d71d         ; $d727: b0 f4     
-            lda $e0            ; $d729: a5 e0     
-            lsr                ; $d72b: 4a        
-            lsr                ; $d72c: 4a        
-            lsr                ; $d72d: 4a        
-            lsr                ; $d72e: 4a        
+__d723:     LDA $b0,x          ; $d723: b5 b0     
+            CMP #$03           ; $d725: c9 03     
+            BCS __d71d         ; $d727: b0 f4     
+            LDA $e0            ; $d729: a5 e0     
+            LSR                ; $d72b: 4a        
+            LSR                ; $d72c: 4a        
+            LSR                ; $d72d: 4a        
+            LSR                ; $d72e: 4a        
             and #$0f           ; $d72f: 29 0f     
             tay                ; $d731: a8        
-            lda __d76b,y       ; $d732: b9 6b d7  
+            LDA __d76b,y       ; $d732: b9 6b d7  
             tay                ; $d735: a8        
-            lda __d77b,y       ; $d736: b9 7b d7  
+            LDA __d77b,y       ; $d736: b9 7b d7  
             clc                ; $d739: 18        
             adc $c0            ; $d73a: 65 c0     
-            cmp $c0,x          ; $d73c: d5 c0     
-            bne __d71d         ; $d73e: d0 dd     
-            lda __d77f,y       ; $d740: b9 7f d7  
+            CMP $c0,x          ; $d73c: d5 c0     
+            BNE __d71d         ; $d73e: d0 dd     
+            LDA __d77f,y       ; $d740: b9 7f d7  
             clc                ; $d743: 18        
             adc $d0            ; $d744: 65 d0     
-            cmp $d0,x          ; $d746: d5 d0     
-            bne __d71d         ; $d748: d0 d3     
-            lda __d78f,y       ; $d74a: b9 8f d7  
-            cmp $0410          ; $d74d: cd 10 04  
-            beq __d767         ; $d750: f0 15     
-            sta $0410          ; $d752: 8d 10 04  
-            lda __d783,y       ; $d755: b9 83 d7  
-            sta $0460          ; $d758: 8d 60 04  
-            lda __d787,y       ; $d75b: b9 87 d7  
+            CMP $d0,x          ; $d746: d5 d0     
+            BNE __d71d         ; $d748: d0 d3     
+            LDA __d78f,y       ; $d74a: b9 8f d7  
+            CMP $0410          ; $d74d: cd 10 04  
+            BEQ __d767         ; $d750: f0 15     
+            STA $0410          ; $d752: 8d 10 04  
+            LDA __d783,y       ; $d755: b9 83 d7  
+            STA $0460          ; $d758: 8d 60 04  
+            LDA __d787,y       ; $d75b: b9 87 d7  
             and $0470          ; $d75e: 2d 70 04  
-            eor __d78b,y       ; $d761: 59 8b d7  
-            sta $0470          ; $d764: 8d 70 04  
-__d767:     lda #$00           ; $d767: a9 00     
+            EOR __d78b,y       ; $d761: 59 8b d7  
+            STA $0470          ; $d764: 8d 70 04  
+__d767:     LDA #$00           ; $d767: a9 00     
             tax                ; $d769: aa        
-            rts                ; $d76a: 60        
+            RTS                ; $d76a: 60        
 
 ;-------------------------------------------------------------------------------
 __d76b:     .hex 00 00 02 00   ; $d76b: 00 00 02 00   Data
@@ -3020,14 +3020,14 @@ __d78b:     .hex c0 40 00 00   ; $d78b: c0 40 00 00   Data
 __d78f:     .hex 10 80 20 40   ; $d78f: 10 80 20 40   Data
 
 ;-------------------------------------------------------------------------------
-__d793:     lda $b0,x          ; $d793: b5 b0     
+__d793:     LDA $b0,x          ; $d793: b5 b0     
             and #$1e           ; $d795: 29 1e     
             tay                ; $d797: a8        
-            lda __d7a5,y       ; $d798: b9 a5 d7  
-            sta $ea            ; $d79b: 85 ea     
-            lda __d7a6,y       ; $d79d: b9 a6 d7  
-            sta $eb            ; $d7a0: 85 eb     
-            jmp ($00ea)        ; $d7a2: 6c ea 00  
+            LDA __d7a5,y       ; $d798: b9 a5 d7  
+            STA $ea            ; $d79b: 85 ea     
+            LDA __d7a6,y       ; $d79d: b9 a6 d7  
+            STA $eb            ; $d7a0: 85 eb     
+            JMP ($00ea)        ; $d7a2: 6c ea 00  
 
 ;-------------------------------------------------------------------------------
 __d7a5:     .hex e2            ; $d7a5: e2            Data
@@ -3054,634 +3054,634 @@ __d7e9:     .hex 04 04 04 04   ; $d7e9: 04 04 04 04   Data
             .hex 0a 0a 0a 04   ; $d7f5: 0a 0a 0a 04   Data
 
 ;-------------------------------------------------------------------------------
-            dec $0480,x        ; $d7f9: de 80 04  
-            bne __d84a         ; $d7fc: d0 4c     
-            lda $0460,x        ; $d7fe: bd 60 04  
-            cmp #$1f           ; $d801: c9 1f     
-            beq __d828         ; $d803: f0 23     
-            cmp #$27           ; $d805: c9 27     
-            bne __d854         ; $d807: d0 4b     
-            dec $61            ; $d809: c6 61     
-            lda $04d0,x        ; $d80b: bd d0 04  
+            DEC $0480,x        ; $d7f9: de 80 04  
+            BNE __d84a         ; $d7fc: d0 4c     
+            LDA $0460,x        ; $d7fe: bd 60 04  
+            CMP #$1f           ; $d801: c9 1f     
+            BEQ __d828         ; $d803: f0 23     
+            CMP #$27           ; $d805: c9 27     
+            BNE __d854         ; $d807: d0 4b     
+            DEC $61            ; $d809: c6 61     
+            LDA $04d0,x        ; $d80b: bd d0 04  
             and #$c0           ; $d80e: 29 c0     
-            beq __d82a         ; $d810: f0 18     
-            lda $d0,x          ; $d812: b5 d0     
+            BEQ __d82a         ; $d810: f0 18     
+            LDA $d0,x          ; $d812: b5 d0     
             clc                ; $d814: 18        
             adc #$07           ; $d815: 69 07     
-            lsr                ; $d817: 4a        
-            lsr                ; $d818: 4a        
-            lsr                ; $d819: 4a        
-            lsr                ; $d81a: 4a        
+            LSR                ; $d817: 4a        
+            LSR                ; $d818: 4a        
+            LSR                ; $d819: 4a        
+            LSR                ; $d81a: 4a        
             tay                ; $d81b: a8        
-            lda __d7c9,y       ; $d81c: b9 c9 d7  
-            sta $0460,x        ; $d81f: 9d 60 04  
-            lda __d7e9,y       ; $d822: b9 e9 d7  
-            jmp __d83d         ; $d825: 4c 3d d8  
+            LDA __d7c9,y       ; $d81c: b9 c9 d7  
+            STA $0460,x        ; $d81f: 9d 60 04  
+            LDA __d7e9,y       ; $d822: b9 e9 d7  
+            JMP __d83d         ; $d825: 4c 3d d8  
 
 ;-------------------------------------------------------------------------------
-__d828:     dec $61            ; $d828: c6 61     
-__d82a:     lda $d0,x          ; $d82a: b5 d0     
+__d828:     DEC $61            ; $d828: c6 61     
+__d82a:     LDA $d0,x          ; $d82a: b5 d0     
             clc                ; $d82c: 18        
             adc #$07           ; $d82d: 69 07     
-            lsr                ; $d82f: 4a        
-            lsr                ; $d830: 4a        
-            lsr                ; $d831: 4a        
-            lsr                ; $d832: 4a        
+            LSR                ; $d82f: 4a        
+            LSR                ; $d830: 4a        
+            LSR                ; $d831: 4a        
+            LSR                ; $d832: 4a        
             tay                ; $d833: a8        
-            lda __d7b9,y       ; $d834: b9 b9 d7  
-            sta $0460,x        ; $d837: 9d 60 04  
-            lda __d7d9,y       ; $d83a: b9 d9 d7  
-__d83d:     jsr __ed83         ; $d83d: 20 83 ed  
-            lda #$3c           ; $d840: a9 3c     
-            sta $0480,x        ; $d842: 9d 80 04  
-            lda #$01           ; $d845: a9 01     
-            sta $0470,x        ; $d847: 9d 70 04  
-__d84a:     jmp __e70d         ; $d84a: 4c 0d e7  
+            LDA __d7b9,y       ; $d834: b9 b9 d7  
+            STA $0460,x        ; $d837: 9d 60 04  
+            LDA __d7d9,y       ; $d83a: b9 d9 d7  
+__d83d:     JSR __ed83         ; $d83d: 20 83 ed  
+            LDA #$3c           ; $d840: a9 3c     
+            STA $0480,x        ; $d842: 9d 80 04  
+            LDA #$01           ; $d845: a9 01     
+            STA $0470,x        ; $d847: 9d 70 04  
+__d84a:     JMP __e70d         ; $d84a: 4c 0d e7  
 
 ;-------------------------------------------------------------------------------
-            dec $0480,x        ; $d84d: de 80 04  
-            bne __d85d         ; $d850: d0 0b     
-            dec $61            ; $d852: c6 61     
-__d854:     lda #$00           ; $d854: a9 00     
-            sta $a0,x          ; $d856: 95 a0     
-            rts                ; $d858: 60        
+            DEC $0480,x        ; $d84d: de 80 04  
+            BNE __d85d         ; $d850: d0 0b     
+            DEC $61            ; $d852: c6 61     
+__d854:     LDA #$00           ; $d854: a9 00     
+            STA $a0,x          ; $d856: 95 a0     
+            RTS                ; $d858: 60        
 
 ;-------------------------------------------------------------------------------
-            inc $d0,x          ; $d859: f6 d0     
-            inc $d0,x          ; $d85b: f6 d0     
-__d85d:     lda $a0,x          ; $d85d: b5 a0     
+            INC $d0,x          ; $d859: f6 d0     
+            INC $d0,x          ; $d85b: f6 d0     
+__d85d:     LDA $a0,x          ; $d85d: b5 a0     
             asl                ; $d85f: 0a        
             asl                ; $d860: 0a        
             and #$08           ; $d861: 29 08     
-            ora #$20           ; $d863: 09 20     
-            sta $0460,x        ; $d865: 9d 60 04  
-            jmp __e70d         ; $d868: 4c 0d e7  
+            ORA #$20           ; $d863: 09 20     
+            STA $0460,x        ; $d865: 9d 60 04  
+            JMP __e70d         ; $d868: 4c 0d e7  
 
 ;-------------------------------------------------------------------------------
-            dec $0480,x        ; $d86b: de 80 04  
-            bne __d8aa         ; $d86e: d0 3a     
-            lda $34            ; $d870: a5 34     
-            sta $0480,x        ; $d872: 9d 80 04  
-            dec $0460,x        ; $d875: de 60 04  
-            lda $0460,x        ; $d878: bd 60 04  
-            cmp #$1b           ; $d87b: c9 1b     
-            beq __d883         ; $d87d: f0 04     
-            cmp #$23           ; $d87f: c9 23     
-            bne __d8aa         ; $d881: d0 27     
-__d883:     lda $04c0,x        ; $d883: bd c0 04  
-            sta $b0,x          ; $d886: 95 b0     
-            cmp #$10           ; $d888: c9 10     
-            bcs __d88e         ; $d88a: b0 02     
-            lda #$00           ; $d88c: a9 00     
-__d88e:     sta $0480,x        ; $d88e: 9d 80 04  
-            cpx $04b0          ; $d891: ec b0 04  
-            bne __d8aa         ; $d894: d0 14     
-            lda $b0            ; $d896: a5 b0     
-            cmp #$04           ; $d898: c9 04     
-            bne __d8aa         ; $d89a: d0 0e     
-            lda #$00           ; $d89c: a9 00     
-            sta $b0            ; $d89e: 85 b0     
-            lda $0460          ; $d8a0: ad 60 04  
+            DEC $0480,x        ; $d86b: de 80 04  
+            BNE __d8aa         ; $d86e: d0 3a     
+            LDA $34            ; $d870: a5 34     
+            STA $0480,x        ; $d872: 9d 80 04  
+            DEC $0460,x        ; $d875: de 60 04  
+            LDA $0460,x        ; $d878: bd 60 04  
+            CMP #$1b           ; $d87b: c9 1b     
+            BEQ __d883         ; $d87d: f0 04     
+            CMP #$23           ; $d87f: c9 23     
+            BNE __d8aa         ; $d881: d0 27     
+__d883:     LDA $04c0,x        ; $d883: bd c0 04  
+            STA $b0,x          ; $d886: 95 b0     
+            CMP #$10           ; $d888: c9 10     
+            BCS __d88e         ; $d88a: b0 02     
+            LDA #$00           ; $d88c: a9 00     
+__d88e:     STA $0480,x        ; $d88e: 9d 80 04  
+            CPX $04b0          ; $d891: ec b0 04  
+            BNE __d8aa         ; $d894: d0 14     
+            LDA $b0            ; $d896: a5 b0     
+            CMP #$04           ; $d898: c9 04     
+            BNE __d8aa         ; $d89a: d0 0e     
+            LDA #$00           ; $d89c: a9 00     
+            STA $b0            ; $d89e: 85 b0     
+            LDA $0460          ; $d8a0: ad 60 04  
             and #$02           ; $d8a3: 29 02     
-            ora #$04           ; $d8a5: 09 04     
-            sta $0460          ; $d8a7: 8d 60 04  
-__d8aa:     jmp __e70d         ; $d8aa: 4c 0d e7  
+            ORA #$04           ; $d8a5: 09 04     
+            STA $0460          ; $d8a7: 8d 60 04  
+__d8aa:     JMP __e70d         ; $d8aa: 4c 0d e7  
 
 ;-------------------------------------------------------------------------------
-__d8ad:     lda #$01           ; $d8ad: a9 01     
-            sta $05e9          ; $d8af: 8d e9 05  
-            sta $05ea          ; $d8b2: 8d ea 05  
-            sta $2d            ; $d8b5: 85 2d     
-            lda #$05           ; $d8b7: a9 05     
-            sta $06f1          ; $d8b9: 8d f1 06  
-            sta $06f2          ; $d8bc: 8d f2 06  
-            lda #$0e           ; $d8bf: a9 0e     
-            sta $b0,x          ; $d8c1: 95 b0     
-            jmp __d8d2         ; $d8c3: 4c d2 d8  
+__d8ad:     LDA #$01           ; $d8ad: a9 01     
+            STA $05e9          ; $d8af: 8d e9 05  
+            STA $05ea          ; $d8b2: 8d ea 05  
+            STA $2d            ; $d8b5: 85 2d     
+            LDA #$05           ; $d8b7: a9 05     
+            STA $06f1          ; $d8b9: 8d f1 06  
+            STA $06f2          ; $d8bc: 8d f2 06  
+            LDA #$0e           ; $d8bf: a9 0e     
+            STA $b0,x          ; $d8c1: 95 b0     
+            JMP __d8d2         ; $d8c3: 4c d2 d8  
 
 ;-------------------------------------------------------------------------------
-            lda $1f            ; $d8c6: a5 1f     
-            bne __d8d0         ; $d8c8: d0 06     
-            lda $61            ; $d8ca: a5 61     
-            cmp #$01           ; $d8cc: c9 01     
-            beq __d8ad         ; $d8ce: f0 dd     
-__d8d0:     lda #$02           ; $d8d0: a9 02     
-__d8d2:     sta $04c0,x        ; $d8d2: 9d c0 04  
-            lda $0480,x        ; $d8d5: bd 80 04  
-            bne __d92b         ; $d8d8: d0 51     
-            lda $d0,x          ; $d8da: b5 d0     
+            LDA $1f            ; $d8c6: a5 1f     
+            BNE __d8d0         ; $d8c8: d0 06     
+            LDA $61            ; $d8ca: a5 61     
+            CMP #$01           ; $d8cc: c9 01     
+            BEQ __d8ad         ; $d8ce: f0 dd     
+__d8d0:     LDA #$02           ; $d8d0: a9 02     
+__d8d2:     STA $04c0,x        ; $d8d2: 9d c0 04  
+            LDA $0480,x        ; $d8d5: bd 80 04  
+            BNE __d92b         ; $d8d8: d0 51     
+            LDA $d0,x          ; $d8da: b5 d0     
             clc                ; $d8dc: 18        
             adc #$08           ; $d8dd: 69 08     
             and #$f0           ; $d8df: 29 f0     
-            lsr                ; $d8e1: 4a        
-            sta $e0            ; $d8e2: 85 e0     
-            lsr                ; $d8e4: 4a        
+            LSR                ; $d8e1: 4a        
+            STA $e0            ; $d8e2: 85 e0     
+            LSR                ; $d8e4: 4a        
             adc $e0            ; $d8e5: 65 e0     
-            sta $e0            ; $d8e7: 85 e0     
-            lda $c0,x          ; $d8e9: b5 c0     
+            STA $e0            ; $d8e7: 85 e0     
+            LDA $c0,x          ; $d8e9: b5 c0     
             clc                ; $d8eb: 18        
             adc #$08           ; $d8ec: 69 08     
-            lsr                ; $d8ee: 4a        
-            lsr                ; $d8ef: 4a        
-            lsr                ; $d8f0: 4a        
-            lsr                ; $d8f1: 4a        
+            LSR                ; $d8ee: 4a        
+            LSR                ; $d8ef: 4a        
+            LSR                ; $d8f0: 4a        
+            LSR                ; $d8f1: 4a        
             clc                ; $d8f2: 18        
             adc $e0            ; $d8f3: 65 e0     
             tay                ; $d8f5: a8        
-            lda $0200,y        ; $d8f6: b9 00 02  
-            bpl __d92e         ; $d8f9: 10 33     
+            LDA $0200,y        ; $d8f6: b9 00 02  
+            BPL __d92e         ; $d8f9: 10 33     
             asl                ; $d8fb: 0a        
-            bpl __d92e         ; $d8fc: 10 30     
-            ldy #$03           ; $d8fe: a0 03     
-            lda $c0,x          ; $d900: b5 c0     
+            BPL __d92e         ; $d8fc: 10 30     
+            LDY #$03           ; $d8fe: a0 03     
+            LDA $c0,x          ; $d900: b5 c0     
             and #$0f           ; $d902: 29 0f     
-            beq __d90f         ; $d904: f0 09     
-            cmp #$08           ; $d906: c9 08     
-            bcs __d91d         ; $d908: b0 13     
-            ldy #$01           ; $d90a: a0 01     
-            jmp __d91d         ; $d90c: 4c 1d d9  
+            BEQ __d90f         ; $d904: f0 09     
+            CMP #$08           ; $d906: c9 08     
+            BCS __d91d         ; $d908: b0 13     
+            LDY #$01           ; $d90a: a0 01     
+            JMP __d91d         ; $d90c: 4c 1d d9  
 
 ;-------------------------------------------------------------------------------
-__d90f:     lda $d0,x          ; $d90f: b5 d0     
+__d90f:     LDA $d0,x          ; $d90f: b5 d0     
             and #$0f           ; $d911: 29 0f     
-            beq __d971         ; $d913: f0 5c     
-            ldy #$00           ; $d915: a0 00     
-            cmp #$08           ; $d917: c9 08     
+            BEQ __d971         ; $d913: f0 5c     
+            LDY #$00           ; $d915: a0 00     
+            CMP #$08           ; $d917: c9 08     
             bcc __d91d         ; $d919: 90 02     
-            ldy #$02           ; $d91b: a0 02     
+            LDY #$02           ; $d91b: a0 02     
 __d91d:     tya                ; $d91d: 98        
-            sta $0410,x        ; $d91e: 9d 10 04  
-            lda $30            ; $d921: a5 30     
-            sta $e0            ; $d923: 85 e0     
-            jsr __dc9d         ; $d925: 20 9d dc  
-            jmp __d949         ; $d928: 4c 49 d9  
+            STA $0410,x        ; $d91e: 9d 10 04  
+            LDA $30            ; $d921: a5 30     
+            STA $e0            ; $d923: 85 e0     
+            JSR __dc9d         ; $d925: 20 9d dc  
+            JMP __d949         ; $d928: 4c 49 d9  
 
 ;-------------------------------------------------------------------------------
-__d92b:     dec $0480,x        ; $d92b: de 80 04  
-__d92e:     jsr __dd7d         ; $d92e: 20 7d dd  
-            lda $10            ; $d931: a5 10     
+__d92b:     DEC $0480,x        ; $d92b: de 80 04  
+__d92e:     JSR __dd7d         ; $d92e: 20 7d dd  
+            LDA $10            ; $d931: a5 10     
             and #$03           ; $d933: 29 03     
-            bne __d93d         ; $d935: d0 06     
-            lda $ea            ; $d937: a5 ea     
-            eor #$04           ; $d939: 49 04     
-            sta $ea            ; $d93b: 85 ea     
-__d93d:     lda $ea            ; $d93d: a5 ea     
-            sta $0410,x        ; $d93f: 9d 10 04  
-            lda $30            ; $d942: a5 30     
-            sta $e0            ; $d944: 85 e0     
-            jsr __dcbe         ; $d946: 20 be dc  
-__d949:     lda $1f            ; $d949: a5 1f     
-            bne __d94f         ; $d94b: d0 02     
-            lda $10            ; $d94d: a5 10     
-__d94f:     lsr                ; $d94f: 4a        
-            lsr                ; $d950: 4a        
-            lsr                ; $d951: 4a        
-            lsr                ; $d952: 4a        
+            BNE __d93d         ; $d935: d0 06     
+            LDA $ea            ; $d937: a5 ea     
+            EOR #$04           ; $d939: 49 04     
+            STA $ea            ; $d93b: 85 ea     
+__d93d:     LDA $ea            ; $d93d: a5 ea     
+            STA $0410,x        ; $d93f: 9d 10 04  
+            LDA $30            ; $d942: a5 30     
+            STA $e0            ; $d944: 85 e0     
+            JSR __dcbe         ; $d946: 20 be dc  
+__d949:     LDA $1f            ; $d949: a5 1f     
+            BNE __d94f         ; $d94b: d0 02     
+            LDA $10            ; $d94d: a5 10     
+__d94f:     LSR                ; $d94f: 4a        
+            LSR                ; $d950: 4a        
+            LSR                ; $d951: 4a        
+            LSR                ; $d952: 4a        
             and #$01           ; $d953: 29 01     
-            ora #$2c           ; $d955: 09 2c     
-            sta $0460,x        ; $d957: 9d 60 04  
-            lda $a0,x          ; $d95a: b5 a0     
-            cmp #$04           ; $d95c: c9 04     
-            beq __d96e         ; $d95e: f0 0e     
-            inc $0460,x        ; $d960: fe 60 04  
-            inc $0460,x        ; $d963: fe 60 04  
-            lda $0470,x        ; $d966: bd 70 04  
+            ORA #$2c           ; $d955: 09 2c     
+            STA $0460,x        ; $d957: 9d 60 04  
+            LDA $a0,x          ; $d95a: b5 a0     
+            CMP #$04           ; $d95c: c9 04     
+            BEQ __d96e         ; $d95e: f0 0e     
+            INC $0460,x        ; $d960: fe 60 04  
+            INC $0460,x        ; $d963: fe 60 04  
+            LDA $0470,x        ; $d966: bd 70 04  
             and #$f0           ; $d969: 29 f0     
-            sta $0470,x        ; $d96b: 9d 70 04  
-__d96e:     jmp __e70d         ; $d96e: 4c 0d e7  
+            STA $0470,x        ; $d96b: 9d 70 04  
+__d96e:     JMP __e70d         ; $d96e: 4c 0d e7  
 
 ;-------------------------------------------------------------------------------
-__d971:     dec $b0,x          ; $d971: d6 b0     
-            dec $b0,x          ; $d973: d6 b0     
-            lda #$00           ; $d975: a9 00     
-            sta $0480,x        ; $d977: 9d 80 04  
-            lda $d0,x          ; $d97a: b5 d0     
-            bne __d988         ; $d97c: d0 0a     
-            lda $0410,x        ; $d97e: bd 10 04  
+__d971:     DEC $b0,x          ; $d971: d6 b0     
+            DEC $b0,x          ; $d973: d6 b0     
+            LDA #$00           ; $d975: a9 00     
+            STA $0480,x        ; $d977: 9d 80 04  
+            LDA $d0,x          ; $d97a: b5 d0     
+            BNE __d988         ; $d97c: d0 0a     
+            LDA $0410,x        ; $d97e: bd 10 04  
             and #$02           ; $d981: 29 02     
-            ora #$01           ; $d983: 09 01     
-            jmp __d98d         ; $d985: 4c 8d d9  
+            ORA #$01           ; $d983: 09 01     
+            JMP __d98d         ; $d985: 4c 8d d9  
 
 ;-------------------------------------------------------------------------------
-__d988:     lda $0410,x        ; $d988: bd 10 04  
+__d988:     LDA $0410,x        ; $d988: bd 10 04  
             and #$02           ; $d98b: 29 02     
-__d98d:     sta $0410,x        ; $d98d: 9d 10 04  
-            lda $a0,x          ; $d990: b5 a0     
-            cmp #$04           ; $d992: c9 04     
-            beq __d99e         ; $d994: f0 08     
-            lda $0470,x        ; $d996: bd 70 04  
-            ora #$02           ; $d999: 09 02     
-            sta $0470,x        ; $d99b: 9d 70 04  
-__d99e:     lda #$03           ; $d99e: a9 03     
-            sta $04b0,x        ; $d9a0: 9d b0 04  
-            lda $b0,x          ; $d9a3: b5 b0     
-            beq __d9aa         ; $d9a5: f0 03     
-            jmp __dabc         ; $d9a7: 4c bc da  
+__d98d:     STA $0410,x        ; $d98d: 9d 10 04  
+            LDA $a0,x          ; $d990: b5 a0     
+            CMP #$04           ; $d992: c9 04     
+            BEQ __d99e         ; $d994: f0 08     
+            LDA $0470,x        ; $d996: bd 70 04  
+            ORA #$02           ; $d999: 09 02     
+            STA $0470,x        ; $d99b: 9d 70 04  
+__d99e:     LDA #$03           ; $d99e: a9 03     
+            STA $04b0,x        ; $d9a0: 9d b0 04  
+            LDA $b0,x          ; $d9a3: b5 b0     
+            BEQ __d9aa         ; $d9a5: f0 03     
+            JMP __dabc         ; $d9a7: 4c bc da  
 
 ;-------------------------------------------------------------------------------
-__d9aa:     jmp __dae2         ; $d9aa: 4c e2 da  
+__d9aa:     JMP __dae2         ; $d9aa: 4c e2 da  
 
 ;-------------------------------------------------------------------------------
-__d9ad:     jsr __dec2         ; $d9ad: 20 c2 de  
-            lda $0410,x        ; $d9b0: bd 10 04  
-            lsr                ; $d9b3: 4a        
-            lsr                ; $d9b4: 4a        
-            bcs __d9c0         ; $d9b5: b0 09     
-            dec $e1            ; $d9b7: c6 e1     
+__d9ad:     JSR __DEC2         ; $d9ad: 20 c2 de  
+            LDA $0410,x        ; $d9b0: bd 10 04  
+            LSR                ; $d9b3: 4a        
+            LSR                ; $d9b4: 4a        
+            BCS __d9c0         ; $d9b5: b0 09     
+            DEC $e1            ; $d9b7: c6 e1     
             bmi __d9d3         ; $d9b9: 30 18     
-            dec $e0            ; $d9bb: c6 e0     
-            jmp __d9ca         ; $d9bd: 4c ca d9  
+            DEC $e0            ; $d9bb: c6 e0     
+            JMP __d9ca         ; $d9bd: 4c ca d9  
 
 ;-------------------------------------------------------------------------------
-__d9c0:     inc $e1            ; $d9c0: e6 e1     
-            lda $e1            ; $d9c2: a5 e1     
-            cmp #$0c           ; $d9c4: c9 0c     
-            bcs __d9d3         ; $d9c6: b0 0b     
-            inc $e0            ; $d9c8: e6 e0     
-__d9ca:     ldy $e0            ; $d9ca: a4 e0     
-            lda $0200,y        ; $d9cc: b9 00 02  
+__d9c0:     INC $e1            ; $d9c0: e6 e1     
+            LDA $e1            ; $d9c2: a5 e1     
+            CMP #$0c           ; $d9c4: c9 0c     
+            BCS __d9d3         ; $d9c6: b0 0b     
+            INC $e0            ; $d9c8: e6 e0     
+__d9ca:     LDY $e0            ; $d9ca: a4 e0     
+            LDA $0200,y        ; $d9cc: b9 00 02  
             and #$40           ; $d9cf: 29 40     
-            bne __d9d6         ; $d9d1: d0 03     
-__d9d3:     jmp __db5a         ; $d9d3: 4c 5a db  
+            BNE __d9d6         ; $d9d1: d0 03     
+__d9d3:     JMP __db5a         ; $d9d3: 4c 5a db  
 
 ;-------------------------------------------------------------------------------
-__d9d6:     lda $b0,x          ; $d9d6: b5 b0     
-            sta $04a0,x        ; $d9d8: 9d a0 04  
-            lda #$10           ; $d9db: a9 10     
-            sta $b0,x          ; $d9dd: 95 b0     
-            lda #$00           ; $d9df: a9 00     
-            sta $04d0,x        ; $d9e1: 9d d0 04  
-            lda #$40           ; $d9e4: a9 40     
-            sta $0480,x        ; $d9e6: 9d 80 04  
-            lda #$10           ; $d9e9: a9 10     
-            sta $04c0,x        ; $d9eb: 9d c0 04  
-            dec $0480,x        ; $d9ee: de 80 04  
-            beq __da04         ; $d9f1: f0 11     
-            lda $0480,x        ; $d9f3: bd 80 04  
-            lsr                ; $d9f6: 4a        
-            lsr                ; $d9f7: 4a        
-            lsr                ; $d9f8: 4a        
+__d9d6:     LDA $b0,x          ; $d9d6: b5 b0     
+            STA $04a0,x        ; $d9d8: 9d a0 04  
+            LDA #$10           ; $d9db: a9 10     
+            STA $b0,x          ; $d9dd: 95 b0     
+            LDA #$00           ; $d9df: a9 00     
+            STA $04d0,x        ; $d9e1: 9d d0 04  
+            LDA #$40           ; $d9e4: a9 40     
+            STA $0480,x        ; $d9e6: 9d 80 04  
+            LDA #$10           ; $d9e9: a9 10     
+            STA $04c0,x        ; $d9eb: 9d c0 04  
+            DEC $0480,x        ; $d9ee: de 80 04  
+            BEQ __da04         ; $d9f1: f0 11     
+            LDA $0480,x        ; $d9f3: bd 80 04  
+            LSR                ; $d9f6: 4a        
+            LSR                ; $d9f7: 4a        
+            LSR                ; $d9f8: 4a        
             and #$01           ; $d9f9: 29 01     
             clc                ; $d9fb: 18        
             adc #$21           ; $d9fc: 69 21     
-            sta $0460,x        ; $d9fe: 9d 60 04  
-            jmp __e70d         ; $da01: 4c 0d e7  
+            STA $0460,x        ; $d9fe: 9d 60 04  
+            JMP __e70d         ; $da01: 4c 0d e7  
 
 ;-------------------------------------------------------------------------------
-__da04:     lda #$12           ; $da04: a9 12     
-            sta $b0,x          ; $da06: 95 b0     
-            lda #$01           ; $da08: a9 01     
-            sta $0480,x        ; $da0a: 9d 80 04  
-            sta $05f3          ; $da0d: 8d f3 05  
-            lda #$22           ; $da10: a9 22     
-            sta $0460,x        ; $da12: 9d 60 04  
-            lda #$12           ; $da15: a9 12     
-            sta $04c0,x        ; $da17: 9d c0 04  
-            jsr __e70d         ; $da1a: 20 0d e7  
-            lda $32            ; $da1d: a5 32     
-            sta $e1            ; $da1f: 85 e1     
-            lda #$00           ; $da21: a9 00     
-            sta $e0            ; $da23: 85 e0     
+__da04:     LDA #$12           ; $da04: a9 12     
+            STA $b0,x          ; $da06: 95 b0     
+            LDA #$01           ; $da08: a9 01     
+            STA $0480,x        ; $da0a: 9d 80 04  
+            STA $05f3          ; $da0d: 8d f3 05  
+            LDA #$22           ; $da10: a9 22     
+            STA $0460,x        ; $da12: 9d 60 04  
+            LDA #$12           ; $da15: a9 12     
+            STA $04c0,x        ; $da17: 9d c0 04  
+            JSR __e70d         ; $da1a: 20 0d e7  
+            LDA $32            ; $da1d: a5 32     
+            STA $e1            ; $da1f: 85 e1     
+            LDA #$00           ; $da21: a9 00     
+            STA $e0            ; $da23: 85 e0     
             asl $e1            ; $da25: 06 e1     
-            rol $e0            ; $da27: 26 e0     
-            lda $e0            ; $da29: a5 e0     
-            sta $e2            ; $da2b: 85 e2     
-            lda $e1            ; $da2d: a5 e1     
-            sta $e3            ; $da2f: 85 e3     
+            ROL $e0            ; $da27: 26 e0     
+            LDA $e0            ; $da29: a5 e0     
+            STA $e2            ; $da2b: 85 e2     
+            LDA $e1            ; $da2d: a5 e1     
+            STA $e3            ; $da2f: 85 e3     
             asl $e1            ; $da31: 06 e1     
-            rol $e0            ; $da33: 26 e0     
+            ROL $e0            ; $da33: 26 e0     
             adc $e1            ; $da35: 65 e1     
-            lda $e2            ; $da37: a5 e2     
+            LDA $e2            ; $da37: a5 e2     
             adc $e0            ; $da39: 65 e0     
-            sta $e0            ; $da3b: 85 e0     
-            lda $0480,x        ; $da3d: bd 80 04  
+            STA $e0            ; $da3b: 85 e0     
+            LDA $0480,x        ; $da3d: bd 80 04  
             sec                ; $da40: 38        
             sbc $e0            ; $da41: e5 e0     
-            sta $0480,x        ; $da43: 9d 80 04  
-            bpl __da82         ; $da46: 10 3a     
+            STA $0480,x        ; $da43: 9d 80 04  
+            BPL __da82         ; $da46: 10 3a     
             clc                ; $da48: 18        
             adc #$10           ; $da49: 69 10     
-            sta $0480,x        ; $da4b: 9d 80 04  
-            inc $04d0,x        ; $da4e: fe d0 04  
-            lda $04d0,x        ; $da51: bd d0 04  
-            cmp #$04           ; $da54: c9 04     
-            beq __da9a         ; $da56: f0 42     
-            sta $e2            ; $da58: 85 e2     
-            jsr __dec2         ; $da5a: 20 c2 de  
-            lda $0410,x        ; $da5d: bd 10 04  
+            STA $0480,x        ; $da4b: 9d 80 04  
+            INC $04d0,x        ; $da4e: fe d0 04  
+            LDA $04d0,x        ; $da51: bd d0 04  
+            CMP #$04           ; $da54: c9 04     
+            BEQ __da9a         ; $da56: f0 42     
+            STA $e2            ; $da58: 85 e2     
+            JSR __DEC2         ; $da5a: 20 c2 de  
+            LDA $0410,x        ; $da5d: bd 10 04  
             and #$02           ; $da60: 29 02     
-            bne __da6c         ; $da62: d0 08     
-            lda $e2            ; $da64: a5 e2     
-            eor #$ff           ; $da66: 49 ff     
-            sta $e2            ; $da68: 85 e2     
-            inc $e2            ; $da6a: e6 e2     
-__da6c:     lda $e1            ; $da6c: a5 e1     
+            BNE __da6c         ; $da62: d0 08     
+            LDA $e2            ; $da64: a5 e2     
+            EOR #$ff           ; $da66: 49 ff     
+            STA $e2            ; $da68: 85 e2     
+            INC $e2            ; $da6a: e6 e2     
+__da6c:     LDA $e1            ; $da6c: a5 e1     
             clc                ; $da6e: 18        
             adc $e2            ; $da6f: 65 e2     
-            cmp #$0c           ; $da71: c9 0c     
-            bcs __da9a         ; $da73: b0 25     
-            lda $e2            ; $da75: a5 e2     
+            CMP #$0c           ; $da71: c9 0c     
+            BCS __da9a         ; $da73: b0 25     
+            LDA $e2            ; $da75: a5 e2     
             clc                ; $da77: 18        
             adc $e0            ; $da78: 65 e0     
             tay                ; $da7a: a8        
-            lda $0200,y        ; $da7b: b9 00 02  
+            LDA $0200,y        ; $da7b: b9 00 02  
             and #$40           ; $da7e: 29 40     
-            beq __da9a         ; $da80: f0 18     
-__da82:     lda $04d0,x        ; $da82: bd d0 04  
+            BEQ __da9a         ; $da80: f0 18     
+__da82:     LDA $04d0,x        ; $da82: bd d0 04  
             clc                ; $da85: 18        
             adc #$28           ; $da86: 69 28     
-            sta $0460,x        ; $da88: 9d 60 04  
-            dec $0470,x        ; $da8b: de 70 04  
-            jsr __e70d         ; $da8e: 20 0d e7  
-            inc $0470,x        ; $da91: fe 70 04  
-            lda #$22           ; $da94: a9 22     
-            sta $0460,x        ; $da96: 9d 60 04  
-            rts                ; $da99: 60        
+            STA $0460,x        ; $da88: 9d 60 04  
+            DEC $0470,x        ; $da8b: de 70 04  
+            JSR __e70d         ; $da8e: 20 0d e7  
+            INC $0470,x        ; $da91: fe 70 04  
+            LDA #$22           ; $da94: a9 22     
+            STA $0460,x        ; $da96: 9d 60 04  
+            RTS                ; $da99: 60        
 
 ;-------------------------------------------------------------------------------
-__da9a:     lda $04a0,x        ; $da9a: bd a0 04  
-            sta $b0,x          ; $da9d: 95 b0     
-            sta $04c0,x        ; $da9f: 9d c0 04  
-            rts                ; $daa2: 60        
+__da9a:     LDA $04a0,x        ; $da9a: bd a0 04  
+            STA $b0,x          ; $da9d: 95 b0     
+            STA $04c0,x        ; $da9f: 9d c0 04  
+            RTS                ; $daa2: 60        
 
 ;-------------------------------------------------------------------------------
-__daa3:     lda #$00           ; $daa3: a9 00     
-            sta $a0,x          ; $daa5: 95 a0     
-            dec $61            ; $daa7: c6 61     
-            rts                ; $daa9: 60        
+__daa3:     LDA #$00           ; $daa3: a9 00     
+            STA $a0,x          ; $daa5: 95 a0     
+            DEC $61            ; $daa7: c6 61     
+            RTS                ; $daa9: 60        
 
 ;-------------------------------------------------------------------------------
-__daaa:     lda #$01           ; $daaa: a9 01     
-            sta $05e9          ; $daac: 8d e9 05  
-            sta $05ea          ; $daaf: 8d ea 05  
-            sta $2d            ; $dab2: 85 2d     
-            lda #$05           ; $dab4: a9 05     
-            sta $06f1          ; $dab6: 8d f1 06  
-            sta $06f2          ; $dab9: 8d f2 06  
-__dabc:     lda #$0c           ; $dabc: a9 0c     
-            sta $b0,x          ; $dabe: 95 b0     
-            sta $04c0,x        ; $dac0: 9d c0 04  
-            lda $d0,x          ; $dac3: b5 d0     
-            bne __dadd         ; $dac5: d0 16     
-            lda $c0,x          ; $dac7: b5 c0     
+__daaa:     LDA #$01           ; $daaa: a9 01     
+            STA $05e9          ; $daac: 8d e9 05  
+            STA $05ea          ; $daaf: 8d ea 05  
+            STA $2d            ; $dab2: 85 2d     
+            LDA #$05           ; $dab4: a9 05     
+            STA $06f1          ; $dab6: 8d f1 06  
+            STA $06f2          ; $dab9: 8d f2 06  
+__dabc:     LDA #$0c           ; $dabc: a9 0c     
+            STA $b0,x          ; $dabe: 95 b0     
+            STA $04c0,x        ; $dac0: 9d c0 04  
+            LDA $d0,x          ; $dac3: b5 d0     
+            BNE __dadd         ; $dac5: d0 16     
+            LDA $c0,x          ; $dac7: b5 c0     
             clc                ; $dac9: 18        
             adc #$10           ; $daca: 69 10     
-            cmp #$d0           ; $dacc: c9 d0     
-            bcs __daa3         ; $dace: b0 d3     
-            lda #$01           ; $dad0: a9 01     
-            sta $0410,x        ; $dad2: 9d 10 04  
-            lda $0470,x        ; $dad5: bd 70 04  
+            CMP #$d0           ; $dacc: c9 d0     
+            BCS __daa3         ; $dace: b0 d3     
+            LDA #$01           ; $dad0: a9 01     
+            STA $0410,x        ; $dad2: 9d 10 04  
+            LDA $0470,x        ; $dad5: bd 70 04  
             and #$03           ; $dad8: 29 03     
-            sta $0470,x        ; $dada: 9d 70 04  
-__dadd:     lda #$0c           ; $dadd: a9 0c     
-            jmp __daee         ; $dadf: 4c ee da  
+            STA $0470,x        ; $dada: 9d 70 04  
+__dadd:     LDA #$0c           ; $dadd: a9 0c     
+            JMP __daee         ; $dadf: 4c ee da  
 
 ;-------------------------------------------------------------------------------
-__dae2:     lda $1f            ; $dae2: a5 1f     
-            bne __daec         ; $dae4: d0 06     
-            lda $61            ; $dae6: a5 61     
-            cmp #$01           ; $dae8: c9 01     
-            beq __daaa         ; $daea: f0 be     
-__daec:     lda #$00           ; $daec: a9 00     
-__daee:     sta $04c0,x        ; $daee: 9d c0 04  
-            lda $c0,x          ; $daf1: b5 c0     
-            ora $d0,x          ; $daf3: 15 d0     
+__dae2:     LDA $1f            ; $dae2: a5 1f     
+            BNE __daec         ; $dae4: d0 06     
+            LDA $61            ; $dae6: a5 61     
+            CMP #$01           ; $dae8: c9 01     
+            BEQ __daaa         ; $daea: f0 be     
+__daec:     LDA #$00           ; $daec: a9 00     
+__daee:     STA $04c0,x        ; $daee: 9d c0 04  
+            LDA $c0,x          ; $daf1: b5 c0     
+            ORA $d0,x          ; $daf3: 15 d0     
             and #$0f           ; $daf5: 29 0f     
-            beq __db09         ; $daf7: f0 10     
-            lda $d0,x          ; $daf9: b5 d0     
-            bne __db03         ; $dafb: d0 06     
-            lda $b0,x          ; $dafd: b5 b0     
-            cmp #$08           ; $daff: c9 08     
-            bcs __db06         ; $db01: b0 03     
-__db03:     jmp __dc1b         ; $db03: 4c 1b dc  
+            BEQ __db09         ; $daf7: f0 10     
+            LDA $d0,x          ; $daf9: b5 d0     
+            BNE __db03         ; $dafb: d0 06     
+            LDA $b0,x          ; $dafd: b5 b0     
+            CMP #$08           ; $daff: c9 08     
+            BCS __db06         ; $db01: b0 03     
+__db03:     JMP __dc1b         ; $db03: 4c 1b dc  
 
 ;-------------------------------------------------------------------------------
-__db06:     jmp __dc59         ; $db06: 4c 59 dc  
+__db06:     JMP __dc59         ; $db06: 4c 59 dc  
 
 ;-------------------------------------------------------------------------------
-__db09:     lda $0480,x        ; $db09: bd 80 04  
-            beq __db17         ; $db0c: f0 09     
-            lda $b0,x          ; $db0e: b5 b0     
-            cmp #$08           ; $db10: c9 08     
-            bcs __db06         ; $db12: b0 f2     
-            jmp __dc34         ; $db14: 4c 34 dc  
+__db09:     LDA $0480,x        ; $db09: bd 80 04  
+            BEQ __db17         ; $db0c: f0 09     
+            LDA $b0,x          ; $db0e: b5 b0     
+            CMP #$08           ; $db10: c9 08     
+            BCS __db06         ; $db12: b0 f2     
+            JMP __dc34         ; $db14: 4c 34 dc  
 
 ;-------------------------------------------------------------------------------
-__db17:     inc $0480,x        ; $db17: fe 80 04  
-            lda $a0,x          ; $db1a: b5 a0     
-            cmp #$06           ; $db1c: c9 06     
-            bne __db5a         ; $db1e: d0 3a     
-            lda $0410,x        ; $db20: bd 10 04  
-            lsr                ; $db23: 4a        
+__db17:     INC $0480,x        ; $db17: fe 80 04  
+            LDA $a0,x          ; $db1a: b5 a0     
+            CMP #$06           ; $db1c: c9 06     
+            BNE __db5a         ; $db1e: d0 3a     
+            LDA $0410,x        ; $db20: bd 10 04  
+            LSR                ; $db23: 4a        
             bcc __db5a         ; $db24: 90 34     
-            lda $c0            ; $db26: a5 c0     
+            LDA $c0            ; $db26: a5 c0     
             sec                ; $db28: 38        
             sbc $c0,x          ; $db29: f5 c0     
-            bcs __db31         ; $db2b: b0 04     
-            eor #$ff           ; $db2d: 49 ff     
+            BCS __db31         ; $db2b: b0 04     
+            EOR #$ff           ; $db2d: 49 ff     
             adc #$01           ; $db2f: 69 01     
-__db31:     sta $e0            ; $db31: 85 e0     
-            lda $d0            ; $db33: a5 d0     
+__db31:     STA $e0            ; $db31: 85 e0     
+            LDA $d0            ; $db33: a5 d0     
             sec                ; $db35: 38        
             sbc $d0,x          ; $db36: f5 d0     
-            bcs __db3e         ; $db38: b0 04     
-            eor #$ff           ; $db3a: 49 ff     
+            BCS __db3e         ; $db38: b0 04     
+            EOR #$ff           ; $db3a: 49 ff     
             adc #$01           ; $db3c: 69 01     
 __db3e:     clc                ; $db3e: 18        
             adc $e0            ; $db3f: 65 e0     
-            bcs __db53         ; $db41: b0 10     
-            cmp #$3c           ; $db43: c9 3c     
-            bcs __db53         ; $db45: b0 0c     
-            jsr __f01c         ; $db47: 20 1c f0  
+            BCS __db53         ; $db41: b0 10     
+            CMP #$3c           ; $db43: c9 3c     
+            BCS __db53         ; $db45: b0 0c     
+            JSR __f01c         ; $db47: 20 1c f0  
             and #$3f           ; $db4a: 29 3f     
-            cmp $33            ; $db4c: c5 33     
-            bcs __db5a         ; $db4e: b0 0a     
-__db50:     jmp __d9ad         ; $db50: 4c ad d9  
+            CMP $33            ; $db4c: c5 33     
+            BCS __db5a         ; $db4e: b0 0a     
+__db50:     JMP __d9ad         ; $db50: 4c ad d9  
 
 ;-------------------------------------------------------------------------------
-__db53:     jsr __f01c         ; $db53: 20 1c f0  
-            cmp $33            ; $db56: c5 33     
+__db53:     JSR __f01c         ; $db53: 20 1c f0  
+            CMP $33            ; $db56: c5 33     
             bcc __db50         ; $db58: 90 f6     
-__db5a:     lda $b0,x          ; $db5a: b5 b0     
-            cmp #$08           ; $db5c: c9 08     
+__db5a:     LDA $b0,x          ; $db5a: b5 b0     
+            CMP #$08           ; $db5c: c9 08     
             bcc __db67         ; $db5e: 90 07     
-            lda $d0,x          ; $db60: b5 d0     
-            bne __db67         ; $db62: d0 03     
-            jmp __dc59         ; $db64: 4c 59 dc  
+            LDA $d0,x          ; $db60: b5 d0     
+            BNE __db67         ; $db62: d0 03     
+            JMP __dc59         ; $db64: 4c 59 dc  
 
 ;-------------------------------------------------------------------------------
-__db67:     jsr __de3e         ; $db67: 20 3e de  
-            lda $0400,x        ; $db6a: bd 00 04  
-            bpl __db97         ; $db6d: 10 28     
-            jsr __f01c         ; $db6f: 20 1c f0  
+__db67:     JSR __de3e         ; $db67: 20 3e de  
+            LDA $0400,x        ; $db6a: bd 00 04  
+            BPL __db97         ; $db6d: 10 28     
+            JSR __f01c         ; $db6f: 20 1c f0  
             and #$07           ; $db72: 29 07     
-            bne __db8f         ; $db74: d0 19     
-            lda $0410,x        ; $db76: bd 10 04  
-            jsr __dd64         ; $db79: 20 64 dd  
-            cmp $e2            ; $db7c: c5 e2     
-            beq __db83         ; $db7e: f0 03     
-            jmp __dc34         ; $db80: 4c 34 dc  
+            BNE __db8f         ; $db74: d0 19     
+            LDA $0410,x        ; $db76: bd 10 04  
+            JSR __dd64         ; $db79: 20 64 dd  
+            CMP $e2            ; $db7c: c5 e2     
+            BEQ __db83         ; $db7e: f0 03     
+            JMP __dc34         ; $db80: 4c 34 dc  
 
 ;-------------------------------------------------------------------------------
-__db83:     lda $0410,x        ; $db83: bd 10 04  
-            sta $ea            ; $db86: 85 ea     
-            sta $eb            ; $db88: 85 eb     
-            inc $eb            ; $db8a: e6 eb     
-            jmp __db97         ; $db8c: 4c 97 db  
+__db83:     LDA $0410,x        ; $db83: bd 10 04  
+            STA $ea            ; $db86: 85 ea     
+            STA $eb            ; $db88: 85 eb     
+            INC $eb            ; $db8a: e6 eb     
+            JMP __db97         ; $db8c: 4c 97 db  
 
 ;-------------------------------------------------------------------------------
-__db8f:     ldy $ea            ; $db8f: a4 ea     
-            lda $eb            ; $db91: a5 eb     
-            sta $ea            ; $db93: 85 ea     
-            sty $eb            ; $db95: 84 eb     
-__db97:     lda $0410,x        ; $db97: bd 10 04  
-            eor #$02           ; $db9a: 49 02     
-            cmp $ea            ; $db9c: c5 ea     
-            beq __dbb8         ; $db9e: f0 18     
-            lda $ea            ; $dba0: a5 ea     
-            jsr __dd64         ; $dba2: 20 64 dd  
-            cmp $e2            ; $dba5: c5 e2     
-            bne __dbb8         ; $dba7: d0 0f     
-            lda $0400,x        ; $dba9: bd 00 04  
-            cmp #$20           ; $dbac: c9 20     
-            beq __dbb3         ; $dbae: f0 03     
-            inc $0400,x        ; $dbb0: fe 00 04  
-__dbb3:     lda $ea            ; $dbb3: a5 ea     
-            jmp __dc04         ; $dbb5: 4c 04 dc  
+__db8f:     LDY $ea            ; $db8f: a4 ea     
+            LDA $eb            ; $db91: a5 eb     
+            STA $ea            ; $db93: 85 ea     
+            STY $eb            ; $db95: 84 eb     
+__db97:     LDA $0410,x        ; $db97: bd 10 04  
+            EOR #$02           ; $db9a: 49 02     
+            CMP $ea            ; $db9c: c5 ea     
+            BEQ __dbb8         ; $db9e: f0 18     
+            LDA $ea            ; $dba0: a5 ea     
+            JSR __dd64         ; $dba2: 20 64 dd  
+            CMP $e2            ; $dba5: c5 e2     
+            BNE __dbb8         ; $dba7: d0 0f     
+            LDA $0400,x        ; $dba9: bd 00 04  
+            CMP #$20           ; $dbac: c9 20     
+            BEQ __dbb3         ; $dbae: f0 03     
+            INC $0400,x        ; $dbb0: fe 00 04  
+__dbb3:     LDA $ea            ; $dbb3: a5 ea     
+            JMP __dc04         ; $dbb5: 4c 04 dc  
 
 ;-------------------------------------------------------------------------------
-__dbb8:     lda $eb            ; $dbb8: a5 eb     
-            eor #$02           ; $dbba: 49 02     
-            cmp $0410,x        ; $dbbc: dd 10 04  
-            beq __dbcf         ; $dbbf: f0 0e     
-            lda $eb            ; $dbc1: a5 eb     
-            jsr __dd64         ; $dbc3: 20 64 dd  
-            cmp $e2            ; $dbc6: c5 e2     
-            bne __dbcf         ; $dbc8: d0 05     
-            lda $eb            ; $dbca: a5 eb     
-            jmp __dc04         ; $dbcc: 4c 04 dc  
+__dbb8:     LDA $eb            ; $dbb8: a5 eb     
+            EOR #$02           ; $dbba: 49 02     
+            CMP $0410,x        ; $dbbc: dd 10 04  
+            BEQ __dbcf         ; $dbbf: f0 0e     
+            LDA $eb            ; $dbc1: a5 eb     
+            JSR __dd64         ; $dbc3: 20 64 dd  
+            CMP $e2            ; $dbc6: c5 e2     
+            BNE __dbcf         ; $dbc8: d0 05     
+            LDA $eb            ; $dbca: a5 eb     
+            JMP __dc04         ; $dbcc: 4c 04 dc  
 
 ;-------------------------------------------------------------------------------
-__dbcf:     dec $0400,x        ; $dbcf: de 00 04  
-            bpl __dbd9         ; $dbd2: 10 05     
-            lda #$fe           ; $dbd4: a9 fe     
-            sta $0400,x        ; $dbd6: 9d 00 04  
-__dbd9:     lda $ea            ; $dbd9: a5 ea     
-            cmp $0410,x        ; $dbdb: dd 10 04  
-            beq __dbf0         ; $dbde: f0 10     
-            eor #$02           ; $dbe0: 49 02     
-            sta $ea            ; $dbe2: 85 ea     
-            jsr __dd64         ; $dbe4: 20 64 dd  
-            cmp $e2            ; $dbe7: c5 e2     
-            bne __dbf0         ; $dbe9: d0 05     
-            lda $ea            ; $dbeb: a5 ea     
-            jmp __dc04         ; $dbed: 4c 04 dc  
+__dbcf:     DEC $0400,x        ; $dbcf: de 00 04  
+            BPL __dbd9         ; $dbd2: 10 05     
+            LDA #$fe           ; $dbd4: a9 fe     
+            STA $0400,x        ; $dbd6: 9d 00 04  
+__dbd9:     LDA $ea            ; $dbd9: a5 ea     
+            CMP $0410,x        ; $dbdb: dd 10 04  
+            BEQ __dbf0         ; $dbde: f0 10     
+            EOR #$02           ; $dbe0: 49 02     
+            STA $ea            ; $dbe2: 85 ea     
+            JSR __dd64         ; $dbe4: 20 64 dd  
+            CMP $e2            ; $dbe7: c5 e2     
+            BNE __dbf0         ; $dbe9: d0 05     
+            LDA $ea            ; $dbeb: a5 ea     
+            JMP __dc04         ; $dbed: 4c 04 dc  
 
 ;-------------------------------------------------------------------------------
-__dbf0:     lda $eb            ; $dbf0: a5 eb     
-            cmp $0410,x        ; $dbf2: dd 10 04  
-            beq __dc1b         ; $dbf5: f0 24     
-            eor #$02           ; $dbf7: 49 02     
-            sta $eb            ; $dbf9: 85 eb     
-            jsr __dd64         ; $dbfb: 20 64 dd  
-            cmp $e2            ; $dbfe: c5 e2     
-            bne __dc1b         ; $dc00: d0 19     
-            lda $eb            ; $dc02: a5 eb     
-__dc04:     sta $ea            ; $dc04: 85 ea     
-            cmp #$02           ; $dc06: c9 02     
-            bne __dc13         ; $dc08: d0 09     
-            lda $b0,x          ; $dc0a: b5 b0     
-            cmp #$04           ; $dc0c: c9 04     
+__dbf0:     LDA $eb            ; $dbf0: a5 eb     
+            CMP $0410,x        ; $dbf2: dd 10 04  
+            BEQ __dc1b         ; $dbf5: f0 24     
+            EOR #$02           ; $dbf7: 49 02     
+            STA $eb            ; $dbf9: 85 eb     
+            JSR __dd64         ; $dbfb: 20 64 dd  
+            CMP $e2            ; $dbfe: c5 e2     
+            BNE __dc1b         ; $dc00: d0 19     
+            LDA $eb            ; $dc02: a5 eb     
+__dc04:     STA $ea            ; $dc04: 85 ea     
+            CMP #$02           ; $dc06: c9 02     
+            BNE __dc13         ; $dc08: d0 09     
+            LDA $b0,x          ; $dc0a: b5 b0     
+            CMP #$04           ; $dc0c: c9 04     
             bcc __dc13         ; $dc0e: 90 03     
-            jmp __dc59         ; $dc10: 4c 59 dc  
+            JMP __dc59         ; $dc10: 4c 59 dc  
 
 ;-------------------------------------------------------------------------------
-__dc13:     lda $ea            ; $dc13: a5 ea     
-            sta $0410,x        ; $dc15: 9d 10 04  
-            jmp __dc59         ; $dc18: 4c 59 dc  
+__dc13:     LDA $ea            ; $dc13: a5 ea     
+            STA $0410,x        ; $dc15: 9d 10 04  
+            JMP __dc59         ; $dc18: 4c 59 dc  
 
 ;-------------------------------------------------------------------------------
-__dc1b:     lda #$00           ; $dc1b: a9 00     
-            sta $0480,x        ; $dc1d: 9d 80 04  
-            lda $40            ; $dc20: a5 40     
+__dc1b:     LDA #$00           ; $dc1b: a9 00     
+            STA $0480,x        ; $dc1d: 9d 80 04  
+            LDA $40            ; $dc20: a5 40     
             and #$01           ; $dc22: 29 01     
-            beq __dc34         ; $dc24: f0 0e     
-            cmp $61            ; $dc26: c5 61     
-            beq __dc34         ; $dc28: f0 0a     
-            lda $0410,x        ; $dc2a: bd 10 04  
-            bne __dc34         ; $dc2d: d0 05     
-            lda #$02           ; $dc2f: a9 02     
-            jmp __dc39         ; $dc31: 4c 39 dc  
+            BEQ __dc34         ; $dc24: f0 0e     
+            CMP $61            ; $dc26: c5 61     
+            BEQ __dc34         ; $dc28: f0 0a     
+            LDA $0410,x        ; $dc2a: bd 10 04  
+            BNE __dc34         ; $dc2d: d0 05     
+            LDA #$02           ; $dc2f: a9 02     
+            JMP __dc39         ; $dc31: 4c 39 dc  
 
 ;-------------------------------------------------------------------------------
-__dc34:     lda $0410,x        ; $dc34: bd 10 04  
+__dc34:     LDA $0410,x        ; $dc34: bd 10 04  
             and #$03           ; $dc37: 29 03     
-__dc39:     sta $0410,x        ; $dc39: 9d 10 04  
-            jsr __dd64         ; $dc3c: 20 64 dd  
-            cmp $e2            ; $dc3f: c5 e2     
-            beq __dc59         ; $dc41: f0 16     
-            lda $0410,x        ; $dc43: bd 10 04  
-            eor #$02           ; $dc46: 49 02     
-            sta $0410,x        ; $dc48: 9d 10 04  
-            dec $04b0,x        ; $dc4b: de b0 04  
-            bne __dc59         ; $dc4e: d0 09     
-            inc $b0,x          ; $dc50: f6 b0     
-            inc $b0,x          ; $dc52: f6 b0     
-            lda #$40           ; $dc54: a9 40     
-            sta $0480,x        ; $dc56: 9d 80 04  
-__dc59:     lda $0410,x        ; $dc59: bd 10 04  
-            lsr                ; $dc5c: 4a        
+__dc39:     STA $0410,x        ; $dc39: 9d 10 04  
+            JSR __dd64         ; $dc3c: 20 64 dd  
+            CMP $e2            ; $dc3f: c5 e2     
+            BEQ __dc59         ; $dc41: f0 16     
+            LDA $0410,x        ; $dc43: bd 10 04  
+            EOR #$02           ; $dc46: 49 02     
+            STA $0410,x        ; $dc48: 9d 10 04  
+            DEC $04b0,x        ; $dc4b: de b0 04  
+            BNE __dc59         ; $dc4e: d0 09     
+            INC $b0,x          ; $dc50: f6 b0     
+            INC $b0,x          ; $dc52: f6 b0     
+            LDA #$40           ; $dc54: a9 40     
+            STA $0480,x        ; $dc56: 9d 80 04  
+__dc59:     LDA $0410,x        ; $dc59: bd 10 04  
+            LSR                ; $dc5c: 4a        
             bcc __dc70         ; $dc5d: 90 11     
-            lsr                ; $dc5f: 4a        
-            ror                ; $dc60: 6a        
-            lsr                ; $dc61: 4a        
+            LSR                ; $dc5f: 4a        
+            ROR                ; $dc60: 6a        
+            LSR                ; $dc61: 4a        
             and #$40           ; $dc62: 29 40     
-            sta $e0            ; $dc64: 85 e0     
-            lda $0470,x        ; $dc66: bd 70 04  
+            STA $e0            ; $dc64: 85 e0     
+            LDA $0470,x        ; $dc66: bd 70 04  
             and #$03           ; $dc69: 29 03     
-            ora $e0            ; $dc6b: 05 e0     
-            sta $0470,x        ; $dc6d: 9d 70 04  
-__dc70:     lda $a0,x          ; $dc70: b5 a0     
-            lsr                ; $dc72: 4a        
+            ORA $e0            ; $dc6b: 05 e0     
+            STA $0470,x        ; $dc6d: 9d 70 04  
+__dc70:     LDA $a0,x          ; $dc70: b5 a0     
+            LSR                ; $dc72: 4a        
             and #$01           ; $dc73: 29 01     
             tay                ; $dc75: a8        
-            lda $0031,y        ; $dc76: b9 31 00  
-            sta $e0            ; $dc79: 85 e0     
-            jsr __dc9d         ; $dc7b: 20 9d dc  
-            lda $1f            ; $dc7e: a5 1f     
-            bne __dc84         ; $dc80: d0 02     
-            lda $10            ; $dc82: a5 10     
+            LDA $0031,y        ; $dc76: b9 31 00  
+            STA $e0            ; $dc79: 85 e0     
+            JSR __dc9d         ; $dc7b: 20 9d dc  
+            LDA $1f            ; $dc7e: a5 1f     
+            BNE __dc84         ; $dc80: d0 02     
+            LDA $10            ; $dc82: a5 10     
 __dc84:     and #$10           ; $dc84: 29 10     
-            lsr                ; $dc86: 4a        
-            lsr                ; $dc87: 4a        
-            lsr                ; $dc88: 4a        
-            lsr                ; $dc89: 4a        
-            sta $e0            ; $dc8a: 85 e0     
-            lda $a0,x          ; $dc8c: b5 a0     
+            LSR                ; $dc86: 4a        
+            LSR                ; $dc87: 4a        
+            LSR                ; $dc88: 4a        
+            LSR                ; $dc89: 4a        
+            STA $e0            ; $dc8a: 85 e0     
+            LDA $a0,x          ; $dc8c: b5 a0     
             asl                ; $dc8e: 0a        
             asl                ; $dc8f: 0a        
             and #$08           ; $dc90: 29 08     
             clc                ; $dc92: 18        
             adc #$1a           ; $dc93: 69 1a     
-            ora $e0            ; $dc95: 05 e0     
-            sta $0460,x        ; $dc97: 9d 60 04  
-            jmp __e70d         ; $dc9a: 4c 0d e7  
+            ORA $e0            ; $dc95: 05 e0     
+            STA $0460,x        ; $dc97: 9d 60 04  
+            JMP __e70d         ; $dc9a: 4c 0d e7  
 
 ;-------------------------------------------------------------------------------
-__dc9d:     lda $1f            ; $dc9d: a5 1f     
-            beq __dca2         ; $dc9f: f0 01     
-            rts                ; $dca1: 60        
+__dc9d:     LDA $1f            ; $dc9d: a5 1f     
+            BEQ __dca2         ; $dc9f: f0 01     
+            RTS                ; $dca1: 60        
 
 ;-------------------------------------------------------------------------------
-__dca2:     lda $0410,x        ; $dca2: bd 10 04  
+__dca2:     LDA $0410,x        ; $dca2: bd 10 04  
             asl                ; $dca5: 0a        
             and #$06           ; $dca6: 29 06     
             tay                ; $dca8: a8        
-            lda __dcb6,y       ; $dca9: b9 b6 dc  
-            sta $ea            ; $dcac: 85 ea     
-            lda __dcb7,y       ; $dcae: b9 b7 dc  
-            sta $eb            ; $dcb1: 85 eb     
-            jmp ($00ea)        ; $dcb3: 6c ea 00  
+            LDA __dcb6,y       ; $dca9: b9 b6 dc  
+            STA $ea            ; $dcac: 85 ea     
+            LDA __dcb7,y       ; $dcae: b9 b7 dc  
+            STA $eb            ; $dcb1: 85 eb     
+            JMP ($00ea)        ; $dcb3: 6c ea 00  
 
 ;-------------------------------------------------------------------------------
 __dcb6:     .hex f4            ; $dcb6: f4            Data
@@ -3689,20 +3689,20 @@ __dcb7:     .hex dc 11 dd 2e   ; $dcb7: dc 11 dd 2e   Data
             .hex dd 54 dd      ; $dcbb: dd 54 dd      Data
 
 ;-------------------------------------------------------------------------------
-__dcbe:     lda $1f            ; $dcbe: a5 1f     
-            beq __dcc3         ; $dcc0: f0 01     
-            rts                ; $dcc2: 60        
+__dcbe:     LDA $1f            ; $dcbe: a5 1f     
+            BEQ __dcc3         ; $dcc0: f0 01     
+            RTS                ; $dcc2: 60        
 
 ;-------------------------------------------------------------------------------
-__dcc3:     lda $0410,x        ; $dcc3: bd 10 04  
+__dcc3:     LDA $0410,x        ; $dcc3: bd 10 04  
             asl                ; $dcc6: 0a        
             and #$0e           ; $dcc7: 29 0e     
             tay                ; $dcc9: a8        
-            lda __dcd7,y       ; $dcca: b9 d7 dc  
-            sta $ea            ; $dccd: 85 ea     
-            lda __dcd8,y       ; $dccf: b9 d8 dc  
-            sta $eb            ; $dcd2: 85 eb     
-            jmp ($00ea)        ; $dcd4: 6c ea 00  
+            LDA __dcd7,y       ; $dcca: b9 d7 dc  
+            STA $ea            ; $dccd: 85 ea     
+            LDA __dcd8,y       ; $dccf: b9 d8 dc  
+            STA $eb            ; $dcd2: 85 eb     
+            JMP ($00ea)        ; $dcd4: 6c ea 00  
 
 ;-------------------------------------------------------------------------------
 __dcd7:     .hex f4            ; $dcd7: f4            Data
@@ -3712,88 +3712,88 @@ __dcd8:     .hex dc 04 dd 11   ; $dcd8: dc 04 dd 11   Data
             .hex dd e7 dc      ; $dce4: dd e7 dc      Data
 
 ;-------------------------------------------------------------------------------
-            lsr $e0            ; $dce7: 46 e0     
-            lda $e0            ; $dce9: a5 e0     
-            lsr                ; $dceb: 4a        
+            LSR $e0            ; $dce7: 46 e0     
+            LDA $e0            ; $dce9: a5 e0     
+            LSR                ; $dceb: 4a        
             clc                ; $dcec: 18        
             adc $e0            ; $dced: 65 e0     
-            sta $e0            ; $dcef: 85 e0     
-            jsr __dd54         ; $dcf1: 20 54 dd  
-__dcf4:     lda $0440,x        ; $dcf4: bd 40 04  
+            STA $e0            ; $dcef: 85 e0     
+            JSR __dd54         ; $dcf1: 20 54 dd  
+__dcf4:     LDA $0440,x        ; $dcf4: bd 40 04  
             sec                ; $dcf7: 38        
             sbc $e0            ; $dcf8: e5 e0     
-            sta $0440,x        ; $dcfa: 9d 40 04  
-            lda $d0,x          ; $dcfd: b5 d0     
+            STA $0440,x        ; $dcfa: 9d 40 04  
+            LDA $d0,x          ; $dcfd: b5 d0     
             sbc #$00           ; $dcff: e9 00     
-            sta $d0,x          ; $dd01: 95 d0     
-            rts                ; $dd03: 60        
+            STA $d0,x          ; $dd01: 95 d0     
+            RTS                ; $dd03: 60        
 
 ;-------------------------------------------------------------------------------
-            lsr $e0            ; $dd04: 46 e0     
-            lda $e0            ; $dd06: a5 e0     
-            lsr                ; $dd08: 4a        
+            LSR $e0            ; $dd04: 46 e0     
+            LDA $e0            ; $dd06: a5 e0     
+            LSR                ; $dd08: 4a        
             clc                ; $dd09: 18        
             adc $e0            ; $dd0a: 65 e0     
-            sta $e0            ; $dd0c: 85 e0     
-            jsr __dcf4         ; $dd0e: 20 f4 dc  
-__dd11:     lda $0420,x        ; $dd11: bd 20 04  
+            STA $e0            ; $dd0c: 85 e0     
+            JSR __dcf4         ; $dd0e: 20 f4 dc  
+__dd11:     LDA $0420,x        ; $dd11: bd 20 04  
             sec                ; $dd14: 38        
             sbc $e0            ; $dd15: e5 e0     
-            sta $0420,x        ; $dd17: 9d 20 04  
-            lda $c0,x          ; $dd1a: b5 c0     
+            STA $0420,x        ; $dd17: 9d 20 04  
+            LDA $c0,x          ; $dd1a: b5 c0     
             sbc #$00           ; $dd1c: e9 00     
-            sta $c0,x          ; $dd1e: 95 c0     
-            rts                ; $dd20: 60        
+            STA $c0,x          ; $dd1e: 95 c0     
+            RTS                ; $dd20: 60        
 
 ;-------------------------------------------------------------------------------
-            lsr $e0            ; $dd21: 46 e0     
-            lda $e0            ; $dd23: a5 e0     
-            lsr                ; $dd25: 4a        
+            LSR $e0            ; $dd21: 46 e0     
+            LDA $e0            ; $dd23: a5 e0     
+            LSR                ; $dd25: 4a        
             clc                ; $dd26: 18        
             adc $e0            ; $dd27: 65 e0     
-            sta $e0            ; $dd29: 85 e0     
-            jsr __dd11         ; $dd2b: 20 11 dd  
-__dd2e:     lda $e0            ; $dd2e: a5 e0     
-            lsr                ; $dd30: 4a        
-            lsr                ; $dd31: 4a        
+            STA $e0            ; $dd29: 85 e0     
+            JSR __dd11         ; $dd2b: 20 11 dd  
+__dd2e:     LDA $e0            ; $dd2e: a5 e0     
+            LSR                ; $dd30: 4a        
+            LSR                ; $dd31: 4a        
             clc                ; $dd32: 18        
             adc $e0            ; $dd33: 65 e0     
             bcc __dd39         ; $dd35: 90 02     
-            inc $d0,x          ; $dd37: f6 d0     
+            INC $d0,x          ; $dd37: f6 d0     
 __dd39:     clc                ; $dd39: 18        
             adc $0440,x        ; $dd3a: 7d 40 04  
-            sta $0440,x        ; $dd3d: 9d 40 04  
-            lda $d0,x          ; $dd40: b5 d0     
+            STA $0440,x        ; $dd3d: 9d 40 04  
+            LDA $d0,x          ; $dd40: b5 d0     
             adc #$00           ; $dd42: 69 00     
-            sta $d0,x          ; $dd44: 95 d0     
-            rts                ; $dd46: 60        
+            STA $d0,x          ; $dd44: 95 d0     
+            RTS                ; $dd46: 60        
 
 ;-------------------------------------------------------------------------------
-            lsr $e0            ; $dd47: 46 e0     
-            lda $e0            ; $dd49: a5 e0     
-            lsr                ; $dd4b: 4a        
+            LSR $e0            ; $dd47: 46 e0     
+            LDA $e0            ; $dd49: a5 e0     
+            LSR                ; $dd4b: 4a        
             clc                ; $dd4c: 18        
             adc $e0            ; $dd4d: 65 e0     
-            sta $e0            ; $dd4f: 85 e0     
-            jsr __dd2e         ; $dd51: 20 2e dd  
-__dd54:     lda $0420,x        ; $dd54: bd 20 04  
+            STA $e0            ; $dd4f: 85 e0     
+            JSR __dd2e         ; $dd51: 20 2e dd  
+__dd54:     LDA $0420,x        ; $dd54: bd 20 04  
             clc                ; $dd57: 18        
             adc $e0            ; $dd58: 65 e0     
-            sta $0420,x        ; $dd5a: 9d 20 04  
-            lda $c0,x          ; $dd5d: b5 c0     
+            STA $0420,x        ; $dd5a: 9d 20 04  
+            LDA $c0,x          ; $dd5d: b5 c0     
             adc #$00           ; $dd5f: 69 00     
-            sta $c0,x          ; $dd61: 95 c0     
-            rts                ; $dd63: 60        
+            STA $c0,x          ; $dd61: 95 c0     
+            RTS                ; $dd63: 60        
 
 ;-------------------------------------------------------------------------------
 __dd64:     asl                ; $dd64: 0a        
             and #$06           ; $dd65: 29 06     
             tay                ; $dd67: a8        
-            lda __dd75,y       ; $dd68: b9 75 dd  
-            sta $e8            ; $dd6b: 85 e8     
-            lda __dd76,y       ; $dd6d: b9 76 dd  
-            sta $e9            ; $dd70: 85 e9     
-            jmp ($00e8)        ; $dd72: 6c e8 00  
+            LDA __dd75,y       ; $dd68: b9 75 dd  
+            STA $e8            ; $dd6b: 85 e8     
+            LDA __dd76,y       ; $dd6d: b9 76 dd  
+            STA $e9            ; $dd70: 85 e9     
+            JMP ($00e8)        ; $dd72: 6c e8 00  
 
 ;-------------------------------------------------------------------------------
 __dd75:     .hex 2c            ; $dd75: 2c            Data
@@ -3801,239 +3801,239 @@ __dd76:     .hex ed 8e ec dc   ; $dd76: ed 8e ec dc   Data
             .hex ec 46 ec      ; $dd7a: ec 46 ec      Data
 
 ;-------------------------------------------------------------------------------
-__dd7d:     lda $b0,x          ; $dd7d: b5 b0     
-            cmp #$04           ; $dd7f: c9 04     
+__dd7d:     LDA $b0,x          ; $dd7d: b5 b0     
+            CMP #$04           ; $dd7f: c9 04     
             bcc __dd8e         ; $dd81: 90 0b     
-            lda #$20           ; $dd83: a9 20     
-            sta $e8            ; $dd85: 85 e8     
-            lda #$10           ; $dd87: a9 10     
-            sta $e9            ; $dd89: 85 e9     
-            jmp __dd9c         ; $dd8b: 4c 9c dd  
+            LDA #$20           ; $dd83: a9 20     
+            STA $e8            ; $dd85: 85 e8     
+            LDA #$10           ; $dd87: a9 10     
+            STA $e9            ; $dd89: 85 e9     
+            JMP __dd9c         ; $dd8b: 4c 9c dd  
 
 ;-------------------------------------------------------------------------------
-__dd8e:     lda $c0            ; $dd8e: a5 c0     
+__dd8e:     LDA $c0            ; $dd8e: a5 c0     
             clc                ; $dd90: 18        
             adc #$10           ; $dd91: 69 10     
-            sta $e8            ; $dd93: 85 e8     
-            lda $d0            ; $dd95: a5 d0     
+            STA $e8            ; $dd93: 85 e8     
+            LDA $d0            ; $dd95: a5 d0     
             clc                ; $dd97: 18        
             adc #$10           ; $dd98: 69 10     
-            sta $e9            ; $dd9a: 85 e9     
-__dd9c:     lda $d0,x          ; $dd9c: b5 d0     
+            STA $e9            ; $dd9a: 85 e9     
+__dd9c:     LDA $d0,x          ; $dd9c: b5 d0     
             clc                ; $dd9e: 18        
             adc #$10           ; $dd9f: 69 10     
-            sta $ea            ; $dda1: 85 ea     
-            lda $c0,x          ; $dda3: b5 c0     
+            STA $ea            ; $dda1: 85 ea     
+            LDA $c0,x          ; $dda3: b5 c0     
             clc                ; $dda5: 18        
             adc #$10           ; $dda6: 69 10     
-            cmp $e8            ; $dda8: c5 e8     
-            beq __dddc         ; $ddaa: f0 30     
+            CMP $e8            ; $dda8: c5 e8     
+            BEQ __dddc         ; $ddaa: f0 30     
             bcc __ddb9         ; $ddac: 90 0b     
-            lda $ea            ; $ddae: a5 ea     
-            cmp $e9            ; $ddb0: c5 e9     
-            bne __ddc4         ; $ddb2: d0 10     
-            lda #$02           ; $ddb4: a9 02     
-            sta $ea            ; $ddb6: 85 ea     
-            rts                ; $ddb8: 60        
+            LDA $ea            ; $ddae: a5 ea     
+            CMP $e9            ; $ddb0: c5 e9     
+            BNE __ddc4         ; $ddb2: d0 10     
+            LDA #$02           ; $ddb4: a9 02     
+            STA $ea            ; $ddb6: 85 ea     
+            RTS                ; $ddb8: 60        
 
 ;-------------------------------------------------------------------------------
-__ddb9:     lda $ea            ; $ddb9: a5 ea     
-            cmp $e9            ; $ddbb: c5 e9     
-            bne __ddd0         ; $ddbd: d0 11     
-            lda #$06           ; $ddbf: a9 06     
-            sta $ea            ; $ddc1: 85 ea     
-            rts                ; $ddc3: 60        
+__ddb9:     LDA $ea            ; $ddb9: a5 ea     
+            CMP $e9            ; $ddbb: c5 e9     
+            BNE __ddd0         ; $ddbd: d0 11     
+            LDA #$06           ; $ddbf: a9 06     
+            STA $ea            ; $ddc1: 85 ea     
+            RTS                ; $ddc3: 60        
 
 ;-------------------------------------------------------------------------------
 __ddc4:     bcc __ddcb         ; $ddc4: 90 05     
-            lda #$01           ; $ddc6: a9 01     
-            sta $ea            ; $ddc8: 85 ea     
-            rts                ; $ddca: 60        
+            LDA #$01           ; $ddc6: a9 01     
+            STA $ea            ; $ddc8: 85 ea     
+            RTS                ; $ddca: 60        
 
 ;-------------------------------------------------------------------------------
-__ddcb:     lda #$03           ; $ddcb: a9 03     
-            sta $ea            ; $ddcd: 85 ea     
-            rts                ; $ddcf: 60        
+__ddcb:     LDA #$03           ; $ddcb: a9 03     
+            STA $ea            ; $ddcd: 85 ea     
+            RTS                ; $ddcf: 60        
 
 ;-------------------------------------------------------------------------------
 __ddd0:     bcc __ddd7         ; $ddd0: 90 05     
-            lda #$07           ; $ddd2: a9 07     
-            sta $ea            ; $ddd4: 85 ea     
-            rts                ; $ddd6: 60        
+            LDA #$07           ; $ddd2: a9 07     
+            STA $ea            ; $ddd4: 85 ea     
+            RTS                ; $ddd6: 60        
 
 ;-------------------------------------------------------------------------------
-__ddd7:     lda #$05           ; $ddd7: a9 05     
-            sta $ea            ; $ddd9: 85 ea     
-            rts                ; $dddb: 60        
+__ddd7:     LDA #$05           ; $ddd7: a9 05     
+            STA $ea            ; $ddd9: 85 ea     
+            RTS                ; $dddb: 60        
 
 ;-------------------------------------------------------------------------------
-__dddc:     lda $e9            ; $dddc: a5 e9     
-            cmp $ea            ; $ddde: c5 ea     
-            bcs __dde7         ; $dde0: b0 05     
-            lda #$00           ; $dde2: a9 00     
-            sta $ea            ; $dde4: 85 ea     
-            rts                ; $dde6: 60        
+__dddc:     LDA $e9            ; $dddc: a5 e9     
+            CMP $ea            ; $ddde: c5 ea     
+            BCS __dde7         ; $dde0: b0 05     
+            LDA #$00           ; $dde2: a9 00     
+            STA $ea            ; $dde4: 85 ea     
+            RTS                ; $dde6: 60        
 
 ;-------------------------------------------------------------------------------
-__dde7:     lda #$04           ; $dde7: a9 04     
-            sta $ea            ; $dde9: 85 ea     
-            rts                ; $ddeb: 60        
+__dde7:     LDA #$04           ; $dde7: a9 04     
+            STA $ea            ; $dde9: 85 ea     
+            RTS                ; $ddeb: 60        
 
 ;-------------------------------------------------------------------------------
-__ddec:     lda $0410,x        ; $ddec: bd 10 04  
-            cmp #$02           ; $ddef: c9 02     
-            bne __ddf8         ; $ddf1: d0 05     
-            lda #$00           ; $ddf3: a9 00     
-            sta $0410,x        ; $ddf5: 9d 10 04  
-__ddf8:     lda $d0,x          ; $ddf8: b5 d0     
-            bne __de03         ; $ddfa: d0 07     
-            lda #$01           ; $ddfc: a9 01     
-            sta $ea            ; $ddfe: 85 ea     
-            sta $eb            ; $de00: 85 eb     
-            rts                ; $de02: 60        
+__dDEC:     LDA $0410,x        ; $dDEC: bd 10 04  
+            CMP #$02           ; $ddef: c9 02     
+            BNE __ddf8         ; $ddf1: d0 05     
+            LDA #$00           ; $ddf3: a9 00     
+            STA $0410,x        ; $ddf5: 9d 10 04  
+__ddf8:     LDA $d0,x          ; $ddf8: b5 d0     
+            BNE __de03         ; $ddfa: d0 07     
+            LDA #$01           ; $ddfc: a9 01     
+            STA $ea            ; $ddfe: 85 ea     
+            STA $eb            ; $de00: 85 eb     
+            RTS                ; $de02: 60        
 
 ;-------------------------------------------------------------------------------
-__de03:     lda $a0,x          ; $de03: b5 a0     
-            cmp #$06           ; $de05: c9 06     
-            bne __de27         ; $de07: d0 1e     
-            lda $d0            ; $de09: a5 d0     
-            cmp $d0,x          ; $de0b: d5 d0     
+__de03:     LDA $a0,x          ; $de03: b5 a0     
+            CMP #$06           ; $de05: c9 06     
+            BNE __de27         ; $de07: d0 1e     
+            LDA $d0            ; $de09: a5 d0     
+            CMP $d0,x          ; $de0b: d5 d0     
             bcc __de27         ; $de0d: 90 18     
-            lda $c0            ; $de0f: a5 c0     
-            cmp $c0,x          ; $de11: d5 c0     
-            bcs __de1e         ; $de13: b0 09     
-            lda #$01           ; $de15: a9 01     
-            sta $ea            ; $de17: 85 ea     
-            lda #$03           ; $de19: a9 03     
-            sta $eb            ; $de1b: 85 eb     
-            rts                ; $de1d: 60        
+            LDA $c0            ; $de0f: a5 c0     
+            CMP $c0,x          ; $de11: d5 c0     
+            BCS __de1e         ; $de13: b0 09     
+            LDA #$01           ; $de15: a9 01     
+            STA $ea            ; $de17: 85 ea     
+            LDA #$03           ; $de19: a9 03     
+            STA $eb            ; $de1b: 85 eb     
+            RTS                ; $de1d: 60        
 
 ;-------------------------------------------------------------------------------
-__de1e:     lda #$03           ; $de1e: a9 03     
-            sta $ea            ; $de20: 85 ea     
-            lda #$01           ; $de22: a9 01     
-            sta $eb            ; $de24: 85 eb     
-            rts                ; $de26: 60        
+__de1e:     LDA #$03           ; $de1e: a9 03     
+            STA $ea            ; $de20: 85 ea     
+            LDA #$01           ; $de22: a9 01     
+            STA $eb            ; $de24: 85 eb     
+            RTS                ; $de26: 60        
 
 ;-------------------------------------------------------------------------------
-__de27:     lda #$00           ; $de27: a9 00     
-            sta $ea            ; $de29: 85 ea     
-            lda $c0,x          ; $de2b: b5 c0     
+__de27:     LDA #$00           ; $de27: a9 00     
+            STA $ea            ; $de29: 85 ea     
+            LDA $c0,x          ; $de2b: b5 c0     
             clc                ; $de2d: 18        
             adc #$10           ; $de2e: 69 10     
-            cmp #$20           ; $de30: c9 20     
+            CMP #$20           ; $de30: c9 20     
             bcc __de39         ; $de32: 90 05     
-            lda #$01           ; $de34: a9 01     
-            sta $eb            ; $de36: 85 eb     
-            rts                ; $de38: 60        
+            LDA #$01           ; $de34: a9 01     
+            STA $eb            ; $de36: 85 eb     
+            RTS                ; $de38: 60        
 
 ;-------------------------------------------------------------------------------
-__de39:     lda #$03           ; $de39: a9 03     
-            sta $eb            ; $de3b: 85 eb     
-            rts                ; $de3d: 60        
+__de39:     LDA #$03           ; $de39: a9 03     
+            STA $eb            ; $de3b: 85 eb     
+            RTS                ; $de3d: 60        
 
 ;-------------------------------------------------------------------------------
-__de3e:     lda $b0,x          ; $de3e: b5 b0     
-            cmp #$04           ; $de40: c9 04     
-            bcs __ddec         ; $de42: b0 a8     
-            lda $40            ; $de44: a5 40     
+__de3e:     LDA $b0,x          ; $de3e: b5 b0     
+            CMP #$04           ; $de40: c9 04     
+            BCS __dDEC         ; $de42: b0 a8     
+            LDA $40            ; $de44: a5 40     
             and #$01           ; $de46: 29 01     
-            bne __de9b         ; $de48: d0 51     
-            lda #$01           ; $de4a: a9 01     
-            sta $ea            ; $de4c: 85 ea     
-            lda $c0,x          ; $de4e: b5 c0     
+            BNE __de9b         ; $de48: d0 51     
+            LDA #$01           ; $de4a: a9 01     
+            STA $ea            ; $de4c: 85 ea     
+            LDA $c0,x          ; $de4e: b5 c0     
             sec                ; $de50: 38        
             sbc $c0            ; $de51: e5 c0     
-            sta $e8            ; $de53: 85 e8     
-            bcs __de61         ; $de55: b0 0a     
-            eor #$ff           ; $de57: 49 ff     
-            sta $e8            ; $de59: 85 e8     
-            inc $e8            ; $de5b: e6 e8     
-            lda #$03           ; $de5d: a9 03     
-            sta $ea            ; $de5f: 85 ea     
-__de61:     lda #$00           ; $de61: a9 00     
-            sta $eb            ; $de63: 85 eb     
-            lda $d0,x          ; $de65: b5 d0     
+            STA $e8            ; $de53: 85 e8     
+            BCS __de61         ; $de55: b0 0a     
+            EOR #$ff           ; $de57: 49 ff     
+            STA $e8            ; $de59: 85 e8     
+            INC $e8            ; $de5b: e6 e8     
+            LDA #$03           ; $de5d: a9 03     
+            STA $ea            ; $de5f: 85 ea     
+__de61:     LDA #$00           ; $de61: a9 00     
+            STA $eb            ; $de63: 85 eb     
+            LDA $d0,x          ; $de65: b5 d0     
             sec                ; $de67: 38        
             sbc $d0            ; $de68: e5 d0     
-            sta $e9            ; $de6a: 85 e9     
-            bcs __de78         ; $de6c: b0 0a     
-            eor #$ff           ; $de6e: 49 ff     
-            sta $e9            ; $de70: 85 e9     
-            inc $e9            ; $de72: e6 e9     
-            lda #$02           ; $de74: a9 02     
-            sta $eb            ; $de76: 85 eb     
-__de78:     lda $e8            ; $de78: a5 e8     
-            cmp $e9            ; $de7a: c5 e9     
-            bcs __de8c         ; $de7c: b0 0e     
-            sta $e9            ; $de7e: 85 e9     
-            lda $ea            ; $de80: a5 ea     
-            sta $e8            ; $de82: 85 e8     
-            lda $eb            ; $de84: a5 eb     
-            sta $ea            ; $de86: 85 ea     
-            lda $e8            ; $de88: a5 e8     
-            sta $eb            ; $de8a: 85 eb     
-__de8c:     lda $e9            ; $de8c: a5 e9     
-            bne __de9a         ; $de8e: d0 0a     
-            jsr __f01c         ; $de90: 20 1c f0  
+            STA $e9            ; $de6a: 85 e9     
+            BCS __de78         ; $de6c: b0 0a     
+            EOR #$ff           ; $de6e: 49 ff     
+            STA $e9            ; $de70: 85 e9     
+            INC $e9            ; $de72: e6 e9     
+            LDA #$02           ; $de74: a9 02     
+            STA $eb            ; $de76: 85 eb     
+__de78:     LDA $e8            ; $de78: a5 e8     
+            CMP $e9            ; $de7a: c5 e9     
+            BCS __de8c         ; $de7c: b0 0e     
+            STA $e9            ; $de7e: 85 e9     
+            LDA $ea            ; $de80: a5 ea     
+            STA $e8            ; $de82: 85 e8     
+            LDA $eb            ; $de84: a5 eb     
+            STA $ea            ; $de86: 85 ea     
+            LDA $e8            ; $de88: a5 e8     
+            STA $eb            ; $de8a: 85 eb     
+__de8c:     LDA $e9            ; $de8c: a5 e9     
+            BNE __de9a         ; $de8e: d0 0a     
+            JSR __f01c         ; $de90: 20 1c f0  
             and #$01           ; $de93: 29 01     
-            lsr $eb            ; $de95: 46 eb     
-            rol                ; $de97: 2a        
-            sta $eb            ; $de98: 85 eb     
-__de9a:     rts                ; $de9a: 60        
+            LSR $eb            ; $de95: 46 eb     
+            ROL                ; $de97: 2a        
+            STA $eb            ; $de98: 85 eb     
+__de9a:     RTS                ; $de9a: 60        
 
 ;-------------------------------------------------------------------------------
-__de9b:     lda $0410,x        ; $de9b: bd 10 04  
-            bne __dea5         ; $de9e: d0 05     
-            lda #$02           ; $dea0: a9 02     
-            sta $0410,x        ; $dea2: 9d 10 04  
-__dea5:     lda #$02           ; $dea5: a9 02     
-            sta $0400,x        ; $dea7: 9d 00 04  
-            sta $eb            ; $deaa: 85 eb     
-            ldy #$03           ; $deac: a0 03     
-            lda $c0,x          ; $deae: b5 c0     
-            cmp $c0            ; $deb0: c5 c0     
+__de9b:     LDA $0410,x        ; $de9b: bd 10 04  
+            BNE __dea5         ; $de9e: d0 05     
+            LDA #$02           ; $dea0: a9 02     
+            STA $0410,x        ; $dea2: 9d 10 04  
+__dea5:     LDA #$02           ; $dea5: a9 02     
+            STA $0400,x        ; $dea7: 9d 00 04  
+            STA $eb            ; $deaa: 85 eb     
+            LDY #$03           ; $deac: a0 03     
+            LDA $c0,x          ; $deae: b5 c0     
+            CMP $c0            ; $deb0: c5 c0     
             bcc __debf         ; $deb2: 90 0b     
-            ldy #$01           ; $deb4: a0 01     
-            bne __debf         ; $deb6: d0 07     
-            sty $eb            ; $deb8: 84 eb     
-            lda #$02           ; $deba: a9 02     
-            sta $ea            ; $debc: 85 ea     
-            rts                ; $debe: 60        
+            LDY #$01           ; $deb4: a0 01     
+            BNE __debf         ; $deb6: d0 07     
+            STY $eb            ; $deb8: 84 eb     
+            LDA #$02           ; $deba: a9 02     
+            STA $ea            ; $debc: 85 ea     
+            RTS                ; $debe: 60        
 
 ;-------------------------------------------------------------------------------
-__debf:     sty $ea            ; $debf: 84 ea     
-            rts                ; $dec1: 60        
+__debf:     STY $ea            ; $debf: 84 ea     
+            RTS                ; $DEC1: 60        
 
 ;-------------------------------------------------------------------------------
-__dec2:     lda $d0,x          ; $dec2: b5 d0     
-            and #$f0           ; $dec4: 29 f0     
-            lsr                ; $dec6: 4a        
-            sta $e0            ; $dec7: 85 e0     
-            lsr                ; $dec9: 4a        
-            adc $e0            ; $deca: 65 e0     
-            sta $e0            ; $decc: 85 e0     
-            lda $c0,x          ; $dece: b5 c0     
-            lsr                ; $ded0: 4a        
-            lsr                ; $ded1: 4a        
-            lsr                ; $ded2: 4a        
-            lsr                ; $ded3: 4a        
-            sta $e1            ; $ded4: 85 e1     
+__DEC2:     LDA $d0,x          ; $DEC2: b5 d0     
+            and #$f0           ; $DEC4: 29 f0     
+            LSR                ; $DEC6: 4a        
+            STA $e0            ; $DEC7: 85 e0     
+            LSR                ; $DEC9: 4a        
+            adc $e0            ; $DECa: 65 e0     
+            STA $e0            ; $DECc: 85 e0     
+            LDA $c0,x          ; $DECe: b5 c0     
+            LSR                ; $ded0: 4a        
+            LSR                ; $ded1: 4a        
+            LSR                ; $ded2: 4a        
+            LSR                ; $ded3: 4a        
+            STA $e1            ; $ded4: 85 e1     
             clc                ; $ded6: 18        
             adc $e0            ; $ded7: 65 e0     
-            sta $e0            ; $ded9: 85 e0     
-            rts                ; $dedb: 60        
+            STA $e0            ; $ded9: 85 e0     
+            RTS                ; $dedb: 60        
 
 ;-------------------------------------------------------------------------------
-            lda $b0,x          ; $dedc: b5 b0     
-            beq __dee2         ; $dede: f0 02     
-            inc $41            ; $dee0: e6 41     
+            LDA $b0,x          ; $dedc: b5 b0     
+            BEQ __dee2         ; $dede: f0 02     
+            INC $41            ; $dee0: e6 41     
 __dee2:     tay                ; $dee2: a8        
-            lda __def0,y       ; $dee3: b9 f0 de  
-            sta $ea            ; $dee6: 85 ea     
-            lda __def1,y       ; $dee8: b9 f1 de  
-            sta $eb            ; $deeb: 85 eb     
-            jmp ($00ea)        ; $deed: 6c ea 00  
+            LDA __def0,y       ; $dee3: b9 f0 de  
+            STA $ea            ; $dee6: 85 ea     
+            LDA __def1,y       ; $dee8: b9 f1 de  
+            STA $eb            ; $deeb: 85 eb     
+            JMP ($00ea)        ; $deed: 6c ea 00  
 
 ;-------------------------------------------------------------------------------
 __def0:     .hex 2e            ; $def0: 2e            Data
@@ -4042,25 +4042,25 @@ __def1:     .hex e1 02 e1 03   ; $def1: e1 02 e1 03   Data
             .hex df fc de      ; $def9: df fc de      Data
 
 ;-------------------------------------------------------------------------------
-            inc $41            ; $defc: e6 41     
-            dec $0480,x        ; $defe: de 80 04  
-            bne __df1c         ; $df01: d0 19     
-            lda $0460,x        ; $df03: bd 60 04  
-            cmp #$30           ; $df06: c9 30     
-            bne __df1f         ; $df08: d0 15     
-            lda #$78           ; $df0a: a9 78     
-            sta $0480,x        ; $df0c: 9d 80 04  
-            lda $04b0,x        ; $df0f: bd b0 04  
-            beq __df1f         ; $df12: f0 0b     
-            sta $0460,x        ; $df14: 9d 60 04  
-            lda #$01           ; $df17: a9 01     
-            sta $0470,x        ; $df19: 9d 70 04  
-__df1c:     jmp __e70d         ; $df1c: 4c 0d e7  
+            INC $41            ; $defc: e6 41     
+            DEC $0480,x        ; $defe: de 80 04  
+            BNE __df1c         ; $df01: d0 19     
+            LDA $0460,x        ; $df03: bd 60 04  
+            CMP #$30           ; $df06: c9 30     
+            BNE __df1f         ; $df08: d0 15     
+            LDA #$78           ; $df0a: a9 78     
+            STA $0480,x        ; $df0c: 9d 80 04  
+            LDA $04b0,x        ; $df0f: bd b0 04  
+            BEQ __df1f         ; $df12: f0 0b     
+            STA $0460,x        ; $df14: 9d 60 04  
+            LDA #$01           ; $df17: a9 01     
+            STA $0470,x        ; $df19: 9d 70 04  
+__df1c:     JMP __e70d         ; $df1c: 4c 0d e7  
 
 ;-------------------------------------------------------------------------------
-__df1f:     lda #$00           ; $df1f: a9 00     
-            sta $a0,x          ; $df21: 95 a0     
-            rts                ; $df23: 60        
+__df1f:     LDA #$00           ; $df1f: a9 00     
+            STA $a0,x          ; $df21: 95 a0     
+            RTS                ; $df23: 60        
 
 ;-------------------------------------------------------------------------------
 __df24:     .hex 00 3a 3c 3e   ; $df24: 00 3a 3c 3e   Data
@@ -4071,517 +4071,517 @@ __df2d:     .hex 00 01 19 04   ; $df2d: 00 01 19 04   Data
             .hex 0f            ; $df35: 0f            Data
 
 ;-------------------------------------------------------------------------------
-__df36:     lda $d0,x          ; $df36: b5 d0     
+__df36:     LDA $d0,x          ; $df36: b5 d0     
             and #$0f           ; $df38: 29 0f     
-            jmp __e042         ; $df3a: 4c 42 e0  
+            JMP __e042         ; $df3a: 4c 42 e0  
 
 ;-------------------------------------------------------------------------------
-            lda $d0,x          ; $df3d: b5 d0     
+            LDA $d0,x          ; $df3d: b5 d0     
             clc                ; $df3f: 18        
             adc #$10           ; $df40: 69 10     
             and #$f0           ; $df42: 29 f0     
-            lsr                ; $df44: 4a        
-            sta $e0            ; $df45: 85 e0     
-            lsr                ; $df47: 4a        
+            LSR                ; $df44: 4a        
+            STA $e0            ; $df45: 85 e0     
+            LSR                ; $df47: 4a        
             adc $e0            ; $df48: 65 e0     
-            sta $e0            ; $df4a: 85 e0     
-            lda $c0,x          ; $df4c: b5 c0     
-            lsr                ; $df4e: 4a        
-            lsr                ; $df4f: 4a        
-            lsr                ; $df50: 4a        
-            lsr                ; $df51: 4a        
+            STA $e0            ; $df4a: 85 e0     
+            LDA $c0,x          ; $df4c: b5 c0     
+            LSR                ; $df4e: 4a        
+            LSR                ; $df4f: 4a        
+            LSR                ; $df50: 4a        
+            LSR                ; $df51: 4a        
             clc                ; $df52: 18        
             adc $e0            ; $df53: 65 e0     
             tay                ; $df55: a8        
-            lda $0200,y        ; $df56: b9 00 02  
+            LDA $0200,y        ; $df56: b9 00 02  
             bmi __df36         ; $df59: 30 db     
-            ldy #$00           ; $df5b: a0 00     
-            sty $e0            ; $df5d: 84 e0     
-            lda $00a0,y        ; $df5f: b9 a0 00  
-            beq __df68         ; $df62: f0 04     
-            cmp #$08           ; $df64: c9 08     
+            LDY #$00           ; $df5b: a0 00     
+            STY $e0            ; $df5d: 84 e0     
+            LDA $00a0,y        ; $df5f: b9 a0 00  
+            BEQ __df68         ; $df62: f0 04     
+            CMP #$08           ; $df64: c9 08     
             bcc __dfae         ; $df66: 90 46     
-__df68:     iny                ; $df68: c8        
-            cpy #$0e           ; $df69: c0 0e     
-            bne __dfae         ; $df6b: d0 41     
-            inc $b0,x          ; $df6d: f6 b0     
-            inc $b0,x          ; $df6f: f6 b0     
-            lda #$5a           ; $df71: a9 5a     
-            sta $0480,x        ; $df73: 9d 80 04  
-            lda $e0            ; $df76: a5 e0     
+__df68:     INY                ; $df68: c8        
+            CPY #$0e           ; $df69: c0 0e     
+            BNE __dfae         ; $df6b: d0 41     
+            INC $b0,x          ; $df6d: f6 b0     
+            INC $b0,x          ; $df6f: f6 b0     
+            LDA #$5a           ; $df71: a9 5a     
+            STA $0480,x        ; $df73: 9d 80 04  
+            LDA $e0            ; $df76: a5 e0     
             pha                ; $df78: 48        
-            jsr __e70d         ; $df79: 20 0d e7  
-            lda $d0,x          ; $df7c: b5 d0     
+            JSR __e70d         ; $df79: 20 0d e7  
+            LDA $d0,x          ; $df7c: b5 d0     
             sec                ; $df7e: 38        
             sbc #$08           ; $df7f: e9 08     
-            sta $d0,x          ; $df81: 95 d0     
-            ldy #$01           ; $df83: a0 01     
-            sty $05f4          ; $df85: 8c f4 05  
+            STA $d0,x          ; $df81: 95 d0     
+            LDY #$01           ; $df83: a0 01     
+            STY $05f4          ; $df85: 8c f4 05  
             pla                ; $df88: 68        
             tay                ; $df89: a8        
-            lda __df24,y       ; $df8a: b9 24 df  
-            sta $04b0,x        ; $df8d: 9d b0 04  
-            lda __df2d,y       ; $df90: b9 2d df  
-            beq __dfa2         ; $df93: f0 0d     
-            cpy #$02           ; $df95: c0 02     
-            beq __df9f         ; $df97: f0 06     
-            jsr __ed88         ; $df99: 20 88 ed  
-            jmp __dfa2         ; $df9c: 4c a2 df  
+            LDA __df24,y       ; $df8a: b9 24 df  
+            STA $04b0,x        ; $df8d: 9d b0 04  
+            LDA __df2d,y       ; $df90: b9 2d df  
+            BEQ __dfa2         ; $df93: f0 0d     
+            CPY #$02           ; $df95: c0 02     
+            BEQ __df9f         ; $df97: f0 06     
+            JSR __ed88         ; $df99: 20 88 ed  
+            JMP __dfa2         ; $df9c: 4c a2 df  
 
 ;-------------------------------------------------------------------------------
-__df9f:     jsr __ed83         ; $df9f: 20 83 ed  
-__dfa2:     inc $6f            ; $dfa2: e6 6f     
-            lda $6f            ; $dfa4: a5 6f     
-            cmp #$02           ; $dfa6: c9 02     
-            bne __dfad         ; $dfa8: d0 03     
-            jmp __e18c         ; $dfaa: 4c 8c e1  
+__df9f:     JSR __ed83         ; $df9f: 20 83 ed  
+__dfa2:     INC $6f            ; $dfa2: e6 6f     
+            LDA $6f            ; $dfa4: a5 6f     
+            CMP #$02           ; $dfa6: c9 02     
+            BNE __dfad         ; $dfa8: d0 03     
+            JMP __e18c         ; $dfaa: 4c 8c e1  
 
 ;-------------------------------------------------------------------------------
-__dfad:     rts                ; $dfad: 60        
+__dfad:     RTS                ; $dfad: 60        
 
 ;-------------------------------------------------------------------------------
-__dfae:     lda $00b0,y        ; $dfae: b9 b0 00  
-            cmp #$06           ; $dfb1: c9 06     
-            bne __df68         ; $dfb3: d0 b3     
-            lda $04b0,y        ; $dfb5: b9 b0 04  
-            sta $e2            ; $dfb8: 85 e2     
-            cpx $e2            ; $dfba: e4 e2     
-            bne __df68         ; $dfbc: d0 aa     
-            lda $00a0,y        ; $dfbe: b9 a0 00  
-            cmp #$04           ; $dfc1: c9 04     
+__dfae:     LDA $00b0,y        ; $dfae: b9 b0 00  
+            CMP #$06           ; $dfb1: c9 06     
+            BNE __df68         ; $dfb3: d0 b3     
+            LDA $04b0,y        ; $dfb5: b9 b0 04  
+            STA $e2            ; $dfb8: 85 e2     
+            CPX $e2            ; $dfba: e4 e2     
+            BNE __df68         ; $dfbc: d0 aa     
+            LDA $00a0,y        ; $dfbe: b9 a0 00  
+            CMP #$04           ; $dfc1: c9 04     
             bcc __dfc7         ; $dfc3: 90 02     
-            inc $e0            ; $dfc5: e6 e0     
-__dfc7:     lda #$08           ; $dfc7: a9 08     
-            sta $00b0,y        ; $dfc9: 99 b0 00  
-            lda #$5a           ; $dfcc: a9 5a     
-            sta $0480,y        ; $dfce: 99 80 04  
-            lda $00d0,y        ; $dfd1: b9 d0 00  
+            INC $e0            ; $dfc5: e6 e0     
+__dfc7:     LDA #$08           ; $dfc7: a9 08     
+            STA $00b0,y        ; $dfc9: 99 b0 00  
+            LDA #$5a           ; $dfcc: a9 5a     
+            STA $0480,y        ; $dfce: 99 80 04  
+            LDA $00d0,y        ; $dfd1: b9 d0 00  
             sec                ; $dfd4: 38        
             sbc #$02           ; $dfd5: e9 02     
-            sta $00d0,y        ; $dfd7: 99 d0 00  
-            jmp __df68         ; $dfda: 4c 68 df  
+            STA $00d0,y        ; $dfd7: 99 d0 00  
+            JMP __df68         ; $dfda: 4c 68 df  
 
 ;-------------------------------------------------------------------------------
-            inc $41            ; $dfdd: e6 41     
-            jsr __e70d         ; $dfdf: 20 0d e7  
-            dec $0480,x        ; $dfe2: de 80 04  
-            bne __e002         ; $dfe5: d0 1b     
-            inc $0460,x        ; $dfe7: fe 60 04  
-            lda #$3c           ; $dfea: a9 3c     
-            sta $0480,x        ; $dfec: 9d 80 04  
-            lda $0460,x        ; $dfef: bd 60 04  
-            cmp #$31           ; $dff2: c9 31     
-            bne __dffa         ; $dff4: d0 04     
-            inc $0460,x        ; $dff6: fe 60 04  
-            rts                ; $dff9: 60        
+            INC $41            ; $dfdd: e6 41     
+            JSR __e70d         ; $dfdf: 20 0d e7  
+            DEC $0480,x        ; $dfe2: de 80 04  
+            BNE __e002         ; $dfe5: d0 1b     
+            INC $0460,x        ; $dfe7: fe 60 04  
+            LDA #$3c           ; $dfea: a9 3c     
+            STA $0480,x        ; $dfec: 9d 80 04  
+            LDA $0460,x        ; $dfef: bd 60 04  
+            CMP #$31           ; $dff2: c9 31     
+            BNE __dffa         ; $dff4: d0 04     
+            INC $0460,x        ; $dff6: fe 60 04  
+            RTS                ; $dff9: 60        
 
 ;-------------------------------------------------------------------------------
-__dffa:     cmp #$34           ; $dffa: c9 34     
-            bne __e002         ; $dffc: d0 04     
-            lda #$00           ; $dffe: a9 00     
-            sta $a0,x          ; $e000: 95 a0     
-__e002:     rts                ; $e002: 60        
+__dffa:     CMP #$34           ; $dffa: c9 34     
+            BNE __e002         ; $dffc: d0 04     
+            LDA #$00           ; $dffe: a9 00     
+            STA $a0,x          ; $e000: 95 a0     
+__e002:     RTS                ; $e002: 60        
 
 ;-------------------------------------------------------------------------------
-            lda $d0,x          ; $e003: b5 d0     
+            LDA $d0,x          ; $e003: b5 d0     
             and #$0f           ; $e005: 29 0f     
-            bne __e042         ; $e007: d0 39     
-            lda $d0,x          ; $e009: b5 d0     
+            BNE __e042         ; $e007: d0 39     
+            LDA $d0,x          ; $e009: b5 d0     
             clc                ; $e00b: 18        
             adc #$10           ; $e00c: 69 10     
-            lsr                ; $e00e: 4a        
-            sta $e0            ; $e00f: 85 e0     
-            lsr                ; $e011: 4a        
+            LSR                ; $e00e: 4a        
+            STA $e0            ; $e00f: 85 e0     
+            LSR                ; $e011: 4a        
             adc $e0            ; $e012: 65 e0     
-            sta $e0            ; $e014: 85 e0     
-            lda $c0,x          ; $e016: b5 c0     
-            lsr                ; $e018: 4a        
-            lsr                ; $e019: 4a        
-            lsr                ; $e01a: 4a        
-            lsr                ; $e01b: 4a        
+            STA $e0            ; $e014: 85 e0     
+            LDA $c0,x          ; $e016: b5 c0     
+            LSR                ; $e018: 4a        
+            LSR                ; $e019: 4a        
+            LSR                ; $e01a: 4a        
+            LSR                ; $e01b: 4a        
             clc                ; $e01c: 18        
             adc $e0            ; $e01d: 65 e0     
             tay                ; $e01f: a8        
-            lda $0200,y        ; $e020: b9 00 02  
+            LDA $0200,y        ; $e020: b9 00 02  
             bmi __e042         ; $e023: 30 1d     
-            inc $b0,x          ; $e025: f6 b0     
-            inc $b0,x          ; $e027: f6 b0     
-            lda #$01           ; $e029: a9 01     
-            sta $05f4          ; $e02b: 8d f4 05  
-            lda #$5a           ; $e02e: a9 5a     
-            sta $0480,x        ; $e030: 9d 80 04  
-            jsr __e70d         ; $e033: 20 0d e7  
-            inc $6f            ; $e036: e6 6f     
-            lda $6f            ; $e038: a5 6f     
-            cmp #$02           ; $e03a: c9 02     
-            bne __e041         ; $e03c: d0 03     
-            jmp __e18c         ; $e03e: 4c 8c e1  
+            INC $b0,x          ; $e025: f6 b0     
+            INC $b0,x          ; $e027: f6 b0     
+            LDA #$01           ; $e029: a9 01     
+            STA $05f4          ; $e02b: 8d f4 05  
+            LDA #$5a           ; $e02e: a9 5a     
+            STA $0480,x        ; $e030: 9d 80 04  
+            JSR __e70d         ; $e033: 20 0d e7  
+            INC $6f            ; $e036: e6 6f     
+            LDA $6f            ; $e038: a5 6f     
+            CMP #$02           ; $e03a: c9 02     
+            BNE __e041         ; $e03c: d0 03     
+            JMP __e18c         ; $e03e: 4c 8c e1  
 
 ;-------------------------------------------------------------------------------
-__e041:     rts                ; $e041: 60        
+__e041:     RTS                ; $e041: 60        
 
 ;-------------------------------------------------------------------------------
 __e042:     sec                ; $e042: 38        
             sbc #$0e           ; $e043: e9 0e     
-            bne __e04a         ; $e045: d0 03     
-            sta $04b0,x        ; $e047: 9d b0 04  
-__e04a:     lda $d0,x          ; $e04a: b5 d0     
+            BNE __e04a         ; $e045: d0 03     
+            STA $04b0,x        ; $e047: 9d b0 04  
+__e04a:     LDA $d0,x          ; $e04a: b5 d0     
             clc                ; $e04c: 18        
             adc #$02           ; $e04d: 69 02     
-            sta $d0,x          ; $e04f: 95 d0     
-            ldy #$00           ; $e051: a0 00     
-__e053:     lda $00a0,y        ; $e053: b9 a0 00  
-            bne __e066         ; $e056: d0 0e     
-__e058:     iny                ; $e058: c8        
-            cpy #$0e           ; $e059: c0 0e     
-            bne __e053         ; $e05b: d0 f6     
-            jsr __e70d         ; $e05d: 20 0d e7  
-            lda $04b0,x        ; $e060: bd b0 04  
-            beq __e0ba         ; $e063: f0 55     
-            rts                ; $e065: 60        
+            STA $d0,x          ; $e04f: 95 d0     
+            LDY #$00           ; $e051: a0 00     
+__e053:     LDA $00a0,y        ; $e053: b9 a0 00  
+            BNE __e066         ; $e056: d0 0e     
+__e058:     INY                ; $e058: c8        
+            CPY #$0e           ; $e059: c0 0e     
+            BNE __e053         ; $e05b: d0 f6     
+            JSR __e70d         ; $e05d: 20 0d e7  
+            LDA $04b0,x        ; $e060: bd b0 04  
+            BEQ __e0ba         ; $e063: f0 55     
+            RTS                ; $e065: 60        
 
 ;-------------------------------------------------------------------------------
-__e066:     cmp #$08           ; $e066: c9 08     
-            bcs __e058         ; $e068: b0 ee     
-            lda $00b0,y        ; $e06a: b9 b0 00  
-            cmp #$06           ; $e06d: c9 06     
+__e066:     CMP #$08           ; $e066: c9 08     
+            BCS __e058         ; $e068: b0 ee     
+            LDA $00b0,y        ; $e06a: b9 b0 00  
+            CMP #$06           ; $e06d: c9 06     
             bcc __e075         ; $e06f: 90 04     
-            cmp #$0c           ; $e071: c9 0c     
+            CMP #$0c           ; $e071: c9 0c     
             bcc __e058         ; $e073: 90 e3     
-__e075:     lda $00c0,y        ; $e075: b9 c0 00  
+__e075:     LDA $00c0,y        ; $e075: b9 c0 00  
             sec                ; $e078: 38        
             sbc $c0,x          ; $e079: f5 c0     
             clc                ; $e07b: 18        
             adc #$09           ; $e07c: 69 09     
-            cmp #$13           ; $e07e: c9 13     
-            bcs __e058         ; $e080: b0 d6     
-            lda $00d0,y        ; $e082: b9 d0 00  
+            CMP #$13           ; $e07e: c9 13     
+            BCS __e058         ; $e080: b0 d6     
+            LDA $00d0,y        ; $e082: b9 d0 00  
             sec                ; $e085: 38        
             sbc $d0,x          ; $e086: f5 d0     
             clc                ; $e088: 18        
             adc #$04           ; $e089: 69 04     
-            cmp #$13           ; $e08b: c9 13     
-            bcs __e058         ; $e08d: b0 c9     
-            lda $d0,x          ; $e08f: b5 d0     
-            sta $00d0,y        ; $e091: 99 d0 00  
-            lda #$06           ; $e094: a9 06     
-            sta $00b0,y        ; $e096: 99 b0 00  
+            CMP #$13           ; $e08b: c9 13     
+            BCS __e058         ; $e08d: b0 c9     
+            LDA $d0,x          ; $e08f: b5 d0     
+            STA $00d0,y        ; $e091: 99 d0 00  
+            LDA #$06           ; $e094: a9 06     
+            STA $00b0,y        ; $e096: 99 b0 00  
             txa                ; $e099: 8a        
-            sta $04b0,y        ; $e09a: 99 b0 04  
-            lda $00a0,y        ; $e09d: b9 a0 00  
-            cmp #$06           ; $e0a0: c9 06     
-            bne __e0ae         ; $e0a2: d0 0a     
-            lda $0470,y        ; $e0a4: b9 70 04  
+            STA $04b0,y        ; $e09a: 99 b0 04  
+            LDA $00a0,y        ; $e09d: b9 a0 00  
+            CMP #$06           ; $e0a0: c9 06     
+            BNE __e0ae         ; $e0a2: d0 0a     
+            LDA $0470,y        ; $e0a4: b9 70 04  
             and #$f0           ; $e0a7: 29 f0     
-            ora #$02           ; $e0a9: 09 02     
-            sta $0470,y        ; $e0ab: 99 70 04  
-__e0ae:     lda #$01           ; $e0ae: a9 01     
-            sta $05ef          ; $e0b0: 8d ef 05  
-            lda #$08           ; $e0b3: a9 08     
-            sta $b0,x          ; $e0b5: 95 b0     
-            jmp __e058         ; $e0b7: 4c 58 e0  
+            ORA #$02           ; $e0a9: 09 02     
+            STA $0470,y        ; $e0ab: 99 70 04  
+__e0ae:     LDA #$01           ; $e0ae: a9 01     
+            STA $05ef          ; $e0b0: 8d ef 05  
+            LDA #$08           ; $e0b3: a9 08     
+            STA $b0,x          ; $e0b5: 95 b0     
+            JMP __e058         ; $e0b7: 4c 58 e0  
 
 ;-------------------------------------------------------------------------------
-__e0ba:     lda $d0,x          ; $e0ba: b5 d0     
+__e0ba:     LDA $d0,x          ; $e0ba: b5 d0     
             clc                ; $e0bc: 18        
             adc #$09           ; $e0bd: 69 09     
-            sta $e1            ; $e0bf: 85 e1     
+            STA $e1            ; $e0bf: 85 e1     
             and #$f0           ; $e0c1: 29 f0     
-            sta $e8            ; $e0c3: 85 e8     
-            lsr                ; $e0c5: 4a        
-            sta $e0            ; $e0c6: 85 e0     
-            lsr                ; $e0c8: 4a        
+            STA $e8            ; $e0c3: 85 e8     
+            LSR                ; $e0c5: 4a        
+            STA $e0            ; $e0c6: 85 e0     
+            LSR                ; $e0c8: 4a        
             adc $e0            ; $e0c9: 65 e0     
-            sta $e0            ; $e0cb: 85 e0     
-            lda $c0,x          ; $e0cd: b5 c0     
+            STA $e0            ; $e0cb: 85 e0     
+            LDA $c0,x          ; $e0cd: b5 c0     
             and #$f0           ; $e0cf: 29 f0     
-            lsr                ; $e0d1: 4a        
-            lsr                ; $e0d2: 4a        
-            lsr                ; $e0d3: 4a        
-            sta $e6            ; $e0d4: 85 e6     
-            lsr                ; $e0d6: 4a        
+            LSR                ; $e0d1: 4a        
+            LSR                ; $e0d2: 4a        
+            LSR                ; $e0d3: 4a        
+            STA $e6            ; $e0d4: 85 e6     
+            LSR                ; $e0d6: 4a        
             clc                ; $e0d7: 18        
             adc $e0            ; $e0d8: 65 e0     
-            sta $e0            ; $e0da: 85 e0     
+            STA $e0            ; $e0da: 85 e0     
             tay                ; $e0dc: a8        
-            lda $e1            ; $e0dd: a5 e1     
-            lsr                ; $e0df: 4a        
-            lsr                ; $e0e0: 4a        
+            LDA $e1            ; $e0dd: a5 e1     
+            LSR                ; $e0df: 4a        
+            LSR                ; $e0e0: 4a        
             and #$03           ; $e0e1: 29 03     
-            sta $e1            ; $e0e3: 85 e1     
-            lda $0200,y        ; $e0e5: b9 00 02  
-            sta $e2            ; $e0e8: 85 e2     
+            STA $e1            ; $e0e3: 85 e1     
+            LDA $0200,y        ; $e0e5: b9 00 02  
+            STA $e2            ; $e0e8: 85 e2     
             asl                ; $e0ea: 0a        
             asl                ; $e0eb: 0a        
             clc                ; $e0ec: 18        
             adc $e1            ; $e0ed: 65 e1     
             tay                ; $e0ef: a8        
-            lda __fa87,y       ; $e0f0: b9 87 fa  
-            cmp $e2            ; $e0f3: c5 e2     
-            beq __e101         ; $e0f5: f0 0a     
-            sta $e2            ; $e0f7: 85 e2     
-            ldy $e0            ; $e0f9: a4 e0     
-            sta $0200,y        ; $e0fb: 99 00 02  
-            jmp __d66b         ; $e0fe: 4c 6b d6  
+            LDA __fa87,y       ; $e0f0: b9 87 fa  
+            CMP $e2            ; $e0f3: c5 e2     
+            BEQ __e101         ; $e0f5: f0 0a     
+            STA $e2            ; $e0f7: 85 e2     
+            LDY $e0            ; $e0f9: a4 e0     
+            STA $0200,y        ; $e0fb: 99 00 02  
+            JMP __d66b         ; $e0fe: 4c 6b d6  
 
 ;-------------------------------------------------------------------------------
-__e101:     rts                ; $e101: 60        
+__e101:     RTS                ; $e101: 60        
 
 ;-------------------------------------------------------------------------------
-            lda #$03           ; $e102: a9 03     
-            sta $41            ; $e104: 85 41     
-            lda $1f            ; $e106: a5 1f     
-            bne __e11d         ; $e108: d0 13     
-            dec $0480,x        ; $e10a: de 80 04  
-            bne __e11d         ; $e10d: d0 0e     
-            lda #$04           ; $e10f: a9 04     
-            sta $b0,x          ; $e111: 95 b0     
-            sta $04b0,x        ; $e113: 9d b0 04  
-            lda #$01           ; $e116: a9 01     
-            sta $05f2          ; $e118: 8d f2 05  
-            sta $41            ; $e11b: 85 41     
-__e11d:     lda $0480,x        ; $e11d: bd 80 04  
-            lsr                ; $e120: 4a        
-            lsr                ; $e121: 4a        
-            lsr                ; $e122: 4a        
-            lsr                ; $e123: 4a        
+            LDA #$03           ; $e102: a9 03     
+            STA $41            ; $e104: 85 41     
+            LDA $1f            ; $e106: a5 1f     
+            BNE __e11d         ; $e108: d0 13     
+            DEC $0480,x        ; $e10a: de 80 04  
+            BNE __e11d         ; $e10d: d0 0e     
+            LDA #$04           ; $e10f: a9 04     
+            STA $b0,x          ; $e111: 95 b0     
+            STA $04b0,x        ; $e113: 9d b0 04  
+            LDA #$01           ; $e116: a9 01     
+            STA $05f2          ; $e118: 8d f2 05  
+            STA $41            ; $e11b: 85 41     
+__e11d:     LDA $0480,x        ; $e11d: bd 80 04  
+            LSR                ; $e120: 4a        
+            LSR                ; $e121: 4a        
+            LSR                ; $e122: 4a        
+            LSR                ; $e123: 4a        
             and #$01           ; $e124: 29 01     
-            ora #$30           ; $e126: 09 30     
-            sta $0460,x        ; $e128: 9d 60 04  
-            jmp __e70d         ; $e12b: 4c 0d e7  
+            ORA #$30           ; $e126: 09 30     
+            STA $0460,x        ; $e128: 9d 60 04  
+            JMP __e70d         ; $e12b: 4c 0d e7  
 
 ;-------------------------------------------------------------------------------
-            jsr __e70d         ; $e12e: 20 0d e7  
-            lda $1f            ; $e131: a5 1f     
-            beq __e136         ; $e133: f0 01     
-            rts                ; $e135: 60        
+            JSR __e70d         ; $e12e: 20 0d e7  
+            LDA $1f            ; $e131: a5 1f     
+            BEQ __e136         ; $e133: f0 01     
+            RTS                ; $e135: 60        
 
 ;-------------------------------------------------------------------------------
-__e136:     lda $d0,x          ; $e136: b5 d0     
+__e136:     LDA $d0,x          ; $e136: b5 d0     
             clc                ; $e138: 18        
             adc #$10           ; $e139: 69 10     
             and #$f0           ; $e13b: 29 f0     
-            lsr                ; $e13d: 4a        
-            sta $e0            ; $e13e: 85 e0     
-            lsr                ; $e140: 4a        
+            LSR                ; $e13d: 4a        
+            STA $e0            ; $e13e: 85 e0     
+            LSR                ; $e140: 4a        
             adc $e0            ; $e141: 65 e0     
-            sta $e0            ; $e143: 85 e0     
-            lda $c0,x          ; $e145: b5 c0     
-            lsr                ; $e147: 4a        
-            lsr                ; $e148: 4a        
-            lsr                ; $e149: 4a        
-            lsr                ; $e14a: 4a        
+            STA $e0            ; $e143: 85 e0     
+            LDA $c0,x          ; $e145: b5 c0     
+            LSR                ; $e147: 4a        
+            LSR                ; $e148: 4a        
+            LSR                ; $e149: 4a        
+            LSR                ; $e14a: 4a        
             clc                ; $e14b: 18        
             adc $e0            ; $e14c: 65 e0     
             tay                ; $e14e: a8        
-            lda $0200,y        ; $e14f: b9 00 02  
+            LDA $0200,y        ; $e14f: b9 00 02  
             bmi __e15a         ; $e152: 30 06     
-            lda #$04           ; $e154: a9 04     
-            sta $0480,x        ; $e156: 9d 80 04  
-            rts                ; $e159: 60        
+            LDA #$04           ; $e154: a9 04     
+            STA $0480,x        ; $e156: 9d 80 04  
+            RTS                ; $e159: 60        
 
 ;-------------------------------------------------------------------------------
-__e15a:     lda $c0,x          ; $e15a: b5 c0     
+__e15a:     LDA $c0,x          ; $e15a: b5 c0     
             sec                ; $e15c: 38        
             sbc $c0            ; $e15d: e5 c0     
             clc                ; $e15f: 18        
             adc #$02           ; $e160: 69 02     
-            cmp #$05           ; $e162: c9 05     
-            bcs __e182         ; $e164: b0 1c     
-            lda $d0,x          ; $e166: b5 d0     
+            CMP #$05           ; $e162: c9 05     
+            BCS __e182         ; $e164: b0 1c     
+            LDA $d0,x          ; $e166: b5 d0     
             sec                ; $e168: 38        
             sbc $d0            ; $e169: e5 d0     
             clc                ; $e16b: 18        
             adc #$12           ; $e16c: 69 12     
-            cmp #$06           ; $e16e: c9 06     
-            bcs __e182         ; $e170: b0 10     
-            dec $0480,x        ; $e172: de 80 04  
-            bpl __e181         ; $e175: 10 0a     
-            lda $0410          ; $e177: ad 10 04  
+            CMP #$06           ; $e16e: c9 06     
+            BCS __e182         ; $e170: b0 10     
+            DEC $0480,x        ; $e172: de 80 04  
+            BPL __e181         ; $e175: 10 0a     
+            LDA $0410          ; $e177: ad 10 04  
             and #$10           ; $e17a: 29 10     
-            beq __e182         ; $e17c: f0 04     
-            inc $0480,x        ; $e17e: fe 80 04  
-__e181:     rts                ; $e181: 60        
+            BEQ __e182         ; $e17c: f0 04     
+            INC $0480,x        ; $e17e: fe 80 04  
+__e181:     RTS                ; $e181: 60        
 
 ;-------------------------------------------------------------------------------
-__e182:     lda #$3c           ; $e182: a9 3c     
-            sta $0480,x        ; $e184: 9d 80 04  
-            lda #$02           ; $e187: a9 02     
-            sta $b0,x          ; $e189: 95 b0     
-            rts                ; $e18b: 60        
+__e182:     LDA #$3c           ; $e182: a9 3c     
+            STA $0480,x        ; $e184: 9d 80 04  
+            LDA #$02           ; $e187: a9 02     
+            STA $b0,x          ; $e189: 95 b0     
+            RTS                ; $e18b: 60        
 
 ;-------------------------------------------------------------------------------
-__e18c:     stx $e4            ; $e18c: 86 e4     
-            lda $6e            ; $e18e: a5 6e     
-            cmp #$12           ; $e190: c9 12     
+__e18c:     STX $e4            ; $e18c: 86 e4     
+            LDA $6e            ; $e18e: a5 6e     
+            CMP #$12           ; $e190: c9 12     
             bcc __e196         ; $e192: 90 02     
-            lda #$12           ; $e194: a9 12     
+            LDA #$12           ; $e194: a9 12     
 __e196:     tax                ; $e196: aa        
-            ldy $0e            ; $e197: a4 0e     
-            lda $14            ; $e199: a5 14     
+            LDY $0e            ; $e197: a4 0e     
+            LDA $14            ; $e199: a5 14     
             asl                ; $e19b: 0a        
             asl                ; $e19c: 0a        
             asl                ; $e19d: 0a        
-            ora #$22           ; $e19e: 09 22     
-            sta $e0            ; $e1a0: 85 e0     
-            sta $0500,y        ; $e1a2: 99 00 05  
-            iny                ; $e1a5: c8        
-            lda #$0a           ; $e1a6: a9 0a     
-            sta $0500,y        ; $e1a8: 99 00 05  
-            iny                ; $e1ab: c8        
-            lda #$02           ; $e1ac: a9 02     
-            sta $0500,y        ; $e1ae: 99 00 05  
-            iny                ; $e1b1: c8        
-            lda __e2cd,x       ; $e1b2: bd cd e2  
-            sta $0500,y        ; $e1b5: 99 00 05  
-            iny                ; $e1b8: c8        
+            ORA #$22           ; $e19e: 09 22     
+            STA $e0            ; $e1a0: 85 e0     
+            STA $0500,y        ; $e1a2: 99 00 05  
+            INY                ; $e1a5: c8        
+            LDA #$0a           ; $e1a6: a9 0a     
+            STA $0500,y        ; $e1a8: 99 00 05  
+            INY                ; $e1ab: c8        
+            LDA #$02           ; $e1ac: a9 02     
+            STA $0500,y        ; $e1ae: 99 00 05  
+            INY                ; $e1b1: c8        
+            LDA __e2cd,x       ; $e1b2: bd cd e2  
+            STA $0500,y        ; $e1b5: 99 00 05  
+            INY                ; $e1b8: c8        
             clc                ; $e1b9: 18        
             adc #$02           ; $e1ba: 69 02     
-            sta $0500,y        ; $e1bc: 99 00 05  
-            iny                ; $e1bf: c8        
-            lda $e0            ; $e1c0: a5 e0     
-            sta $0500,y        ; $e1c2: 99 00 05  
-            iny                ; $e1c5: c8        
-            lda #$2a           ; $e1c6: a9 2a     
-            sta $0500,y        ; $e1c8: 99 00 05  
-            iny                ; $e1cb: c8        
-            lda #$02           ; $e1cc: a9 02     
-            sta $0500,y        ; $e1ce: 99 00 05  
-            iny                ; $e1d1: c8        
-            lda __e2cd,x       ; $e1d2: bd cd e2  
+            STA $0500,y        ; $e1bc: 99 00 05  
+            INY                ; $e1bf: c8        
+            LDA $e0            ; $e1c0: a5 e0     
+            STA $0500,y        ; $e1c2: 99 00 05  
+            INY                ; $e1c5: c8        
+            LDA #$2a           ; $e1c6: a9 2a     
+            STA $0500,y        ; $e1c8: 99 00 05  
+            INY                ; $e1cb: c8        
+            LDA #$02           ; $e1cc: a9 02     
+            STA $0500,y        ; $e1ce: 99 00 05  
+            INY                ; $e1d1: c8        
+            LDA __e2cd,x       ; $e1d2: bd cd e2  
             clc                ; $e1d5: 18        
             adc #$01           ; $e1d6: 69 01     
-            sta $0500,y        ; $e1d8: 99 00 05  
-            iny                ; $e1db: c8        
+            STA $0500,y        ; $e1d8: 99 00 05  
+            INY                ; $e1db: c8        
             clc                ; $e1dc: 18        
             adc #$02           ; $e1dd: 69 02     
-            sta $0500,y        ; $e1df: 99 00 05  
-            iny                ; $e1e2: c8        
-            lda #$00           ; $e1e3: a9 00     
-            sta $0500,y        ; $e1e5: 99 00 05  
-            sty $0e            ; $e1e8: 84 0e     
-            ldy #$00           ; $e1ea: a0 00     
-__e1ec:     lda $00a0,y        ; $e1ec: b9 a0 00  
-            beq __e1f5         ; $e1ef: f0 04     
-            iny                ; $e1f1: c8        
-            jmp __e1ec         ; $e1f2: 4c ec e1  
+            STA $0500,y        ; $e1df: 99 00 05  
+            INY                ; $e1e2: c8        
+            LDA #$00           ; $e1e3: a9 00     
+            STA $0500,y        ; $e1e5: 99 00 05  
+            STY $0e            ; $e1e8: 84 0e     
+            LDY #$00           ; $e1ea: a0 00     
+__e1ec:     LDA $00a0,y        ; $e1ec: b9 a0 00  
+            BEQ __e1f5         ; $e1ef: f0 04     
+            INY                ; $e1f1: c8        
+            JMP __e1ec         ; $e1f2: 4c ec e1  
 
 ;-------------------------------------------------------------------------------
-__e1f5:     lda #$0a           ; $e1f5: a9 0a     
-            sta $00a0,y        ; $e1f7: 99 a0 00  
-            lda #$50           ; $e1fa: a9 50     
-            sta $00c0,y        ; $e1fc: 99 c0 00  
-            lda #$60           ; $e1ff: a9 60     
-            sta $00d0,y        ; $e201: 99 d0 00  
-            lda #$00           ; $e204: a9 00     
-            sta $00b0,y        ; $e206: 99 b0 00  
-            lda #$f0           ; $e209: a9 f0     
-            sta $0480,y        ; $e20b: 99 80 04  
-            lda #$01           ; $e20e: a9 01     
-            sta $0470,y        ; $e210: 99 70 04  
-            lda __e2e1,x       ; $e213: bd e1 e2  
-            sta $0460,y        ; $e216: 99 60 04  
-            sty $42            ; $e219: 84 42     
-            ldx $e4            ; $e21b: a6 e4     
-            rts                ; $e21d: 60        
+__e1f5:     LDA #$0a           ; $e1f5: a9 0a     
+            STA $00a0,y        ; $e1f7: 99 a0 00  
+            LDA #$50           ; $e1fa: a9 50     
+            STA $00c0,y        ; $e1fc: 99 c0 00  
+            LDA #$60           ; $e1ff: a9 60     
+            STA $00d0,y        ; $e201: 99 d0 00  
+            LDA #$00           ; $e204: a9 00     
+            STA $00b0,y        ; $e206: 99 b0 00  
+            LDA #$f0           ; $e209: a9 f0     
+            STA $0480,y        ; $e20b: 99 80 04  
+            LDA #$01           ; $e20e: a9 01     
+            STA $0470,y        ; $e210: 99 70 04  
+            LDA __e2e1,x       ; $e213: bd e1 e2  
+            STA $0460,y        ; $e216: 99 60 04  
+            STY $42            ; $e219: 84 42     
+            LDX $e4            ; $e21b: a6 e4     
+            RTS                ; $e21d: 60        
 
 ;-------------------------------------------------------------------------------
-            lda $b0,x          ; $e21e: b5 b0     
-            bne __e278         ; $e220: d0 56     
-            lda $c0            ; $e222: a5 c0     
+            LDA $b0,x          ; $e21e: b5 b0     
+            BNE __e278         ; $e220: d0 56     
+            LDA $c0            ; $e222: a5 c0     
             sec                ; $e224: 38        
             sbc #$48           ; $e225: e9 48     
-            cmp #$11           ; $e227: c9 11     
-            bcs __e266         ; $e229: b0 3b     
-            lda $d0            ; $e22b: a5 d0     
+            CMP #$11           ; $e227: c9 11     
+            BCS __e266         ; $e229: b0 3b     
+            LDA $d0            ; $e22b: a5 d0     
             sec                ; $e22d: 38        
             sbc #$58           ; $e22e: e9 58     
-            cmp #$11           ; $e230: c9 11     
-            bcs __e266         ; $e232: b0 32     
-            jsr __e284         ; $e234: 20 84 e2  
-            lda #$01           ; $e237: a9 01     
-            sta $b0,x          ; $e239: 95 b0     
-            sta $05ed          ; $e23b: 8d ed 05  
-            lda #$96           ; $e23e: a9 96     
-            sta $0480,x        ; $e240: 9d 80 04  
-            lda $6e            ; $e243: a5 6e     
+            CMP #$11           ; $e230: c9 11     
+            BCS __e266         ; $e232: b0 32     
+            JSR __e284         ; $e234: 20 84 e2  
+            LDA #$01           ; $e237: a9 01     
+            STA $b0,x          ; $e239: 95 b0     
+            STA $05ed          ; $e23b: 8d ed 05  
+            LDA #$96           ; $e23e: a9 96     
+            STA $0480,x        ; $e240: 9d 80 04  
+            LDA $6e            ; $e243: a5 6e     
             sec                ; $e245: 38        
             sbc #$04           ; $e246: e9 04     
             bcc __e25a         ; $e248: 90 10     
-            lsr                ; $e24a: 4a        
+            LSR                ; $e24a: 4a        
             clc                ; $e24b: 18        
             adc #$01           ; $e24c: 69 01     
-            cmp #$08           ; $e24e: c9 08     
+            CMP #$08           ; $e24e: c9 08     
             bcc __e254         ; $e250: 90 02     
-            lda #$08           ; $e252: a9 08     
-__e254:     jsr __ed88         ; $e254: 20 88 ed  
-            jmp __e70d         ; $e257: 4c 0d e7  
+            LDA #$08           ; $e252: a9 08     
+__e254:     JSR __ed88         ; $e254: 20 88 ed  
+            JMP __e70d         ; $e257: 4c 0d e7  
 
 ;-------------------------------------------------------------------------------
-__e25a:     lda $6e            ; $e25a: a5 6e     
+__e25a:     LDA $6e            ; $e25a: a5 6e     
             clc                ; $e25c: 18        
             adc #$01           ; $e25d: 69 01     
             asl                ; $e25f: 0a        
-            jsr __ed83         ; $e260: 20 83 ed  
-            jmp __e70d         ; $e263: 4c 0d e7  
+            JSR __ed83         ; $e260: 20 83 ed  
+            JMP __e70d         ; $e263: 4c 0d e7  
 
 ;-------------------------------------------------------------------------------
-__e266:     lda $10            ; $e266: a5 10     
-            lsr                ; $e268: 4a        
+__e266:     LDA $10            ; $e266: a5 10     
+            LSR                ; $e268: 4a        
             bcc __e277         ; $e269: 90 0c     
-            dec $0480,x        ; $e26b: de 80 04  
-            bne __e277         ; $e26e: d0 07     
-            jsr __e284         ; $e270: 20 84 e2  
-            lda #$00           ; $e273: a9 00     
-            sta $a0,x          ; $e275: 95 a0     
-__e277:     rts                ; $e277: 60        
+            DEC $0480,x        ; $e26b: de 80 04  
+            BNE __e277         ; $e26e: d0 07     
+            JSR __e284         ; $e270: 20 84 e2  
+            LDA #$00           ; $e273: a9 00     
+            STA $a0,x          ; $e275: 95 a0     
+__e277:     RTS                ; $e277: 60        
 
 ;-------------------------------------------------------------------------------
-__e278:     dec $0480,x        ; $e278: de 80 04  
-            bne __e281         ; $e27b: d0 04     
-            lda #$00           ; $e27d: a9 00     
-            sta $a0,x          ; $e27f: 95 a0     
-__e281:     jmp __e70d         ; $e281: 4c 0d e7  
+__e278:     DEC $0480,x        ; $e278: de 80 04  
+            BNE __e281         ; $e27b: d0 04     
+            LDA #$00           ; $e27d: a9 00     
+            STA $a0,x          ; $e27f: 95 a0     
+__e281:     JMP __e70d         ; $e281: 4c 0d e7  
 
 ;-------------------------------------------------------------------------------
-__e284:     ldy $0e            ; $e284: a4 0e     
-            lda $14            ; $e286: a5 14     
+__e284:     LDY $0e            ; $e284: a4 0e     
+            LDA $14            ; $e286: a5 14     
             asl                ; $e288: 0a        
             asl                ; $e289: 0a        
             asl                ; $e28a: 0a        
-            ora #$22           ; $e28b: 09 22     
-            sta $e0            ; $e28d: 85 e0     
-            sta $0500,y        ; $e28f: 99 00 05  
-            iny                ; $e292: c8        
-            lda #$0a           ; $e293: a9 0a     
-            sta $0500,y        ; $e295: 99 00 05  
-            iny                ; $e298: c8        
-            lda #$02           ; $e299: a9 02     
-            sta $0500,y        ; $e29b: 99 00 05  
-            iny                ; $e29e: c8        
-            lda #$54           ; $e29f: a9 54     
-            sta $0500,y        ; $e2a1: 99 00 05  
-            iny                ; $e2a4: c8        
-            sta $0500,y        ; $e2a5: 99 00 05  
-            iny                ; $e2a8: c8        
-            lda $e0            ; $e2a9: a5 e0     
-            sta $0500,y        ; $e2ab: 99 00 05  
-            iny                ; $e2ae: c8        
-            lda #$2a           ; $e2af: a9 2a     
-            sta $0500,y        ; $e2b1: 99 00 05  
-            iny                ; $e2b4: c8        
-            lda #$02           ; $e2b5: a9 02     
-            sta $0500,y        ; $e2b7: 99 00 05  
-            iny                ; $e2ba: c8        
-            lda #$54           ; $e2bb: a9 54     
-            sta $0500,y        ; $e2bd: 99 00 05  
-            iny                ; $e2c0: c8        
-            sta $0500,y        ; $e2c1: 99 00 05  
-            iny                ; $e2c4: c8        
-            lda #$00           ; $e2c5: a9 00     
-            sta $0500,y        ; $e2c7: 99 00 05  
-            sty $0e            ; $e2ca: 84 0e     
-            rts                ; $e2cc: 60        
+            ORA #$22           ; $e28b: 09 22     
+            STA $e0            ; $e28d: 85 e0     
+            STA $0500,y        ; $e28f: 99 00 05  
+            INY                ; $e292: c8        
+            LDA #$0a           ; $e293: a9 0a     
+            STA $0500,y        ; $e295: 99 00 05  
+            INY                ; $e298: c8        
+            LDA #$02           ; $e299: a9 02     
+            STA $0500,y        ; $e29b: 99 00 05  
+            INY                ; $e29e: c8        
+            LDA #$54           ; $e29f: a9 54     
+            STA $0500,y        ; $e2a1: 99 00 05  
+            INY                ; $e2a4: c8        
+            STA $0500,y        ; $e2a5: 99 00 05  
+            INY                ; $e2a8: c8        
+            LDA $e0            ; $e2a9: a5 e0     
+            STA $0500,y        ; $e2ab: 99 00 05  
+            INY                ; $e2ae: c8        
+            LDA #$2a           ; $e2af: a9 2a     
+            STA $0500,y        ; $e2b1: 99 00 05  
+            INY                ; $e2b4: c8        
+            LDA #$02           ; $e2b5: a9 02     
+            STA $0500,y        ; $e2b7: 99 00 05  
+            INY                ; $e2ba: c8        
+            LDA #$54           ; $e2bb: a9 54     
+            STA $0500,y        ; $e2bd: 99 00 05  
+            INY                ; $e2c0: c8        
+            STA $0500,y        ; $e2c1: 99 00 05  
+            INY                ; $e2c4: c8        
+            LDA #$00           ; $e2c5: a9 00     
+            STA $0500,y        ; $e2c7: 99 00 05  
+            STY $0e            ; $e2ca: 84 0e     
+            RTS                ; $e2cc: 60        
 
 ;-------------------------------------------------------------------------------
 __e2cd:     .hex 5c 5c 64 70   ; $e2cd: 5c 5c 64 70   Data
@@ -4596,300 +4596,300 @@ __e2e1:     .hex 36 36 38 39   ; $e2e1: 36 36 38 39   Data
             .hex 41 41 42 42   ; $e2f1: 41 41 42 42   Data
 
 ;-------------------------------------------------------------------------------
-__e2f5:     lda $6e            ; $e2f5: a5 6e     
-            cmp #$1c           ; $e2f7: c9 1c     
+__e2f5:     LDA $6e            ; $e2f5: a5 6e     
+            CMP #$1c           ; $e2f7: c9 1c     
             bcc __e2fd         ; $e2f9: 90 02     
-            lda #$1c           ; $e2fb: a9 1c     
-__e2fd:     lsr                ; $e2fd: 4a        
+            LDA #$1c           ; $e2fb: a9 1c     
+__e2fd:     LSR                ; $e2fd: 4a        
             tay                ; $e2fe: a8        
-            ldx #$01           ; $e2ff: a2 01     
-            lda __e50a,y       ; $e301: b9 0a e5  
-            lsr                ; $e304: 4a        
-            lsr                ; $e305: 4a        
-            lsr                ; $e306: 4a        
-            lsr                ; $e307: 4a        
+            LDX #$01           ; $e2ff: a2 01     
+            LDA __e50a,y       ; $e301: b9 0a e5  
+            LSR                ; $e304: 4a        
+            LSR                ; $e305: 4a        
+            LSR                ; $e306: 4a        
+            LSR                ; $e307: 4a        
 __e308:     and #$0f           ; $e308: 29 0f     
-            bne __e30e         ; $e30a: d0 02     
-            lda #$04           ; $e30c: a9 04     
-__e30e:     sta $04b0,x        ; $e30e: 9d b0 04  
+            BNE __e30e         ; $e30a: d0 02     
+            LDA #$04           ; $e30c: a9 04     
+__e30e:     STA $04b0,x        ; $e30e: 9d b0 04  
             clc                ; $e311: 18        
             adc __e50a,y       ; $e312: 79 0a e5  
-            inx                ; $e315: e8        
-            cpx #$09           ; $e316: e0 09     
-            bne __e308         ; $e318: d0 ee     
-            lda $6e            ; $e31a: a5 6e     
-            cmp #$10           ; $e31c: c9 10     
+            INX                ; $e315: e8        
+            CPX #$09           ; $e316: e0 09     
+            BNE __e308         ; $e318: d0 ee     
+            LDA $6e            ; $e31a: a5 6e     
+            CMP #$10           ; $e31c: c9 10     
             bcc __e325         ; $e31e: 90 05     
             and #$03           ; $e320: 29 03     
             clc                ; $e322: 18        
             adc #$0c           ; $e323: 69 0c     
 __e325:     asl                ; $e325: 0a        
             tax                ; $e326: aa        
-            lda __e519,x       ; $e327: bd 19 e5  
-            sta $ea            ; $e32a: 85 ea     
-            lda __e51a,x       ; $e32c: bd 1a e5  
-            sta $eb            ; $e32f: 85 eb     
-            ldy #$00           ; $e331: a0 00     
-            lda ($ea),y        ; $e333: b1 ea     
-            sta $61            ; $e335: 85 61     
-            iny                ; $e337: c8        
-__e338:     lda ($ea),y        ; $e338: b1 ea     
-            sta $009f,y        ; $e33a: 99 9f 00  
-            iny                ; $e33d: c8        
-            cpy #$0f           ; $e33e: c0 0f     
-            bne __e338         ; $e340: d0 f6     
-__e342:     ldx #$00           ; $e342: a2 00     
-__e344:     lda ($ea),y        ; $e344: b1 ea     
-            sta $e0            ; $e346: 85 e0     
+            LDA __e519,x       ; $e327: bd 19 e5  
+            STA $ea            ; $e32a: 85 ea     
+            LDA __e51a,x       ; $e32c: bd 1a e5  
+            STA $eb            ; $e32f: 85 eb     
+            LDY #$00           ; $e331: a0 00     
+            LDA ($ea),y        ; $e333: b1 ea     
+            STA $61            ; $e335: 85 61     
+            INY                ; $e337: c8        
+__e338:     LDA ($ea),y        ; $e338: b1 ea     
+            STA $009f,y        ; $e33a: 99 9f 00  
+            INY                ; $e33d: c8        
+            CPY #$0f           ; $e33e: c0 0f     
+            BNE __e338         ; $e340: d0 f6     
+__e342:     LDX #$00           ; $e342: a2 00     
+__e344:     LDA ($ea),y        ; $e344: b1 ea     
+            STA $e0            ; $e346: 85 e0     
             and #$f0           ; $e348: 29 f0     
-            sta $c0,x          ; $e34a: 95 c0     
-            lda $e0            ; $e34c: a5 e0     
+            STA $c0,x          ; $e34a: 95 c0     
+            LDA $e0            ; $e34c: a5 e0     
             asl                ; $e34e: 0a        
             asl                ; $e34f: 0a        
             asl                ; $e350: 0a        
             asl                ; $e351: 0a        
-            sta $d0,x          ; $e352: 95 d0     
-            iny                ; $e354: c8        
-            lda $a0,x          ; $e355: b5 a0     
-            beq __e37c         ; $e357: f0 23     
-            sty $e0            ; $e359: 84 e0     
+            STA $d0,x          ; $e352: 95 d0     
+            INY                ; $e354: c8        
+            LDA $a0,x          ; $e355: b5 a0     
+            BEQ __e37c         ; $e357: f0 23     
+            STY $e0            ; $e359: 84 e0     
             tay                ; $e35b: a8        
-            lda __e557,y       ; $e35c: b9 57 e5  
-            sta $0460,x        ; $e35f: 9d 60 04  
-            lda __e558,y       ; $e362: b9 58 e5  
-            sta $0470,x        ; $e365: 9d 70 04  
-            ldy $e0            ; $e368: a4 e0     
-            lda #$00           ; $e36a: a9 00     
-            sta $b0,x          ; $e36c: 95 b0     
-            sta $04a0,x        ; $e36e: 9d a0 04  
-            sta $0410,x        ; $e371: 9d 10 04  
-            sta $0480,x        ; $e374: 9d 80 04  
-            lda #$04           ; $e377: a9 04     
-            sta $0400,x        ; $e379: 9d 00 04  
-__e37c:     inx                ; $e37c: e8        
-            cpx #$0e           ; $e37d: e0 0e     
-            bne __e344         ; $e37f: d0 c3     
-            rts                ; $e381: 60        
+            LDA __e557,y       ; $e35c: b9 57 e5  
+            STA $0460,x        ; $e35f: 9d 60 04  
+            LDA __e558,y       ; $e362: b9 58 e5  
+            STA $0470,x        ; $e365: 9d 70 04  
+            LDY $e0            ; $e368: a4 e0     
+            LDA #$00           ; $e36a: a9 00     
+            STA $b0,x          ; $e36c: 95 b0     
+            STA $04a0,x        ; $e36e: 9d a0 04  
+            STA $0410,x        ; $e371: 9d 10 04  
+            STA $0480,x        ; $e374: 9d 80 04  
+            LDA #$04           ; $e377: a9 04     
+            STA $0400,x        ; $e379: 9d 00 04  
+__e37c:     INX                ; $e37c: e8        
+            CPX #$0e           ; $e37d: e0 0e     
+            BNE __e344         ; $e37f: d0 c3     
+            RTS                ; $e381: 60        
 
 ;-------------------------------------------------------------------------------
-__e382:     ldx #$09           ; $e382: a2 09     
-__e384:     jsr __f01c         ; $e384: 20 1c f0  
+__e382:     LDX #$09           ; $e382: a2 09     
+__e384:     JSR __f01c         ; $e384: 20 1c f0  
             and #$03           ; $e387: 29 03     
             clc                ; $e389: 18        
             adc #$04           ; $e38a: 69 04     
-            sta $04b0,x        ; $e38c: 9d b0 04  
-            dex                ; $e38f: ca        
-            bne __e384         ; $e390: d0 f2     
-            lda $6e            ; $e392: a5 6e     
-            cmp #$10           ; $e394: c9 10     
+            STA $04b0,x        ; $e38c: 9d b0 04  
+            DEX                ; $e38f: ca        
+            BNE __e384         ; $e390: d0 f2     
+            LDA $6e            ; $e392: a5 6e     
+            CMP #$10           ; $e394: c9 10     
             bcc __e39d         ; $e396: 90 05     
             and #$03           ; $e398: 29 03     
             clc                ; $e39a: 18        
             adc #$0c           ; $e39b: 69 0c     
 __e39d:     asl                ; $e39d: 0a        
             tax                ; $e39e: aa        
-            lda __e539,x       ; $e39f: bd 39 e5  
-            sta $ea            ; $e3a2: 85 ea     
-            lda __e53a,x       ; $e3a4: bd 3a e5  
-            sta $eb            ; $e3a7: 85 eb     
-            ldy #$00           ; $e3a9: a0 00     
-            jmp __e342         ; $e3ab: 4c 42 e3  
+            LDA __e539,x       ; $e39f: bd 39 e5  
+            STA $ea            ; $e3a2: 85 ea     
+            LDA __e53a,x       ; $e3a4: bd 3a e5  
+            STA $eb            ; $e3a7: 85 eb     
+            LDY #$00           ; $e3a9: a0 00     
+            JMP __e342         ; $e3ab: 4c 42 e3  
 
 ;-------------------------------------------------------------------------------
-            inc $44            ; $e3ae: e6 44     
-            lda $b0            ; $e3b0: a5 b0     
-            cmp #$0a           ; $e3b2: c9 0a     
-            bcs __e3cd         ; $e3b4: b0 17     
-            lda $1f            ; $e3b6: a5 1f     
-            ora $05f5          ; $e3b8: 0d f5 05  
-            bne __e3cd         ; $e3bb: d0 10     
-            lda $b0,x          ; $e3bd: b5 b0     
-            cmp #$03           ; $e3bf: c9 03     
+            INC $44            ; $e3ae: e6 44     
+            LDA $b0            ; $e3b0: a5 b0     
+            CMP #$0a           ; $e3b2: c9 0a     
+            BCS __e3cd         ; $e3b4: b0 17     
+            LDA $1f            ; $e3b6: a5 1f     
+            ORA $05f5          ; $e3b8: 0d f5 05  
+            BNE __e3cd         ; $e3bb: d0 10     
+            LDA $b0,x          ; $e3bd: b5 b0     
+            CMP #$03           ; $e3bf: c9 03     
             bcc __e3cb         ; $e3c1: 90 08     
-            cmp #$0c           ; $e3c3: c9 0c     
-            beq __e3cb         ; $e3c5: f0 04     
-            cmp #$0e           ; $e3c7: c9 0e     
-            bne __e3cd         ; $e3c9: d0 02     
-__e3cb:     inc $43            ; $e3cb: e6 43     
-__e3cd:     lda $b0            ; $e3cd: a5 b0     
-            cmp #$06           ; $e3cf: c9 06     
-            bcs __e3e1         ; $e3d1: b0 0e     
-            lda $b0,x          ; $e3d3: b5 b0     
-            cmp #$12           ; $e3d5: c9 12     
-            beq __e40a         ; $e3d7: f0 31     
+            CMP #$0c           ; $e3c3: c9 0c     
+            BEQ __e3cb         ; $e3c5: f0 04     
+            CMP #$0e           ; $e3c7: c9 0e     
+            BNE __e3cd         ; $e3c9: d0 02     
+__e3cb:     INC $43            ; $e3cb: e6 43     
+__e3cd:     LDA $b0            ; $e3cd: a5 b0     
+            CMP #$06           ; $e3cf: c9 06     
+            BCS __e3e1         ; $e3d1: b0 0e     
+            LDA $b0,x          ; $e3d3: b5 b0     
+            CMP #$12           ; $e3d5: c9 12     
+            BEQ __e40a         ; $e3d7: f0 31     
             and #$0f           ; $e3d9: 29 0f     
-            beq __e3e4         ; $e3db: f0 07     
-            cmp #$0c           ; $e3dd: c9 0c     
-            beq __e3e4         ; $e3df: f0 03     
-__e3e1:     jmp __d793         ; $e3e1: 4c 93 d7  
+            BEQ __e3e4         ; $e3db: f0 07     
+            CMP #$0c           ; $e3dd: c9 0c     
+            BEQ __e3e4         ; $e3df: f0 03     
+__e3e1:     JMP __d793         ; $e3e1: 4c 93 d7  
 
 ;-------------------------------------------------------------------------------
-__e3e4:     lda $c0            ; $e3e4: a5 c0     
+__e3e4:     LDA $c0            ; $e3e4: a5 c0     
             sec                ; $e3e6: 38        
             sbc $c0,x          ; $e3e7: f5 c0     
-            bpl __e3f0         ; $e3e9: 10 05     
-            eor #$ff           ; $e3eb: 49 ff     
+            BPL __e3f0         ; $e3e9: 10 05     
+            EOR #$ff           ; $e3eb: 49 ff     
             clc                ; $e3ed: 18        
             adc #$01           ; $e3ee: 69 01     
-__e3f0:     sta $e0            ; $e3f0: 85 e0     
-            lda $d0            ; $e3f2: a5 d0     
+__e3f0:     STA $e0            ; $e3f0: 85 e0     
+            LDA $d0            ; $e3f2: a5 d0     
             sec                ; $e3f4: 38        
             sbc $d0,x          ; $e3f5: f5 d0     
-            bpl __e3fe         ; $e3f7: 10 05     
-            eor #$ff           ; $e3f9: 49 ff     
+            BPL __e3fe         ; $e3f7: 10 05     
+            EOR #$ff           ; $e3f9: 49 ff     
             clc                ; $e3fb: 18        
             adc #$01           ; $e3fc: 69 01     
 __e3fe:     clc                ; $e3fe: 18        
             adc $e0            ; $e3ff: 65 e0     
-            bcs __e407         ; $e401: b0 04     
-            cmp #$09           ; $e403: c9 09     
+            BCS __e407         ; $e401: b0 04     
+            CMP #$09           ; $e403: c9 09     
             bcc __e444         ; $e405: 90 3d     
-__e407:     jmp __d793         ; $e407: 4c 93 d7  
+__e407:     JMP __d793         ; $e407: 4c 93 d7  
 
 ;-------------------------------------------------------------------------------
-__e40a:     lda $d0            ; $e40a: a5 d0     
+__e40a:     LDA $d0            ; $e40a: a5 d0     
             sec                ; $e40c: 38        
             sbc $d0,x          ; $e40d: f5 d0     
             clc                ; $e40f: 18        
             adc #$06           ; $e410: 69 06     
-            cmp #$0d           ; $e412: c9 0d     
-            bcs __e407         ; $e414: b0 f1     
-            lda $c0            ; $e416: a5 c0     
+            CMP #$0d           ; $e412: c9 0d     
+            BCS __e407         ; $e414: b0 f1     
+            LDA $c0            ; $e416: a5 c0     
             sec                ; $e418: 38        
             sbc $c0,x          ; $e419: f5 c0     
             clc                ; $e41b: 18        
             adc #$06           ; $e41c: 69 06     
-            sta $e0            ; $e41e: 85 e0     
-            lda $0410,x        ; $e420: bd 10 04  
-            lsr                ; $e423: 4a        
+            STA $e0            ; $e41e: 85 e0     
+            LDA $0410,x        ; $e420: bd 10 04  
+            LSR                ; $e423: 4a        
             and #$01           ; $e424: 29 01     
             tay                ; $e426: a8        
-            lda $04d0,x        ; $e427: bd d0 04  
+            LDA $04d0,x        ; $e427: bd d0 04  
             asl                ; $e42a: 0a        
             asl                ; $e42b: 0a        
             asl                ; $e42c: 0a        
             asl                ; $e42d: 0a        
-            sta $e1            ; $e42e: 85 e1     
+            STA $e1            ; $e42e: 85 e1     
             adc #$0d           ; $e430: 69 0d     
-            sta $e2            ; $e432: 85 e2     
-            dey                ; $e434: 88        
-            beq __e43e         ; $e435: f0 07     
-            lda $e1            ; $e437: a5 e1     
+            STA $e2            ; $e432: 85 e2     
+            DEY                ; $e434: 88        
+            BEQ __e43e         ; $e435: f0 07     
+            LDA $e1            ; $e437: a5 e1     
             clc                ; $e439: 18        
             adc $e0            ; $e43a: 65 e0     
-            sta $e0            ; $e43c: 85 e0     
-__e43e:     lda $e0            ; $e43e: a5 e0     
-            cmp $e2            ; $e440: c5 e2     
-            bcs __e407         ; $e442: b0 c3     
-__e444:     lda #$01           ; $e444: a9 01     
-            sta $05e1          ; $e446: 8d e1 05  
-            sta $05e2          ; $e449: 8d e2 05  
-            sta $1f            ; $e44c: 85 1f     
-            lda #$3c           ; $e44e: a9 3c     
-            sta $0480          ; $e450: 8d 80 04  
-            lda #$0c           ; $e453: a9 0c     
-            sta $b0            ; $e455: 85 b0     
-            jmp __d793         ; $e457: 4c 93 d7  
+            STA $e0            ; $e43c: 85 e0     
+__e43e:     LDA $e0            ; $e43e: a5 e0     
+            CMP $e2            ; $e440: c5 e2     
+            BCS __e407         ; $e442: b0 c3     
+__e444:     LDA #$01           ; $e444: a9 01     
+            STA $05e1          ; $e446: 8d e1 05  
+            STA $05e2          ; $e449: 8d e2 05  
+            STA $1f            ; $e44c: 85 1f     
+            LDA #$3c           ; $e44e: a9 3c     
+            STA $0480          ; $e450: 8d 80 04  
+            LDA #$0c           ; $e453: a9 0c     
+            STA $b0            ; $e455: 85 b0     
+            JMP __d793         ; $e457: 4c 93 d7  
 
 ;-------------------------------------------------------------------------------
-__e45a:     ldx #$00           ; $e45a: a2 00     
-            lda $41            ; $e45c: a5 41     
-            sta $40            ; $e45e: 85 40     
-            stx $41            ; $e460: 86 41     
-            sta $43            ; $e462: 85 43     
-            jsr __e4f9         ; $e464: 20 f9 e4  
-            lda #$00           ; $e467: a9 00     
-            sta $44            ; $e469: 85 44     
-            lda $10            ; $e46b: a5 10     
-            lsr                ; $e46d: 4a        
-            bcs __e47c         ; $e46e: b0 0c     
-            inx                ; $e470: e8        
-__e471:     jsr __e4f9         ; $e471: 20 f9 e4  
-            inx                ; $e474: e8        
-            cpx #$0e           ; $e475: e0 0e     
-            bne __e471         ; $e477: d0 f8     
-            jmp __e484         ; $e479: 4c 84 e4  
+__e45a:     LDX #$00           ; $e45a: a2 00     
+            LDA $41            ; $e45c: a5 41     
+            STA $40            ; $e45e: 85 40     
+            STX $41            ; $e460: 86 41     
+            STA $43            ; $e462: 85 43     
+            JSR __e4f9         ; $e464: 20 f9 e4  
+            LDA #$00           ; $e467: a9 00     
+            STA $44            ; $e469: 85 44     
+            LDA $10            ; $e46b: a5 10     
+            LSR                ; $e46d: 4a        
+            BCS __e47c         ; $e46e: b0 0c     
+            INX                ; $e470: e8        
+__e471:     JSR __e4f9         ; $e471: 20 f9 e4  
+            INX                ; $e474: e8        
+            CPX #$0e           ; $e475: e0 0e     
+            BNE __e471         ; $e477: d0 f8     
+            JMP __e484         ; $e479: 4c 84 e4  
 
 ;-------------------------------------------------------------------------------
-__e47c:     ldx #$0d           ; $e47c: a2 0d     
-__e47e:     jsr __e4f9         ; $e47e: 20 f9 e4  
-            dex                ; $e481: ca        
-            bne __e47e         ; $e482: d0 fa     
-__e484:     lda $43            ; $e484: a5 43     
-            beq __e498         ; $e486: f0 10     
-            lda $1f            ; $e488: a5 1f     
-            beq __e491         ; $e48a: f0 05     
-            lda #$00           ; $e48c: a9 00     
-            jmp __e498         ; $e48e: 4c 98 e4  
+__e47c:     LDX #$0d           ; $e47c: a2 0d     
+__e47e:     JSR __e4f9         ; $e47e: 20 f9 e4  
+            DEX                ; $e481: ca        
+            BNE __e47e         ; $e482: d0 fa     
+__e484:     LDA $43            ; $e484: a5 43     
+            BEQ __e498         ; $e486: f0 10     
+            LDA $1f            ; $e488: a5 1f     
+            BEQ __e491         ; $e48a: f0 05     
+            LDA #$00           ; $e48c: a9 00     
+            JMP __e498         ; $e48e: 4c 98 e4  
 
 ;-------------------------------------------------------------------------------
-__e491:     lda $05f7          ; $e491: ad f7 05  
-            bne __e498         ; $e494: d0 02     
-            lda #$01           ; $e496: a9 01     
-__e498:     sta $05f7          ; $e498: 8d f7 05  
-            ldx #$fc           ; $e49b: a2 fc     
-__e49d:     lda $0700,x        ; $e49d: bd 00 07  
+__e491:     LDA $05f7          ; $e491: ad f7 05  
+            BNE __e498         ; $e494: d0 02     
+            LDA #$01           ; $e496: a9 01     
+__e498:     STA $05f7          ; $e498: 8d f7 05  
+            LDX #$fc           ; $e49b: a2 fc     
+__e49d:     LDA $0700,x        ; $e49d: bd 00 07  
             sec                ; $e4a0: 38        
             sbc $d0            ; $e4a1: e5 d0     
             sec                ; $e4a3: 38        
             sbc #$08           ; $e4a4: e9 08     
-            cmp #$1f           ; $e4a6: c9 1f     
-            bcs __e4b7         ; $e4a8: b0 0d     
-            lda $0703,x        ; $e4aa: bd 03 07  
+            CMP #$1f           ; $e4a6: c9 1f     
+            BCS __e4b7         ; $e4a8: b0 0d     
+            LDA $0703,x        ; $e4aa: bd 03 07  
             sec                ; $e4ad: 38        
             sbc $c0            ; $e4ae: e5 c0     
             clc                ; $e4b0: 18        
             adc #$07           ; $e4b1: 69 07     
-            cmp #$1f           ; $e4b3: c9 1f     
+            CMP #$1f           ; $e4b3: c9 1f     
             bcc __e4be         ; $e4b5: 90 07     
-__e4b7:     dex                ; $e4b7: ca        
-            dex                ; $e4b8: ca        
-            dex                ; $e4b9: ca        
-            dex                ; $e4ba: ca        
-            bne __e49d         ; $e4bb: d0 e0     
-            rts                ; $e4bd: 60        
+__e4b7:     DEX                ; $e4b7: ca        
+            DEX                ; $e4b8: ca        
+            DEX                ; $e4b9: ca        
+            DEX                ; $e4ba: ca        
+            BNE __e49d         ; $e4bb: d0 e0     
+            RTS                ; $e4bd: 60        
 
 ;-------------------------------------------------------------------------------
-__e4be:     lda $0701,x        ; $e4be: bd 01 07  
-            cmp #$e2           ; $e4c1: c9 e2     
-            bcs __e4b7         ; $e4c3: b0 f2     
-            cmp #$5c           ; $e4c5: c9 5c     
+__e4be:     LDA $0701,x        ; $e4be: bd 01 07  
+            CMP #$e2           ; $e4c1: c9 e2     
+            BCS __e4b7         ; $e4c3: b0 f2     
+            CMP #$5c           ; $e4c5: c9 5c     
             bcc __e4b7         ; $e4c7: 90 ee     
-            ldy #$00           ; $e4c9: a0 00     
-__e4cb:     lda $0700,y        ; $e4cb: b9 00 07  
-            sta $0100,y        ; $e4ce: 99 00 01  
-            iny                ; $e4d1: c8        
-            cpy $4a            ; $e4d2: c4 4a     
-            bne __e4cb         ; $e4d4: d0 f5     
-            inx                ; $e4d6: e8        
-            inx                ; $e4d7: e8        
-            inx                ; $e4d8: e8        
-            inx                ; $e4d9: e8        
-            stx $e0            ; $e4da: 86 e0     
-            ldx #$00           ; $e4dc: a2 00     
-__e4de:     lda $0700,y        ; $e4de: b9 00 07  
-            sta $0700,x        ; $e4e1: 9d 00 07  
-            inx                ; $e4e4: e8        
-            iny                ; $e4e5: c8        
-            cpy $e0            ; $e4e6: c4 e0     
-            bne __e4de         ; $e4e8: d0 f4     
-            ldy #$00           ; $e4ea: a0 00     
-__e4ec:     lda $0100,y        ; $e4ec: b9 00 01  
-            sta $0700,x        ; $e4ef: 9d 00 07  
-            inx                ; $e4f2: e8        
-            iny                ; $e4f3: c8        
-            cpy $4a            ; $e4f4: c4 4a     
-            bne __e4ec         ; $e4f6: d0 f4     
-            rts                ; $e4f8: 60        
+            LDY #$00           ; $e4c9: a0 00     
+__e4cb:     LDA $0700,y        ; $e4cb: b9 00 07  
+            STA $0100,y        ; $e4ce: 99 00 01  
+            INY                ; $e4d1: c8        
+            CPY $4a            ; $e4d2: c4 4a     
+            BNE __e4cb         ; $e4d4: d0 f5     
+            INX                ; $e4d6: e8        
+            INX                ; $e4d7: e8        
+            INX                ; $e4d8: e8        
+            INX                ; $e4d9: e8        
+            STX $e0            ; $e4da: 86 e0     
+            LDX #$00           ; $e4dc: a2 00     
+__e4de:     LDA $0700,y        ; $e4de: b9 00 07  
+            STA $0700,x        ; $e4e1: 9d 00 07  
+            INX                ; $e4e4: e8        
+            INY                ; $e4e5: c8        
+            CPY $e0            ; $e4e6: c4 e0     
+            BNE __e4de         ; $e4e8: d0 f4     
+            LDY #$00           ; $e4ea: a0 00     
+__e4ec:     LDA $0100,y        ; $e4ec: b9 00 01  
+            STA $0700,x        ; $e4ef: 9d 00 07  
+            INX                ; $e4f2: e8        
+            INY                ; $e4f3: c8        
+            CPY $4a            ; $e4f4: c4 4a     
+            BNE __e4ec         ; $e4f6: d0 f4     
+            RTS                ; $e4f8: 60        
 
 ;-------------------------------------------------------------------------------
 __e4f9:     .hex bd a0 00      ; $e4f9: bd a0 00  Bad Addr Mode - LDA $00a0,x
             tay                ; $e4fc: a8        
-            lda __e563,y       ; $e4fd: b9 63 e5  
-            sta $ea            ; $e500: 85 ea     
-            lda __e564,y       ; $e502: b9 64 e5  
-            sta $eb            ; $e505: 85 eb     
-            jmp ($00ea)        ; $e507: 6c ea 00  
+            LDA __e563,y       ; $e4fd: b9 63 e5  
+            STA $ea            ; $e500: 85 ea     
+            LDA __e564,y       ; $e502: b9 64 e5  
+            STA $eb            ; $e505: 85 eb     
+            JMP ($00ea)        ; $e507: 6c ea 00  
 
 ;-------------------------------------------------------------------------------
 __e50a:     .hex 32 42 62 82   ; $e50a: 32 42 62 82   Data
@@ -4924,7 +4924,7 @@ __e564:     .hex e5 c8 cd ae   ; $e564: e5 c8 cd ae   Data
             .hex de 1e e2      ; $e56c: de 1e e2      Data
 
 ;-------------------------------------------------------------------------------
-            rts                ; $e56f: 60        
+            RTS                ; $e56f: 60        
 
 ;-------------------------------------------------------------------------------
             .hex 04 02 04 04   ; $e570: 04 02 04 04   Data
@@ -5033,109 +5033,109 @@ __e564:     .hex e5 c8 cd ae   ; $e564: e5 c8 cd ae   Data
             .hex 87            ; $e70c: 87            Data
 
 ;-------------------------------------------------------------------------------
-__e70d:     lda $0460,x        ; $e70d: bd 60 04  
+__e70d:     LDA $0460,x        ; $e70d: bd 60 04  
             asl                ; $e710: 0a        
             tay                ; $e711: a8        
-            lda __e816,y       ; $e712: b9 16 e8  
-            sta $e0            ; $e715: 85 e0     
-            lda __e817,y       ; $e717: b9 17 e8  
-            sta $e1            ; $e71a: 85 e1     
-            ldy #$00           ; $e71c: a0 00     
-            lda $c0,x          ; $e71e: b5 c0     
-            sta $e2            ; $e720: 85 e2     
-            lda $d0,x          ; $e722: b5 d0     
-            sta $e3            ; $e724: 85 e3     
-            lda $0470,x        ; $e726: bd 70 04  
-            sta $e4            ; $e729: 85 e4     
-            stx $e5            ; $e72b: 86 e5     
-            cpx #$00           ; $e72d: e0 00     
-            bne __e737         ; $e72f: d0 06     
-            lda ($e0),y        ; $e731: b1 e0     
+            LDA __e816,y       ; $e712: b9 16 e8  
+            STA $e0            ; $e715: 85 e0     
+            LDA __e817,y       ; $e717: b9 17 e8  
+            STA $e1            ; $e71a: 85 e1     
+            LDY #$00           ; $e71c: a0 00     
+            LDA $c0,x          ; $e71e: b5 c0     
+            STA $e2            ; $e720: 85 e2     
+            LDA $d0,x          ; $e722: b5 d0     
+            STA $e3            ; $e724: 85 e3     
+            LDA $0470,x        ; $e726: bd 70 04  
+            STA $e4            ; $e729: 85 e4     
+            STX $e5            ; $e72b: 86 e5     
+            CPX #$00           ; $e72d: e0 00     
+            BNE __e737         ; $e72f: d0 06     
+            LDA ($e0),y        ; $e731: b1 e0     
             asl                ; $e733: 0a        
             asl                ; $e734: 0a        
-            sta $4a            ; $e735: 85 4a     
-__e737:     lda ($e0),y        ; $e737: b1 e0     
-            sta $e6            ; $e739: 85 e6     
+            STA $4a            ; $e735: 85 4a     
+__e737:     LDA ($e0),y        ; $e737: b1 e0     
+            STA $e6            ; $e739: 85 e6     
             tax                ; $e73b: aa        
-            iny                ; $e73c: c8        
-            lda ($e0),y        ; $e73d: b1 e0     
-            sta $e7            ; $e73f: 85 e7     
-__e741:     iny                ; $e741: c8        
-            lda ($e0),y        ; $e742: b1 e0     
-            sta $38,x          ; $e744: 95 38     
-            dex                ; $e746: ca        
-            bne __e741         ; $e747: d0 f8     
-            lda $e4            ; $e749: a5 e4     
-            lsr                ; $e74b: 4a        
-            lsr                ; $e74c: 4a        
-            lsr                ; $e74d: 4a        
-            lsr                ; $e74e: 4a        
-            lsr                ; $e74f: 4a        
+            INY                ; $e73c: c8        
+            LDA ($e0),y        ; $e73d: b1 e0     
+            STA $e7            ; $e73f: 85 e7     
+__e741:     INY                ; $e741: c8        
+            LDA ($e0),y        ; $e742: b1 e0     
+            STA $38,x          ; $e744: 95 38     
+            DEX                ; $e746: ca        
+            BNE __e741         ; $e747: d0 f8     
+            LDA $e4            ; $e749: a5 e4     
+            LSR                ; $e74b: 4a        
+            LSR                ; $e74c: 4a        
+            LSR                ; $e74d: 4a        
+            LSR                ; $e74e: 4a        
+            LSR                ; $e74f: 4a        
             and #$06           ; $e750: 29 06     
             tay                ; $e752: a8        
-            lda __e8a2,y       ; $e753: b9 a2 e8  
-            sta $e8            ; $e756: 85 e8     
-            lda __e8a3,y       ; $e758: b9 a3 e8  
-            sta $e9            ; $e75b: 85 e9     
-            ldy $e7            ; $e75d: a4 e7     
-            lda $e5            ; $e75f: a5 e5     
-            beq __e768         ; $e761: f0 05     
-            lda $10            ; $e763: a5 10     
-            lsr                ; $e765: 4a        
-            bcs __e7b6         ; $e766: b0 4e     
-__e768:     ldx $e6            ; $e768: a6 e6     
-            lda $38,x          ; $e76a: b5 38     
-            sta $ea            ; $e76c: 85 ea     
-            lda $0f            ; $e76e: a5 0f     
-            bne __e77c         ; $e770: d0 0a     
-            lda $0700          ; $e772: ad 00 07  
-            cmp #$f0           ; $e775: c9 f0     
-            beq __e77c         ; $e777: f0 03     
-            ldx $e5            ; $e779: a6 e5     
-            rts                ; $e77b: 60        
+            LDA __e8a2,y       ; $e753: b9 a2 e8  
+            STA $e8            ; $e756: 85 e8     
+            LDA __e8a3,y       ; $e758: b9 a3 e8  
+            STA $e9            ; $e75b: 85 e9     
+            LDY $e7            ; $e75d: a4 e7     
+            LDA $e5            ; $e75f: a5 e5     
+            BEQ __e768         ; $e761: f0 05     
+            LDA $10            ; $e763: a5 10     
+            LSR                ; $e765: 4a        
+            BCS __e7b6         ; $e766: b0 4e     
+__e768:     LDX $e6            ; $e768: a6 e6     
+            LDA $38,x          ; $e76a: b5 38     
+            STA $ea            ; $e76c: 85 ea     
+            LDA $0f            ; $e76e: a5 0f     
+            BNE __e77c         ; $e770: d0 0a     
+            LDA $0700          ; $e772: ad 00 07  
+            CMP #$f0           ; $e775: c9 f0     
+            BEQ __e77c         ; $e777: f0 03     
+            LDX $e5            ; $e779: a6 e5     
+            RTS                ; $e77b: 60        
 
 ;-------------------------------------------------------------------------------
-__e77c:     ldx $0f            ; $e77c: a6 0f     
-            lda ($e8),y        ; $e77e: b1 e8     
-            iny                ; $e780: c8        
+__e77c:     LDX $0f            ; $e77c: a6 0f     
+            LDA ($e8),y        ; $e77e: b1 e8     
+            INY                ; $e780: c8        
             clc                ; $e781: 18        
             adc $e3            ; $e782: 65 e3     
-            sta $0700,x        ; $e784: 9d 00 07  
-            lda $ea            ; $e787: a5 ea     
-            sta $0701,x        ; $e789: 9d 01 07  
-            lda ($e8),y        ; $e78c: b1 e8     
-            iny                ; $e78e: c8        
-            eor $e4            ; $e78f: 45 e4     
-            sta $0702,x        ; $e791: 9d 02 07  
-            lda ($e8),y        ; $e794: b1 e8     
-            iny                ; $e796: c8        
+            STA $0700,x        ; $e784: 9d 00 07  
+            LDA $ea            ; $e787: a5 ea     
+            STA $0701,x        ; $e789: 9d 01 07  
+            LDA ($e8),y        ; $e78c: b1 e8     
+            INY                ; $e78e: c8        
+            EOR $e4            ; $e78f: 45 e4     
+            STA $0702,x        ; $e791: 9d 02 07  
+            LDA ($e8),y        ; $e794: b1 e8     
+            INY                ; $e796: c8        
             clc                ; $e797: 18        
             adc $e2            ; $e798: 65 e2     
-            sta $0703,x        ; $e79a: 9d 03 07  
-            cmp #$e0           ; $e79d: c9 e0     
+            STA $0703,x        ; $e79a: 9d 03 07  
+            CMP #$e0           ; $e79d: c9 e0     
             bcc __e7a9         ; $e79f: 90 08     
-            lda #$f0           ; $e7a1: a9 f0     
-            sta $0700,x        ; $e7a3: 9d 00 07  
-            jmp __e7ad         ; $e7a6: 4c ad e7  
+            LDA #$f0           ; $e7a1: a9 f0     
+            STA $0700,x        ; $e7a3: 9d 00 07  
+            JMP __e7ad         ; $e7a6: 4c ad e7  
 
 ;-------------------------------------------------------------------------------
-__e7a9:     inx                ; $e7a9: e8        
-            inx                ; $e7aa: e8        
-            inx                ; $e7ab: e8        
-            inx                ; $e7ac: e8        
-__e7ad:     stx $0f            ; $e7ad: 86 0f     
-            dec $e6            ; $e7af: c6 e6     
-            bne __e768         ; $e7b1: d0 b5     
-            ldx $e5            ; $e7b3: a6 e5     
-            rts                ; $e7b5: 60        
+__e7a9:     INX                ; $e7a9: e8        
+            INX                ; $e7aa: e8        
+            INX                ; $e7ab: e8        
+            INX                ; $e7ac: e8        
+__e7ad:     STX $0f            ; $e7ad: 86 0f     
+            DEC $e6            ; $e7af: c6 e6     
+            BNE __e768         ; $e7b1: d0 b5     
+            LDX $e5            ; $e7b3: a6 e5     
+            RTS                ; $e7b5: 60        
 
 ;-------------------------------------------------------------------------------
-__e7b6:     lda #$00           ; $e7b6: a9 00     
-            sta $e7            ; $e7b8: 85 e7     
-__e7ba:     ldx $e6            ; $e7ba: a6 e6     
-            lda $38,x          ; $e7bc: b5 38     
-            sta $ea            ; $e7be: 85 ea     
-            lda $e6            ; $e7c0: a5 e6     
+__e7b6:     LDA #$00           ; $e7b6: a9 00     
+            STA $e7            ; $e7b8: 85 e7     
+__e7ba:     LDX $e6            ; $e7ba: a6 e6     
+            LDA $38,x          ; $e7bc: b5 38     
+            STA $ea            ; $e7be: 85 ea     
+            LDA $e6            ; $e7c0: a5 e6     
             asl                ; $e7c2: 0a        
             asl                ; $e7c3: 0a        
             clc                ; $e7c4: 18        
@@ -5143,50 +5143,50 @@ __e7ba:     ldx $e6            ; $e7ba: a6 e6
             sec                ; $e7c7: 38        
             sbc #$04           ; $e7c8: e9 04     
             tax                ; $e7ca: aa        
-            lda $0700,x        ; $e7cb: bd 00 07  
-            cmp #$f0           ; $e7ce: c9 f0     
-            bne __e803         ; $e7d0: d0 31     
-            inc $e7            ; $e7d2: e6 e7     
-            lda ($e8),y        ; $e7d4: b1 e8     
-            iny                ; $e7d6: c8        
+            LDA $0700,x        ; $e7cb: bd 00 07  
+            CMP #$f0           ; $e7ce: c9 f0     
+            BNE __e803         ; $e7d0: d0 31     
+            INC $e7            ; $e7d2: e6 e7     
+            LDA ($e8),y        ; $e7d4: b1 e8     
+            INY                ; $e7d6: c8        
             clc                ; $e7d7: 18        
             adc $e3            ; $e7d8: 65 e3     
-            sta $0700,x        ; $e7da: 9d 00 07  
-            lda $ea            ; $e7dd: a5 ea     
-            sta $0701,x        ; $e7df: 9d 01 07  
-            lda ($e8),y        ; $e7e2: b1 e8     
-            iny                ; $e7e4: c8        
-            eor $e4            ; $e7e5: 45 e4     
-            sta $0702,x        ; $e7e7: 9d 02 07  
-            lda ($e8),y        ; $e7ea: b1 e8     
-            iny                ; $e7ec: c8        
+            STA $0700,x        ; $e7da: 9d 00 07  
+            LDA $ea            ; $e7dd: a5 ea     
+            STA $0701,x        ; $e7df: 9d 01 07  
+            LDA ($e8),y        ; $e7e2: b1 e8     
+            INY                ; $e7e4: c8        
+            EOR $e4            ; $e7e5: 45 e4     
+            STA $0702,x        ; $e7e7: 9d 02 07  
+            LDA ($e8),y        ; $e7ea: b1 e8     
+            INY                ; $e7ec: c8        
             clc                ; $e7ed: 18        
             adc $e2            ; $e7ee: 65 e2     
-            sta $0703,x        ; $e7f0: 9d 03 07  
-            cmp #$e0           ; $e7f3: c9 e0     
+            STA $0703,x        ; $e7f0: 9d 03 07  
+            CMP #$e0           ; $e7f3: c9 e0     
             bcc __e7fc         ; $e7f5: 90 05     
-            lda #$f0           ; $e7f7: a9 f0     
-            sta $0700,x        ; $e7f9: 9d 00 07  
-__e7fc:     dec $e6            ; $e7fc: c6 e6     
-            bne __e7ba         ; $e7fe: d0 ba     
-            jmp __e80a         ; $e800: 4c 0a e8  
+            LDA #$f0           ; $e7f7: a9 f0     
+            STA $0700,x        ; $e7f9: 9d 00 07  
+__e7fc:     DEC $e6            ; $e7fc: c6 e6     
+            BNE __e7ba         ; $e7fe: d0 ba     
+            JMP __e80a         ; $e800: 4c 0a e8  
 
 ;-------------------------------------------------------------------------------
-__e803:     iny                ; $e803: c8        
-            iny                ; $e804: c8        
-            iny                ; $e805: c8        
-            dec $e6            ; $e806: c6 e6     
-            bne __e7ba         ; $e808: d0 b0     
+__e803:     INY                ; $e803: c8        
+            INY                ; $e804: c8        
+            INY                ; $e805: c8        
+            DEC $e6            ; $e806: c6 e6     
+            BNE __e7ba         ; $e808: d0 b0     
 
 ;-------------------------------------------------------------------------------
-__e80a:     lda $e7            ; $e80a: a5 e7     
+__e80a:     LDA $e7            ; $e80a: a5 e7     
             asl                ; $e80c: 0a        
             asl                ; $e80d: 0a        
             clc                ; $e80e: 18        
             adc $0f            ; $e80f: 65 0f     
-            sta $0f            ; $e811: 85 0f     
-            ldx $e5            ; $e813: a6 e5     
-            rts                ; $e815: 60        
+            STA $0f            ; $e811: 85 0f     
+            LDX $e5            ; $e813: a6 e5     
+            RTS                ; $e815: 60        
 
 ;-------------------------------------------------------------------------------
 __e816:     .hex aa            ; $e816: aa            Data
@@ -5461,377 +5461,377 @@ __e8a3:     .hex e9 84 ea 1a   ; $e8a3: e9 84 ea 1a   Data
             .hex 17 00 02      ; $ec43: 17 00 02      Data
 
 ;-------------------------------------------------------------------------------
-            lda $d0,x          ; $ec46: b5 d0     
-            sta $ed            ; $ec48: 85 ed     
-            lda $c0,x          ; $ec4a: b5 c0     
-            cmp #$b1           ; $ec4c: c9 b1     
+            LDA $d0,x          ; $ec46: b5 d0     
+            STA $ed            ; $ec48: 85 ed     
+            LDA $c0,x          ; $ec4a: b5 c0     
+            CMP #$b1           ; $ec4c: c9 b1     
             bcc __ec57         ; $ec4e: 90 07     
-            lda #$00           ; $ec50: a9 00     
-            sta $e2            ; $ec52: 85 e2     
-            inc $e2            ; $ec54: e6 e2     
-            rts                ; $ec56: 60        
+            LDA #$00           ; $ec50: a9 00     
+            STA $e2            ; $ec52: 85 e2     
+            INC $e2            ; $ec54: e6 e2     
+            RTS                ; $ec56: 60        
 
 ;-------------------------------------------------------------------------------
 __ec57:     clc                ; $ec57: 18        
             adc #$03           ; $ec58: 69 03     
-            sta $ec            ; $ec5a: 85 ec     
-__ec5c:     lda $ed            ; $ec5c: a5 ed     
+            STA $ec            ; $ec5a: 85 ec     
+__ec5c:     LDA $ed            ; $ec5c: a5 ed     
             and #$f0           ; $ec5e: 29 f0     
-            lsr                ; $ec60: 4a        
-            sta $e0            ; $ec61: 85 e0     
-            lsr                ; $ec63: 4a        
+            LSR                ; $ec60: 4a        
+            STA $e0            ; $ec61: 85 e0     
+            LSR                ; $ec63: 4a        
             adc $e0            ; $ec64: 65 e0     
-            sta $e0            ; $ec66: 85 e0     
-            lda $ec            ; $ec68: a5 ec     
+            STA $e0            ; $ec66: 85 e0     
+            LDA $ec            ; $ec68: a5 ec     
             clc                ; $ec6a: 18        
             adc #$09           ; $ec6b: 69 09     
-            lsr                ; $ec6d: 4a        
-            lsr                ; $ec6e: 4a        
-            sta $e1            ; $ec6f: 85 e1     
-            lsr                ; $ec71: 4a        
-            lsr                ; $ec72: 4a        
+            LSR                ; $ec6d: 4a        
+            LSR                ; $ec6e: 4a        
+            STA $e1            ; $ec6f: 85 e1     
+            LSR                ; $ec71: 4a        
+            LSR                ; $ec72: 4a        
             clc                ; $ec73: 18        
             adc $e0            ; $ec74: 65 e0     
-            sta $e0            ; $ec76: 85 e0     
+            STA $e0            ; $ec76: 85 e0     
             tay                ; $ec78: a8        
-            lda $e1            ; $ec79: a5 e1     
+            LDA $e1            ; $ec79: a5 e1     
             and #$03           ; $ec7b: 29 03     
-            sta $e1            ; $ec7d: 85 e1     
-            lda $0200,y        ; $ec7f: b9 00 02  
-            sta $e2            ; $ec82: 85 e2     
+            STA $e1            ; $ec7d: 85 e1     
+            LDA $0200,y        ; $ec7f: b9 00 02  
+            STA $e2            ; $ec82: 85 e2     
             asl                ; $ec84: 0a        
             asl                ; $ec85: 0a        
             clc                ; $ec86: 18        
             adc $e1            ; $ec87: 65 e1     
             tay                ; $ec89: a8        
-            lda __f7cf,y       ; $ec8a: b9 cf f7  
-            rts                ; $ec8d: 60        
+            LDA __f7cf,y       ; $ec8a: b9 cf f7  
+            RTS                ; $ec8d: 60        
 
 ;-------------------------------------------------------------------------------
-            lda $d0,x          ; $ec8e: b5 d0     
-            sta $ed            ; $ec90: 85 ed     
-            lda $c0,x          ; $ec92: b5 c0     
-            bne __ec9d         ; $ec94: d0 07     
-            lda #$00           ; $ec96: a9 00     
-            sta $e2            ; $ec98: 85 e2     
-            inc $e2            ; $ec9a: e6 e2     
-            rts                ; $ec9c: 60        
+            LDA $d0,x          ; $ec8e: b5 d0     
+            STA $ed            ; $ec90: 85 ed     
+            LDA $c0,x          ; $ec92: b5 c0     
+            BNE __ec9d         ; $ec94: d0 07     
+            LDA #$00           ; $ec96: a9 00     
+            STA $e2            ; $ec98: 85 e2     
+            INC $e2            ; $ec9a: e6 e2     
+            RTS                ; $ec9c: 60        
 
 ;-------------------------------------------------------------------------------
 __ec9d:     sec                ; $ec9d: 38        
             sbc #$03           ; $ec9e: e9 03     
-            sta $ec            ; $eca0: 85 ec     
-__eca2:     lda $ed            ; $eca2: a5 ed     
+            STA $ec            ; $eca0: 85 ec     
+__eca2:     LDA $ed            ; $eca2: a5 ed     
             and #$f0           ; $eca4: 29 f0     
-            lsr                ; $eca6: 4a        
-            sta $e0            ; $eca7: 85 e0     
-            lsr                ; $eca9: 4a        
+            LSR                ; $eca6: 4a        
+            STA $e0            ; $eca7: 85 e0     
+            LSR                ; $eca9: 4a        
             adc $e0            ; $ecaa: 65 e0     
-            sta $e0            ; $ecac: 85 e0     
-            lda $ec            ; $ecae: a5 ec     
+            STA $e0            ; $ecac: 85 e0     
+            LDA $ec            ; $ecae: a5 ec     
             clc                ; $ecb0: 18        
             adc #$06           ; $ecb1: 69 06     
-            lsr                ; $ecb3: 4a        
-            lsr                ; $ecb4: 4a        
-            sta $e1            ; $ecb5: 85 e1     
-            lsr                ; $ecb7: 4a        
-            lsr                ; $ecb8: 4a        
+            LSR                ; $ecb3: 4a        
+            LSR                ; $ecb4: 4a        
+            STA $e1            ; $ecb5: 85 e1     
+            LSR                ; $ecb7: 4a        
+            LSR                ; $ecb8: 4a        
             clc                ; $ecb9: 18        
             adc $e0            ; $ecba: 65 e0     
-            sta $e0            ; $ecbc: 85 e0     
+            STA $e0            ; $ecbc: 85 e0     
             tay                ; $ecbe: a8        
-            lda $e1            ; $ecbf: a5 e1     
+            LDA $e1            ; $ecbf: a5 e1     
             and #$03           ; $ecc1: 29 03     
-            eor #$03           ; $ecc3: 49 03     
-            sta $e1            ; $ecc5: 85 e1     
-            lda $0200,y        ; $ecc7: b9 00 02  
-            sta $e2            ; $ecca: 85 e2     
+            EOR #$03           ; $ecc3: 49 03     
+            STA $e1            ; $ecc5: 85 e1     
+            LDA $0200,y        ; $ecc7: b9 00 02  
+            STA $e2            ; $ecca: 85 e2     
             asl                ; $eccc: 0a        
             asl                ; $eccd: 0a        
             clc                ; $ecce: 18        
             adc $e1            ; $eccf: 65 e1     
             tay                ; $ecd1: a8        
-            lda $e1            ; $ecd2: a5 e1     
-            eor #$03           ; $ecd4: 49 03     
-            sta $e1            ; $ecd6: 85 e1     
-            lda __f99f,y       ; $ecd8: b9 9f f9  
-            rts                ; $ecdb: 60        
+            LDA $e1            ; $ecd2: a5 e1     
+            EOR #$03           ; $ecd4: 49 03     
+            STA $e1            ; $ecd6: 85 e1     
+            LDA __f99f,y       ; $ecd8: b9 9f f9  
+            RTS                ; $ecdb: 60        
 
 ;-------------------------------------------------------------------------------
-            lda $c0,x          ; $ecdc: b5 c0     
-            sta $ec            ; $ecde: 85 ec     
-            lda $d0,x          ; $ece0: b5 d0     
-            bne __ece6         ; $ece2: d0 02     
-            lda #$04           ; $ece4: a9 04     
-__ece6:     cmp #$c1           ; $ece6: c9 c1     
+            LDA $c0,x          ; $ecdc: b5 c0     
+            STA $ec            ; $ecde: 85 ec     
+            LDA $d0,x          ; $ece0: b5 d0     
+            BNE __ece6         ; $ece2: d0 02     
+            LDA #$04           ; $ece4: a9 04     
+__ece6:     CMP #$c1           ; $ece6: c9 c1     
             bcc __ecf1         ; $ece8: 90 07     
-            lda #$00           ; $ecea: a9 00     
-            sta $e2            ; $ecec: 85 e2     
-            inc $e2            ; $ecee: e6 e2     
-            rts                ; $ecf0: 60        
+            LDA #$00           ; $ecea: a9 00     
+            STA $e2            ; $ecec: 85 e2     
+            INC $e2            ; $ecee: e6 e2     
+            RTS                ; $ecf0: 60        
 
 ;-------------------------------------------------------------------------------
 __ecf1:     clc                ; $ecf1: 18        
             adc #$03           ; $ecf2: 69 03     
-            sta $ed            ; $ecf4: 85 ed     
-__ecf6:     lda $ed            ; $ecf6: a5 ed     
+            STA $ed            ; $ecf4: 85 ed     
+__ecf6:     LDA $ed            ; $ecf6: a5 ed     
             clc                ; $ecf8: 18        
             adc #$09           ; $ecf9: 69 09     
-            sta $e1            ; $ecfb: 85 e1     
+            STA $e1            ; $ecfb: 85 e1     
             and #$f0           ; $ecfd: 29 f0     
-            lsr                ; $ecff: 4a        
-            sta $e0            ; $ed00: 85 e0     
-            lsr                ; $ed02: 4a        
+            LSR                ; $ecff: 4a        
+            STA $e0            ; $ed00: 85 e0     
+            LSR                ; $ed02: 4a        
             adc $e0            ; $ed03: 65 e0     
-            sta $e0            ; $ed05: 85 e0     
-            lda $ec            ; $ed07: a5 ec     
+            STA $e0            ; $ed05: 85 e0     
+            LDA $ec            ; $ed07: a5 ec     
             and #$f0           ; $ed09: 29 f0     
-            lsr                ; $ed0b: 4a        
-            lsr                ; $ed0c: 4a        
-            lsr                ; $ed0d: 4a        
-            lsr                ; $ed0e: 4a        
+            LSR                ; $ed0b: 4a        
+            LSR                ; $ed0c: 4a        
+            LSR                ; $ed0d: 4a        
+            LSR                ; $ed0e: 4a        
             clc                ; $ed0f: 18        
             adc $e0            ; $ed10: 65 e0     
-            sta $e0            ; $ed12: 85 e0     
+            STA $e0            ; $ed12: 85 e0     
             tay                ; $ed14: a8        
-            lda $e1            ; $ed15: a5 e1     
-            lsr                ; $ed17: 4a        
-            lsr                ; $ed18: 4a        
+            LDA $e1            ; $ed15: a5 e1     
+            LSR                ; $ed17: 4a        
+            LSR                ; $ed18: 4a        
             and #$03           ; $ed19: 29 03     
-            sta $e1            ; $ed1b: 85 e1     
-            lda $0200,y        ; $ed1d: b9 00 02  
-            sta $e2            ; $ed20: 85 e2     
+            STA $e1            ; $ed1b: 85 e1     
+            LDA $0200,y        ; $ed1d: b9 00 02  
+            STA $e2            ; $ed20: 85 e2     
             asl                ; $ed22: 0a        
             asl                ; $ed23: 0a        
             clc                ; $ed24: 18        
             adc $e1            ; $ed25: 65 e1     
             tay                ; $ed27: a8        
-            lda __fa87,y       ; $ed28: b9 87 fa  
-            rts                ; $ed2b: 60        
+            LDA __fa87,y       ; $ed28: b9 87 fa  
+            RTS                ; $ed2b: 60        
 
 ;-------------------------------------------------------------------------------
-            lda $c0,x          ; $ed2c: b5 c0     
-            sta $ec            ; $ed2e: 85 ec     
-            lda $d0,x          ; $ed30: b5 d0     
-            bne __ed3b         ; $ed32: d0 07     
-            lda #$00           ; $ed34: a9 00     
-            sta $e2            ; $ed36: 85 e2     
-            inc $e2            ; $ed38: e6 e2     
-            rts                ; $ed3a: 60        
+            LDA $c0,x          ; $ed2c: b5 c0     
+            STA $ec            ; $ed2e: 85 ec     
+            LDA $d0,x          ; $ed30: b5 d0     
+            BNE __ed3b         ; $ed32: d0 07     
+            LDA #$00           ; $ed34: a9 00     
+            STA $e2            ; $ed36: 85 e2     
+            INC $e2            ; $ed38: e6 e2     
+            RTS                ; $ed3a: 60        
 
 ;-------------------------------------------------------------------------------
 __ed3b:     sec                ; $ed3b: 38        
             sbc #$03           ; $ed3c: e9 03     
-            sta $ed            ; $ed3e: 85 ed     
-__ed40:     lda $ed            ; $ed40: a5 ed     
+            STA $ed            ; $ed3e: 85 ed     
+__ed40:     LDA $ed            ; $ed40: a5 ed     
             clc                ; $ed42: 18        
             adc #$06           ; $ed43: 69 06     
-            sta $e1            ; $ed45: 85 e1     
+            STA $e1            ; $ed45: 85 e1     
             and #$f0           ; $ed47: 29 f0     
-            lsr                ; $ed49: 4a        
-            sta $e0            ; $ed4a: 85 e0     
-            lsr                ; $ed4c: 4a        
+            LSR                ; $ed49: 4a        
+            STA $e0            ; $ed4a: 85 e0     
+            LSR                ; $ed4c: 4a        
             adc $e0            ; $ed4d: 65 e0     
-            sta $e0            ; $ed4f: 85 e0     
-            lda $ec            ; $ed51: a5 ec     
-            lsr                ; $ed53: 4a        
-            lsr                ; $ed54: 4a        
-            lsr                ; $ed55: 4a        
-            lsr                ; $ed56: 4a        
+            STA $e0            ; $ed4f: 85 e0     
+            LDA $ec            ; $ed51: a5 ec     
+            LSR                ; $ed53: 4a        
+            LSR                ; $ed54: 4a        
+            LSR                ; $ed55: 4a        
+            LSR                ; $ed56: 4a        
             clc                ; $ed57: 18        
             adc $e0            ; $ed58: 65 e0     
-            sta $e0            ; $ed5a: 85 e0     
+            STA $e0            ; $ed5a: 85 e0     
             tay                ; $ed5c: a8        
-            lda $e1            ; $ed5d: a5 e1     
-            lsr                ; $ed5f: 4a        
-            lsr                ; $ed60: 4a        
+            LDA $e1            ; $ed5d: a5 e1     
+            LSR                ; $ed5f: 4a        
+            LSR                ; $ed60: 4a        
             and #$03           ; $ed61: 29 03     
-            eor #$03           ; $ed63: 49 03     
-            sta $e1            ; $ed65: 85 e1     
-            lda $0200,y        ; $ed67: b9 00 02  
-            sta $e2            ; $ed6a: 85 e2     
+            EOR #$03           ; $ed63: 49 03     
+            STA $e1            ; $ed65: 85 e1     
+            LDA $0200,y        ; $ed67: b9 00 02  
+            STA $e2            ; $ed6a: 85 e2     
             asl                ; $ed6c: 0a        
             asl                ; $ed6d: 0a        
             clc                ; $ed6e: 18        
             adc $e1            ; $ed6f: 65 e1     
             tay                ; $ed71: a8        
-            lda $e1            ; $ed72: a5 e1     
-            eor #$03           ; $ed74: 49 03     
-            sta $e1            ; $ed76: 85 e1     
-            lda __f8b7,y       ; $ed78: b9 b7 f8  
-            rts                ; $ed7b: 60        
+            LDA $e1            ; $ed72: a5 e1     
+            EOR #$03           ; $ed74: 49 03     
+            STA $e1            ; $ed76: 85 e1     
+            LDA __f8b7,y       ; $ed78: b9 b7 f8  
+            RTS                ; $ed7b: 60        
 
 ;-------------------------------------------------------------------------------
-__ed7c:     ldy #$05           ; $ed7c: a0 05     
-            lda #$01           ; $ed7e: a9 01     
-            jmp __ed8a         ; $ed80: 4c 8a ed  
+__ed7c:     LDY #$05           ; $ed7c: a0 05     
+            LDA #$01           ; $ed7e: a9 01     
+            JMP __ed8a         ; $ed80: 4c 8a ed  
 
 ;-------------------------------------------------------------------------------
-__ed83:     ldy #$04           ; $ed83: a0 04     
-            jmp __ed8a         ; $ed85: 4c 8a ed  
+__ed83:     LDY #$04           ; $ed83: a0 04     
+            JMP __ed8a         ; $ed85: 4c 8a ed  
 
 ;-------------------------------------------------------------------------------
-__ed88:     ldy #$03           ; $ed88: a0 03     
-__ed8a:     dec $45            ; $ed8a: c6 45     
-            inc $45            ; $ed8c: e6 45     
-            beq __ed91         ; $ed8e: f0 01     
-            rts                ; $ed90: 60        
+__ed88:     LDY #$03           ; $ed88: a0 03     
+__ed8a:     DEC $45            ; $ed8a: c6 45     
+            INC $45            ; $ed8c: e6 45     
+            BEQ __ed91         ; $ed8e: f0 01     
+            RTS                ; $ed90: 60        
 
 ;-------------------------------------------------------------------------------
-__ed91:     inc $2c            ; $ed91: e6 2c     
-            sta $ee            ; $ed93: 85 ee     
-__ed95:     lda $ee            ; $ed95: a5 ee     
+__ed91:     INC $2c            ; $ed91: e6 2c     
+            STA $ee            ; $ed93: 85 ee     
+__ed95:     LDA $ee            ; $ed95: a5 ee     
             clc                ; $ed97: 18        
             adc ($27),y        ; $ed98: 71 27     
             pha                ; $ed9a: 48        
-            lda #$00           ; $ed9b: a9 00     
-            sta $ee            ; $ed9d: 85 ee     
+            LDA #$00           ; $ed9b: a9 00     
+            STA $ee            ; $ed9d: 85 ee     
             pla                ; $ed9f: 68        
-__eda0:     cmp #$0a           ; $eda0: c9 0a     
+__eda0:     CMP #$0a           ; $eda0: c9 0a     
             bcc __edac         ; $eda2: 90 08     
             sec                ; $eda4: 38        
             sbc #$0a           ; $eda5: e9 0a     
-            inc $ee            ; $eda7: e6 ee     
-            jmp __eda0         ; $eda9: 4c a0 ed  
+            INC $ee            ; $eda7: e6 ee     
+            JMP __eda0         ; $eda9: 4c a0 ed  
 
 ;-------------------------------------------------------------------------------
-__edac:     sta ($27),y        ; $edac: 91 27     
-            dey                ; $edae: 88        
-            bne __ed95         ; $edaf: d0 e4     
-            lda $ee            ; $edb1: a5 ee     
+__edac:     STA ($27),y        ; $edac: 91 27     
+            DEY                ; $edae: 88        
+            BNE __ed95         ; $edaf: d0 e4     
+            LDA $ee            ; $edb1: a5 ee     
             clc                ; $edb3: 18        
             adc ($27),y        ; $edb4: 71 27     
-            sta ($27),y        ; $edb6: 91 27     
-            ldy #$00           ; $edb8: a0 00     
-__edba:     lda ($27),y        ; $edba: b1 27     
-            cmp $0017,y        ; $edbc: d9 17 00  
+            STA ($27),y        ; $edb6: 91 27     
+            LDY #$00           ; $edb8: a0 00     
+__edba:     LDA ($27),y        ; $edba: b1 27     
+            CMP $0017,y        ; $edbc: d9 17 00  
             bcc __edd9         ; $edbf: 90 18     
-            bne __edcb         ; $edc1: d0 08     
-            iny                ; $edc3: c8        
-            cpy #$06           ; $edc4: c0 06     
-            bne __edba         ; $edc6: d0 f2     
-            jmp __edd9         ; $edc8: 4c d9 ed  
+            BNE __edcb         ; $edc1: d0 08     
+            INY                ; $edc3: c8        
+            CPY #$06           ; $edc4: c0 06     
+            BNE __edba         ; $edc6: d0 f2     
+            JMP __edd9         ; $edc8: 4c d9 ed  
 
 ;-------------------------------------------------------------------------------
-__edcb:     lda ($27),y        ; $edcb: b1 27     
-            sta $0017,y        ; $edcd: 99 17 00  
-            iny                ; $edd0: c8        
-            cpy #$06           ; $edd1: c0 06     
-            bne __edcb         ; $edd3: d0 f6     
-            lda #$80           ; $edd5: a9 80     
-            sta $2c            ; $edd7: 85 2c     
-__edd9:     ldy #$00           ; $edd9: a0 00     
-            lda ($27),y        ; $eddb: b1 27     
-            cmp #$02           ; $eddd: c9 02     
+__edcb:     LDA ($27),y        ; $edcb: b1 27     
+            STA $0017,y        ; $edcd: 99 17 00  
+            INY                ; $edd0: c8        
+            CPY #$06           ; $edd1: c0 06     
+            BNE __edcb         ; $edd3: d0 f6     
+            LDA #$80           ; $edd5: a9 80     
+            STA $2c            ; $edd7: 85 2c     
+__edd9:     LDY #$00           ; $edd9: a0 00     
+            LDA ($27),y        ; $eddb: b1 27     
+            CMP #$02           ; $eddd: c9 02     
             bcc __ede3         ; $eddf: 90 02     
-            lda #$02           ; $ede1: a9 02     
-__ede3:     sta $ee            ; $ede3: 85 ee     
+            LDA #$02           ; $ede1: a9 02     
+__ede3:     STA $ee            ; $ede3: 85 ee     
             asl                ; $ede5: 0a        
             asl                ; $ede6: 0a        
             adc $ee            ; $ede7: 65 ee     
-            sta $ee            ; $ede9: 85 ee     
+            STA $ee            ; $ede9: 85 ee     
             asl                ; $edeb: 0a        
-            asl                ; $edec: 0a        
+            asl                ; $eDEC: 0a        
             clc                ; $eded: 18        
             adc $ee            ; $edee: 65 ee     
             asl                ; $edf0: 0a        
             asl                ; $edf1: 0a        
-            sta $ee            ; $edf2: 85 ee     
-            iny                ; $edf4: c8        
-            lda ($27),y        ; $edf5: b1 27     
-            sta $ef            ; $edf7: 85 ef     
+            STA $ee            ; $edf2: 85 ee     
+            INY                ; $edf4: c8        
+            LDA ($27),y        ; $edf5: b1 27     
+            STA $ef            ; $edf7: 85 ef     
             asl                ; $edf9: 0a        
             asl                ; $edfa: 0a        
             adc $ef            ; $edfb: 65 ef     
             asl                ; $edfd: 0a        
             adc $ee            ; $edfe: 65 ee     
             bcc __ee04         ; $ee00: 90 02     
-            lda #$ff           ; $ee02: a9 ff     
-__ee04:     iny                ; $ee04: c8        
+            LDA #$ff           ; $ee02: a9 ff     
+__ee04:     INY                ; $ee04: c8        
             clc                ; $ee05: 18        
             adc ($27),y        ; $ee06: 71 27     
             bcc __ee0c         ; $ee08: 90 02     
-            lda #$ff           ; $ee0a: a9 ff     
-__ee0c:     cmp #$ff           ; $ee0c: c9 ff     
-            bne __ee12         ; $ee0e: d0 02     
-            lda #$fe           ; $ee10: a9 fe     
-__ee12:     cmp $62            ; $ee12: c5 62     
-            bcs __ee17         ; $ee14: b0 01     
-            rts                ; $ee16: 60        
+            LDA #$ff           ; $ee0a: a9 ff     
+__ee0c:     CMP #$ff           ; $ee0c: c9 ff     
+            BNE __ee12         ; $ee0e: d0 02     
+            LDA #$fe           ; $ee10: a9 fe     
+__ee12:     CMP $62            ; $ee12: c5 62     
+            BCS __ee17         ; $ee14: b0 01     
+            RTS                ; $ee16: 60        
 
 ;-------------------------------------------------------------------------------
-__ee17:     inc $60            ; $ee17: e6 60     
-            lda #$01           ; $ee19: a9 01     
-            sta $05e7          ; $ee1b: 8d e7 05  
-            sta $05e8          ; $ee1e: 8d e8 05  
-            lda $62            ; $ee21: a5 62     
-            cmp $29            ; $ee23: c5 29     
-            bne __ee2e         ; $ee25: d0 07     
-            lda $2a            ; $ee27: a5 2a     
-            sta $62            ; $ee29: 85 62     
-            jmp __ee37         ; $ee2b: 4c 37 ee  
+__ee17:     INC $60            ; $ee17: e6 60     
+            LDA #$01           ; $ee19: a9 01     
+            STA $05e7          ; $ee1b: 8d e7 05  
+            STA $05e8          ; $ee1e: 8d e8 05  
+            LDA $62            ; $ee21: a5 62     
+            CMP $29            ; $ee23: c5 29     
+            BNE __ee2e         ; $ee25: d0 07     
+            LDA $2a            ; $ee27: a5 2a     
+            STA $62            ; $ee29: 85 62     
+            JMP __ee37         ; $ee2b: 4c 37 ee  
 
 ;-------------------------------------------------------------------------------
 __ee2e:     clc                ; $ee2e: 18        
             adc $2b            ; $ee2f: 65 2b     
             bcc __ee35         ; $ee31: 90 02     
-            lda #$ff           ; $ee33: a9 ff     
-__ee35:     sta $62            ; $ee35: 85 62     
-__ee37:     lda $60            ; $ee37: a5 60     
+            LDA #$ff           ; $ee33: a9 ff     
+__ee35:     STA $62            ; $ee35: 85 62     
+__ee37:     LDA $60            ; $ee37: a5 60     
             sec                ; $ee39: 38        
             sbc #$02           ; $ee3a: e9 02     
-            cmp #$09           ; $ee3c: c9 09     
+            CMP #$09           ; $ee3c: c9 09     
             bcc __ee41         ; $ee3e: 90 01     
-            rts                ; $ee40: 60        
+            RTS                ; $ee40: 60        
 
 ;-------------------------------------------------------------------------------
 __ee41:     asl                ; $ee41: 0a        
             tay                ; $ee42: a8        
-            lda __ee9b,y       ; $ee43: b9 9b ee  
-            sta $ee            ; $ee46: 85 ee     
-            lda $14            ; $ee48: a5 14     
+            LDA __ee9b,y       ; $ee43: b9 9b ee  
+            STA $ee            ; $ee46: 85 ee     
+            LDA $14            ; $ee48: a5 14     
             asl                ; $ee4a: 0a        
             asl                ; $ee4b: 0a        
             asl                ; $ee4c: 0a        
-            ora __ee9c,y       ; $ee4d: 19 9c ee  
-            sta $ef            ; $ee50: 85 ef     
-            ldy $0e            ; $ee52: a4 0e     
-            lda $ef            ; $ee54: a5 ef     
-            sta $0500,y        ; $ee56: 99 00 05  
-            iny                ; $ee59: c8        
-            lda $ee            ; $ee5a: a5 ee     
-            sta $0500,y        ; $ee5c: 99 00 05  
-            iny                ; $ee5f: c8        
-            lda #$02           ; $ee60: a9 02     
-            sta $0500,y        ; $ee62: 99 00 05  
-            iny                ; $ee65: c8        
-            lda #$2c           ; $ee66: a9 2c     
-            sta $0500,y        ; $ee68: 99 00 05  
-            iny                ; $ee6b: c8        
-            lda #$2e           ; $ee6c: a9 2e     
-            sta $0500,y        ; $ee6e: 99 00 05  
-            iny                ; $ee71: c8        
-            lda $ef            ; $ee72: a5 ef     
-            sta $0500,y        ; $ee74: 99 00 05  
-            iny                ; $ee77: c8        
-            lda $ee            ; $ee78: a5 ee     
+            ORA __ee9c,y       ; $ee4d: 19 9c ee  
+            STA $ef            ; $ee50: 85 ef     
+            LDY $0e            ; $ee52: a4 0e     
+            LDA $ef            ; $ee54: a5 ef     
+            STA $0500,y        ; $ee56: 99 00 05  
+            INY                ; $ee59: c8        
+            LDA $ee            ; $ee5a: a5 ee     
+            STA $0500,y        ; $ee5c: 99 00 05  
+            INY                ; $ee5f: c8        
+            LDA #$02           ; $ee60: a9 02     
+            STA $0500,y        ; $ee62: 99 00 05  
+            INY                ; $ee65: c8        
+            LDA #$2c           ; $ee66: a9 2c     
+            STA $0500,y        ; $ee68: 99 00 05  
+            INY                ; $ee6b: c8        
+            LDA #$2e           ; $ee6c: a9 2e     
+            STA $0500,y        ; $ee6e: 99 00 05  
+            INY                ; $ee71: c8        
+            LDA $ef            ; $ee72: a5 ef     
+            STA $0500,y        ; $ee74: 99 00 05  
+            INY                ; $ee77: c8        
+            LDA $ee            ; $ee78: a5 ee     
             clc                ; $ee7a: 18        
             adc #$20           ; $ee7b: 69 20     
-            sta $0500,y        ; $ee7d: 99 00 05  
-            iny                ; $ee80: c8        
-            lda #$02           ; $ee81: a9 02     
-            sta $0500,y        ; $ee83: 99 00 05  
-            iny                ; $ee86: c8        
-            lda #$2d           ; $ee87: a9 2d     
-            sta $0500,y        ; $ee89: 99 00 05  
-            iny                ; $ee8c: c8        
-            lda #$2f           ; $ee8d: a9 2f     
-            sta $0500,y        ; $ee8f: 99 00 05  
-            iny                ; $ee92: c8        
-            lda #$00           ; $ee93: a9 00     
-            sta $0500,y        ; $ee95: 99 00 05  
-            sty $0e            ; $ee98: 84 0e     
-            rts                ; $ee9a: 60        
+            STA $0500,y        ; $ee7d: 99 00 05  
+            INY                ; $ee80: c8        
+            LDA #$02           ; $ee81: a9 02     
+            STA $0500,y        ; $ee83: 99 00 05  
+            INY                ; $ee86: c8        
+            LDA #$2d           ; $ee87: a9 2d     
+            STA $0500,y        ; $ee89: 99 00 05  
+            INY                ; $ee8c: c8        
+            LDA #$2f           ; $ee8d: a9 2f     
+            STA $0500,y        ; $ee8f: 99 00 05  
+            INY                ; $ee92: c8        
+            LDA #$00           ; $ee93: a9 00     
+            STA $0500,y        ; $ee95: 99 00 05  
+            STY $0e            ; $ee98: 84 0e     
+            RTS                ; $ee9a: 60        
 
 ;-------------------------------------------------------------------------------
 __ee9b:     .hex 98            ; $ee9b: 98            Data
@@ -5842,108 +5842,108 @@ __ee9c:     .hex 22 9a 22 9c   ; $ee9c: 22 9a 22 9c   Data
             .hex 23            ; $eeac: 23            Data
 
 ;-------------------------------------------------------------------------------
-__eead:     lda #$00           ; $eead: a9 00     
-            sta $38            ; $eeaf: 85 38     
-            sta $37            ; $eeb1: 85 37     
-            sta $35            ; $eeb3: 85 35     
-            lda #$08           ; $eeb5: a9 08     
-            sta $06f1          ; $eeb7: 8d f1 06  
-            sta $06f2          ; $eeba: 8d f2 06  
-            lda $6e            ; $eebd: a5 6e     
-            cmp #$07           ; $eebf: c9 07     
+__eead:     LDA #$00           ; $eead: a9 00     
+            STA $38            ; $eeaf: 85 38     
+            STA $37            ; $eeb1: 85 37     
+            STA $35            ; $eeb3: 85 35     
+            LDA #$08           ; $eeb5: a9 08     
+            STA $06f1          ; $eeb7: 8d f1 06  
+            STA $06f2          ; $eeba: 8d f2 06  
+            LDA $6e            ; $eebd: a5 6e     
+            CMP #$07           ; $eebf: c9 07     
             bcc __eecf         ; $eec1: 90 0c     
-            cmp #$18           ; $eec3: c9 18     
+            CMP #$18           ; $eec3: c9 18     
             bcc __eec9         ; $eec5: 90 02     
-            lda #$1c           ; $eec7: a9 1c     
-__eec9:     lsr                ; $eec9: 4a        
-            lsr                ; $eeca: 4a        
-            sta $38            ; $eecb: 85 38     
-            inc $38            ; $eecd: e6 38     
-__eecf:     lda $6e            ; $eecf: a5 6e     
-            cmp #$0f           ; $eed1: c9 0f     
+            LDA #$1c           ; $eec7: a9 1c     
+__eec9:     LSR                ; $eec9: 4a        
+            LSR                ; $eeca: 4a        
+            STA $38            ; $eecb: 85 38     
+            INC $38            ; $eecd: e6 38     
+__eecf:     LDA $6e            ; $eecf: a5 6e     
+            CMP #$0f           ; $eed1: c9 0f     
             bcc __eed7         ; $eed3: 90 02     
-            lda #$0f           ; $eed5: a9 0f     
+            LDA #$0f           ; $eed5: a9 0f     
 __eed7:     tay                ; $eed7: a8        
-            ldx #$00           ; $eed8: a2 00     
-__eeda:     lda __ef6c,y       ; $eeda: b9 6c ef  
-            sta $2e,x          ; $eedd: 95 2e     
+            LDX #$00           ; $eed8: a2 00     
+__eeda:     LDA __ef6c,y       ; $eeda: b9 6c ef  
+            STA $2e,x          ; $eedd: 95 2e     
             tya                ; $eedf: 98        
             clc                ; $eee0: 18        
             adc #$10           ; $eee1: 69 10     
             tay                ; $eee3: a8        
-            inx                ; $eee4: e8        
-            cpx #$07           ; $eee5: e0 07     
-            bne __eeda         ; $eee7: d0 f1     
-            lda #$3c           ; $eee9: a9 3c     
-            sta $36            ; $eeeb: 85 36     
-            rts                ; $eeed: 60        
+            INX                ; $eee4: e8        
+            CPX #$07           ; $eee5: e0 07     
+            BNE __eeda         ; $eee7: d0 f1     
+            LDA #$3c           ; $eee9: a9 3c     
+            STA $36            ; $eeeb: 85 36     
+            RTS                ; $eeed: 60        
 
 ;-------------------------------------------------------------------------------
-__eeee:     dec $36            ; $eeee: c6 36     
-            bne __ef18         ; $eef0: d0 26     
-            lda #$3c           ; $eef2: a9 3c     
-            sta $36            ; $eef4: 85 36     
-            inc $37            ; $eef6: e6 37     
-            lda $61            ; $eef8: a5 61     
-            beq __ef18         ; $eefa: f0 1c     
-            lda $37            ; $eefc: a5 37     
-            cmp #$02           ; $eefe: c9 02     
+__eeee:     DEC $36            ; $eeee: c6 36     
+            BNE __ef18         ; $eef0: d0 26     
+            LDA #$3c           ; $eef2: a9 3c     
+            STA $36            ; $eef4: 85 36     
+            INC $37            ; $eef6: e6 37     
+            LDA $61            ; $eef8: a5 61     
+            BEQ __ef18         ; $eefa: f0 1c     
+            LDA $37            ; $eefc: a5 37     
+            CMP #$02           ; $eefe: c9 02     
             bcc __ef18         ; $ef00: 90 16     
-            ldy $38            ; $ef02: a4 38     
-            cpy $61            ; $ef04: c4 61     
-            bcs __ef2f         ; $ef06: b0 27     
-            cmp #$1e           ; $ef08: c9 1e     
-            beq __ef19         ; $ef0a: f0 0d     
-            cmp #$46           ; $ef0c: c9 46     
-            beq __ef2f         ; $ef0e: f0 1f     
-            cmp #$ff           ; $ef10: c9 ff     
-            bne __ef18         ; $ef12: d0 04     
-            lda #$47           ; $ef14: a9 47     
-            sta $37            ; $ef16: 85 37     
-__ef18:     rts                ; $ef18: 60        
+            LDY $38            ; $ef02: a4 38     
+            CPY $61            ; $ef04: c4 61     
+            BCS __ef2f         ; $ef06: b0 27     
+            CMP #$1e           ; $ef08: c9 1e     
+            BEQ __ef19         ; $ef0a: f0 0d     
+            CMP #$46           ; $ef0c: c9 46     
+            BEQ __ef2f         ; $ef0e: f0 1f     
+            CMP #$ff           ; $ef10: c9 ff     
+            BNE __ef18         ; $ef12: d0 04     
+            LDA #$47           ; $ef14: a9 47     
+            STA $37            ; $ef16: 85 37     
+__ef18:     RTS                ; $ef18: 60        
 
 ;-------------------------------------------------------------------------------
-__ef19:     inc $35            ; $ef19: e6 35     
-            lda $6e            ; $ef1b: a5 6e     
-            cmp #$0f           ; $ef1d: c9 0f     
+__ef19:     INC $35            ; $ef19: e6 35     
+            LDA $6e            ; $ef1b: a5 6e     
+            CMP #$0f           ; $ef1d: c9 0f     
             bcc __ef23         ; $ef1f: 90 02     
-            lda #$0f           ; $ef21: a9 0f     
+            LDA #$0f           ; $ef21: a9 0f     
 __ef23:     tay                ; $ef23: a8        
-            lda __efdc,y       ; $ef24: b9 dc ef  
-            sta $31            ; $ef27: 85 31     
-            lda __efec,y       ; $ef29: b9 ec ef  
-            sta $32            ; $ef2c: 85 32     
-            rts                ; $ef2e: 60        
+            LDA __efdc,y       ; $ef24: b9 dc ef  
+            STA $31            ; $ef27: 85 31     
+            LDA __efec,y       ; $ef29: b9 ec ef  
+            STA $32            ; $ef2c: 85 32     
+            RTS                ; $ef2e: 60        
 
 ;-------------------------------------------------------------------------------
-__ef2f:     lda $61            ; $ef2f: a5 61     
-            beq __ef18         ; $ef31: f0 e5     
-            lda #$02           ; $ef33: a9 02     
-            cmp $35            ; $ef35: c5 35     
-            beq __ef18         ; $ef37: f0 df     
-            sta $35            ; $ef39: 85 35     
-            lda #$01           ; $ef3b: a9 01     
-            sta $05eb          ; $ef3d: 8d eb 05  
-            sta $05ec          ; $ef40: 8d ec 05  
-            sta $2d            ; $ef43: 85 2d     
-            lda $6e            ; $ef45: a5 6e     
-            cmp #$0f           ; $ef47: c9 0f     
+__ef2f:     LDA $61            ; $ef2f: a5 61     
+            BEQ __ef18         ; $ef31: f0 e5     
+            LDA #$02           ; $ef33: a9 02     
+            CMP $35            ; $ef35: c5 35     
+            BEQ __ef18         ; $ef37: f0 df     
+            STA $35            ; $ef39: 85 35     
+            LDA #$01           ; $ef3b: a9 01     
+            STA $05eb          ; $ef3d: 8d eb 05  
+            STA $05ec          ; $ef40: 8d ec 05  
+            STA $2d            ; $ef43: 85 2d     
+            LDA $6e            ; $ef45: a5 6e     
+            CMP #$0f           ; $ef47: c9 0f     
             bcc __ef4d         ; $ef49: 90 02     
-            lda #$0f           ; $ef4b: a9 0f     
+            LDA #$0f           ; $ef4b: a9 0f     
 __ef4d:     tay                ; $ef4d: a8        
-            lda __effc,y       ; $ef4e: b9 fc ef  
-            sta $31            ; $ef51: 85 31     
-            lda __f00c         ; $ef53: ad 0c f0  
-            sta $32            ; $ef56: 85 32     
-            lda $06f1          ; $ef58: ad f1 06  
-            cmp #$08           ; $ef5b: c9 08     
-            bne __ef6b         ; $ef5d: d0 0c     
-            lda #$06           ; $ef5f: a9 06     
-            sta $06f1          ; $ef61: 8d f1 06  
-            sta $06f2          ; $ef64: 8d f2 06  
-            lda #$01           ; $ef67: a9 01     
-            sta $2d            ; $ef69: 85 2d     
-__ef6b:     rts                ; $ef6b: 60        
+            LDA __effc,y       ; $ef4e: b9 fc ef  
+            STA $31            ; $ef51: 85 31     
+            LDA __f00c         ; $ef53: ad 0c f0  
+            STA $32            ; $ef56: 85 32     
+            LDA $06f1          ; $ef58: ad f1 06  
+            CMP #$08           ; $ef5b: c9 08     
+            BNE __ef6b         ; $ef5d: d0 0c     
+            LDA #$06           ; $ef5f: a9 06     
+            STA $06f1          ; $ef61: 8d f1 06  
+            STA $06f2          ; $ef64: 8d f2 06  
+            LDA #$01           ; $ef67: a9 01     
+            STA $2d            ; $ef69: 85 2d     
+__ef6b:     RTS                ; $ef6b: 60        
 
 ;-------------------------------------------------------------------------------
 __ef6c:     .hex 80 80 80 80   ; $ef6c: 80 80 80 80   Data
@@ -5992,49 +5992,49 @@ __f00c:     .hex b7 b7 bb bf   ; $f00c: b7 b7 bb bf   Data
             .hex e2 e6 ea ea   ; $f018: e2 e6 ea ea   Data
 
 ;-------------------------------------------------------------------------------
-__f01c:     lda $0b            ; $f01c: a5 0b     
+__f01c:     LDA $0b            ; $f01c: a5 0b     
             asl                ; $f01e: 0a        
             asl                ; $f01f: 0a        
             sec                ; $f020: 38        
             adc $0b            ; $f021: 65 0b     
-            sta $0b            ; $f023: 85 0b     
-            rts                ; $f025: 60        
+            STA $0b            ; $f023: 85 0b     
+            RTS                ; $f025: 60        
 
 ;-------------------------------------------------------------------------------
-__f026:     lda $45            ; $f026: a5 45     
-            bne __f03a         ; $f028: d0 10     
-            lda $14            ; $f02a: a5 14     
+__f026:     LDA $45            ; $f026: a5 45     
+            BNE __f03a         ; $f028: d0 10     
+            LDA $14            ; $f02a: a5 14     
             asl                ; $f02c: 0a        
             asl                ; $f02d: 0a        
             tay                ; $f02e: a8        
-            lda $0000,y        ; $f02f: b9 00 00  
-            sta $49            ; $f032: 85 49     
-            lda $0003,y        ; $f034: b9 03 00  
-            sta $48            ; $f037: 85 48     
-            rts                ; $f039: 60        
+            LDA $0000,y        ; $f02f: b9 00 00  
+            STA $49            ; $f032: 85 49     
+            LDA $0003,y        ; $f034: b9 03 00  
+            STA $48            ; $f037: 85 48     
+            RTS                ; $f039: 60        
 
 ;-------------------------------------------------------------------------------
-__f03a:     lda $46            ; $f03a: a5 46     
+__f03a:     LDA $46            ; $f03a: a5 46     
             and #$3f           ; $f03c: 29 3f     
             tay                ; $f03e: a8        
-            dec $47            ; $f03f: c6 47     
-            beq __f04d         ; $f041: f0 0a     
-            lda __f05c,y       ; $f043: b9 5c f0  
-            sta $49            ; $f046: 85 49     
+            DEC $47            ; $f03f: c6 47     
+            BEQ __f04d         ; $f041: f0 0a     
+            LDA __f05c,y       ; $f043: b9 5c f0  
+            STA $49            ; $f046: 85 49     
             and #$f0           ; $f048: 29 f0     
-            sta $48            ; $f04a: 85 48     
-            rts                ; $f04c: 60        
+            STA $48            ; $f04a: 85 48     
+            RTS                ; $f04c: 60        
 
 ;-------------------------------------------------------------------------------
-__f04d:     lda __f05e,y       ; $f04d: b9 5e f0  
-            sta $48            ; $f050: 85 48     
-            sta $49            ; $f052: 85 49     
-            iny                ; $f054: c8        
-            lda __f05e,y       ; $f055: b9 5e f0  
-            sta $47            ; $f058: 85 47     
-            iny                ; $f05a: c8        
+__f04d:     LDA __f05e,y       ; $f04d: b9 5e f0  
+            STA $48            ; $f050: 85 48     
+            STA $49            ; $f052: 85 49     
+            INY                ; $f054: c8        
+            LDA __f05e,y       ; $f055: b9 5e f0  
+            STA $47            ; $f058: 85 47     
+            INY                ; $f05a: c8        
             .hex 84            ; $f05b: 84        Suspected data
-__f05c:     lsr $60            ; $f05c: 46 60     
+__f05c:     LSR $60            ; $f05c: 46 60     
 
 ;-------------------------------------------------------------------------------
 __f05e:     .hex 80 c8 20 80   ; $f05e: 80 c8 20 80   Data
@@ -6055,243 +6055,243 @@ __f05e:     .hex 80 c8 20 80   ; $f05e: 80 c8 20 80   Data
             .hex 01 40 20 80   ; $f09a: 01 40 20 80   Data
 
 ;-------------------------------------------------------------------------------
-__f09e:     lda #$0f           ; $f09e: a9 0f     
-            sta $4015          ; $f0a0: 8d 15 40  
-            lda #$c0           ; $f0a3: a9 c0     
-            sta $4017          ; $f0a5: 8d 17 40  
-            lda #$fc           ; $f0a8: a9 fc     
-            sta $e0            ; $f0aa: 85 e0     
-            lda #$05           ; $f0ac: a9 05     
-            sta $e1            ; $f0ae: 85 e1     
-            ldx #$00           ; $f0b0: a2 00     
-            ldy #$00           ; $f0b2: a0 00     
+__f09e:     LDA #$0f           ; $f09e: a9 0f     
+            STA $4015          ; $f0a0: 8d 15 40  
+            LDA #$c0           ; $f0a3: a9 c0     
+            STA $4017          ; $f0a5: 8d 17 40  
+            LDA #$fc           ; $f0a8: a9 fc     
+            STA $e0            ; $f0aa: 85 e0     
+            LDA #$05           ; $f0ac: a9 05     
+            STA $e1            ; $f0ae: 85 e1     
+            LDX #$00           ; $f0b0: a2 00     
+            LDY #$00           ; $f0b2: a0 00     
 __f0b4:     tya                ; $f0b4: 98        
-            sta ($e0),y        ; $f0b5: 91 e0     
-            sta $05e0,x        ; $f0b7: 9d e0 05  
-            lda __f3d2,x       ; $f0ba: bd d2 f3  
-            sta $06dc,x        ; $f0bd: 9d dc 06  
+            STA ($e0),y        ; $f0b5: 91 e0     
+            STA $05e0,x        ; $f0b7: 9d e0 05  
+            LDA __f3d2,x       ; $f0ba: bd d2 f3  
+            STA $06dc,x        ; $f0bd: 9d dc 06  
             clc                ; $f0c0: 18        
-            lda $e0            ; $f0c1: a5 e0     
+            LDA $e0            ; $f0c1: a5 e0     
             adc #$08           ; $f0c3: 69 08     
-            sta $e0            ; $f0c5: 85 e0     
+            STA $e0            ; $f0c5: 85 e0     
             bcc __f0cb         ; $f0c7: 90 02     
-            inc $e1            ; $f0c9: e6 e1     
-__f0cb:     inx                ; $f0cb: e8        
-            cpx #$1c           ; $f0cc: e0 1c     
-            bne __f0b4         ; $f0ce: d0 e4     
-            rts                ; $f0d0: 60        
+            INC $e1            ; $f0c9: e6 e1     
+__f0cb:     INX                ; $f0cb: e8        
+            CPX #$1c           ; $f0cc: e0 1c     
+            BNE __f0b4         ; $f0ce: d0 e4     
+            RTS                ; $f0d0: 60        
 
 ;-------------------------------------------------------------------------------
-__f0d1:     lda $23            ; $f0d1: a5 23     
-            bne __f0db         ; $f0d3: d0 06     
-            lda #$1c           ; $f0d5: a9 1c     
-            sta $e5            ; $f0d7: 85 e5     
-            bpl __f0df         ; $f0d9: 10 04     
-__f0db:     lda #$01           ; $f0db: a9 01     
-            sta $e5            ; $f0dd: 85 e5     
-__f0df:     lda #$00           ; $f0df: a9 00     
-            ldx #$03           ; $f0e1: a2 03     
-__f0e3:     sta $f9,x          ; $f0e3: 95 f9     
-            dex                ; $f0e5: ca        
-            bpl __f0e3         ; $f0e6: 10 fb     
-            lda #$00           ; $f0e8: a9 00     
-            sta $e4            ; $f0ea: 85 e4     
-            lda #$fc           ; $f0ec: a9 fc     
-            sta $e0            ; $f0ee: 85 e0     
-            lda #$05           ; $f0f0: a9 05     
-            sta $e1            ; $f0f2: 85 e1     
-__f0f4:     ldx $e4            ; $f0f4: a6 e4     
-            lda $05e0,x        ; $f0f6: bd e0 05  
-            beq __f136         ; $f0f9: f0 3b     
-            ldy #$00           ; $f0fb: a0 00     
-            lda ($e0),y        ; $f0fd: b1 e0     
-            beq __f136         ; $f0ff: f0 35     
-            cmp #$05           ; $f101: c9 05     
+__f0d1:     LDA $23            ; $f0d1: a5 23     
+            BNE __f0db         ; $f0d3: d0 06     
+            LDA #$1c           ; $f0d5: a9 1c     
+            STA $e5            ; $f0d7: 85 e5     
+            BPL __f0df         ; $f0d9: 10 04     
+__f0db:     LDA #$01           ; $f0db: a9 01     
+            STA $e5            ; $f0dd: 85 e5     
+__f0df:     LDA #$00           ; $f0df: a9 00     
+            LDX #$03           ; $f0e1: a2 03     
+__f0e3:     STA $f9,x          ; $f0e3: 95 f9     
+            DEX                ; $f0e5: ca        
+            BPL __f0e3         ; $f0e6: 10 fb     
+            LDA #$00           ; $f0e8: a9 00     
+            STA $e4            ; $f0ea: 85 e4     
+            LDA #$fc           ; $f0ec: a9 fc     
+            STA $e0            ; $f0ee: 85 e0     
+            LDA #$05           ; $f0f0: a9 05     
+            STA $e1            ; $f0f2: 85 e1     
+__f0f4:     LDX $e4            ; $f0f4: a6 e4     
+            LDA $05e0,x        ; $f0f6: bd e0 05  
+            BEQ __f136         ; $f0f9: f0 3b     
+            LDY #$00           ; $f0fb: a0 00     
+            LDA ($e0),y        ; $f0fd: b1 e0     
+            BEQ __f136         ; $f0ff: f0 35     
+            CMP #$05           ; $f101: c9 05     
             bcc __f110         ; $f103: 90 0b     
             sec                ; $f105: 38        
             sbc #$05           ; $f106: e9 05     
             tax                ; $f108: aa        
-            lda #$01           ; $f109: a9 01     
-            sta $f9,x          ; $f10b: 95 f9     
-            jmp __f136         ; $f10d: 4c 36 f1  
+            LDA #$01           ; $f109: a9 01     
+            STA $f9,x          ; $f10b: 95 f9     
+            JMP __f136         ; $f10d: 4c 36 f1  
 
 ;-------------------------------------------------------------------------------
 __f110:     tax                ; $f110: aa        
-            dex                ; $f111: ca        
-            lda $f9,x          ; $f112: b5 f9     
-            bne __f136         ; $f114: d0 20     
-            lda #$01           ; $f116: a9 01     
-            sta $f9,x          ; $f118: 95 f9     
+            DEX                ; $f111: ca        
+            LDA $f9,x          ; $f112: b5 f9     
+            BNE __f136         ; $f114: d0 20     
+            LDA #$01           ; $f116: a9 01     
+            STA $f9,x          ; $f118: 95 f9     
             txa                ; $f11a: 8a        
             tay                ; $f11b: a8        
             clc                ; $f11c: 18        
             adc #$05           ; $f11d: 69 05     
-            ldy #$00           ; $f11f: a0 00     
-            sta ($e0),y        ; $f121: 91 e0     
+            LDY #$00           ; $f11f: a0 00     
+            STA ($e0),y        ; $f121: 91 e0     
             txa                ; $f123: 8a        
             asl                ; $f124: 0a        
             asl                ; $f125: 0a        
             tax                ; $f126: aa        
-            lda #$04           ; $f127: a9 04     
-            sta $e6            ; $f129: 85 e6     
-__f12b:     iny                ; $f12b: c8        
-            lda ($e0),y        ; $f12c: b1 e0     
-            sta $4000,x        ; $f12e: 9d 00 40  
-            inx                ; $f131: e8        
-            dec $e6            ; $f132: c6 e6     
-            bne __f12b         ; $f134: d0 f5     
+            LDA #$04           ; $f127: a9 04     
+            STA $e6            ; $f129: 85 e6     
+__f12b:     INY                ; $f12b: c8        
+            LDA ($e0),y        ; $f12c: b1 e0     
+            STA $4000,x        ; $f12e: 9d 00 40  
+            INX                ; $f131: e8        
+            DEC $e6            ; $f132: c6 e6     
+            BNE __f12b         ; $f134: d0 f5     
 __f136:     clc                ; $f136: 18        
-            lda $e0            ; $f137: a5 e0     
+            LDA $e0            ; $f137: a5 e0     
             adc #$08           ; $f139: 69 08     
-            sta $e0            ; $f13b: 85 e0     
+            STA $e0            ; $f13b: 85 e0     
             bcc __f141         ; $f13d: 90 02     
-            inc $e1            ; $f13f: e6 e1     
-__f141:     inc $e4            ; $f141: e6 e4     
-            lda $e4            ; $f143: a5 e4     
-            cmp $e5            ; $f145: c5 e5     
+            INC $e1            ; $f13f: e6 e1     
+__f141:     INC $e4            ; $f141: e6 e4     
+            LDA $e4            ; $f143: a5 e4     
+            CMP $e5            ; $f145: c5 e5     
             bcc __f0f4         ; $f147: 90 ab     
-            ldx #$00           ; $f149: a2 00     
-__f14b:     stx $e6            ; $f14b: 86 e6     
-            lda $f9,x          ; $f14d: b5 f9     
-            bne __f15d         ; $f14f: d0 0c     
+            LDX #$00           ; $f149: a2 00     
+__f14b:     STX $e6            ; $f14b: 86 e6     
+            LDA $f9,x          ; $f14d: b5 f9     
+            BNE __f15d         ; $f14f: d0 0c     
             txa                ; $f151: 8a        
             asl                ; $f152: 0a        
             asl                ; $f153: 0a        
             tax                ; $f154: aa        
             asl                ; $f155: 0a        
             and #$10           ; $f156: 29 10     
-            eor #$10           ; $f158: 49 10     
-            sta $4000,x        ; $f15a: 9d 00 40  
-__f15d:     ldx $e6            ; $f15d: a6 e6     
-            inx                ; $f15f: e8        
-            cpx #$04           ; $f160: e0 04     
+            EOR #$10           ; $f158: 49 10     
+            STA $4000,x        ; $f15a: 9d 00 40  
+__f15d:     LDX $e6            ; $f15d: a6 e6     
+            INX                ; $f15f: e8        
+            CPX #$04           ; $f160: e0 04     
             bcc __f14b         ; $f162: 90 e7     
-            ldy #$00           ; $f164: a0 00     
-            sty $e4            ; $f166: 84 e4     
-            lda #$fc           ; $f168: a9 fc     
-            sta $e0            ; $f16a: 85 e0     
-            lda #$05           ; $f16c: a9 05     
-            sta $e1            ; $f16e: 85 e1     
-__f170:     ldx $e4            ; $f170: a6 e4     
-            lda $05e0,x        ; $f172: bd e0 05  
-            beq __f181         ; $f175: f0 0a     
-            cmp #$01           ; $f177: c9 01     
-            bne __f195         ; $f179: d0 1a     
-            inc $05e0,x        ; $f17b: fe e0 05  
-            jmp __f1a2         ; $f17e: 4c a2 f1  
+            LDY #$00           ; $f164: a0 00     
+            STY $e4            ; $f166: 84 e4     
+            LDA #$fc           ; $f168: a9 fc     
+            STA $e0            ; $f16a: 85 e0     
+            LDA #$05           ; $f16c: a9 05     
+            STA $e1            ; $f16e: 85 e1     
+__f170:     LDX $e4            ; $f170: a6 e4     
+            LDA $05e0,x        ; $f172: bd e0 05  
+            BEQ __f181         ; $f175: f0 0a     
+            CMP #$01           ; $f177: c9 01     
+            BNE __f195         ; $f179: d0 1a     
+            INC $05e0,x        ; $f17b: fe e0 05  
+            JMP __f1a2         ; $f17e: 4c a2 f1  
 
 ;-------------------------------------------------------------------------------
 __f181:     clc                ; $f181: 18        
-            lda $e0            ; $f182: a5 e0     
+            LDA $e0            ; $f182: a5 e0     
             adc #$08           ; $f184: 69 08     
-            sta $e0            ; $f186: 85 e0     
+            STA $e0            ; $f186: 85 e0     
             bcc __f18c         ; $f188: 90 02     
-            inc $e1            ; $f18a: e6 e1     
-__f18c:     inc $e4            ; $f18c: e6 e4     
-            lda $e4            ; $f18e: a5 e4     
-            cmp $e5            ; $f190: c5 e5     
+            INC $e1            ; $f18a: e6 e1     
+__f18c:     INC $e4            ; $f18c: e6 e4     
+            LDA $e4            ; $f18e: a5 e4     
+            CMP $e5            ; $f190: c5 e5     
             bcc __f170         ; $f192: 90 dc     
-            rts                ; $f194: 60        
+            RTS                ; $f194: 60        
 
 ;-------------------------------------------------------------------------------
-__f195:     ldy #$07           ; $f195: a0 07     
-            lda ($e0),y        ; $f197: b1 e0     
+__f195:     LDY #$07           ; $f195: a0 07     
+            LDA ($e0),y        ; $f197: b1 e0     
             sec                ; $f199: 38        
             sbc #$01           ; $f19a: e9 01     
-            sta ($e0),y        ; $f19c: 91 e0     
-            beq __f1d8         ; $f19e: f0 38     
-            bne __f181         ; $f1a0: d0 df     
-__f1a2:     lda #$00           ; $f1a2: a9 00     
-            ldy #$05           ; $f1a4: a0 05     
-            sta ($e0),y        ; $f1a6: 91 e0     
-            jsr __f34b         ; $f1a8: 20 4b f3  
-            jsr __f35a         ; $f1ab: 20 5a f3  
-            ldy #$00           ; $f1ae: a0 00     
-            sta ($e0),y        ; $f1b0: 91 e0     
-            jsr __f35a         ; $f1b2: 20 5a f3  
-            ldy #$01           ; $f1b5: a0 01     
-            sta ($e0),y        ; $f1b7: 91 e0     
-            jsr __f35a         ; $f1b9: 20 5a f3  
-            ldy #$02           ; $f1bc: a0 02     
-            sta ($e0),y        ; $f1be: 91 e0     
-            jsr __f35a         ; $f1c0: 20 5a f3  
-            ldy #$04           ; $f1c3: a0 04     
-            sta ($e0),y        ; $f1c5: 91 e0     
-            ldy #$00           ; $f1c7: a0 00     
-            lda ($e0),y        ; $f1c9: b1 e0     
-            cmp #$04           ; $f1cb: c9 04     
-            bne __f1db         ; $f1cd: d0 0c     
-            jsr __f35a         ; $f1cf: 20 5a f3  
-            ldy #$03           ; $f1d2: a0 03     
-            sta ($e0),y        ; $f1d4: 91 e0     
-            bpl __f1db         ; $f1d6: 10 03     
-__f1d8:     jsr __f34b         ; $f1d8: 20 4b f3  
-__f1db:     jsr __f35a         ; $f1db: 20 5a f3  
-            cmp #$e8           ; $f1de: c9 e8     
-            bcs __f24d         ; $f1e0: b0 6b     
-            cmp #$60           ; $f1e2: c9 60     
-            beq __f22a         ; $f1e4: f0 44     
+            STA ($e0),y        ; $f19c: 91 e0     
+            BEQ __f1d8         ; $f19e: f0 38     
+            BNE __f181         ; $f1a0: d0 df     
+__f1a2:     LDA #$00           ; $f1a2: a9 00     
+            LDY #$05           ; $f1a4: a0 05     
+            STA ($e0),y        ; $f1a6: 91 e0     
+            JSR __f34b         ; $f1a8: 20 4b f3  
+            JSR __f35a         ; $f1ab: 20 5a f3  
+            LDY #$00           ; $f1ae: a0 00     
+            STA ($e0),y        ; $f1b0: 91 e0     
+            JSR __f35a         ; $f1b2: 20 5a f3  
+            LDY #$01           ; $f1b5: a0 01     
+            STA ($e0),y        ; $f1b7: 91 e0     
+            JSR __f35a         ; $f1b9: 20 5a f3  
+            LDY #$02           ; $f1bc: a0 02     
+            STA ($e0),y        ; $f1be: 91 e0     
+            JSR __f35a         ; $f1c0: 20 5a f3  
+            LDY #$04           ; $f1c3: a0 04     
+            STA ($e0),y        ; $f1c5: 91 e0     
+            LDY #$00           ; $f1c7: a0 00     
+            LDA ($e0),y        ; $f1c9: b1 e0     
+            CMP #$04           ; $f1cb: c9 04     
+            BNE __f1db         ; $f1cd: d0 0c     
+            JSR __f35a         ; $f1cf: 20 5a f3  
+            LDY #$03           ; $f1d2: a0 03     
+            STA ($e0),y        ; $f1d4: 91 e0     
+            BPL __f1db         ; $f1d6: 10 03     
+__f1d8:     JSR __f34b         ; $f1d8: 20 4b f3  
+__f1db:     JSR __f35a         ; $f1db: 20 5a f3  
+            CMP #$e8           ; $f1de: c9 e8     
+            BCS __f24d         ; $f1e0: b0 6b     
+            CMP #$60           ; $f1e2: c9 60     
+            BEQ __f22a         ; $f1e4: f0 44     
             bcc __f1f1         ; $f1e6: 90 09     
             sbc #$60           ; $f1e8: e9 60     
-            ldy #$06           ; $f1ea: a0 06     
-            sta ($e0),y        ; $f1ec: 91 e0     
-            jmp __f1db         ; $f1ee: 4c db f1  
+            LDY #$06           ; $f1ea: a0 06     
+            STA ($e0),y        ; $f1ec: 91 e0     
+            JMP __f1db         ; $f1ee: 4c db f1  
 
 ;-------------------------------------------------------------------------------
 __f1f1:     pha                ; $f1f1: 48        
             and #$f8           ; $f1f2: 29 f8     
-            lsr                ; $f1f4: 4a        
-            lsr                ; $f1f5: 4a        
+            LSR                ; $f1f4: 4a        
+            LSR                ; $f1f5: 4a        
             tax                ; $f1f6: aa        
-            lda __f382,x       ; $f1f7: bd 82 f3  
-            sta $e6            ; $f1fa: 85 e6     
-            lda __f383,x       ; $f1fc: bd 83 f3  
-            sta $e7            ; $f1ff: 85 e7     
+            LDA __f382,x       ; $f1f7: bd 82 f3  
+            STA $e6            ; $f1fa: 85 e6     
+            LDA __f383,x       ; $f1fc: bd 83 f3  
+            STA $e7            ; $f1ff: 85 e7     
             pla                ; $f201: 68        
             and #$07           ; $f202: 29 07     
-            beq __f20e         ; $f204: f0 08     
+            BEQ __f20e         ; $f204: f0 08     
             tax                ; $f206: aa        
-__f207:     lsr $e6            ; $f207: 46 e6     
-            ror $e7            ; $f209: 66 e7     
-            dex                ; $f20b: ca        
-            bne __f207         ; $f20c: d0 f9     
-__f20e:     ldy #$04           ; $f20e: a0 04     
-            lda ($e0),y        ; $f210: b1 e0     
+__f207:     LSR $e6            ; $f207: 46 e6     
+            ROR $e7            ; $f209: 66 e7     
+            DEX                ; $f20b: ca        
+            BNE __f207         ; $f20c: d0 f9     
+__f20e:     LDY #$04           ; $f20e: a0 04     
+            LDA ($e0),y        ; $f210: b1 e0     
             and #$f8           ; $f212: 29 f8     
-            ora $e6            ; $f214: 05 e6     
-            sta ($e0),y        ; $f216: 91 e0     
-            lda $e7            ; $f218: a5 e7     
-            dey                ; $f21a: 88        
-            sta ($e0),y        ; $f21b: 91 e0     
-            ldy #$00           ; $f21d: a0 00     
-            lda ($e0),y        ; $f21f: b1 e0     
-            cmp #$05           ; $f221: c9 05     
+            ORA $e6            ; $f214: 05 e6     
+            STA ($e0),y        ; $f216: 91 e0     
+            LDA $e7            ; $f218: a5 e7     
+            DEY                ; $f21a: 88        
+            STA ($e0),y        ; $f21b: 91 e0     
+            LDY #$00           ; $f21d: a0 00     
+            LDA ($e0),y        ; $f21f: b1 e0     
+            CMP #$05           ; $f221: c9 05     
             bcc __f22a         ; $f223: 90 05     
             sec                ; $f225: 38        
             sbc #$04           ; $f226: e9 04     
-            sta ($e0),y        ; $f228: 91 e0     
-__f22a:     ldy #$06           ; $f22a: a0 06     
-            lda ($e0),y        ; $f22c: b1 e0     
-            sta $e6            ; $f22e: 85 e6     
-            ldx $e4            ; $f230: a6 e4     
-            lda $06dc,x        ; $f232: bd dc 06  
-            sta $e7            ; $f235: 85 e7     
-            lda #$00           ; $f237: a9 00     
-            ldx #$04           ; $f239: a2 04     
-__f23b:     lsr $e7            ; $f23b: 46 e7     
+            STA ($e0),y        ; $f228: 91 e0     
+__f22a:     LDY #$06           ; $f22a: a0 06     
+            LDA ($e0),y        ; $f22c: b1 e0     
+            STA $e6            ; $f22e: 85 e6     
+            LDX $e4            ; $f230: a6 e4     
+            LDA $06dc,x        ; $f232: bd dc 06  
+            STA $e7            ; $f235: 85 e7     
+            LDA #$00           ; $f237: a9 00     
+            LDX #$04           ; $f239: a2 04     
+__f23b:     LSR $e7            ; $f23b: 46 e7     
             bcc __f242         ; $f23d: 90 03     
             clc                ; $f23f: 18        
             adc $e6            ; $f240: 65 e6     
 __f242:     asl $e6            ; $f242: 06 e6     
-            dex                ; $f244: ca        
-            bne __f23b         ; $f245: d0 f4     
-            iny                ; $f247: c8        
-            sta ($e0),y        ; $f248: 91 e0     
-            jmp __f181         ; $f24a: 4c 81 f1  
+            DEX                ; $f244: ca        
+            BNE __f23b         ; $f245: d0 f4     
+            INY                ; $f247: c8        
+            STA ($e0),y        ; $f248: 91 e0     
+            JMP __f181         ; $f24a: 4c 81 f1  
 
 ;-------------------------------------------------------------------------------
 __f24d:     sbc #$e8           ; $f24d: e9 e8     
-            jsr __f36c         ; $f24f: 20 6c f3  
+            JSR __f36c         ; $f24f: 20 6c f3  
 
 ;-------------------------------------------------------------------------------
             .hex 76 f2 8d f2   ; $f252: 76 f2 8d f2   Data
@@ -6305,160 +6305,160 @@ __f24d:     sbc #$e8           ; $f24d: e9 e8
             .hex 24 f3 41 f3   ; $f272: 24 f3 41 f3   Data
 
 ;-------------------------------------------------------------------------------
-            ldx $e4            ; $f276: a6 e4     
-            lda #$00           ; $f278: a9 00     
-            sta $05e0,x        ; $f27a: 9d e0 05  
-            ldy #$00           ; $f27d: a0 00     
-            sta ($e0),y        ; $f27f: 91 e0     
-            ldy #$05           ; $f281: a0 05     
-            lda ($e0),y        ; $f283: b1 e0     
+            LDX $e4            ; $f276: a6 e4     
+            LDA #$00           ; $f278: a9 00     
+            STA $05e0,x        ; $f27a: 9d e0 05  
+            LDY #$00           ; $f27d: a0 00     
+            STA ($e0),y        ; $f27f: 91 e0     
+            LDY #$05           ; $f281: a0 05     
+            LDA ($e0),y        ; $f283: b1 e0     
             sec                ; $f285: 38        
             sbc #$01           ; $f286: e9 01     
-            sta ($e0),y        ; $f288: 91 e0     
-            jmp __f181         ; $f28a: 4c 81 f1  
+            STA ($e0),y        ; $f288: 91 e0     
+            JMP __f181         ; $f28a: 4c 81 f1  
 
 ;-------------------------------------------------------------------------------
-            jsr __f35a         ; $f28d: 20 5a f3  
-            sta $e6            ; $f290: 85 e6     
-            ldy #$01           ; $f292: a0 01     
-            lda ($e0),y        ; $f294: b1 e0     
+            JSR __f35a         ; $f28d: 20 5a f3  
+            STA $e6            ; $f290: 85 e6     
+            LDY #$01           ; $f292: a0 01     
+            LDA ($e0),y        ; $f294: b1 e0     
             and #$3f           ; $f296: 29 3f     
-            ora $e6            ; $f298: 05 e6     
-            sta ($e0),y        ; $f29a: 91 e0     
-            jmp __f1db         ; $f29c: 4c db f1  
+            ORA $e6            ; $f298: 05 e6     
+            STA ($e0),y        ; $f29a: 91 e0     
+            JMP __f1db         ; $f29c: 4c db f1  
 
 ;-------------------------------------------------------------------------------
-            jsr __f35a         ; $f29f: 20 5a f3  
-            sta $e6            ; $f2a2: 85 e6     
-            ldy #$01           ; $f2a4: a0 01     
-            lda ($e0),y        ; $f2a6: b1 e0     
+            JSR __f35a         ; $f29f: 20 5a f3  
+            STA $e6            ; $f2a2: 85 e6     
+            LDY #$01           ; $f2a4: a0 01     
+            LDA ($e0),y        ; $f2a6: b1 e0     
             and #$c0           ; $f2a8: 29 c0     
-            ora $e6            ; $f2aa: 05 e6     
-            sta ($e0),y        ; $f2ac: 91 e0     
-            jmp __f1db         ; $f2ae: 4c db f1  
+            ORA $e6            ; $f2aa: 05 e6     
+            STA ($e0),y        ; $f2ac: 91 e0     
+            JMP __f1db         ; $f2ae: 4c db f1  
 
 ;-------------------------------------------------------------------------------
-            jsr __f35a         ; $f2b1: 20 5a f3  
-            sta $e6            ; $f2b4: 85 e6     
-            ldy #$01           ; $f2b6: a0 01     
-            lda ($e0),y        ; $f2b8: b1 e0     
+            JSR __f35a         ; $f2b1: 20 5a f3  
+            STA $e6            ; $f2b4: 85 e6     
+            LDY #$01           ; $f2b6: a0 01     
+            LDA ($e0),y        ; $f2b8: b1 e0     
             and #$f0           ; $f2ba: 29 f0     
-            ora $e6            ; $f2bc: 05 e6     
-            sta ($e0),y        ; $f2be: 91 e0     
-            jmp __f1db         ; $f2c0: 4c db f1  
+            ORA $e6            ; $f2bc: 05 e6     
+            STA ($e0),y        ; $f2be: 91 e0     
+            JMP __f1db         ; $f2c0: 4c db f1  
 
 ;-------------------------------------------------------------------------------
-            jsr __f35a         ; $f2c3: 20 5a f3  
-            ldy #$02           ; $f2c6: a0 02     
-            sta ($e0),y        ; $f2c8: 91 e0     
-            jmp __f1db         ; $f2ca: 4c db f1  
+            JSR __f35a         ; $f2c3: 20 5a f3  
+            LDY #$02           ; $f2c6: a0 02     
+            STA ($e0),y        ; $f2c8: 91 e0     
+            JMP __f1db         ; $f2ca: 4c db f1  
 
 ;-------------------------------------------------------------------------------
-            jsr __f35a         ; $f2cd: 20 5a f3  
-            ldy #$04           ; $f2d0: a0 04     
-            sta ($e0),y        ; $f2d2: 91 e0     
-            jmp __f1db         ; $f2d4: 4c db f1  
+            JSR __f35a         ; $f2cd: 20 5a f3  
+            LDY #$04           ; $f2d0: a0 04     
+            STA ($e0),y        ; $f2d2: 91 e0     
+            JMP __f1db         ; $f2d4: 4c db f1  
 
 ;-------------------------------------------------------------------------------
-            jsr __f35a         ; $f2d7: 20 5a f3  
-            ldy #$01           ; $f2da: a0 01     
-            sta ($e0),y        ; $f2dc: 91 e0     
-            jmp __f1db         ; $f2de: 4c db f1  
+            JSR __f35a         ; $f2d7: 20 5a f3  
+            LDY #$01           ; $f2da: a0 01     
+            STA ($e0),y        ; $f2dc: 91 e0     
+            JMP __f1db         ; $f2de: 4c db f1  
 
 ;-------------------------------------------------------------------------------
-            lda #$00           ; $f2e1: a9 00     
-            ldx #$08           ; $f2e3: a2 08     
-__f2e5:     sta $f0,x          ; $f2e5: 95 f0     
-            dex                ; $f2e7: ca        
-            bpl __f2e5         ; $f2e8: 10 fb     
-            jmp __f1db         ; $f2ea: 4c db f1  
+            LDA #$00           ; $f2e1: a9 00     
+            LDX #$08           ; $f2e3: a2 08     
+__f2e5:     STA $f0,x          ; $f2e5: 95 f0     
+            DEX                ; $f2e7: ca        
+            BPL __f2e5         ; $f2e8: 10 fb     
+            JMP __f1db         ; $f2ea: 4c db f1  
 
 ;-------------------------------------------------------------------------------
-            ldx #$00           ; $f2ed: a2 00     
-            beq __f2f6         ; $f2ef: f0 05     
-            ldx #$01           ; $f2f1: a2 01     
+            LDX #$00           ; $f2ed: a2 00     
+            BEQ __f2f6         ; $f2ef: f0 05     
+            LDX #$01           ; $f2f1: a2 01     
             bit $02a2          ; $f2f3: 2c a2 02  
-__f2f6:     jsr __f35a         ; $f2f6: 20 5a f3  
-            inc $f0,x          ; $f2f9: f6 f0     
-            cmp $f0,x          ; $f2fb: d5 f0     
-            bne __f341         ; $f2fd: d0 42     
-            lda #$00           ; $f2ff: a9 00     
-            sta $f0,x          ; $f301: 95 f0     
-            beq __f335         ; $f303: f0 30     
-            ldx #$00           ; $f305: a2 00     
-            beq __f30e         ; $f307: f0 05     
-            ldx #$01           ; $f309: a2 01     
+__f2f6:     JSR __f35a         ; $f2f6: 20 5a f3  
+            INC $f0,x          ; $f2f9: f6 f0     
+            CMP $f0,x          ; $f2fb: d5 f0     
+            BNE __f341         ; $f2fd: d0 42     
+            LDA #$00           ; $f2ff: a9 00     
+            STA $f0,x          ; $f301: 95 f0     
+            BEQ __f335         ; $f303: f0 30     
+            LDX #$00           ; $f305: a2 00     
+            BEQ __f30e         ; $f307: f0 05     
+            LDX #$01           ; $f309: a2 01     
             bit $02a2          ; $f30b: 2c a2 02  
-__f30e:     jsr __f35a         ; $f30e: 20 5a f3  
-            inc $f3,x          ; $f311: f6 f3     
-            cmp $f3,x          ; $f313: d5 f3     
-            bne __f335         ; $f315: d0 1e     
-            lda #$00           ; $f317: a9 00     
-            sta $f3,x          ; $f319: 95 f3     
-            beq __f341         ; $f31b: f0 24     
-            ldx #$00           ; $f31d: a2 00     
-            beq __f326         ; $f31f: f0 05     
-            ldx #$01           ; $f321: a2 01     
+__f30e:     JSR __f35a         ; $f30e: 20 5a f3  
+            INC $f3,x          ; $f311: f6 f3     
+            CMP $f3,x          ; $f313: d5 f3     
+            BNE __f335         ; $f315: d0 1e     
+            LDA #$00           ; $f317: a9 00     
+            STA $f3,x          ; $f319: 95 f3     
+            BEQ __f341         ; $f31b: f0 24     
+            LDX #$00           ; $f31d: a2 00     
+            BEQ __f326         ; $f31f: f0 05     
+            LDX #$01           ; $f321: a2 01     
             bit $02a2          ; $f323: 2c a2 02  
-__f326:     jsr __f35a         ; $f326: 20 5a f3  
-            inc $f6,x          ; $f329: f6 f6     
-            cmp $f6,x          ; $f32b: d5 f6     
-            bne __f335         ; $f32d: d0 06     
-            lda #$00           ; $f32f: a9 00     
-            sta $f6,x          ; $f331: 95 f6     
-            beq __f341         ; $f333: f0 0c     
-__f335:     ldy #$05           ; $f335: a0 05     
-            lda ($e0),y        ; $f337: b1 e0     
+__f326:     JSR __f35a         ; $f326: 20 5a f3  
+            INC $f6,x          ; $f329: f6 f6     
+            CMP $f6,x          ; $f32b: d5 f6     
+            BNE __f335         ; $f32d: d0 06     
+            LDA #$00           ; $f32f: a9 00     
+            STA $f6,x          ; $f331: 95 f6     
+            BEQ __f341         ; $f333: f0 0c     
+__f335:     LDY #$05           ; $f335: a0 05     
+            LDA ($e0),y        ; $f337: b1 e0     
             clc                ; $f339: 18        
             adc #$01           ; $f33a: 69 01     
-            sta ($e0),y        ; $f33c: 91 e0     
-            jmp __f1db         ; $f33e: 4c db f1  
+            STA ($e0),y        ; $f33c: 91 e0     
+            JMP __f1db         ; $f33e: 4c db f1  
 
 ;-------------------------------------------------------------------------------
-__f341:     jsr __f35a         ; $f341: 20 5a f3  
-            ldy #$05           ; $f344: a0 05     
-            sta ($e0),y        ; $f346: 91 e0     
-            jmp __f1db         ; $f348: 4c db f1  
+__f341:     JSR __f35a         ; $f341: 20 5a f3  
+            LDY #$05           ; $f344: a0 05     
+            STA ($e0),y        ; $f346: 91 e0     
+            JMP __f1db         ; $f348: 4c db f1  
 
 ;-------------------------------------------------------------------------------
-__f34b:     lda $e4            ; $f34b: a5 e4     
+__f34b:     LDA $e4            ; $f34b: a5 e4     
             asl                ; $f34d: 0a        
             tax                ; $f34e: aa        
-            lda __f39a,x       ; $f34f: bd 9a f3  
-            sta $e2            ; $f352: 85 e2     
-            lda __f39b,x       ; $f354: bd 9b f3  
-            sta $e3            ; $f357: 85 e3     
-            rts                ; $f359: 60        
+            LDA __f39a,x       ; $f34f: bd 9a f3  
+            STA $e2            ; $f352: 85 e2     
+            LDA __f39b,x       ; $f354: bd 9b f3  
+            STA $e3            ; $f357: 85 e3     
+            RTS                ; $f359: 60        
 
 ;-------------------------------------------------------------------------------
-__f35a:     lda $e4            ; $f35a: a5 e4     
-            ldy #$05           ; $f35c: a0 05     
-            lda ($e0),y        ; $f35e: b1 e0     
+__f35a:     LDA $e4            ; $f35a: a5 e4     
+            LDY #$05           ; $f35c: a0 05     
+            LDA ($e0),y        ; $f35e: b1 e0     
             tay                ; $f360: a8        
-            lda ($e2),y        ; $f361: b1 e2     
+            LDA ($e2),y        ; $f361: b1 e2     
             pha                ; $f363: 48        
-            iny                ; $f364: c8        
+            INY                ; $f364: c8        
             tya                ; $f365: 98        
-            ldy #$05           ; $f366: a0 05     
-            sta ($e0),y        ; $f368: 91 e0     
+            LDY #$05           ; $f366: a0 05     
+            STA ($e0),y        ; $f368: 91 e0     
             pla                ; $f36a: 68        
-            rts                ; $f36b: 60        
+            RTS                ; $f36b: 60        
 
 ;-------------------------------------------------------------------------------
 __f36c:     asl                ; $f36c: 0a        
             tay                ; $f36d: a8        
-            iny                ; $f36e: c8        
+            INY                ; $f36e: c8        
             pla                ; $f36f: 68        
-            sta $e6            ; $f370: 85 e6     
+            STA $e6            ; $f370: 85 e6     
             pla                ; $f372: 68        
-            sta $e7            ; $f373: 85 e7     
-            lda ($e6),y        ; $f375: b1 e6     
+            STA $e7            ; $f373: 85 e7     
+            LDA ($e6),y        ; $f375: b1 e6     
             tax                ; $f377: aa        
-            iny                ; $f378: c8        
-            lda ($e6),y        ; $f379: b1 e6     
-            sta $e7            ; $f37b: 85 e7     
-            stx $e6            ; $f37d: 86 e6     
-            jmp ($00e6)        ; $f37f: 6c e6 00  
+            INY                ; $f378: c8        
+            LDA ($e6),y        ; $f379: b1 e6     
+            STA $e7            ; $f37b: 85 e7     
+            STX $e6            ; $f37d: 86 e6     
+            JMP ($00e6)        ; $f37f: 6c e6 00  
 
 ;-------------------------------------------------------------------------------
 __f382:     .hex 07            ; $f382: 07            Data
@@ -7131,7 +7131,7 @@ __fb70:     .hex fb 8f fb c9   ; $fb70: fb 8f fb c9   Data
             .hex 04 08 c4 04   ; $fde0: 04 08 c4 04   Data
             .hex 09 c3 05 0a   ; $fde4: 09 c3 05 0a   Data
             .hex e0 06 0a e1   ; $fde8: e0 06 0a e1   Data
-            .hex 07 0a f8 08   ; $fdec: 07 0a f8 08   Data
+            .hex 07 0a f8 08   ; $fDEC: 07 0a f8 08   Data
             .hex 04 f0 08 05   ; $fdf0: 04 f0 08 05   Data
             .hex c4 08 06 c3   ; $fdf4: c4 08 06 c3   Data
             .hex 09 01 f0 09   ; $fdf8: 09 01 f0 09   Data
