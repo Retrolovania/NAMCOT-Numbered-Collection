@@ -7,12 +7,25 @@
 ;-------------------------------------------------------------------------------
 ; Some known addresses
 ;-------------------------------------------------------------------------------
-            ;$0F = Title_Timer
+            ;$0F = State_Timer
+            ;$0E = Bonus_Tick
             ;$26 = Button_Direction:
                   ;$01 = Right
                   ;$FF = Left
             ;$22 = Button_Action (pressing A or B makes it go from $00 to $FF, but not instantaneously)      
+            ;$40 = Play_Mode:
+                  ;$00 = 1-Player Game
+                  ;$01 = 2-Player Game
+            ;$41 = Active_Player:
+                  ;$00 = Player 1
+                  ;$01 = Player 2
             ;$7B = Item_Remain
+            ;$70 = Active_Lives
+            ;$B0 = Inactive_Lives
+            ;$77 = Round_Num
+            ;$44-$47 = HI_Score
+            ;$71-$74 = Active_Score
+            ;$B1-$B4 = Inactive_Score
 ;-------------------------------------------------------------------------------
 ; iNES Header
 ;-------------------------------------------------------------------------------
