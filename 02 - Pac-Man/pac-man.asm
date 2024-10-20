@@ -7,6 +7,9 @@
 ; Known zeropage variables
 ;-------------------------------------------------------------------------------
             ;$3F = Pac_State
+            ;$41 = No idea so far
+            ;$42 = Timer used for scrolling in the title screen
+                ; overflows to zero when said screen is fully in frame
             ;$48 = Game_State
             ;$4B = Frame_Ctr
             ;$4D & $4F = Button_Pressed
@@ -78,25 +81,25 @@ __c035:
 Wait_VBlank:     
             LDA PPUSTATUS      ; $c03d: ad 02 20    Load value in PPUSTATUS to A  
             BPL Wait_VBlank    ; $c040: 10 fb       If PPUSTATUS is greater than or equal to zero (most significant bit of A isn't set), loop. If not, then continue.     
-            LDX #$FF           ; $c042: a2 ff       Load $FF to X
+            LDX #$FF           ; $c042: a2 ff       
             TXS                ; $c044: 9a          Transfer X to stack (Pac-Man uses ALL of zeropage)
-            LDA #$00           ; $c045: a9 00       Load $00 to A     
-            TAY                ; $c047: a8          Transfer A value to Y       
+            LDA #$00           ; $c045: a9 00       Clear A and Y   
+            TAY                ; $c047: a8      
 Mem_Clear:     
-            STA $0000,Y        ; $c048: 99 00 00    Store A value at address ($0000 + Y)
-            INY                ; $c04b: c8          Increment Y by one
-            CPY #$3E           ; $c04c: c0 3e       Compare $3E to value in Y
-            BNE Mem_Clear      ; $c04e: d0 f8       Loop if Zero Flag is not clear.       
-            LDX #$08           ; $c050: a2 08       Load $08 to X
-            LDY #$87           ; $c052: a0 87       Load $87 to Y
-__c054:     
-            STA ($00),Y        ; $c054: 91 00       Store A value at address ($00 + Y value)     
-            INY                ; $c056: c8          Increment Y by one
-            BNE __c054         ; $c057: d0 fb       Loop if Zero Flag is not clear.     
-            INC $01            ; $c059: e6 01       Increent value at $01 by one.
-            CPX $01            ; $c05b: e4 01       Compare value at $01 with X
-__c05d:     
-            BNE __c054         ; $c05d: d0 f5
+            STA $0000,Y        ; $c048: 99 00 00    
+            INY                ; $c04b: c8          Clear memory from $0000 to $003E (62 bytes)
+            CPY #$3E           ; $c04c: c0 3e
+            BNE Mem_Clear      ; $c04e: d0 f8     
+            LDX #$08           ; $c050: a2 08
+            LDY #$87           ; $c052: a0 87
+Mem_ClearII:     
+            STA ($00),Y        ; $c054: 91 00    
+            INY                ; $c056: c8
+            BNE Mem_ClearII    ; $c057: d0 fb       Clear 8 blocks of memory (1st is $0087-$00FF, then it goes through $0100 through $07FF in 256-byte chunks)
+            INC $01            ; $c059: e6 01
+            CPX $01            ; $c05b: e4 01
+            BNE Mem_ClearII    ; $c05d: d0 f5
+__c05f:     
             LDA #$06           ; $c05f: a9 06
             STA $2001          ; $c061: 8d 01 20 
             LDA #$00           ; $c064: a9 00
@@ -361,7 +364,7 @@ __c23e:
             BNE __c22d         ; $c258: d0 d3       Branch to __c22d if Zero Flag is not clear       
             LDA #$06           ; $c25a: a9 06       Load $06 to A
 __c25c:     
-            .hex 85 00 a0 00   ; $c25c: 85 00 a0 00   Data
+            .hex 85 00 a0 00   ; $c25c: 85 00 a0 00
 __c260:     
             LDA PPUSTATUS      ; $c260: ad 02 20    Load value at PPUSTATUS to A  
             LDA __c329,Y       ; $c263: b9 29 c3    Load value at (__c329 + Y) to A   
@@ -1320,13 +1323,20 @@ __cc76:     JSR __ddc9         ; $cc76: 20 c9 dd
             JMP __c9dd         ; $cc7c: 4c dd c9  
 
 ;-------------------------------------------------------------------------------
-__cc7f:     .hex a5 48 d0 3c   ; $cc7f: a5 48 d0 3c   Data
-            .hex c6 67 d0 0d   ; $cc83: c6 67 d0 0d   Data
-            .hex a9 00 85 87   ; $cc87: a9 00 85 87   Data
-            .hex 85 69 a9 0a   ; $cc8b: 85 69 a9 0a   Data
-            .hex 85 3f 4c dd   ; $cc8f: 85 3f 4c dd   Data
-            .hex c9            ; $cc93: c9            Data
-__cc94:     LDA #$00           ; $cc94: a9 00     
+; This code gets triggered when the game switches to the Ready (and Game Over) screen after Pac-Man dies.
+__cc7f:     
+            LDA $48            ; $cc7f: a5 48 
+            BNE $CCBF          ; $cc81: d0 3c
+            DEC $67            ; $cc83: c6 67 
+            BNE __cc94          ; $cc85: d0 0d
+            LDA #$00           ; $cc87: a9 00 
+            STA $87            ; $cc89: 85 87
+            STA $69            ; $cc8b: 85 69 
+            LDA #$0A           ; $cc8d: a9 0a
+            STA $3F            ; $cc8f: 85 3f 
+            JMP __c9dd          ; $cc91: 4c dd c9
+__cc94:     
+            LDA #$00           ; $cc94: a9 00     
             STA $3F            ; $cc96: 85 3f     
             LDA #$01           ; $cc98: a9 01     
             STA $69            ; $cc9a: 85 69     
