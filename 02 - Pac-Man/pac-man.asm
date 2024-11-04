@@ -74,10 +74,10 @@ __c000:
 reset:      
             SEI                ; $c033: 78        
             CLD                ; $c034: d8        
-__c035:     
+Init_PPU:     
             LDA #$00           ; $c035  a9 00
-            STA PPUCTRL       ; $c035: 8d 00 20  
-            STA PPUMASK       ; $c039: 8d 01 20 
+            STA PPUCTRL        ; $c035: 8d 00 20    Disable VBlank NMI, set 8x8 sprites, BG/sprite tables at $0000, increment VRAM by one and across, base nametable at $2000
+            STA PPUMASK        ; $c039: 8d 01 20    Disable rendering
 Wait_VBlank:     
             LDA PPUSTATUS      ; $c03d: ad 02 20    Load value in PPUSTATUS to A  
             BPL Wait_VBlank    ; $c040: 10 fb       If PPUSTATUS is greater than or equal to zero (most significant bit of A isn't set), loop. If not, then continue.     
@@ -99,25 +99,25 @@ Mem_ClearII:
             INC $01            ; $c059: e6 01
             CPX $01            ; $c05b: e4 01
             BNE Mem_ClearII    ; $c05d: d0 f5
-__c05f:     
+Init_Scroll:     
             LDA #$06           ; $c05f: a9 06
-            STA $2001          ; $c061: 8d 01 20 
+            STA PPUMASK        ; $c061: 8d 01 20    00000110 -> Show BG and sprites in leftmost 8 pixels
             LDA #$00           ; $c064: a9 00
-            STA $2005          ; $c066: 8d 05 20 
-            STA $2005          ; $c069: 8d 05 20
+            STA PPUSCROLL      ; $c066: 8d 05 20    Init X & Y scroll
+            STA PPUSCROLL      ; $c069: 8d 05 20
             STA $41            ; $c06c: 85 41
             STA $42            ; $c06e: 85 42
-            STA $2001          ; $c070: 8d 00 20
-            STA $2001          ; $c073: 8d 01 20   
+            STA PPUMASK        ; $c070: 8d 00 20    Stop showing BG/sprites (and make sure they are)
+            STA PPUMASK        ; $c073: 8d 01 20   
             TAY                ; $c076: a8
-__c077:     
-            LDA Hiroki,Y       ; $c077: b9 eb c0    Load value at (Hiroki + Y) to A
-            CMP $0052,Y        ; $c07a: d9 52 00    Compare value at ($0052 + Y) to A
-            BNE __c086         ; $c07d: d0 07       Branch to __c086 if Zero Flag is not clear        
-            INY                ; $c07f: c8          Increment Y by one
-            CPY #$0F           ; $c080: c0 0f       Compare $0F to Y
-            BNE __c077         ; $c082: d0 f3       Loop if Zero Flag is not clear       
-            BEQ __c0a0         ; $c084: f0 1a       Branch to __c0a0 if Zero Flag is clear    
+Hiro_Check:     
+            LDA Hiroki,Y       ; $c077: b9 eb c0    
+            CMP $0052,Y        ; $c07a: d9 52 00    
+            BNE __c086         ; $c07d: d0 07       Jump if console was soft reset
+            INY                ; $c07f: c8          
+            CPY #$0F           ; $c080: c0 0f       
+            BNE Hiro_Check     ; $c082: d0 f3            
+            BEQ __c0a0         ; $c084: f0 1a        
 __c086:     
             LDA #$00           ; $c086: a9 00       Clear A
             TAY                ; $c088: a8          Transfer A to Y
@@ -127,7 +127,7 @@ __c089:
             BNE __c089         ; $c08d: d0 fa       Loop if Zero Flag is not clear       
             LDY #$00           ; $c08f: a0 00       Clear Y
 __c091:     
-            LDA Hiroki,Y       ; $c091: b9 eb c0    Load value at (Hiroki + Y) to A
+            LDA Hiroki,Y       ; $c091: b9 eb c0    Load value at (Hiroki + Y) to A (used when console is power-cycled)
             STA $0052,Y        ; $c094: 99 52 00    Store A value at ($0052 + Y)    
             INY                ; $c097: c8          Increment Y by one
             CPY #$0F           ; $c098: c0 0f       Compare $0F with Y
@@ -181,18 +181,18 @@ Hiroki:
 ; nmi vector
 ;-------------------------------------------------------------------------------
 nmi:        
-            PHA                ; $c0fa: 48          Push A value onto stack        
-            TXA                ; $c0fb: 8a          Transfer X to A
-            PHA                ; $c0fc: 48          Push A value onto stack        
-            TYA                ; $c0fd: 98          Transfer Y to A
-            PHA                ; $c0fe: 48          Push A value onto stack        
-            LDA #$1E           ; $c0ff: a9 1e       Load $1E to A
-            STA PPUMASK        ; $c101: 8d 01 20    Store A value at PPUMASK
-            LDA #$00           ; $c104: a9 00       Clear A
-            STA OAMADDR        ; $c106: 8d 03 20    Store A value at OAMADDR
-            STA $40            ; $c109: 85 40       Store A value at $45
-            LDA $45            ; $c10b: a5 45       Load value at $45 to A
-            STA OAMDMA         ; $c10d: 8d 14 40    Store A value at OAMDMA
+            PHA                ; $c0fa: 48     
+            TXA                ; $c0fb: 8a
+            PHA                ; $c0fc: 48       
+            TYA                ; $c0fd: 98
+            PHA                ; $c0fe: 48          Get A, X and Y onto the stack      
+            LDA #$1E           ; $c0ff: a9 1e       
+            STA PPUMASK        ; $c101: 8d 01 20    00011110 -> Enable BG and sprites + show them in leftmost 8 pixels
+            LDA #$00           ; $c104: a9 00       
+            STA OAMADDR        ; $c106: 8d 03 20    Set start of OAM
+            STA $40            ; $c109: 85 40       
+            LDA $45            ; $c10b: a5 45       
+            STA OAMDMA         ; $c10d: 8d 14 40    Send value at $45 to be the high byte of OAMDMA ($45 currently unknown)
             JSR __dde9         ; $c110: 20 e9 dd    Jump to subroutine __dde9
             JSR __e21c         ; $c113: 20 1c e2    Jump to subroutine __e21c  
             LDA $41            ; $c116: a5 41       Load value at $41 to A     
