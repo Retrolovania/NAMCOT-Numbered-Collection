@@ -6,15 +6,17 @@
 ;-------------------------------------------------------------------------------
 ; Known zeropage variables
 ;-------------------------------------------------------------------------------
+            ;$1A-2D = Seems to be position data for Pac-Man & the ghosts (four bytes per character; PM-B-P-I-C; X position, ??, Y position, ??).
+            ;         The second and fourth byte are either constantly updating or are set
+            ;         depending on whether the sprite was last moving horizontally or vertically.
+            ;$33-36 = Seems to be the animation frame of the ghosts (one byte per ghost; 0A-0B up, 0C-0D left, 0E-0F down, 10-11 right)
             ;$3F = Pac_State
-            ;$41 = No idea so far
-            ;$42 = Timer used for scrolling in the title screen
-                ; overflows to zero when said screen is fully in frame
+            ;$41-42 = X-Y position of the background layer (00 00 is fully centered)
             ;$48 = Game_State
             ;$4B = Frame_Ctr
             ;$4D & $4F = Button_Pressed
             ;$50 & $51 = Pac_Direction
-            ;$61-66 = Hi_Score
+            ;$61-66 = Hi_Score (starts at ten's place, one's is always zero given how scoring works)
             ;$67 = Pac_Lives
             ;$68 = Current_Level
             ;$6A = Dot_Number
@@ -24,7 +26,7 @@
                     ;$07 = Eaten, invisible
                     ;$2D = Written during title and character screens, invisible yet still technically present
             ;$70-$75 = Active_Score  
-            ;$80-$85 = Inactive_Score
+            ;$80-$85 = Inactive_Score (stores score of player waiting their turn if in 2P mode)
             ;$87 & $88 = general timers, dunno what to explicitly name these      
             ;$89 = Scared_Timer
             ;$8A = Scared_Ctr
@@ -113,27 +115,27 @@ Init_Scroll:
 Hiro_Check:     
             LDA Hiroki,Y       ; $c077: b9 eb c0    
             CMP $0052,Y        ; $c07a: d9 52 00    
-            BNE __c086         ; $c07d: d0 07       Jump if console was soft reset
+            BNE Hiro_HardPass  ; $c07d: d0 07       Jump if system was hard reset (bytes don't match)
             INY                ; $c07f: c8          
-            CPY #$0F           ; $c080: c0 0f       
+            CPY #$0F           ; $c080: c0 0f       Soft reset? Check rest of Hiroki to make sure.
             BNE Hiro_Check     ; $c082: d0 f3            
             BEQ __c0a0         ; $c084: f0 1a        
-__c086:     
-            LDA #$00           ; $c086: a9 00       Clear A
-            TAY                ; $c088: a8          Transfer A to Y
-__c089:     
-            STA $0000,Y        ; $c089: 99 00 00    Store A value at ($0000 + Y)
-            INY                ; $c08c: c8          Increment Y by one
-            BNE __c089         ; $c08d: d0 fa       Loop if Zero Flag is not clear       
-            LDY #$00           ; $c08f: a0 00       Clear Y
-__c091:     
-            LDA Hiroki,Y       ; $c091: b9 eb c0    Load value at (Hiroki + Y) to A (used when console is power-cycled)
-            STA $0052,Y        ; $c094: 99 52 00    Store A value at ($0052 + Y)    
-            INY                ; $c097: c8          Increment Y by one
-            CPY #$0F           ; $c098: c0 0f       Compare $0F with Y
-            BNE __c091         ; $c09a: d0 f5       Loop if Zero Flag is not clear       
-            LDA #$01           ; $c09c: a9 01       Load $01 to A
-            STA $64            ; $c09e: 85 64       Store A value at $64
+Hiro_HardPass:     
+            LDA #$00           ; $c086: a9 00       
+            TAY                ; $c088: a8          
+ClearZP:     
+            STA $0000,Y        ; $c089: 99 00 00
+            INY                ; $c08c: c8
+            BNE ClearZP        ; $c08d: d0 fa       Clear all of zeropage      
+            LDY #$00           ; $c08f: a0 00
+Hiro_Copy:     
+            LDA Hiroki,Y       ; $c091: b9 eb c0
+            STA $0052,Y        ; $c094: 99 52 00    Copy the Hiroki table to $0052 - $0061...
+            INY                ; $c097: c8
+            CPY #$0F           ; $c098: c0 0f
+            BNE Hiro_Copy      ; $c09a: d0 f5       ...don't continue until it's all in.
+            LDA #$01           ; $c09c: a9 01       Prep high score at 10000 points.
+            STA $64            ; $c09e: 85 64
 __c0a0:     
             LDY #$00           ; $c0a0: a0 00       Clear Y
             STY $3F            ; $c0a2: 84 3f       Store Y value at $3F
