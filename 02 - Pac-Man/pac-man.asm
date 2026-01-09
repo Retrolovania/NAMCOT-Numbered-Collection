@@ -8,7 +8,7 @@
 ;-------------------------------------------------------------------------------
             ;$1A-2D = Seems to be position data for Pac-Man & the ghosts (four bytes per character; PM-B-P-I-C; X position, ??, Y position, ??).
             ;         The second and fourth byte are either constantly updating or are set
-            ;         depending on whether the sprite was last moving horizontally or vertically.
+            ;         depending on whether the sprite was last moving horizontally or vertically. Might be subpixel movement.
             ;$33-36 = Seems to be the animation frame of the ghosts (one byte per ghost; 0A-0B up, 0C-0D left, 0E-0F down, 10-11 right)
             ;$3F = Pac_State
             ;$41-42 = X-Y position of the background layer (00 00 is fully centered)
@@ -107,7 +107,7 @@ Init_Scroll:
             LDA #$00           ; $c064: a9 00
             STA PPUSCROLL      ; $c066: 8d 05 20    Init X & Y scroll
             STA PPUSCROLL      ; $c069: 8d 05 20
-            STA $41            ; $c06c: 85 41
+            STA $41            ; $c06c: 85 41       Center BG
             STA $42            ; $c06e: 85 42
             STA PPUMASK        ; $c070: 8d 00 20    Stop showing BG/sprites (and make sure they are)
             STA PPUMASK        ; $c073: 8d 01 20   
